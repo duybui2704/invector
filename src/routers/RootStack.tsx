@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react';
 import React, { useCallback, useMemo } from 'react';
-import { View } from 'react-native';
 import { ScreenName, TabsName } from '../common/screenName';
 import Login from '../screen/auth/login';
 import Home from '../screen/home';
@@ -66,28 +65,28 @@ const RootStack = observer(() => {
                     name={TabsName.homeTabs}
                     component={HomeStack}
                     // options={getOption}
-                />   
+                />
                 <Tab.Screen
                     name={TabsName.investTabs}
                     component={InvestStack}
                     // options={getOption}
-                /> 
+                />
                 <Tab.Screen
                     name={TabsName.reportTabs}
                     component={ReportStack}
                     // options={getOption}
-                /> 
+                />
                 <Tab.Screen
                     name={TabsName.paymentTabs}
                     component={PaymentStack}
                     // options={getOption}
-                /> 
+                />
                 <Tab.Screen
                     name={TabsName.accountTabs}
                     component={AccountStack}
                     // options={getOption}
-                />  
-                
+                />
+
             </Tab.Navigator>
         ), []);
 
@@ -102,11 +101,12 @@ const RootStack = observer(() => {
     const AppStack = useCallback(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
+                <Stack.Screen name={ScreenName.auth} component={AuthStack} />
                 <Stack.Screen name={ScreenName.tabs} component={Tabs} />
             </Stack.Navigator>
         );
     }, [AuthStack, Tabs]);
-    
+
     const renderRootStack = useMemo(() => {
         return <AppStack/>
     }, [AppStack]);
