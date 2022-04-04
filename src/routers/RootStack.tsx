@@ -1,3 +1,4 @@
+import Transaction from '@/screen/payment/Transaction';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react';
@@ -44,6 +45,7 @@ const ReportStack = () => {
 const PaymentStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen name={ScreenName.transaction} component={Transaction} />
             <Stack.Screen name={ScreenName.paymentScreen} component={Payment} />
         </Stack.Navigator>
     );
