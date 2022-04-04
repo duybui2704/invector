@@ -7,14 +7,13 @@ import React, {
 } from 'react';
 import { Image, StyleSheet, Text } from 'react-native';
 import DatePicker, { DatePickerProps } from 'react-native-date-picker';
-
 import Images from '../asset/Images';
 import Languages from '../common/Languages';
-import { COLORS } from '../theme';
+import { COLORS, Styles } from '../theme';
 import DateUtils from '../utils/DateUtils';
 import { Touchable } from './elements/touchable';
-
-
+import ICCalender from '@/asset/icon/ic_calender.svg';
+import { Configs } from '@/common/config';
 interface DatePickerTransactionProps extends DatePickerProps {
   title?: string;
   onConfirmDatePicker?: (date: Date,tag?:string) => void;
@@ -42,7 +41,7 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
         ref
     ) => {
         const [visible, setVisible] = useState<boolean>(false);
-        const [dateValue,setDateValue] = useState<Date | string| undefined >('1920/02/01');
+        const [dateValue,setDateValue] = useState<Date | string| undefined >();
         const show = useCallback(() => {
             setVisible(true);
         }, []);
@@ -78,14 +77,15 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
             <>
                 <Touchable style={styles.itemPicker} onPress={show}>
                     <Text style={styles.placeholderDate}>
-                        {dateValue ? dateValue?.toLocaleString() : title}
+                        {dateValue ? DateUtils.formatDateSecondPicker(dateValue.toLocaleString()) : title}
                     </Text>
-                    {/* <Image source={Images.ic_calender} resizeMode={'contain'} /> */}
+                    <ICCalender/>
                     <DatePicker
                         modal
                         mode='datetime'
                         open={visible}
                         locale={'vi'}
+                        androidVariant={'iosClone'}
                         date={date || new Date()}
                         title={title}
                         onDateChange={onChange}
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     itemPicker: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: (SCREEN_WIDTH - 70) / 2,
+        width: (SCREEN_WIDTH - 60) / 2,
         borderWidth: 1,
         borderColor: COLORS.GRAY_11,
         paddingHorizontal: 10,
@@ -118,6 +118,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.WHITE
     },
     placeholderDate: {
-        color: COLORS.GRAY_6
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_6,
+        fontSize: Configs.FontSize.size12
     }
 });

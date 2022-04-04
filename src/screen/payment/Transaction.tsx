@@ -1,6 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View ,FlatList} from 'react-native';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { FlatList } from 'react-native-gesture-handler';
 
 import KeyValueTransaction from '../../components/KeyValueTransaction';
 import HeaderBar from '../../components/header';
@@ -10,10 +9,10 @@ import { Touchable } from '../../components/elements/touchable';
 import Filter from '../../components/Filter';
 import { DATA, TransactionTypes } from '../../mocks/data';
 import DatePickerTransaction from '../../components/DatePicker';
-import Images from '../../asset/Images';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { PagingConditionTypes } from '@/models/paging';
 import { TransactionModel } from '@/models/transaction-model';
+import ICCalender from '@/asset/icon/ic_arrow_date_picker.svg';
 
 const Transaction = () => {
     const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
@@ -24,6 +23,7 @@ const Transaction = () => {
         startDate: undefined,
         endDate: undefined
     });
+
     const renderFilterTemplate = useCallback(
         (item: KeyValueModel) => {
             let selected = false;
@@ -89,11 +89,10 @@ const Transaction = () => {
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
             case Languages?.transaction.fromDate:
-                // condition.current.startDate;
-                // onRefresh(date, condition.current.endDate);
+                condition.current.startDate;
                 break;
             case Languages.transaction.toDate:
-                // onRefresh(condition.current.startDate, date);
+                condition.current.endDate;
                 break;
             default:
                 break;
@@ -112,15 +111,15 @@ const Transaction = () => {
                 <DatePickerTransaction
                     title={Languages.transaction.fromDate}
                     onConfirmDatePicker={onConfirmValue}
-                    // onDateChangeDatePicker={onChange}
+                    onDateChangeDatePicker={onChange}
                     date={condition.current.startDate || new Date()}
                     maximumDate={new Date()}
                 />
-                {/* <Image source={Images.ic_arrow_date} resizeMode={'contain'} style={styles.arrow}/> */}
+                <ICCalender style={styles.arrow}/>
                 <DatePickerTransaction
                     title={Languages.transaction.toDate}
                     onConfirmDatePicker={onConfirmValue}
-                    // onDateChangeDatePicker={onChange}
+                    onDateChangeDatePicker={onChange}
                     date={condition.current.endDate || new Date()}
                     maximumDate={new Date()}
                 />
@@ -146,13 +145,13 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     filterItem: {
-        paddingHorizontal: 5
+        paddingHorizontal: 2
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 16,
-        marginTop: 12,
+        marginTop: 10,
         marginBottom:20
     }, 
     arrow: {

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Dash from 'react-native-dash';
 
-import { COLORS } from '../theme';
+import { COLORS, Styles } from '../theme';
 import { Configs } from '../common/config';
 import Languages from '../common/Languages';
 
@@ -18,7 +18,7 @@ const KeyValueTransaction = ({ title, dateTime, content, noIndicator ,styleColor
                     </Text>
                     <Text style={styleColor==='red'?[styles.leftText,styles.red]:[styles.leftText,styles.green]}>{title}</Text>
                 </View>
-                <View style={styles.rightView}>
+                <View>
                     <Text style={styles.dateText}>{dateTime}</Text>
                     <Text style={styles.contentText}>{content}</Text>
                 </View>
@@ -55,30 +55,28 @@ const styles = StyleSheet.create({
     rowDebt:{
         flexDirection: 'row'
     },
-    rightView: {
-
-    },
     leftText: {
+        ...Styles.typography.medium,
         color: COLORS.GREEN,
         fontSize: Configs.FontSize.size20
     },
     dateText: {
+        ...Styles.typography.regular,
         color: COLORS.GRAY_12,
         fontSize: Configs.FontSize.size10
     },
     contentText: {
+        ...Styles.typography.medium,
         color: COLORS.GRAY_7,
-        fontSize: Configs.FontSize.size14
     },
     dash: {
         marginVertical:4
     },
     debtText:{
-        fontSize: Configs.FontSize.size14
+        ...Styles.typography.regular,
     },
     debtNumber:{
-        color: COLORS.BLACK,
-        fontSize: Configs.FontSize.size14
+        ...Styles.typography.medium
     },
     red:{
         color:COLORS.RED

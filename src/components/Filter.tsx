@@ -4,7 +4,7 @@ import {
     StyleSheet, Text, TextStyle
 } from 'react-native';
 
-import { COLORS } from '../theme';
+import { COLORS, Styles } from '../theme';
 import { Touchable } from './elements/touchable';
 
 const Filter = ({ item, selected, onPress, style }:
@@ -34,11 +34,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16
     },
     filterTxtSelected: {
+        ...Styles.typography.regular,
         color: COLORS.GREEN,
         paddingVertical: 3,
         alignSelf: 'center'
     },
     filterTxtUnSelected: {
+        ...Styles.typography.regular,
         color: COLORS.GRAY_7,
         paddingVertical: 3,
         alignSelf: 'center'
