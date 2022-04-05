@@ -13,7 +13,7 @@ export const ScreenName = {
 export default ScreenName;
 
 export const TabsName = {
-    homeTabs: 'HomeTabs',
+    homeTabs: 'Trang chu',
     investTabs: 'InvestTabs',
     reportTabs: 'ReportTabs',
     paymentTabs: 'PaymentTabs',
