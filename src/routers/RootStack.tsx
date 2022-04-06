@@ -15,7 +15,7 @@ const RootStack = observer(() => {
     const AuthStack = useCallback(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
-                <Stack.Screen name={ScreenName.login} component={Login} />
+                <Stack.Screen name={ScreenName.login} component={Login}/>
             </Stack.Navigator>
         );
     }, []);
@@ -23,16 +23,15 @@ const RootStack = observer(() => {
     const AppStack = useCallback(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
-                <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
+                <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs}/>
                 {/* <Stack.Screen name={ScreenName.auth} component={AuthStack} /> */}
             </Stack.Navigator>
         );
     }, [AuthStack]);
-
     const renderRootStack = useMemo(() => {
         return <AppStack />;
     }, [AppStack]);
     return renderRootStack;
-});
-
+})
 export default RootStack;
+

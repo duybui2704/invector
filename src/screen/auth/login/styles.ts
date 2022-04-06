@@ -20,11 +20,13 @@ export const myStylesAuth = () => {
                 position: 'absolute',
                 top: DimensionUtils.SCREEN_HEIGHT * 0.18,
                 right: DimensionUtils.SCREEN_WIDTH * 0.18 ,
+                width: DimensionUtils.SCREEN_WIDTH * 0.3,
+                height: DimensionUtils.SCREEN_HEIGHT * 0.1,
                 transform : [
                     { rotateX: '-30deg' },
                     { rotateY: '0deg' },
                     { rotateZ: '40deg' }
-                ]
+                ],
             },
             tob1: {
                 justifyContent: 'center',
@@ -91,7 +93,6 @@ export const myStylesAuth = () => {
             },
             rowInfo: {
                 flexDirection: 'column',
-                marginTop: 15,
                 alignItems: 'flex-start',
                 marginHorizontal: 4
             },
@@ -103,12 +104,16 @@ export const myStylesAuth = () => {
             },
             wrapAll: {
                 flex: 1,
-                paddingBottom: PADDING_TOP
+                paddingBottom: PADDING_TOP,
+                marginTop: DimensionUtils.SCREEN_HEIGHT / 3,
+                height: DimensionUtils.SCREEN_HEIGHT / 3,
+                width: '80%'
             },
             checkbox: {
                 justifyContent: 'flex-end',
-                width: 50,
-                height: 50
+                marginTop: 10,
+                width: 20,
+                height: 20
             },
             row: {
                 flexDirection: 'row',
@@ -135,9 +140,9 @@ export const myStylesAuth = () => {
                 flex: 1
             },
             content: {
-                flex: 1.5,
                 justifyContent: 'center',
-                marginTop: 50
+                marginHorizontal: 10,
+                height: DimensionUtils.SCREEN_HEIGHT * 0.3
             },
             hisLop: {
                 paddingVertical: 10,
@@ -161,7 +166,20 @@ export const myStylesAuth = () => {
                 fontFamily: Configs.FontFamily.medium,
                 color: COLORS.WHITE,
                 fontSize: Configs.FontSize.size12
-            }
+            },
+            txtTitle: {
+                fontSize: Configs.FontSize.size24,
+                fontWeight: '600',
+                color: COLORS.BLACK,
+                padding: 20
+            },
+            viewSvg: {
+                paddingTop: 100,
+                // backgroundColor: COLORS.RED,
+                height: '100%',
+                width: '100%',
+
+            },
         });
     } , []);
 };

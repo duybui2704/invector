@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React , {useState, useRef, useCallback, useMemo, useEffect} from 'react';
 import {View, TextInput, ImageBackground, Text, TouchableWithoutFeedback, Keyboard, StatusBar} from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import {  Circle, TextPath, TSpan, G, Path, Svg, Image } from 'react-native-svg';
 
 // import IcFaceAuth from '@/assets/image/auth/ic_face_auth.svg';
 // import IcInsAuth from '@/assets/image/auth/ic_ins_auth.svg';
@@ -18,6 +19,8 @@ import Images from '../../../assets/Images';
 import { TextFieldActions } from '../../../components/elements/textfield/types';
 import { HeaderBar } from '../../../components/header';
 import { COLORS } from '../../../theme';
+import Languages from "@/common/languages";
+import SvgComponent from '../login/SvgText';
 // import Loading from '../../../components/loading/loding';
 
 const Login = observer(() => {
@@ -31,10 +34,10 @@ const Login = observer(() => {
 
     const onChangeText = useCallback((value: string, tag?: string) => {
         switch (tag) {
-            case 'Số điện thoại':
+            case Languages.login.txtPhone:
                 setPhone(value);
                 break;
-            case 'Mật khẩu':
+            case Languages.login.txtPass:
                 setPass(value);
                 break;
             default:
@@ -42,71 +45,69 @@ const Login = observer(() => {
         }
     }, []);
 
-    const isChecked = useCallback(() => {
+    const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
-        const checkbox = useMemo(() => {
-            if (checked) {
-                return <CheckIcon width={20} height={20} />;
-            }
-            return <UnCheckIcon width={20} height={20} />;
-        }, [checked]);
+
     }, []);
+
+    const checkbox = useMemo(() => {
+        if (checked) {
+            return <CheckIcon width={20} height={20} />;
+        }
+        return <UnCheckIcon width={20} height={20} />;
+    }, [checked]);
+
 
     const onLoginPhone = useCallback(() => {
 
     }, []);
 
     return(
-        <ImageBackground style={styles.main} source={Images.bg_login} resizeMode= 'stretch'>
+        <View style={styles.main} >
             < StatusBar barStyle={'light-content'} backgroundColor={COLORS.GREEN_1}/>
-            {/*<Touchable style = {styles.tob} >*/}
-            {/*    <Text style = {styles.txt}>Đ ă n g  N h a p</Text>*/}
-            {/*</Touchable>*/}
-            {/*<Touchable style = {styles.tob1}>*/}
-            {/*    <Text style = {styles.txt}>Đ ă n g  k ý</Text>*/}
-            {/*</Touchable>*/}
-            {/*<Touchable style = {styles.tob2} >*/}
-            {/*    <Text style = {styles.txt}>Q u e n  M a t K h a u</Text>*/}
-            {/*</Touchable>*/}
-            <View style={styles.wrapAll}>
-                <View style={styles.content} accessible={false}>
-                    <MyTextInput
-                        ref={refPhone}
-                        value={phone}
-                        isPhoneNumber={true}
-                        // leftIcon={ICONS.PROFILE}
-                        placeHolder={'Số điện thoại'}
-                        containerInput={styles.inputPhone}
-                        onChangeText={onChangeText}
-                        keyboardType={'NUMBER'}
-                    />
-                    <MyTextInput
-                        ref={refPass}
-                        value={pass}
-                        isPhoneNumber={false}
-                        // leftIcon={ICONS.LOCK}
-                        placeHolder={'Mật khẩu'}
-                        containerInput={styles.inputPass}
-                        onChangeText={onChangeText}
-                        isPassword
-                    />
-                    <View style={styles.rowInfo}>
-                        <View style={styles.row}>
-                            <Touchable style={styles.checkbox} onPress={()=>{}}>
-                                {isChecked}
-                            </Touchable>
-                            <Text style={styles.txtSave}>Lưu tài khoản</Text>
-                        </View>
-                        <Touchable onPress={onLoginPhone} style = {{width: 200, height: 50, backgroundColor: COLORS.GREEN, borderRadius: 20, justifyContent: 'center', alignItems: 'center'}} >
-                            <Text style={styles.txtSubmit}>
-                                Đăng nhập
-                            </Text>
-                        </Touchable>
-                    </View>
-                </View>
+            <View style={styles.viewSvg}>
+                 <SvgComponent/>
             </View>
-            {/*{isLoading && <Loading isOverview />}*/}
-        </ImageBackground>
+
+               {/* <View style={styles.wrapAll}>
+                   <View style={styles.content} >
+                       <Text style={styles.txtTitle}>{Languages.login.txtTitle}</Text>
+                       <MyTextInput
+                           ref={refPhone}
+                           value={phone}
+                           isPhoneNumber={true}
+                           // leftIcon={ICONS.PROFILE}
+                           placeHolder={Languages.login.txtPhone}
+                           containerInput={styles.inputPhone}
+                           onChangeText={onChangeText}
+                           keyboardType={'NUMBER'}
+                       />
+                       <MyTextInput
+                           ref={refPass}
+                           value={pass}
+                           isPhoneNumber={false}
+                           // leftIcon={ICONS.LOCK}
+                           placeHolder={Languages.login.txtPass}
+                           containerInput={styles.inputPass}
+                           onChangeText={onChangeText}
+                           isPassword
+                       />
+                       <View style={styles.rowInfo}>
+                           <View style={styles.row}>
+                               <Touchable style={styles.checkbox} onPress={onChangeChecked}>
+                                   {checkbox}
+                               </Touchable>
+                               <Text style={styles.txtSave}>Lưu tài khoản</Text>
+                           </View>
+                           <Touchable onPress={onLoginPhone} style = {{width: 200, height: 50, backgroundColor: COLORS.GREEN, borderRadius: 20, justifyContent: 'center', alignItems: 'center'}} >
+                               <Text style={styles.txtSubmit}>
+                                   Đăng nhập
+                               </Text>
+                           </Touchable>
+                       </View>
+                   </View>
+               </View>  */}
+        </View>
     );
 });
 export default Login;

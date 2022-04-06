@@ -30,7 +30,8 @@ export const myTextFieldStyle = () => {
                 },
                 inputStyle: {
                     flex: 1,
-                    color:COLORS.BLACK
+                    color:COLORS.BLACK,
+                    width: '50%'
                 },
                 inputFont: {
                     ...Styles.typography.regular,
@@ -52,7 +53,7 @@ export const myTextFieldStyle = () => {
                 flexRow: {
                     flexDirection: 'row',
                     paddingHorizontal: 10,
-                    alignItems:'center'
+                    alignItems:'center',
                 },
                 leftIconContainer: {
                     width: 20,
