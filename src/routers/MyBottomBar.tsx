@@ -70,7 +70,9 @@ const AccountStack = () => {
 const MyBottomTabs = observer(() => {
 
     const onTabPress = useCallback((e: any, navigation: any, route: any) => {
-        
+        console.log(e);
+        e?.preventDefault();
+        navigation.navigate(route?.name);
     }, []);
 
     return (
@@ -85,7 +87,6 @@ const MyBottomTabs = observer(() => {
                 }
             }}
             appearance={{
-                // tabBarBackground:COLORS.GRAY,
                 horizontalPadding:10
             }}
         >
