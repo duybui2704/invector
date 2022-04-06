@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { isNull } from 'lodash';
 
 import { styles } from './styles';
-import Images from '../../asset/Images';
+import Images from '../../assets/Images';
 import DimensionUtils from '../../utils/DimensionUtils';
 import String from '../../common/string';
 
@@ -74,7 +74,7 @@ export default function BottomTabBar({ state, descriptors, navigation } : any) {
                         if (isFocused) {
                             icon =
                                 <View style={styles.bgIcon}><Image source={Images.ic_payment_on}
-                                    style={styles.icon} />   
+                                    style={styles.icon} />
                                 </View>;
                         } else {
                             icon = <View style={styles.bgIcon}><Image source={Images.ic_payment}
@@ -89,8 +89,8 @@ export default function BottomTabBar({ state, descriptors, navigation } : any) {
                             icon = <View style={styles.bgIcon}><Image source={Images.ic_account}
                                 style={styles.icon} /></View>;
                         }
-                    } 
-                
+                    }
+
 
                     const onPress = () => {
                         const event = navigation.emit({
@@ -126,7 +126,7 @@ export default function BottomTabBar({ state, descriptors, navigation } : any) {
                             {isFocused && <View style = {styles.viewTxt}>
                                 <Text style={styles.txtTabs}>{arrayTab[index]}</Text>
                             </View>}
-                        </TouchableOpacity> 
+                        </TouchableOpacity>
                     );
                 })}
             </View>

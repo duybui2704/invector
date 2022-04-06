@@ -1,5 +1,6 @@
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+
 import { AppStoreProvider } from '../provider/app-provider/index';
 import { COLORS } from '../theme/colors';
 import { navigationRef } from './Navigator';
@@ -20,12 +21,12 @@ const App = () => {
         <AppStoreProvider>
             <NavigationContainer ref={navigationRef}
                 theme={MyTheme}>
-                    <RootStack />
+                <RootStack />
             </NavigationContainer>
         </AppStoreProvider>
     );
 };
 
 
-export default App
+export default App;
 
