@@ -45,7 +45,7 @@ export const HeaderBar = ({
             <Text
                 numberOfLines={1}
                 style={(!exitApp) ? styles.titleCenter1 : styles.titleCenter}>
-                {title?.toLocaleUpperCase()}
+                {title}
             </Text>
         </View>
     ), [title]);

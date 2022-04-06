@@ -63,11 +63,13 @@ const styles = StyleSheet.create({
     dateText: {
         ...Styles.typography.regular,
         color: COLORS.GRAY_12,
-        fontSize: Configs.FontSize.size10
+        fontSize: Configs.FontSize.size10,
+        alignSelf:'flex-end'
     },
     contentText: {
         ...Styles.typography.medium,
         color: COLORS.GRAY_7,
+        alignSelf:'flex-end'
     },
     dash: {
         marginVertical:4
@@ -83,5 +85,5 @@ const styles = StyleSheet.create({
     },
     green:{
         color:COLORS.GREEN
-    }
+    },
 });

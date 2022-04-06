@@ -19,7 +19,19 @@ const Languages={
         title: 'Tài khoản'
     },
     report:{
-        title: 'Báo cáo'
+        title: 'Báo cáo',
+        quarterlyOverview: 'Tổng quan theo quý',
+        financialChart: 'Biểu đồ tài chính',
+        month: 'Tháng',
+        investment: 'Vốn đầu tư',
+        moneyCollected: 'Tiền thu về',
+        overview: 'Tổng quan',
+        quarter: 'Quý',
+        monthOfQuarter: 'Chi tiết tháng trong quý',
+        contractNumber: 'Số hợp đồng',
+        investMoney: 'Số tiền đầu tư',
+        originMoneyCollected: 'Số tiền gốc thu về',
+        interest: 'Tiền lãi'
     },
     introduce:{
         txtIntroduce1: 'Đầu tư an toàn cùng Tienngay',
@@ -33,7 +45,8 @@ const Languages={
     common:{
         agree: 'Đồng ý',
         cancel: 'Hủy',
-        continue: 'Tiếp tục'
+        continue: 'Tiếp tục',
+        VND: 'VNĐ'
     }
 };
 export default Languages;
