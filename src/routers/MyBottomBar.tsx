@@ -70,7 +70,7 @@ const AccountStack = () => {
 const MyBottomTabs = observer(() => {
 
     const onTabPress = useCallback((e: any, navigation: any, route: any) => {
-        console.log(route);
+        
     }, []);
 
     return (
