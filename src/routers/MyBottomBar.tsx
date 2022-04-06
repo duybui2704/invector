@@ -1,19 +1,28 @@
-import Images from '@/assets/Images';
-import { COLORS } from '@/theme';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { observer } from 'mobx-react';
 import React, { useCallback } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
-import { AnimatedTabBarNavigator, DotSize, TabElementDisplayOptions } from 'react-native-animated-nav-tab-bar';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AnimatedTabBarNavigator } from 'react-native-animated-nav-tab-bar';
+import { observer } from 'mobx-react';
+
 import { ScreenName, TabsName } from '../common/screenName';
-import Home from '../screen/home';
-import Invest from '../screen/invest';
-import Payment from '../screen/payment';
-import Profile from '../screen/profile';
-import Report from '../screen/report';
+import { COLORS, Styles } from '@/theme';
+import Home from '@/screen/home';
+import Invest from '@/screen/invest';
+import Report from '@/screen/report';
+import Payment from '@/screen/payment';
+import Profile from '@/screen/profile';
+import IcHomeActive from '@/assets/image/bottomTabs/ic_home_active.svg';
+import IcHomeInactive from '@/assets/image/bottomTabs/ic_home_inactive.svg';
+import IcInvestActive from '@/assets/image/bottomTabs/ic_invest_active.svg';
+import IcInvestInactive from '@/assets/image/bottomTabs/ic_invest_inactive.svg';
+import IcReportActive from '@/assets/image/bottomTabs/ic_report_active.svg';
+import IcReportInactive from '@/assets/image/bottomTabs/ic_report_inactive.svg';
+import IcTransactionActive from '@/assets/image/bottomTabs/ic_transaction_active.svg';
+import IcTransactionInactive from '@/assets/image/bottomTabs/ic_transaction_inactive.svg';
+import IcAccountActive from '@/assets/image/bottomTabs/ic_account_active.svg';
+import IcAccountInactive from '@/assets/image/bottomTabs/ic_account_inactive.svg';
 
 const screenOptions = { headerShown: false };
-const Tab = AnimatedTabBarNavigator()
+const Tab = AnimatedTabBarNavigator();
 const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
@@ -52,125 +61,99 @@ const AccountStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.accountScreen} component={Profile} />
-            {/* <Stack.Screen name={ScreenName.login} component={Login} /> */}
         </Stack.Navigator>
     );
 };
-const BottomTabBar = (props: any) => {
-    return (
-        <View style={styles.bgIcon}>
-            {/* <Image source={Images.ic_home}
-                style={styles.icon} /> */}
-        </View>
-    )
-}
+
+
 
 const MyBottomTabs = observer(() => {
 
     const onTabPress = useCallback((e: any, navigation: any, route: any) => {
-        console.log(e)
-    }, [])
+        console.log(route);
+    }, []);
 
     return (
         <Tab.Navigator
             tabBarOptions={{
-                activeTintColor: "#ffffff",
+                activeTintColor: COLORS.WHITE,
                 inactiveTintColor: COLORS.BLACK,
                 activeBackgroundColor: COLORS.GREEN,
+                labelStyle:{
+                    ...Styles.typography.medium,
+                    color:COLORS.WHITE
+                }
             }}
             appearance={{
+                // tabBarBackground:COLORS.GRAY,
+                horizontalPadding:10
             }}
         >
             <Tab.Screen
                 name={TabsName.homeTabs}
                 component={HomeStack}
                 options={{
-                    tabBarIcon: (props: any) => (
-                        <BottomTabBar {...props} />
-                    ),
+                    tabBarIcon: (props: any) => props?.focused ? <IcHomeActive /> : <IcHomeInactive />
+
                 }}
                 listeners={({ navigation, route }) => ({
                     tabPress: e => {
-                        onTabPress(e, navigation, route)
-                    },
+                        onTabPress(e, navigation, route);
+                    }
                 })}
             />
             <Tab.Screen
                 name={TabsName.investTabs}
                 component={InvestStack}
                 options={{
-                    tabBarIcon: (props: any) => (
-                        <BottomTabBar {...props} />
-                    ),
+                    tabBarIcon: (props: any) => props?.focused ? <IcInvestActive /> : <IcInvestInactive />
                 }}
                 listeners={({ navigation, route }) => ({
                     tabPress: e => {
-                        onTabPress(e, navigation, route)
-                    },
+                        onTabPress(e, navigation, route);
+                    }
                 })}
             />
             <Tab.Screen
                 name={TabsName.reportTabs}
                 component={ReportStack}
                 options={{
-                    tabBarIcon: (props: any) => (
-                        <BottomTabBar {...props} />
-                    ),
+                    tabBarIcon: (props: any) => props?.focused ? <IcReportActive /> : <IcReportInactive />
                 }}
                 listeners={({ navigation, route }) => ({
                     tabPress: e => {
-                        onTabPress(e, navigation, route)
-                    },
+                        onTabPress(e, navigation, route);
+                    }
                 })}
             />
             <Tab.Screen
                 name={TabsName.paymentTabs}
                 component={PaymentStack}
                 options={{
-                    tabBarIcon: (props: any) => (
-                        <BottomTabBar {...props} />
-                    ),
+                    tabBarIcon: (props: any) => props?.focused ? <IcTransactionActive /> : <IcTransactionInactive />
                 }}
                 listeners={({ navigation, route }) => ({
                     tabPress: e => {
-                        onTabPress(e, navigation, route)
-                    },
+                        onTabPress(e, navigation, route);
+                    }
                 })}
             />
             <Tab.Screen
                 name={TabsName.accountTabs}
                 component={AccountStack}
                 options={{
-                    tabBarIcon: (props: any) => (
-                        <BottomTabBar {...props} />
-                    ),
+                    tabBarIcon: (props: any) => props?.focused ? <IcAccountActive /> : <IcAccountInactive />
                 }}
                 listeners={({ navigation, route }) => ({
                     tabPress: e => {
-                        onTabPress(e, navigation, route)
-                    },
+                        onTabPress(e, navigation, route);
+                    }
                 })}
             />
 
         </Tab.Navigator>
-    )
+    );
 
 });
-const styles = StyleSheet.create({
-
-    icon: {
-        width: 16,
-        height: 16,
-        aspectRatio: 1,
-        resizeMode: 'stretch',
-    },
-    bgIcon: {
-        // marginLeft: 5,
-        // width:16,
-        // height:16
-    },
-
-});
-
 
 export default MyBottomTabs;

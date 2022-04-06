@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react';
 import React, { useCallback, useMemo } from 'react';
+
 import { ScreenName } from '../common/screenName';
 import Login from '../screen/auth/login';
 import MyBottomTabs from './MyBottomBar';
@@ -29,7 +30,7 @@ const RootStack = observer(() => {
     }, [AuthStack]);
 
     const renderRootStack = useMemo(() => {
-        return <AppStack />
+        return <AppStack />;
     }, [AppStack]);
     return renderRootStack;
 });

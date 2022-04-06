@@ -22,9 +22,9 @@ const replaceScreen = debounce((destination: string, data?: any) => {
 }, DELAY_TIMER, { leading: true, trailing: false });
 
 const resetScreen = debounce((stacks: string[], params?: any) => {
-    const routes =  [{ name: stacks[0] }] as any;
+    const routes = [{ name: stacks[0] }] as any;
 
-    if(stacks[1]){
+    if (stacks[1]) {
         routes.push({ name: stacks[1], params });
     }
 

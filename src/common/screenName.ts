@@ -13,11 +13,11 @@ export const ScreenName = {
 export default ScreenName;
 
 export const TabsName = {
-    homeTabs: 'Trang chu',
-    investTabs: 'InvestTabs',
-    reportTabs: 'ReportTabs',
-    paymentTabs: 'PaymentTabs',
-    accountTabs: 'AccountTabs' 
+    homeTabs: 'Trang chủ',
+    investTabs: 'Đẩu tư',
+    reportTabs: 'Báo cáo',
+    paymentTabs: 'Giao dịch',
+    accountTabs: 'Tài khoản' 
 };
 
 
