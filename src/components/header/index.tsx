@@ -1,7 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
 import { Image, ImageBackground, StatusBar, Text, View } from 'react-native';
 
-import Images from '../../asset/Images';
+import IcBack from '../../assets/image/header/ic_back_header.svg';
+import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
+import Images from '../../assets/Images';
 import { isIOS } from '../../common/config';
 import Navigator from '../../routers/Navigator';
 import { Touchable } from '../elements/touchable';
@@ -36,7 +38,7 @@ export const HeaderBar = ({
 
     const renderBack = useMemo(() => (
         <Touchable style={styles.goBack} onPress={_onBackPressed} size={40}>
-            <Image source={Images.ic_back} style={styles.imgBack} resizeMode={'contain'} />
+          <IcBack width={27} height={27}/>
         </Touchable>
     ), [_onBackPressed]);
 
@@ -54,18 +56,18 @@ export const HeaderBar = ({
         <View style={styles.container}>
             {!exitApp ? (
                 <Image
-                    source={Images.ic_header_home}
+                    source={Images.bg_header_home}
                     style={styles.imageBg1}
                     resizeMode='stretch'
                 />
             ) : (
                 <ImageBackground
-                    source={Images.ic_header_home}
+                    source={Images.bg_header_home}
                     style={styles.imageBg}
                     resizeMode='stretch'
                 >
-                    <Image source={Images.ic_logo} resizeMode='contain' style={styles.logo} />
-                    <Image source={Images.ic_notify_home} resizeMode='contain' style={styles.imgNotify} />
+                    <Image source={Images.logo_header_home} resizeMode='contain' style={styles.logo} />
+                    <IcNotify style={styles.imgNotify}/>
                 </ImageBackground>
             )}
             {noStatusBar && isIOS ? null : <StatusBar

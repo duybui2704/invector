@@ -45,7 +45,8 @@ export type TextFieldProps = {
     onEndEditing?: (text: string, tag?: string) => any;
     onClickRightIcon?: (text: string) => any;
     onFocusCallback?: (tag?: string) => any;
-    defaultValue?:string
+    defaultValue?:string;
+    isPhoneNumber: Boolean;
 }
 
 export type TextFieldActions = {
