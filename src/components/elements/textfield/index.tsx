@@ -7,17 +7,19 @@ import React, {
     useRef,
     useState
 } from 'react';
-import { Animated, Text, TextInput, TextStyle, View } from 'react-native';
+import { Animated, TextInput, TextStyle, View, Text } from 'react-native';
 
 import { isIOS } from '../../../common/config';
 import { COLORS } from '../../../theme';
-import { Touchable } from '../touchable';
+import Validate from "@/utils/Validate";
 import { myTextFieldStyle } from './styles';
 import { TextFieldActions, TextFieldProps, TypeKeyBoard } from './types';
-
-function isEmptyValue(value: string) {
-    return typeof value === 'undefined' || value === null || value.toString().length === 0;
-}
+import arrayIcon from "@/common/arrayIcon";
+import IcPhone from '@/assets/image/auth/ic_phone_auth.svg';
+import IcPass from '@/assets/image/auth/ic_pass_auth.svg';
+import IcEmailAuth from '@/assets/image/auth/ic_email_auth.svg';
+import IcDownAuth from '@/assets/image/auth/ic_down_auth.svg';
+import IcName from '@/assets/image/auth/ic_name_auth.svg';
 
 export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
     (
@@ -43,8 +45,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             autoFocus,
             onKeyPress,
             placeHolderColor,
-            defaultValue,
-            isPhoneNumber
+            defaultValue
         }: TextFieldProps,
         ref?: any
     ) => {
@@ -53,14 +54,14 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             fillValue,
             getValue,
             focus,
-            blur
+            blur,
+            setErrorMsg
         }));
-        const [isShowPwd, setIsShowPwd] = useState<boolean>(false);
+
         const [isFocusing, setFocus] = useState<boolean>(false);
         const [textfieldVal, setTextfieldVal] = useState<string>(`${value || ''}`);
         const [errMsg, setErrMsg] = useState<string>('');
         const [animation] = useState(new Animated.Value(0));
-
         const styles = myTextFieldStyle();
 
         const orgTextInput = useRef<TextInput>(null);
@@ -73,15 +74,9 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                             ? keyboardType
                             : 'NUMERIC'
                         : keyboardType
-                ],
+                    ],
             editable: !disabled
         };
-
-        // useEffect(() => {
-        //     if (onKeyPress) {
-        //         onKeyPress(testID,testID);
-        //     }
-        // }, [onKeyPress, testID]);
 
         useEffect(() => {
             if (onChangeText) {
@@ -111,11 +106,11 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             [setValue]
         );
 
-        // useEffect(() => {
-        //     if (!Validate.isEmpty(value)) {
-        //         setValue(value);
-        //     }
-        // }, [setValue, value]);
+        useEffect(() => {
+            if (!Validate.isEmpty(value)) {
+                setValue(value);
+            }
+        }, [setValue, value]);
 
         const focus = useCallback(() => {
             if (orgTextInput.current) {
@@ -130,7 +125,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         }, []);
 
         const eventTextChange = useCallback(
-            (text: string) => {
+            (text: string, tag? : string) => {
                 setValue(text);
             },
             [setValue]
@@ -151,10 +146,6 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             setFocus(false);
         }, []);
 
-        const eventClearText = useCallback(() => {
-            eventTextChange('');
-        }, [eventTextChange]);
-
         const containerStyle = useMemo(() => {
             const borderStyle = {
                 borderColor: isFocusing ? COLORS.GREEN : COLORS.GRAY_2
@@ -174,40 +165,6 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             return [styles.container,  borderStyle, backgroundStyle,style, containerInput, { transform: [{ translateX: animation }] }];
         }, [animation, containerInput, disabled, errMsg, isFocusing, styles.container]);
 
-        const leftIconStyle = useMemo(() => {
-            const style = {
-                color: isFocusing ? COLORS.GREEN : COLORS.LIGHT_GRAY,
-                fontSize: iconSize || styles.leftIcon.fontSize
-            };
-            return [styles.leftIcon, style];
-        }, [iconSize, isFocusing, styles.leftIcon]);
-
-        const rightIconStyle = useMemo(() => {
-            const style = {
-                color: isFocusing ? COLORS.GREEN : COLORS.LIGHT_GRAY,
-                fontSize: iconSize || styles.rightIcon.fontSize
-            };
-            return [styles.rightIcon, style];
-        }, [iconSize, isFocusing, styles.rightIcon]);
-
-        const iconClearStyle = useMemo<TextStyle[]>(() => {
-            let marginTop = 0;
-            if (multiline) {
-                marginTop = 7;
-            }
-            return [styles.showHidePassContainer, { marginTop }];
-        }, [styles.showHidePassContainer, multiline]);
-
-        const iconClearText = useMemo(() => {
-            if (`${textfieldVal}`.length > 0 && !isPassword && !hideIconClear) {
-                return (
-                    <Touchable style={iconClearStyle} onPress={eventClearText}>
-                    </Touchable>
-                );
-            }
-            return null;
-        }, [textfieldVal, isPassword, hideIconClear, iconClearStyle, eventClearText]);
-
         const _inputStyle = useMemo(
             () => inputStyle || styles.inputFont,
             [styles.inputFont, inputStyle]
@@ -222,29 +179,49 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             ]).start();
         }, [animation]);
 
-        // generate error message
-        // const errorMessage = useMemo(() => {
-        //     const paddingText = { paddingBottom: 0 };
-        //     if (!Validate.isStringEmpty(errMsg)) {
-        //         return <View style={paddingText}>
-        //             <Text
-        //                 style={styles.errorMessage}>{errMsg}</Text>
-        //         </View>;
-        //     }
-        //     return null;
-        // }, [errMsg, styles.errorMessage]);
+        const errorMessage = useMemo(() => {
+            const paddingText = { paddingBottom: 0 };
+            if (!Validate.isStringEmpty(errMsg)) {
+                return <View style={paddingText}>
+                    <Text
+                        style={styles.errorMessage}>{errMsg}</Text>
+                </View>;
+            }
+            return null;
+        }, [errMsg, styles.errorMessage]);
 
-        // const setErrorMsg = useCallback((msg: string) => {
-        //     if (Validate.isStringEmpty(msg)) {
-        //         return;
-        //     }
-        //     setErrMsg(msg);
-        //     startShake();
-        // }, [startShake]);
+        const setErrorMsg = useCallback((msg: string) => {
+            if (Validate.isStringEmpty(msg)) {
+                return;
+            }
+            setErrMsg(msg);
+            startShake();
+        }, [startShake]);
 
-        const onPressPwd = useCallback(() => {
-            setIsShowPwd(last => !last);
-        }, []);
+        const checkIconRight = useMemo(() => {
+            switch (rightIcon){
+                case arrayIcon.login.phone:
+                    return <IcPhone width={20} height={20}/>
+                    break;
+                case arrayIcon.login.pass:
+                    return <IcPass width={20} height={20}/>
+                    break;
+                case arrayIcon.login.email:
+                    return <IcEmailAuth width={20} height={20}/>
+                    break;
+                case arrayIcon.login.confirmPass:
+                    return <IcPass width={20} height={20}/>
+                    break;
+                case arrayIcon.login.name:
+                    return <IcName width={20} height={20}/>
+                    break;
+                case arrayIcon.login.channel:
+                    return <IcDownAuth width={20} height={20}/>
+                    break;
+                default:
+                    break;
+            }
+        }, [rightIcon])
 
         return (
             <>
@@ -253,7 +230,6 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                     ref={ref}
                 >
                     <View style={styles.flexRow}>
-                        {/* {leftIcon && <IconTienngay name={leftIcon} style={leftIconStyle} />} */}
                         <TextInput
                             ref={orgTextInput}
                             {...defInputProps}
@@ -262,7 +238,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                             placeholderTextColor={placeHolderColor||COLORS.GRAY_4}
                             selectionColor={COLORS.GRAY_4}
                             numberOfLines={1}
-                            secureTextEntry={isShowPwd ? !isPassword : isPassword}
+                            secureTextEntry={isPassword}
                             autoCorrect={false}
                             autoCapitalize="none"
                             value={`${textfieldVal}`}
@@ -279,13 +255,10 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                             autoFocus={autoFocus}
                             defaultValue={defaultValue}
                         />
-                        {/* {!disabled && iconClearText} */}
-                        {/* {isPassword && <Touchable style={[styles.icPwd,inputStylePwDIcon]} onPress={onPressPwd}>
-                            {!isShowPwd ? <ShowPwd /> : <HidePwd />}
-                        </Touchable>} */}
-
+                        {checkIconRight}
                     </View>
                 </Animated.View>
+                {errorMessage}
             </>
         );
     }

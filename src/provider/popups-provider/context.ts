@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { PopupContextValue } from './type';
+import { PopupContextValue } from './types';
 
 const NOOP = () => { };
 

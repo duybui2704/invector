@@ -1,100 +1,47 @@
-import { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import {useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 
-import { Configs, PADDING_TOP } from '../../../common/config';
-import { COLORS, Styles } from '../../../theme';
+import {Configs, PADDING_TOP} from '../../../common/config';
+import {COLORS, Styles} from '../../../theme';
 import DimensionUtils from '../../../utils/DimensionUtils';
 
 export const myStylesAuth = () => {
     return useMemo(() => {
         return StyleSheet.create({
             main: {
-                flex:1,
+                flex: 1,
                 backgroundColor: COLORS.GREEN,
                 width: DimensionUtils.SCREEN_WIDTH,
                 height: DimensionUtils.SCREEN_HEIGHT
-            },
-            tob: {
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                top: DimensionUtils.SCREEN_HEIGHT * 0.18,
-                right: DimensionUtils.SCREEN_WIDTH * 0.18 ,
-                width: DimensionUtils.SCREEN_WIDTH * 0.3,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.1,
-                transform : [
-                    { rotateX: '-30deg' },
-                    { rotateY: '0deg' },
-                    { rotateZ: '40deg' }
-                ],
-            },
-            tob1: {
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                top: DimensionUtils.SCREEN_HEIGHT * 0.5,
-                width: 150,
-                height: 30,
-                right: -50,
-                transform : [
-                    { rotateX: '-30deg' },
-                    { rotateY: '-20deg' },
-                    { rotateZ: '90deg' }
-                ]
-            },
-            tob2: {
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                bottom: DimensionUtils.SCREEN_HEIGHT * 0.16,
-                right: DimensionUtils.SCREEN_WIDTH * 0.2 ,
-                width: 200,
-                height: 30,
-                transform : [
-                    { rotateX: '-30deg' },
-                    { rotateY: '0deg' },
-                    { rotateZ: '140deg' }
-                ]
             },
             txt: {
                 color: COLORS.WHITE,
                 fontSize: Configs.FontSize.size20,
                 borderRadius: 20
             },
-            wrapContent: {
-                paddingHorizontal: 16,
-                flex: 1
-            },
-            wrapLogo: {
-                alignItems: 'center',
-                justifyContent: 'flex-start'
-            },
-            logo: {
-                width: 200,
-                height: 80,
-                resizeMode: 'contain'
-            },
             inputPhone: {
+                marginTop: 15,
                 borderRadius: 30,
-                height: Configs.FontSize.size50,
-                width: '80%',
+                height: Configs.FontSize.size40,
+                width: '85%',
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row'
             },
             inputPass: {
-                marginTop: 20,
+                marginTop: 15,
                 borderRadius: 30,
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '80%',
-                height: Configs.FontSize.size50
+                width: '85%',
+                height: Configs.FontSize.size40
             },
             rowInfo: {
+                marginTop: -10,
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                marginHorizontal: 4
+                marginHorizontal: 10
             },
             wrapIcon: {
                 flexDirection: 'row',
@@ -107,54 +54,28 @@ export const myStylesAuth = () => {
                 paddingBottom: PADDING_TOP,
                 marginTop: DimensionUtils.SCREEN_HEIGHT / 3,
                 height: DimensionUtils.SCREEN_HEIGHT / 3,
-                width: '80%'
+                width: '80%',
+                position: 'absolute',
+                top: -20
             },
             checkbox: {
                 justifyContent: 'flex-end',
                 marginTop: 10,
-                width: 20,
-                height: 20
+                width: 30,
+                height: 30,
+                alignItems: 'center'
             },
             row: {
                 flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-end',
-                marginBottom: 20
-            },
-            inputStyle: {},
-            height100: {
-                height: 100
-            },
-            circle: {
-                ...Styles.shadow,
-                width: 50,
-                height: 50,
-                borderRadius: 30,
-                alignItems: 'center',
                 justifyContent: 'center',
-                marginHorizontal: 5
-                // marginLeft: 15
-            },
-            bottom: {
-                justifyContent: 'flex-start',
-                flex: 1
+                alignItems: 'flex-end',
+                marginVertical: 8
             },
             content: {
+                marginTop: 30,
                 justifyContent: 'center',
                 marginHorizontal: 10,
                 height: DimensionUtils.SCREEN_HEIGHT * 0.3
-            },
-            hisLop: {
-                paddingVertical: 10,
-                paddingLeft: 10
-            },
-            button: {
-                backgroundColor: COLORS.GREEN,
-                borderRadius: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 40,
-                paddingVertical: 15
             },
             txtSave: {
                 fontFamily: Configs.FontFamily.medium,
@@ -171,15 +92,17 @@ export const myStylesAuth = () => {
                 fontSize: Configs.FontSize.size24,
                 fontWeight: '600',
                 color: COLORS.BLACK,
-                padding: 20
+                padding: 5
             },
-            viewSvg: {
-                paddingTop: 100,
-                // backgroundColor: COLORS.RED,
-                height: '100%',
-                width: '100%',
-
-            },
+            tobLogin: {
+                marginTop: 10,
+                width: DimensionUtils.SCREEN_WIDTH * 0.4,
+                height: Configs.FontSize.size40,
+                backgroundColor: COLORS.GREEN,
+                borderRadius: 25,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }
         });
-    } , []);
+    }, []);
 };
