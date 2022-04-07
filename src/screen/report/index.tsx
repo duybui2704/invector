@@ -1,7 +1,7 @@
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
-import React, { useCallback, useMemo, useState } from 'react';
+import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { VictoryAxis, VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryTheme, VictoryZoomContainer } from 'victory-native';
+import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryTheme, VictoryZoomContainer } from 'victory-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { Configs } from '@/common/config';
@@ -13,22 +13,14 @@ import HeaderBar from '../../components/header';
 import { DataChart } from '@/mocks/data';
 import { MonthReportModel } from '@/models/monthOfQuarter-model';
 import Utils from '@/utils/Utils';
+import ICUnderArrow from '@/asset/icon/ic_under_arrow.svg';
+import PickerBottomSheet from '@/components/PickerBottomSheet';
 
-const axisHorOption = {
-    axis: { stroke: COLORS.BLACK, strokeWidth: 0.2 },
-    ticks: { size: 0 },
-    tickLabels: {
-        fontSize: Configs.FontSize.size12,
-        angle: -25
-    }
-};
-const data = [
-    { month: 'T3', earnings: 200, invest: 100 },
-    { month: 'T2', earnings: 300, invest: 200 },
-    { month: 'T1', earnings: 500, invest: 600 }
-];
 function Report() {
-
+    const [quarter, setQuarter] = useState<string>();
+    const [year, setYear] = useState<string>();
+    const quarterRef = useRef<BottomSheetModal>(null);
+    const yearRef = useRef<BottomSheetModal>(null);
     const keyExtractor = useCallback((item?: MonthReportModel) => {
         return `${item?.id}${item?.quarter}${item?.year}`;
     }, []);
@@ -89,16 +81,17 @@ function Report() {
                             offset={-3}
                             domainPadding={{ y: [2, -2] }}
                             domain={{ y: [1000000, 2000000000000] }}
+                            animate
                         >
+
                             <VictoryBar
                                 data={DataChart.quarter1.data}
                                 x={'month'}
                                 y={'investMount'}
                                 alignment={'start'}
                                 animate
-                                barRatio={0.4}
+                                barRatio={0.45}
                                 style={styles.chartInvest}
-                                name={'ko'}
                             />
 
                             <VictoryBar
@@ -106,27 +99,17 @@ function Report() {
                                 x={'month'}
                                 y={'originAmountEarning'}
                                 alignment={'end'}
-                                animate
-                                barRatio={0.4}
+                                barRatio={0.45}
                                 style={styles.chartEarning}
                             />
-                        </VictoryGroup>
 
-                        <VictoryAxis
-                            style={{
-                                axisLabel: { fontSize: 20, padding: 20 },
-                                tickLabels: { fontSize: 15, padding: 5 }
-                            }}
-                            label='Tháng'
-                            labelComponent={
-                                <VictoryLabel angle={-45} textAnchor='start' />
-                            }
+                        </VictoryGroup>
+                        <VictoryLabel x={30} y={25} style={styles.labelAxis}
+                            text={Languages.report.month}
                         />
-                        <VictoryAxis dependentAxis label="VND" fixLabelOverlap={false}
-                            style={{
-                                axisLabel: { fontSize: 20, padding: 23 },
-                                tickLabels: { fontSize: 15, padding: 5 }
-                            }} />
+                        <VictoryLabel x={320} y={230} style={styles.labelAxis}
+                            text={Languages.common.VND}
+                        />
                     </VictoryChart>
                     <View style={styles.row}>
                         <View style={styles.row}>
@@ -157,11 +140,35 @@ function Report() {
         );
     }, [keyExtractor, renderChart, renderItem]);
 
+    const renderFilter = useMemo(() => {
+        const _onPressQuarter = () => {
+            quarterRef.current?.present();
+        };
+        const _onPressYear = () => {
+            yearRef.current?.present();
+        };
+        return (
+            <View style={styles.rowFilter}>
+                <Touchable style={styles.rowItemFilter}>
+                    <Text style={[styles.txtInterest, styles.txtQuarter]}>{quarter || 'Quý 1'}</Text>
+                    <ICUnderArrow style={styles.txtArrow} />
+                </Touchable>
+                <Touchable style={styles.rowItemFilter}>
+                    <Text style={[styles.txtInterest, styles.txtQuarter]}>{year || '2022'}</Text>
+                    <ICUnderArrow style={styles.txtArrow} />
+                </Touchable>
+            </View>
+        );
+    }, [quarter, year]);
+
     return (
         <View style={styles.container}>
             <HeaderBar title={`${Languages.report.title}`} isLight={false} />
+            {renderFilter}
             {renderMonthList}
-
+            <PickerBottomSheet
+                ref={quarterRef}
+            />
         </View >
     );
 };
@@ -261,6 +268,34 @@ const styles = StyleSheet.create({
     flatList: {
         marginBottom: 15,
         marginHorizontal: 16
+    },
+    labelAxis: {
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_12
+    },
+    rowFilter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginHorizontal: 16
+    },
+    rowItemFilter: {
+        backgroundColor: COLORS.WHITE,
+        width: SCREEN_WIDTH / 2 - 30,
+        borderColor: COLORS.GRAY_11,
+        borderRadius: 20,
+        marginVertical: 8,
+        paddingVertical: 8,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        borderWidth: 1
+    },
+    txtQuarter: {
+        ...Styles.typography.medium,
+        textAlign: 'center',
+        color: COLORS.GREEN,
+        paddingLeft: 35
+    },
+    txtArrow: {
+        marginVertical: 8
     }
-
 });

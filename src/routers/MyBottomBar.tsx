@@ -8,7 +8,6 @@ import { COLORS, Styles } from '@/theme';
 import Home from '@/screen/home';
 import Invest from '@/screen/invest';
 import Report from '@/screen/report';
-import Payment from '@/screen/payment';
 import Profile from '@/screen/profile';
 import IcHomeActive from '@/assets/image/bottomTabs/ic_home_active.svg';
 import IcHomeInactive from '@/assets/image/bottomTabs/ic_home_inactive.svg';
@@ -20,6 +19,7 @@ import IcTransactionActive from '@/assets/image/bottomTabs/ic_transaction_active
 import IcTransactionInactive from '@/assets/image/bottomTabs/ic_transaction_inactive.svg';
 import IcAccountActive from '@/assets/image/bottomTabs/ic_account_active.svg';
 import IcAccountInactive from '@/assets/image/bottomTabs/ic_account_inactive.svg';
+import Transaction from '@/screen/payment/Transaction';
 
 const screenOptions = { headerShown: false };
 const Tab = AnimatedTabBarNavigator();
@@ -52,7 +52,7 @@ const ReportStack = () => {
 const PaymentStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.paymentScreen} component={Payment} />
+            <Stack.Screen name={ScreenName.transaction} component={Transaction} />
         </Stack.Navigator>
     );
 };
