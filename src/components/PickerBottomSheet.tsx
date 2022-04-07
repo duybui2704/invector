@@ -1,110 +1,103 @@
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, {
     forwardRef,
-    useCallback,
-    useEffect,
-    useImperativeHandle,
+    useCallback, useImperativeHandle,
     useMemo,
-    useRef,
-    useState
+    useRef
 } from 'react';
 import {
-    Animated,
     StyleSheet,
     Text,
-    TextStyle,
     TouchableOpacity,
     View,
     ViewStyle
 } from 'react-native';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
-import { COLORS, Styles } from '@/theme';
-import RightIcon from '@/assets/images/ic_down.svg';
-import BottomSheetComponent, { BottomSheetAction, ItemProps } from './BottomSheetComponent';
 import { Configs } from '@/common/config';
+import { COLORS, Styles } from '@/theme';
+import BottomSheetComponent, { ItemProps } from './BottomSheetComponent';
 
 type PickerProps = {
-  leftIcon?: string;
-  containerStyle?: ViewStyle;
-  label?: string;
-  placeholder?: string;
-  onPressItem?: (item: any) => void;
-  value?: string;
-  data?: ItemProps[];
-  labelStyle?: ViewStyle;
-  pickerStyle?: ViewStyle;
-  rightIcon?: string;
-  disable?: boolean;
-  hideInput?: boolean;
-  hasUnderline?: boolean;
-  styleText?: TextStyle;
-  isBasicBottomSheet?: boolean;
+    containerStyle?: ViewStyle;
+    label?: string;
+    placeholder?: string;
+    onPressItem?: (item: any) => void;
+    value?: string;
+    data?: ItemProps[];
+    labelContainer?: ViewStyle;
+    labelStyle?: any;
+    btnContainer?: any;
+    placeholderStyle?: any;
+    rightIcon?: any;
+    disable?: boolean;
+    valueText?: any;
 };
- type PopupActions = {
+type BottomSheetAction = {
     show: (content?: string) => any;
     hide: (content?: string) => any;
 };
-const PickerBottomSheet= forwardRef<BottomSheetModal, PickerProps>(
+const PickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
     (
         {
-            leftIcon,
+            btnContainer,
             label,
             placeholder,
+            placeholderStyle,
             onPressItem,
             value,
             data = [],
+            labelContainer,
             labelStyle,
             disable,
             containerStyle,
-            styleText
+            valueText,
+            rightIcon
         }: PickerProps,
         ref: any
     ) => {
         useImperativeHandle(ref, () => ({
-            
+            openPicker,
+            closePicker
         }));
         const bottomSheetRef = useRef<BottomSheetAction>(null);
 
-        const openPopup = useCallback(() => {
+        const openPicker = useCallback(() => {
             bottomSheetRef.current?.show();
+        }, []);
+        const closePicker = useCallback(() => {
+            bottomSheetRef.current?.hide();
         }, []);
 
         const renderValue = useMemo(() => {
             if (value) {
-                return <Text style={styleText}>{value}</Text>;
+                return <Text style={valueText}>{value || ''}</Text>;
             }
-            return <Text style={styles.placeholder}>{placeholder}</Text>;
-        }, [placeholder, styleText, value]);
+            return <Text style={[styles.placeholder, placeholderStyle]}>{placeholder || ''}</Text>;
+        }, [placeholder, placeholderStyle, valueText, value]);
 
         return (
             <View style={[styles.container, containerStyle]}>
-                <View style={[styles.wrapLabel, labelStyle]}>
+                <View style={[styles.wrapLabel, labelContainer]}>
                     {label && (
-                        <>
-                            <Text style={styles.label}>
-                                {label || ''}
-                            </Text>
-                        </>
+                        <Text style={[styles.label, labelStyle]}>
+                            {label || ''}
+                        </Text>
                     )}
                 </View>
-                <View  ref={ref}>
-                    <TouchableOpacity
-                        onPress={openPopup}
-                        disabled={disable || data.length===0}
-                    >
-                        {leftIcon && <RightIcon style={styles.leftIcon} />}
-                        {renderValue}
-                        <RightIcon style={styles.rightIcon} />
-                    </TouchableOpacity>
-                    <BottomSheetComponent
-                        ref={bottomSheetRef}
-                        data={data}
-                        onPressItem={onPressItem}
-                        // hideInput={hideInput}
-                        
-                        // isBasicBottomSheet={isBasicBottomSheet}
-                    />
-                </View>
+                <TouchableOpacity
+                    onPress={openPicker}
+                    disabled={disable || data.length === 0}
+                    ref={ref}
+                    style={btnContainer}
+                >
+                    {renderValue}
+                    {rightIcon || null}
+                </TouchableOpacity>
+                <BottomSheetComponent
+                    ref={bottomSheetRef}
+                    data={data}
+                    onPressItem={onPressItem}
+                />
             </View>
         );
     }

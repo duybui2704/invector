@@ -1,4 +1,4 @@
-import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetModalProvider, SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryTheme, VictoryZoomContainer } from 'victory-native';
@@ -17,8 +17,8 @@ import ICUnderArrow from '@/asset/icon/ic_under_arrow.svg';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
 
 function Report() {
-    const [quarter, setQuarter] = useState<string>();
-    const [year, setYear] = useState<string>();
+    const [quarter, setQuarter] = useState<string>('');
+    const [year, setYear] = useState<string>('');
     const quarterRef = useRef<BottomSheetModal>(null);
     const yearRef = useRef<BottomSheetModal>(null);
     const keyExtractor = useCallback((item?: MonthReportModel) => {
@@ -140,36 +140,47 @@ function Report() {
         );
     }, [keyExtractor, renderChart, renderItem]);
 
+    const onPressQuarter = useCallback((item?: any) => {
+        setQuarter(item?.value);
+    }, []);
+    const onPressYear = useCallback((item?: any) => {
+        setYear(item?.value);
+    }, []);
     const renderFilter = useMemo(() => {
-        const _onPressQuarter = () => {
-            quarterRef.current?.present();
-        };
-        const _onPressYear = () => {
-            yearRef.current?.present();
-        };
         return (
             <View style={styles.rowFilter}>
-                <Touchable style={styles.rowItemFilter}>
-                    <Text style={[styles.txtInterest, styles.txtQuarter]}>{quarter || 'Quý 1'}</Text>
-                    <ICUnderArrow style={styles.txtArrow} />
-                </Touchable>
-                <Touchable style={styles.rowItemFilter}>
-                    <Text style={[styles.txtInterest, styles.txtQuarter]}>{year || '2022'}</Text>
-                    <ICUnderArrow style={styles.txtArrow} />
-                </Touchable>
+                <PickerBottomSheet
+                    ref={quarterRef}
+                    data={[{ id: '1', value: 'Quy2' }, { id: '2', value: 'Quy1' }]}
+                    value={quarter}
+                    onPressItem={onPressQuarter}
+                    btnContainer={styles.rowItemFilter}
+                    valueText={[styles.txtInterest, styles.txtQuarter]}
+                    rightIcon={<ICUnderArrow style={styles.txtArrow} />}
+                    containerStyle={styles.containerItemFilter}
+                />
+                <PickerBottomSheet
+                    ref={yearRef}
+                    data={[{ id: '1', value: '2019' }, { id: '2', value: '2020' }, { id: '3', value: '2021' }, { id: '4', value: '2022' }]}
+                    value={year}
+                    onPressItem={onPressYear}
+                    btnContainer={styles.rowItemFilter}
+                    valueText={[styles.txtInterest, styles.txtQuarter]}
+                    rightIcon={<ICUnderArrow style={styles.txtArrow} />}
+                    containerStyle={styles.containerItemFilter}
+                />
             </View>
         );
-    }, [quarter, year]);
+    }, [onPressQuarter, onPressYear, quarter, year]);
 
     return (
-        <View style={styles.container}>
-            <HeaderBar title={`${Languages.report.title}`} isLight={false} />
-            {renderFilter}
-            {renderMonthList}
-            <PickerBottomSheet
-                ref={quarterRef}
-            />
-        </View >
+        <BottomSheetModalProvider>
+            <View style={styles.container}>
+                <HeaderBar title={`${Languages.report.title}`} isLight={false} />
+                {renderFilter}
+                {renderMonthList}
+            </View >
+        </BottomSheetModalProvider>
     );
 };
 
@@ -297,5 +308,8 @@ const styles = StyleSheet.create({
     },
     txtArrow: {
         marginVertical: 8
+    },
+    containerItemFilter: {
+        marginBottom: -45
     }
 });

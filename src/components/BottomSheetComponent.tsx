@@ -1,41 +1,55 @@
-import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet';
-import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from 'react';
+import { BottomSheetBackdrop, BottomSheetFlatList, BottomSheetModal, SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
+import React, {
+    forwardRef,
+    useCallback,
+    useImperativeHandle,
+    useMemo,
+    useRef
+} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Configs, PADDING_BOTTOM } from '@/common/config';
 import { Touchable } from './elements/touchable';
 
 export type ItemProps = {
     value?: string;
     text?: string;
     id?: string;
-    bank_code?: any;
-    bank_name?: any;
-    full_name?: string;
-    status?: string;
-    account_type_atm?: number;
-    account_type_bank?: number;
-    created_at?: number;
-    updated_at?: number;
 };
-
 type BottomSheetProps = {
-    data?: ItemProps[];
-    onPressItem?: (item: any) => void;;
-    isIcon?: boolean,
-    onClose?: () => void;
-    onOpen?: () => void;
+    _ref?: any,
+    data?: ItemProps[],
+    onPressItem?: (item?: any) => any,
+    onClose?: () => void,
+    onOpen?: () => void,
 };
 
 export type BottomSheetAction = {
-    show: (content?: string) => any;
-    hide?: (content?: string) => any;
-    setContent?: (message: string) => void;
+    show?: (content?: string) => any,
+    hide?: (content?: string) => any,
 };
-const BottomSheetComponent = forwardRef<BottomSheetProps, BottomSheetAction>(
-    ({ data, onPressItem,  onClose, onOpen }: BottomSheetProps, ref) => {
+const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
+    (
+        {
+            data,
+            onPressItem,
+            onClose,
+            onOpen
+        }: BottomSheetProps,
+
+        ref: any
+    ) => {
 
         const bottomSheetRef = useRef<BottomSheetModal>(null);
-        const snapPoints = useMemo(() => ['15%', '50%'], []);
+        const snapPoints = useMemo(() => {
+            const num = data?.length as number;
+            const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);  // + input height
+            let ratio = contentHeight * 100 / SCREEN_HEIGHT;
+            ratio = Math.max(ratio, 15);
+            ratio = Math.min(ratio, 70);
+
+            return [`${ratio}%`, `${ratio}%`];
+        }, [data]);
 
         const hide = useCallback(() => {
             onClose?.();
@@ -47,32 +61,33 @@ const BottomSheetComponent = forwardRef<BottomSheetProps, BottomSheetAction>(
             bottomSheetRef?.current?.present();
         }, [onOpen]);
 
-        const CustomBackdrop = (props: BottomSheetBackdropProps) => {
-            return <BottomSheetBackdrop {...props} pressBehavior="close" />;
-        };
+        const renderBackdrop = useCallback(
+            backdropProps => (
+                <BottomSheetBackdrop
+                    {...backdropProps}
+                    pressBehavior={'close'}
+                    enableTouchThrough={false}
+                />
+            ),
+            []
+        );
 
         useImperativeHandle(ref, () => ({
             show,
-            hide,
-            onClose,
-            onOpen
+            hide
         }));
 
         const renderItem = useCallback(
             ({ item }) => {
                 const onPress = () => {
                     onPressItem?.(item);
-                    hide();
+                    hide?.();
                 };
                 return (
-                    <Touchable onPress={onPress} >
-                        <View >
-                            <View >
-                                <Text >{item.name}</Text>
-                                <Text ></Text>
-                            </View>
+                    <Touchable onPress={onPress} style={styles.valueContainer}>
+                        <View style={styles.row}>
+                            <Text style={styles.value}>{item.value}</Text>
                         </View>
-
                     </Touchable>
                 );
             },
@@ -89,15 +104,14 @@ const BottomSheetComponent = forwardRef<BottomSheetProps, BottomSheetAction>(
                     ref={bottomSheetRef}
                     index={1}
                     snapPoints={snapPoints}
-                    backdropComponent={CustomBackdrop}
+                    backdropComponent={renderBackdrop}
                     keyboardBehavior={'interactive'}
                     enablePanDownToClose={true}
                 >
-
                     <BottomSheetFlatList
                         data={data}
                         renderItem={renderItem}
-                        // style={styles.flatList}
+                        style={styles.flatList}
                         keyExtractor={keyExtractor}
                     />
 
@@ -106,10 +120,27 @@ const BottomSheetComponent = forwardRef<BottomSheetProps, BottomSheetAction>(
         );
     });
 export default BottomSheetComponent;
-
+const ITEM_HEIGHT = Configs.FontSize.size40;
+const HEADER_HEIGHT = Configs.FontSize.size40 + 30;
+const MIN_SIZE_HAS_INPUT = 10;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 24
+    },
+    valueContainer: {
+        marginBottom: 12
+    },
+    value: {
+        flex: 1
+    },
+    row: {
+        flexDirection: 'row',
+        marginHorizontal: 16
+    },
+    flatList: {
+        flex: 1,
+        marginTop: 0,
+        paddingHorizontal: 16
     }
 });
