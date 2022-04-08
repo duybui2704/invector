@@ -1,3 +1,4 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 
@@ -21,7 +22,9 @@ const App = () => {
         <AppStoreProvider>
             <NavigationContainer ref={navigationRef}
                 theme={MyTheme}>
-                <RootStack />
+                <BottomSheetModalProvider>
+                    <RootStack />
+                </BottomSheetModalProvider>
             </NavigationContainer>
         </AppStoreProvider>
     );

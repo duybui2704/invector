@@ -61,6 +61,7 @@ const AccountStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.accountScreen} component={Profile} />
+            <Stack.Screen name={ScreenName.transaction} component={Transaction} />
         </Stack.Navigator>
     );
 };

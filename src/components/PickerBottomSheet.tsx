@@ -13,9 +13,9 @@ import {
     ViewStyle
 } from 'react-native';
 
-import { Configs } from '@/common/config';
 import { COLORS, Styles } from '@/theme';
-import BottomSheetComponent, { ItemProps } from './BottomSheetComponent';
+import BottomSheetComponent from './BottomSheetComponent';
+import { ItemProps } from '@/models/common-model';
 
 type PickerProps = {
     containerStyle?: ViewStyle;
@@ -109,16 +109,6 @@ const styles = StyleSheet.create({
     container: {
         marginBottom: 5
     },
-    wrapInput: {
-        width: '100%',
-        borderColor: COLORS.GRAY_7,
-        borderWidth: 1,
-        paddingVertical: 12,
-        paddingHorizontal: 12,
-        borderRadius: 5,
-        flexDirection: 'row',
-        justifyContent: 'flex-start'
-    },
     wrapLabel: {
         flexDirection: 'row'
     },
@@ -126,37 +116,8 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         color: COLORS.BLACK
     },
-    red: {
-        ...Styles.typography.regular,
-        color: COLORS.RED
-    },
     placeholder: {
         ...Styles.typography.regular,
         color: COLORS.GRAY_4
-    },
-    leftIcon: {
-        fontSize: Configs.IconSize.size18,
-        color: COLORS.LIGHT_GRAY,
-        marginRight: 10
-    },
-    rightIcon: {
-        fontSize: Configs.IconSize.size18,
-        color: COLORS.LIGHT_GRAY,
-        marginRight: 10,
-        position: 'absolute',
-        right: 0,
-        top: '110%'
-    },
-    errorMessage: {
-        fontSize: Configs.FontSize.size12,
-        fontFamily: Configs.FontFamily.medium,
-        color: COLORS.RED
-    },
-    containerUnderLine: {
-        justifyContent: 'center',
-        paddingVertical: 0,
-        height: Configs.FontSize.size40,
-        borderBottomColor: COLORS.GRAY_7,
-        borderBottomWidth: 1
     }
 });

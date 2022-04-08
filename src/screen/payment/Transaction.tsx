@@ -1,20 +1,22 @@
-import { Image, StyleSheet, Text, View ,FlatList} from 'react-native';
+import { observer } from 'mobx-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 
-import KeyValueTransaction from '../../components/KeyValueTransaction';
-import HeaderBar from '../../components/header';
-import Languages from '../../common/Languages';
-import { COLORS } from '../../theme';
-import { Touchable } from '../../components/elements/touchable';
-import Filter from '../../components/Filter';
-import { DATA, TransactionTypes } from '../../mocks/data';
-import DatePickerTransaction from '../../components/DatePicker';
+import ICCalender from '@/asset/icon/ic_arrow_date_picker.svg';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { PagingConditionTypes } from '@/models/paging';
 import { TransactionModel } from '@/models/transaction-model';
-import ICCalender from '@/asset/icon/ic_arrow_date_picker.svg';
+import Languages from '../../common/Languages';
+import DatePickerTransaction from '../../components/DatePicker';
+import { Touchable } from '../../components/elements/touchable';
+import Filter from '../../components/Filter';
+import HeaderBar from '../../components/header';
+import KeyValueTransaction from '../../components/KeyValueTransaction';
+import { DATA, TransactionTypes } from '../../mocks/data';
+import { COLORS } from '../../theme';
 
-const Transaction = () => {
+
+const Transaction = observer(() => {
     const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
     const condition = useRef<PagingConditionTypes>({
         isLoading: true,
@@ -128,7 +130,7 @@ const Transaction = () => {
             {renderTransaction}
         </View>
     );
-};
+});
 
 export default Transaction;
 

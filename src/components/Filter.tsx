@@ -1,9 +1,9 @@
-import { KeyValueModel } from '@/models/keyValue-model';
 import React from 'react';
 import {
     StyleSheet, Text, TextStyle
 } from 'react-native';
 
+import { KeyValueModel } from '@/models/keyValue-model';
 import { COLORS, Styles } from '../theme';
 import { Touchable } from './elements/touchable';
 

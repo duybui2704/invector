@@ -1,4 +1,4 @@
-import { BottomSheetBackdrop, BottomSheetFlatList, BottomSheetModal, SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal, SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
 import React, {
     forwardRef,
     useCallback,
@@ -10,14 +10,10 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Configs, PADDING_BOTTOM } from '@/common/config';
 import { Touchable } from './elements/touchable';
+import { Styles } from '@/theme';
+import { ItemProps } from '@/models/common-model';
 
-export type ItemProps = {
-    value?: string;
-    text?: string;
-    id?: string;
-};
 type BottomSheetProps = {
-    _ref?: any,
     data?: ItemProps[],
     onPressItem?: (item?: any) => any,
     onClose?: () => void,
@@ -28,6 +24,11 @@ export type BottomSheetAction = {
     show?: (content?: string) => any,
     hide?: (content?: string) => any,
 };
+
+const CustomBackdrop = (props: BottomSheetBackdropProps) => {
+    return <BottomSheetBackdrop {...props} pressBehavior="close" />;
+};
+
 const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
     (
         {
@@ -43,7 +44,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
         const bottomSheetRef = useRef<BottomSheetModal>(null);
         const snapPoints = useMemo(() => {
             const num = data?.length as number;
-            const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);  // + input height
+            const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
             let ratio = contentHeight * 100 / SCREEN_HEIGHT;
             ratio = Math.max(ratio, 15);
             ratio = Math.min(ratio, 70);
@@ -60,17 +61,6 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             onOpen?.();
             bottomSheetRef?.current?.present();
         }, [onOpen]);
-
-        const renderBackdrop = useCallback(
-            backdropProps => (
-                <BottomSheetBackdrop
-                    {...backdropProps}
-                    pressBehavior={'close'}
-                    enableTouchThrough={false}
-                />
-            ),
-            []
-        );
 
         useImperativeHandle(ref, () => ({
             show,
@@ -104,7 +94,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                     ref={bottomSheetRef}
                     index={1}
                     snapPoints={snapPoints}
-                    backdropComponent={renderBackdrop}
+                    backdropComponent={CustomBackdrop}
                     keyboardBehavior={'interactive'}
                     enablePanDownToClose={true}
                 >
@@ -132,7 +122,9 @@ const styles = StyleSheet.create({
         marginBottom: 12
     },
     value: {
-        flex: 1
+        flex: 1,
+        ...Styles.typography.regular,
+        fontSize: Configs.FontSize.size16
     },
     row: {
         flexDirection: 'row',

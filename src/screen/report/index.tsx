@@ -1,8 +1,9 @@
-import { BottomSheetModal, BottomSheetModalProvider, SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryTheme, VictoryZoomContainer } from 'victory-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { observer } from 'mobx-react';
 
 import { Configs } from '@/common/config';
 import Languages from '@/common/Languages';
@@ -10,13 +11,13 @@ import { Touchable } from '@/components/elements/touchable';
 import KeyValue from '@/components/KeyValue';
 import { COLORS, Styles } from '@/theme';
 import HeaderBar from '../../components/header';
-import { DataChart } from '@/mocks/data';
+import { DataChart, dataQuarterReport, dataYearReport } from '@/mocks/data';
 import { MonthReportModel } from '@/models/monthOfQuarter-model';
 import Utils from '@/utils/Utils';
 import ICUnderArrow from '@/asset/icon/ic_under_arrow.svg';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
 
-function Report() {
+const Report = observer(()=> {
     const [quarter, setQuarter] = useState<string>('');
     const [year, setYear] = useState<string>('');
     const quarterRef = useRef<BottomSheetModal>(null);
@@ -151,8 +152,9 @@ function Report() {
             <View style={styles.rowFilter}>
                 <PickerBottomSheet
                     ref={quarterRef}
-                    data={[{ id: '1', value: 'Quy2' }, { id: '2', value: 'Quy1' }]}
+                    data={dataQuarterReport}
                     value={quarter}
+                    placeholder={Languages.report.quarter}
                     onPressItem={onPressQuarter}
                     btnContainer={styles.rowItemFilter}
                     valueText={[styles.txtInterest, styles.txtQuarter]}
@@ -161,8 +163,9 @@ function Report() {
                 />
                 <PickerBottomSheet
                     ref={yearRef}
-                    data={[{ id: '1', value: '2019' }, { id: '2', value: '2020' }, { id: '3', value: '2021' }, { id: '4', value: '2022' }]}
+                    data={dataYearReport}
                     value={year}
+                    placeholder={Languages.report.year}
                     onPressItem={onPressYear}
                     btnContainer={styles.rowItemFilter}
                     valueText={[styles.txtInterest, styles.txtQuarter]}
@@ -174,15 +177,13 @@ function Report() {
     }, [onPressQuarter, onPressYear, quarter, year]);
 
     return (
-        <BottomSheetModalProvider>
-            <View style={styles.container}>
-                <HeaderBar title={`${Languages.report.title}`} isLight={false} />
-                {renderFilter}
-                {renderMonthList}
-            </View >
-        </BottomSheetModalProvider>
+        <View style={styles.container}>
+            <HeaderBar title={`${Languages.report.title}`} isLight={false} />
+            {renderFilter}
+            {renderMonthList}
+        </View >
     );
-};
+});
 
 export default Report;
 const styles = StyleSheet.create({

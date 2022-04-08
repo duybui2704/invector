@@ -1,5 +1,6 @@
 import { KeyValueModel } from '@/models/keyValue-model';
 import { TransactionModel } from '@/models/transaction-model';
+import { UserModel } from '@/models/user-model';
 import Languages from '../common/Languages';
 
 export const DATA = [
@@ -85,3 +86,28 @@ export const DataChart = {
         ]
     }
 };
+
+export const dataQuarterReport =
+    [
+        { id: '1', value: 'Qúy 1' },
+        { id: '2', value: 'Qúy 2' },
+        { id: '3', value: 'Qúy 3' },
+        { id: '4', value: 'Qúy 4' }
+    ];
+
+export const dataYearReport =
+    [
+        { id: '1', value: '2019' },
+        { id: '2', value: '2020' },
+        { id: '3', value: '2021' },
+        { id: '4', value: '2022' }
+    ];
+
+export const dataUser = {
+    name: 'Pham Minh Quý',
+    phone: '0353826750',
+    gender: 'Nam',
+    accuracy: 1, // 1: đã xác thực , 2: chưa xác thực, 3: chờ xác thực
+    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAznG13WJ4ayysR3Q07BNXsRTdDbP0PQ_Efw&usqp=CAU'
+
+} as UserModel;

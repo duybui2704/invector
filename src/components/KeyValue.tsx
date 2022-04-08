@@ -3,12 +3,26 @@ import React from 'react';
 import Dash from 'react-native-dash';
 
 import { COLORS, Styles } from '../theme';
+import { Touchable } from './elements/touchable';
 
-const KeyValue = ({ title, content, noIndicator, styleColor }:
-    { noIndicator?: boolean, title?: string, content?: string, styleColor?: any, }) => {
+const KeyValue = (
+    { title, content, noIndicator, styleColor, styleContainer, leftIcon, rightIcon, hasDashBottom, styleTouchable, onPress }:
+        {
+            noIndicator?: boolean,
+            title: string,
+            content?: string,
+            styleColor?: any,
+            styleContainer?: any,
+            leftIcon?: any,
+            rightIcon?: any,
+            styleTouchable?:any,
+            hasDashBottom?: boolean,
+            onPress?:any
+        }
+) => {
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, styleContainer]}>
             {!noIndicator && <Dash
                 style={styles.dash}
                 dashThickness={1}
@@ -17,11 +31,19 @@ const KeyValue = ({ title, content, noIndicator, styleColor }:
                 dashColor={COLORS.GRAY_13} />
             }
 
-            <View style={styles.row}>
+            <Touchable style={[styles.row, styleTouchable]} onPress={onPress}>
+                {leftIcon || null}
                 <Text style={styles.leftText}>{title}</Text>
                 <Text style={[styles.contentText, styleColor]}>{content}</Text>
-            </View>
-
+                {rightIcon || null}
+            </Touchable>
+            {hasDashBottom && <Dash
+                style={styles.dashBottom}
+                dashThickness={1}
+                dashLength={10}
+                dashGap={5}
+                dashColor={COLORS.GRAY_13} />
+            }
         </View>
     );
 };
@@ -37,7 +59,8 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     leftText: {
         ...Styles.typography.regular,
@@ -49,5 +72,8 @@ const styles = StyleSheet.create({
     },
     dash: {
         paddingBottom: 10
+    },
+    dashBottom: {
+        paddingTop: 8
     }
 });

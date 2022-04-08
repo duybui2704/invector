@@ -16,7 +16,22 @@ const Languages={
         title: 'Đầu tư'
     },
     account:{
-        title: 'Tài khoản'
+        title: 'Tài khoản',
+        payMethod: 'Phương thức thanh toán',
+        changePwd: 'Đổi mật khẩu',
+        authenFinger: 'Xác thực nhanh vân tay',
+        accountLink: 'Tài khoản liên kết',
+        policy: 'Điều kiện và tài khoản',
+        shareFriends: 'Mời bạn bè',
+        tienngayWeb: 'TienNgay.vn trên website',
+        tienngayFacebook: 'TienNgay.vn trên Facebook',
+        useManual: 'Hướng dẫn sử dụng',
+        answer: 'Hỏi đáp',
+        hotline: 'Hotline',
+        rate: 'Đánh giá cho TienNgay.vn',
+        accVerified: 'Tài khoản đã xác thực',
+        accuracyNow: 'Xác thực ngay',
+        logout: 'Đăng xuất'
     },
     report:{
         title: 'Báo cáo',
@@ -27,6 +42,7 @@ const Languages={
         moneyCollected: 'Tiền thu về',
         overview: 'Tổng quan',
         quarter: 'Quý',
+        year: 'Năm',
         monthOfQuarter: 'Chi tiết tháng trong quý',
         contractNumber: 'Số hợp đồng',
         investMoney: 'Số tiền đầu tư',
@@ -46,7 +62,8 @@ const Languages={
         agree: 'Đồng ý',
         cancel: 'Hủy',
         continue: 'Tiếp tục',
-        VND: 'VNĐ'
+        VND: 'VNĐ',
+        hotline: '1900690'
     }
 };
 export default Languages;
