@@ -5,7 +5,7 @@ import {Configs, PADDING_TOP} from '../../../common/config';
 import {COLORS, Styles} from '../../../theme';
 import DimensionUtils from '../../../utils/DimensionUtils';
 
-export const myStylesAuth = () => {
+export const myStylesSign = () => {
     return useMemo(() => {
         return StyleSheet.create({
             main: {
@@ -19,23 +19,24 @@ export const myStylesAuth = () => {
                 fontSize: Configs.FontSize.size20,
                 borderRadius: 20
             },
-            inputPhone: {
-                borderRadius: 30,
-                height: Configs.FontSize.size40,
-                width: '85%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row'
-            },
             inputPass: {
-                marginTop: 5,
-                borderRadius: 30,
+                borderRadius: 20,
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '85%',
+                width: '100%',
+                marginVertical: 5,
                 height: Configs.FontSize.size40
             },
+            Picker: {
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                marginVertical: 5,
+                height: Configs.FontSize.size40
+            },
+
             rowInfo: {
                 marginTop: -15,
                 flexDirection: 'column',
@@ -74,7 +75,7 @@ export const myStylesAuth = () => {
                 marginTop: 30,
                 justifyContent: 'center',
                 marginHorizontal: 10,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.3
+                height: DimensionUtils.SCREEN_HEIGHT * 0.5
             },
             hisLop: {
                 paddingVertical: 10,
@@ -126,6 +127,37 @@ export const myStylesAuth = () => {
                 fontSize: 16,
                 fontWeight: '600',
                 color: COLORS.WHITE
+            },
+            image: {
+                position: 'absolute',
+                zIndex: -1
+            },
+            form: {
+                // height: SCREEN_HEIGHT - (HEADER_PADDING + STATUSBAR_HEIGHT)
+            },
+            swapInput: {
+                paddingHorizontal: 15,
+                paddingTop: 15
+            },
+            formInput: {
+                marginBottom: 15,
+                borderRadius: 20,
+                height: 40
+            },
+            startVal: {
+                ...Styles.typography.regular,
+                color: COLORS.RED
+            },
+            label: {
+                ...Styles.typography.regular,
+                marginBottom: 5
+            },
+            buttonContainer: {
+                marginVertical: 20
+            },
+            channelContainer: {
+                marginTop: 0,
+                marginBottom: 15
             }
         });
     }, []);

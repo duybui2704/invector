@@ -1,52 +1,25 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import {
-    StyleSheet,
     Text,
-    TextStyle,
-    TouchableOpacity,
-    View,
-    ViewStyle
+    View
 } from 'react-native';
 
-// import SelectIcon from '@/assets/images/ic_retangle.svg';
-import { Configs } from '@/common/config';
+import IcDownAuth from '@/assets/image/auth/ic_down_auth.svg';
 import { COLORS, Styles } from '@/theme';
 import Utils from '@/utils/Utils';
-import BottomSheetComponent, { ItemProps } from '@/components/bottomsheet';
+import BottomSheetComponent from '@/components/bottomSheet';
 
 import { Touchable } from '../../components/elements/touchable';
 import Validate from '@/utils/Validate';
-import Languages from '@/common/languages';
-import { PopupActionTypes } from '@/components/PickerValuation/types';
+import { PopupActionTypes , PickerAction, PickerProps} from '@/components/PickerValuation/types';
+import arrayIcon from "@/common/arrayIcon";
+import {MyStylesPicker} from "@/components/PickerValuation/styles";
 
-
-export type PickerAction = {
-    setErrorMsg: (msg?: string) => void;
-};
-
-type PickerProps = {
-    leftIcon?: string,
-    containerStyle?: ViewStyle;
-    label?: string;
-    placeholder?: string;
-    onPressItem?: (item: any) => void;
-    value?: any;
-    data?: Array<ItemProps>;
-    labelStyle?: ViewStyle;
-    pickerStyle?: ViewStyle;
-    rightIcon?: string;
-    disable?: boolean;
-    isCheckboxList?: boolean,
-    optional?: boolean,
-    index?: number,
-    onScrollTo?: (value: number) => void,
-    placeholderStyle?: TextStyle
-};
-
-export const PickerValuation = forwardRef<PickerAction, PickerProps>(
+const PickerValuation = forwardRef<PickerAction, PickerProps>(
     (
         {
             leftIcon,
+            rightIcon,
             label,
             onPressItem,
             value,
@@ -57,7 +30,10 @@ export const PickerValuation = forwardRef<PickerAction, PickerProps>(
             isCheckboxList,
             optional = false,
             onScrollTo,
-            placeholderStyle
+            placeholderStyle,
+            index,
+            disable,
+            placeholder
         }: PickerProps,
         ref?: any
     ) => {
@@ -66,7 +42,7 @@ export const PickerValuation = forwardRef<PickerAction, PickerProps>(
             setErrorMsg
         }));
 
-
+        const styles = MyStylesPicker();
         const bottomSheetRef = useRef<PopupActionTypes>(null);
         const [errMsg, setErrMsg] = useState<string>('');
         const [coordinate, setCoordinate] = useState<number>(0);
@@ -131,15 +107,19 @@ export const PickerValuation = forwardRef<PickerAction, PickerProps>(
             setCoordinate(layout.y);
         }, []);
 
+        const checkIconRight = useMemo(() => {
+            switch (rightIcon){
+                case arrayIcon.login.channel:
+                    return <IcDownAuth width={20} height={20}/>
+                    break;
+                default:
+                    break;
+            }
+        }, [rightIcon])
+
 
         return (
             <View onLayout={onLayout} style={[styles.container, containerStyle]}>
-                <View style={styles.wrapLabel}>
-                    <Text style={[styles.label, labelStyle]}>
-                        {Utils.capitalizeFirstLetter(label || '')}
-                    </Text>
-                    {!optional && <Text style={styles.red}> *</Text>}
-                </View>
                 <Touchable
                     onPress={openPopup}
                     style={_containerStyle}
@@ -148,71 +128,18 @@ export const PickerValuation = forwardRef<PickerAction, PickerProps>(
                 >
                     {renderValue}
                     <View style={styles.rightIcon}>
-                        {/*<SelectIcon />*/}
+                        {checkIconRight}
                     </View>
                 </Touchable>
                 {errorMessage}
-                <BottomSheetComponent
-                    ref={bottomSheetRef}
-                    data={data}
-                    onPressItem={onChangeValue}
-                    isCheckboxList={isCheckboxList}
-                />
+                {/*<BottomSheetComponent*/}
+                {/*    ref={bottomSheetRef}*/}
+                {/*    data={data}*/}
+                {/*    onPressItem={onChangeValue}*/}
+                {/*    isCheckboxList={isCheckboxList}*/}
+                {/*/>*/}
             </View>
         );
     });
 
 export default PickerValuation;
-
-const styles = StyleSheet.create({
-    container: {
-        marginTop: 15
-    },
-    wrapInput: {
-        width: '100%',
-        borderColor: COLORS.GRAY_2,
-        borderWidth: 1,
-        paddingHorizontal: 15,
-        borderRadius: 5,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        height: 40
-    },
-    wrapLabel: {
-        flexDirection: 'row'
-    },
-    label: {
-        ...Styles.typography.regular,
-        marginBottom: 5
-    },
-    red: {
-        ...Styles.typography.medium,
-        color: COLORS.RED
-    },
-    placeholder: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_4
-    },
-    textValue: {
-        ...Styles.typography.regular,
-        color: COLORS.BLACK
-    },
-    leftIcon: {
-        fontSize: Configs.IconSize.size18,
-        color: COLORS.LIGHT_GRAY,
-        marginRight: 10
-    },
-    rightIcon: {
-        marginRight: 10,
-        position: 'absolute',
-        right: 0
-        // top: 18
-    },
-    errorMessage: {
-        fontSize: Configs.FontSize.size12,
-        fontFamily: Configs.FontFamily.medium,
-        color: COLORS.RED,
-        marginLeft: 10
-    }
-});

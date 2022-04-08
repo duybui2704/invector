@@ -23,26 +23,10 @@ import Languages from '@/common/languages';
 import IcFindingContract from '@/assets/image/common/ic_search.svg';
 import { Configs, PADDING_BOTTOM } from '@/common/config';
 import DimensionUtils from '../../utils/DimensionUtils';
-import MyStyleBottomSheet from "@/components/bottomsheet/styles";
+import MyStyleBottomSheet from "@/components/bottomSheet/styles";
+import {BottomSheetAction, BottomSheetProps, ItemProps} from "@/components/bottomSheet/types";
+
 const styles = MyStyleBottomSheet();
-export type ItemProps = {
-    value?: string;
-    id?: string;
-    selected?: boolean;
-    price?: string;
-};
-
-type BottomSheetProps = {
-    data?: Array<ItemProps>;
-    onPressItem?: (item: any) => void;
-    isCheckboxList?: boolean;
-};
-
-export type BottomSheetAction = {
-    show: (content?: string) => any;
-    hide?: (content?: string) => any;
-    setContent?: (message: string) => void;
-};
 
 const CustomBackdrop = (props: BottomSheetBackdropProps) => {
     return <BottomSheetBackdrop {...props} pressBehavior="close" />;
@@ -50,7 +34,6 @@ const CustomBackdrop = (props: BottomSheetBackdropProps) => {
 
 const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
     ({ data, onPressItem, isCheckboxList }: BottomSheetProps, ref) => {
-
         const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
         const [textSearch, setTextSearch] = useState('');
@@ -63,7 +46,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
 
         const snapPoints = useMemo(() => {
             const num = data?.length as number;
-            const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);  // + input height
+            const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
             let ratio = contentHeight * 100 / DimensionUtils.SCREEN_HEIGHT;
             ratio = Math.max(ratio, 15);
             ratio = Math.min(ratio, 70);
@@ -83,8 +66,6 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             show,
             hide
         }));
-
-        const handleSheetChanges = useCallback(() => { }, []);
 
         const searchItem = useCallback(
             (text: string) => {
@@ -156,6 +137,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
 
         const keyExtractor = useCallback((item, index) => {
             return `${index}`;
+
         }, []);
         const onFocus = useCallback(() => {
             setFocus(true);
@@ -194,7 +176,6 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                 ref={bottomSheetModalRef}
                 index={1}
                 snapPoints={snapPoints}
-                onChange={handleSheetChanges}
                 backdropComponent={CustomBackdrop}
                 keyboardBehavior={'interactive'}
                 enablePanDownToClose={true}

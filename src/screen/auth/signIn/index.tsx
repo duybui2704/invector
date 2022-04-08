@@ -1,72 +1,94 @@
 import {observer} from 'mobx-react-lite';
 import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
 import {View, Text} from 'react-native';
+import ScrollViewWithKeyboard from "@/components/scrollViewWithKeyboard";
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import CheckIcon from '@/assets/image/auth/ic_check_login.svg';
 import UnCheckIcon from '@/assets/image/auth/ic_un_check_login.svg';
-import {Touchable} from '../../../components/elements/touchable';
-import {MyTextInput} from '../../../components/elements/textfield';
-import {myStylesAuth} from './styles';
-import {TextFieldActions} from '../../../components/elements/textfield/types';
-import {COLORS} from '../../../theme';
+import {Touchable} from '@/components/elements/touchable';
+import {MyTextInput} from '@/components/elements/textfield';
+import {myStylesSign} from './styles';
+import {TextFieldActions} from '@/components/elements/textfield/types';
+import {COLORS} from '@/theme';
 import PickerValuation from "@/components/PickerValuation";
+import {PickerAction} from "@/components/PickerValuation/types";
 import Languages from "@/common/languages";
 import arrayIcon from "@/common/arrayIcon";
 import FormValidate from "@/utils/FormValidate";
-import Otp from '../otp';
-import {ItemProps} from "@/components/bottomsheet";
+import {ItemProps} from "@/components/bottomSheet/types";
 import {useAppStore} from "@/hooks";
 import {ChannelModal} from "@/models/ChannelModal";
 
 const SignIn = observer(() => {
-    const { apiServices } = useAppStore();
+
+    const {apiServices} = useAppStore();
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [card, setCard] = useState<string>('');
     const [pass, setPass] = useState<string>('');
-    const [name, setName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [passNew, setPassNew] = useState<string>('');
+    const [conFirmPass, setConFirmPass] = useState<string>('');
+    const [keyRefer, setKeyRerFe] = useState<string>('');
+    const [disable, setDisable] = useState<boolean>(false);
     const [channel, setChannel] = useState<ItemProps>();
     const [dataChannel, setDataChannel] = useState<ItemProps[]>();
-    const [data, setData] = useState<any>('');
-    const [isNavigate, setNavigate] = useState<boolean>(false);
-    const styles = myStylesAuth();
-    const refPhone = useRef<TextFieldActions>(null);
-    const refName = useRef<TextFieldActions>(null);
-    const refEmail = useRef<TextFieldActions>(null);
-    const refChannel = useRef<TextFieldActions>(null);
-    const refPass = useRef<TextFieldActions>(null);
-    const refPassNew = useRef<TextFieldActions>(null);
-    const [checked, setCheck] = useState<boolean>(false);
 
-    const onChangeText = (value: string, tag?: string) => {
-        switch (tag) {
-            case Languages.Auth.txtPhone:
-                setPhone(value);
-                break;
-            case Languages.Auth.txtPass:
-                setPass(value);
-                break;
-            case Languages.Auth.txtName:
-                setName(value);
-                break;
-            case Languages.Auth.txtConfirmPass:
-                setPassNew(value);
-                break;
-            case Languages.Auth.txtEmail:
-                setEmail(value);
-                break;
-            default:
-                break;
+    const userNameRef = useRef<TextFieldActions>(null);
+    const phoneRef = useRef<TextFieldActions>(null);
+    const emailRef = useRef<TextFieldActions>(null);
+    const cardRef = useRef<TextFieldActions>(null);
+    const pwdRef = useRef<TextFieldActions>(null);
+    const pwdCfRef = useRef<TextFieldActions>(null);
+    const keyReferRef = useRef<TextFieldActions>(null);
+    const [checked, setChecked] = useState<boolean>(false);
+    const [isNavigate, setIsNavigate] = useState<boolean>(false);
+    const [data, setData] = useState<any>();
+    const channelRef = useRef<PickerAction>(null);
+    const styles = myStylesSign();
+
+    const onValidation = useCallback(() => {
+        const errMsgUsername = FormValidate.userNameValidate(username);
+        const errMsgPhone = FormValidate.passConFirmPhone(phone);
+        const errMsgEmail = FormValidate.emailValidate(email);
+        const errMsgCard = FormValidate.cardValidate(card);
+        const errMsgPwd = FormValidate.passValidate(pass);
+        const errMsgConFirmPwd = FormValidate.passConFirmValidate(pass, conFirmPass);
+        const errMsgChannelRef = FormValidate.inputNameEmpty(channel, Languages.errorMsg.msgChannel);
+
+        userNameRef.current?.setErrorMsg(errMsgUsername);
+        phoneRef.current?.setErrorMsg(errMsgPhone);
+        emailRef.current?.setErrorMsg(errMsgEmail);
+        cardRef.current?.setErrorMsg(errMsgCard);
+        pwdRef.current?.setErrorMsg(errMsgPwd);
+        pwdCfRef.current?.setErrorMsg(errMsgConFirmPwd);
+        channelRef.current?.setErrorMsg(errMsgChannelRef);
+
+        if (`${errMsgUsername}${errMsgEmail}${errMsgCard}${errMsgPwd}${errMsgConFirmPwd}${errMsgPhone}`.length === 0) {
+            return true;
         }
+        return false;
+    }, [card, channel, conFirmPass, email, pass, phone, username]);
+
+    const onPressSignUp = async () => {
+        if (onValidation()) {
+            // setLoading(true);
+            setDisable(!disable);
+            const res = await apiServices.auth.registerAuth(phone, username, pass, conFirmPass, email, card, '123', channel?.value);
+            if (res.success) {
+                // setLoading(false);
+                setData(res.data);
+            }
+        }
+
     };
 
     const fetchData = async () => {
-        // setLoading(true);
+        setLoading(true);
         const res = await apiServices.auth.getChanelSource();
         if (res.success) {
-            // setLoading(false);
+            setLoading(false);
             const data = res.data as ChannelModal[];
             const temp = [] as ItemProps[];
             data?.forEach((item: any) => {
@@ -77,17 +99,45 @@ const SignIn = observer(() => {
             });
             setDataChannel(temp);
         }
-        // setLoading(false);
-    }
+        setLoading(false);
+    };
 
     useEffect(() => {
         fetchData();
     }, [apiServices.auth]);
 
-    const onChangeChecked = useCallback(() => {
-        setCheck(last => !last);
-
+    const onChangeFormality = useCallback((item: any) => {
+        setChannel(item);
     }, []);
+
+    const onChangeText = (value: string, tag?: string) => {
+        switch (tag) {
+            case Languages.Auth.username:
+                setUsername(value);
+                break;
+            case Languages.Auth.txtPhone:
+                setPhone(value);
+                break;
+            case Languages.Auth.email:
+                setEmail(value);
+                break;
+            case Languages.Auth.card:
+                setCard(value);
+                break;
+            case Languages.Auth.enterPwd:
+                setPass(value);
+                break;
+            case Languages.Auth.currentPass:
+                setConFirmPass(value);
+
+                break;
+            case Languages.Auth.enterKeyRefer:
+                setKeyRerFe(value);
+                break;
+            default:
+                break;
+        }
+    };
 
     const checkbox = useMemo(() => {
         if (checked) {
@@ -96,125 +146,124 @@ const SignIn = observer(() => {
         return <UnCheckIcon width={20} height={20}/>;
     }, [checked]);
 
-     const onValidate = useCallback(() => {
-         const errMsgPhone = FormValidate.passConFirmPhone(phone);
-         const errMsgPwd = FormValidate.passValidate(pass);
-         const errMsgName = FormValidate.userNameValidate(name);
-         const errMsgPwdNew = FormValidate.passConFirmPhone(passNew);
-         const errMsgPwdEmail = FormValidate.emailValidate(email);
-         const errMsgChannel = FormValidate.inputNameEmpty(channel);
 
-         refPhone.current?.setErrorMsg(errMsgPhone);
-         refPass.current?.setErrorMsg(errMsgPwd);
-         refName.current?.setErrorMsg(errMsgName);
-         refPassNew.current?.setErrorMsg(errMsgPwdNew);
-         refEmail.current?.setErrorMsg(errMsgPwdEmail);
-         refChannel.current?.setErrorMsg(errMsgChannel);
-     }, [])
-
-    const onSignIn = async () => {
-        setNavigate(true);
-        if (onValidate()) {
-            const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, card ,'123', channel?.value);
-            if (res.success) {
-                setNavigate(true);
-                setData(res.data);
-            }
-        }
-    };
-
-     const onChangeFormality = (item: any) => {
-         setChannel(item);
-     }
+    const onChangeChecked = useCallback(() => {
+        setChecked(last => !last);
+    }, []);
 
     const renderView = () => {
         return (
-       <View style={styles.content}>
-           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-               <Text style={styles.txtTitle}>{Languages.Auth.txtTitle}</Text>
-               <IcLine/>
-           </View>
-           <MyTextInput
-               ref={refName}
-               value={name}
-               isPhoneNumber={false}
-               rightIcon={arrayIcon.login.name}
-               placeHolder={Languages.Auth.txtName}
-               containerInput={styles.inputPhone}
-               onChangeText={onChangeText}
-           />
-           <MyTextInput
-               ref={refPhone}
-               value={phone}
-               isPhoneNumber={true}
-               rightIcon={arrayIcon.login.phone}
-               placeHolder={Languages.Auth.txtPhone}
-               containerInput={styles.inputPass}
-               onChangeText={onChangeText}
-               keyboardType={'NUMBER'}
-           />
-           <MyTextInput
-               ref={refEmail}
-               value={email}
-               isPhoneNumber={false}
-               rightIcon={arrayIcon.login.email}
-               placeHolder={Languages.Auth.txtEmail}
-               containerInput={styles.inputPass}
-               onChangeText={onChangeText}
-           />
+            <View style={{flex: 1, marginLeft: 10}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={styles.txtTitle}>{Languages.Auth.txtSignIn}</Text>
+                    <IcLine/>
+                </View>
+                <ScrollViewWithKeyboard style={{marginBottom: 20}}>
+                    <MyTextInput
+                        ref={userNameRef}
+                        value={username}
+                        isPhoneNumber={false}
+                        rightIcon={arrayIcon.login.name}
+                        placeHolder={Languages.Auth.username}
+                        onChangeText={onChangeText}
+                        containerInput={styles.inputPass}
+                        maxLength={100}
+                    />
+                    <MyTextInput
+                        ref={phoneRef}
+                        value={phone}
+                        isPhoneNumber={true}
+                        rightIcon={arrayIcon.login.phone}
+                        placeHolder={Languages.Auth.txtPhone}
+                        onChangeText={onChangeText}
+                        maxLength={10}
+                        keyboardType={'NUMERIC'}
+                        containerInput={styles.inputPass}
+                    />
 
-           <MyTextInput
-               ref={refPass}
-               value={pass}
-               isPhoneNumber={false}
+                    <MyTextInput
+                        ref={emailRef}
+                        value={email}
+                        isPhoneNumber={false}
+                        rightIcon={arrayIcon.login.email}
+                        placeHolder={Languages.Auth.email}
+                        onChangeText={onChangeText}
+                        maxLength={100}
+                        containerInput={styles.inputPass}
+                        keyboardType={'EMAIL'}
+                    />
+                    <MyTextInput
+                        ref={cardRef}
+                        value={card}
+                        isPhoneNumber={false}
+                        placeHolder={Languages.Auth.card}
+                        onChangeText={onChangeText}
+                        containerInput={styles.inputPass}
+                        keyboardType={'NUMERIC'}
+                    />
+                    <MyTextInput
+                        ref={pwdRef}
+                        value={pass}
+                        isPassword
+                        isPhoneNumber={false}
+                        containerInput={styles.inputPass}
+                        rightIcon={arrayIcon.login.pass}
+                        placeHolder={Languages.Auth.enterPwd}
+                        onChangeText={onChangeText}
+                    />
 
-               rightIcon={arrayIcon.login.pass}
-               placeHolder={Languages.Auth.txtPass}
-               containerInput={styles.inputPass}
-               onChangeText={onChangeText}
-               isPassword
-           />
-           <MyTextInput
-               ref={refPass}
-               value={passNew}
-               isPhoneNumber={false}
-               rightIcon={arrayIcon.login.pass}
-               placeHolder={Languages.Auth.txtConfirmPass}
-               containerInput={styles.inputPass}
-               onChangeText={onChangeText}
-               isPassword
-           />
-           {/*<PickerValuation*/}
-           {/*    ref={refChannel}*/}
-           {/*    containerStyle={styles.inputPass}*/}
-           {/*    // leftIcon={ICONS.LOCATION}*/}
-           {/*    // label={Languages.profileAuth.about}*/}
-           {/*    placeholder={Languages.Auth.knowChannel}*/}
-           {/*    onPressItem={onChangeFormality}*/}
-           {/*    value={channel?.value}*/}
-           {/*    data={dataChannel}*/}
-           {/*/>*/}
-           <View style={styles.rowInfo}>
-               <View style={styles.row}>
-                   <Touchable style={styles.checkbox} onPress={onChangeChecked}>
-                       {checkbox}
-                   </Touchable>
-                   <Text style={styles.txtSave}>Lưu tài khoản</Text>
-               </View>
-               <Touchable onPress={onSignIn} disabled={checked ? false : true}
-                          style={checked ? styles.tobLogin : [styles.tobLogin, {backgroundColor: COLORS.GRAY}]}>
-                   <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, {color: COLORS.BLACK}]}>
-                       {Languages.Auth.txtSignIn}
-                   </Text>
-               </Touchable>
-           </View>
-       </View>
-    );
+                    <MyTextInput
+                        ref={pwdCfRef}
+                        isPassword
+                        isPhoneNumber={false}
+                        value={conFirmPass}
+                        containerInput={styles.inputPass}
+                        rightIcon={arrayIcon.login.pass}
+                        placeHolder={Languages.Auth.currentPass}
+                        onChangeText={onChangeText}
+                    />
+
+                    <MyTextInput
+                        ref={keyReferRef}
+                        value={keyRefer}
+                        isPhoneNumber={false}
+                        containerInput={styles.inputPass}
+                        placeHolder={Languages.Auth.enterKeyRefer}
+                        onChangeText={onChangeText}
+                    />
+
+                    <PickerValuation
+                        ref={channelRef}
+                        containerStyle={styles.Picker}
+                        rightIcon={arrayIcon.login.channel}
+                        label={Languages.Auth.knowChannel}
+                        placeholder={Languages.Auth.knowChannel}
+                        onPressItem={onChangeFormality}
+                        value={channel?.value}
+                        data={data}/>
+
+                    <View style={styles.rowInfo}>
+                        <View style={styles.row}>
+                            <Touchable style={styles.checkbox} onPress={onChangeChecked}>
+                                {checkbox}
+                            </Touchable>
+                            <Text style={styles.txtSave}>Lưu tài khoản</Text>
+                        </View>
+                        <Touchable onPress={onPressSignUp} disabled={checked ? false : true}
+                                   style={checked ? styles.tobLogin : [styles.tobLogin, {backgroundColor: COLORS.GRAY}]}>
+                            <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, {color: COLORS.BLACK}]}>
+                                {Languages.Auth.txtSignIn}
+                            </Text>
+                        </Touchable>
+                    </View>
+                </ScrollViewWithKeyboard>
+            </View>
+        );
     }
 
     return (
         <View style={{flex: 1}}>
-            {isNavigate ? <Otp phone={phone} data={data}/> : renderView()}
+            {renderView()}
         </View>
     );
 })
