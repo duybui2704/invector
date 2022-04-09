@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import React, {useState} from 'react';
-import {View, ImageBackground, Text, StatusBar} from 'react-native';
+import {View, ImageBackground, Text, StatusBar, Switch} from 'react-native';
 
 import IcFaceAuth from '@/assets/image/auth/ic_face_auth.svg';
 import IcInsAuth from '@/assets/image/auth/ic_ins_auth.svg';
@@ -15,32 +15,51 @@ import Login from "@/screen/auth/login";
 import SignIn from "@/screen/auth/signIn";
 import Loading from "@/components/loading";
 import SvgComponent from "@/screen/auth/SvgText";
+import { Touchable } from '@/components/elements/touchable';
 
 const Auth = observer(() => {
     const styles = myStylesAuth();
+    const [isNavigate, setIsNavigate] = useState<string>(Languages.Auth.txtLogin);
+
+    const onNavigate = (key: string) => {
+        switch (key){
+            case Languages.Auth.txtLogin:
+                setIsNavigate(key);
+                break;
+            case Languages.Auth.txtTitle:
+                setIsNavigate(key);
+                break;
+            case '1':
+                setIsNavigate(key);
+                break;
+            default:
+                break;
+        }
+    };
+
     return (
         <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
             < StatusBar barStyle={'light-content'} backgroundColor={COLORS.GREEN_1}/>
             <View style={styles.viewSvg}>
-                <SvgComponent/>
+                <SvgComponent onNavigate={onNavigate}/>
             </View>
             <View style={styles.wrapAll}>
-                <SignIn />
+                {isNavigate === Languages.Auth.txtLogin ? <Login /> : <SignIn/>}
                 <View style={styles.viewBottom}>
                     <Text style={styles.txtLogin}>{Languages.Auth.txtLogin}</Text>
                     <View style={styles.viewIcon}>
-                        <View style={styles.icon}>
+                        <Touchable style={styles.icon}>
                             <IcFaceAuth width={32} height={32} />
-                        </View>
-                        <View style={styles.icon}>
+                        </Touchable>
+                        <Touchable style={styles.icon}>
                             <IcGoogleAuth width={32} height={32}/>
-                        </View>
-                        <View style={styles.icon}>
+                        </Touchable>
+                        <Touchable style={styles.icon}>
                             <IcInsAuth width={32} height={32}/>
-                        </View>
-                        <View style={styles.icon}>
+                        </Touchable>
+                        <Touchable style={styles.icon}>
                             <IcInAuth width={30} height={30}/>
-                        </View>
+                        </Touchable>
                     </View>
                 </View>
             </View>

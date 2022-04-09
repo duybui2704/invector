@@ -6,6 +6,7 @@ import { ScreenName } from '../common/screenName';
 import Login from '../screen/auth/login';
 import Auth from "@/screen/auth";
 import Otp from '../screen/auth/otp';
+import Home from '@/screen/home';
 
 const screenOptions = { headerShown: false };
 const Stack = createNativeStackNavigator();
@@ -16,6 +17,7 @@ const RootStack = observer(() => {
     const AuthStack = useCallback(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
+                <Stack.Screen name={ScreenName.homeScreen} component={Home}/>
                 <Stack.Screen name={ScreenName.auth} component={Auth}/>
                 <Stack.Screen name={ScreenName.login} component={Login}/>
                 <Stack.Screen name={ScreenName.otp} component={Otp}/>

@@ -9,6 +9,25 @@ const Languages={
     },
     home:{
         title:'Trang chủ',
+        sumInvest: 'Tổng đầu tư',
+        sumpProfit: 'Tổng lãi đã nhận',
+        sumResidualProfit: 'Tổng lãi còn lại', 
+        have: 'Đang có',
+        vnd: 'VNĐ',
+        invest: 'Đầu tư',
+        report: 'Báo cáo',
+        payment: 'Thanh toán',
+        investPackages: 'Các gói đầu tư nổi bật',
+        investNow: 'Đầu tư ngay',
+        more: 'Xem thêm',
+        stockVfs: 'Chứng khoán VFS',
+        question: 'Các câu hỏi thường gặp',
+        signFree: 'Đăng ký mở tài khoản miễn phí',
+        todoInvest: 'Làm thế nào để đầu tư vào Tienngay.vn?',
+        todoWithDrawMoney: 'Làm thế nào để rút tiền từ Tienngay.vn?',
+        percentCalculated: 'Phần trăm lãi đầu tư được tính như thế nào?',
+        paymentMethod: 'Hình thức trả tiền như thế nao?'
+
     },
     invest:{
         title: 'Đầu tư'
