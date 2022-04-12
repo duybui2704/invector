@@ -1,10 +1,11 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { observer } from 'mobx-react';
-import { ScrollView, Switch } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
 import Dash from 'react-native-dash';
+import { Switch } from 'react-native-switch';
 
 import { COLORS, Styles } from '@/theme';
 import Languages from '@/common/Languages';
@@ -119,13 +120,34 @@ const Profile = observer(() => {
             <>
                 <View style={styles.fingerWrap}>
                     <FingerIC />
-                    <Text>{Languages.account.authenFinger}</Text>
-                    <Switch
+                    <Text style={styles.txtAuthenFinger}>{Languages.account.authenFinger}</Text>
+                    {/* <Switch
                         trackColor={{ false: COLORS.BACKDROP, true: COLORS.GREEN }}
                         thumbColor={isEnabledSwitch ? COLORS.WHITE : COLORS.WHITE}
-                        ios_backgroundColor="#3e3e3e"
+                        ios_backgroundColor={COLORS.GRAY_13}
                         onValueChange={toggleSwitch}
                         value={isEnabledSwitch}
+                        style={styles.switch}
+                    /> */}
+                    <Switch
+                        value={true}
+                        onValueChange={toggleSwitch}
+                        disabled={isEnabledSwitch}
+                        circleSize={28}
+                        barHeight={Configs.FontSize.size28}
+                        circleBorderWidth={1}
+                        backgroundActive={COLORS.GREEN}
+                        backgroundInactive={COLORS.BACKDROP}
+                        circleActiveColor={COLORS.WHITE}
+                        circleInActiveColor={COLORS.BACKDROP}
+                        renderActiveText={false}
+                        renderInActiveText={false}
+                        // renderInsideCircle={() => <CustomComponent />} // custom component to render inside the Switch circle (Text, Image, etc.)
+                        changeValueImmediately={isEnabledSwitch} // if rendering inside circle, change state immediately or wait for animation to complete
+                    // switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
+                    // switchRightPx={2} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
+                    // switchWidthMultiplier={2} // multiplied by the `circleSize` prop to calculate total width of the Switch
+                    // switchBorderRadius={0} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
                     />
                 </View>
                 <Dash
@@ -137,7 +159,7 @@ const Profile = observer(() => {
             </>
 
         );
-    }, [isEnabledSwitch]);
+    }, []);
 
     const renderAccountFeature = useMemo(() => {
 
@@ -149,7 +171,7 @@ const Profile = observer(() => {
                     hasDashBottom
                     rightIcon={<ArrowIC />}
                     leftIcon={<ChangePwdIC />}
-                    styleColor={styles.dash}
+                    styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
                 />
                 {renderAuthenFinger}
@@ -158,7 +180,7 @@ const Profile = observer(() => {
                     noIndicator
                     rightIcon={<ArrowIC />}
                     leftIcon={<LinkAccIC />}
-                    styleColor={styles.dash}
+                    styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
                 />
             </View>
@@ -175,7 +197,7 @@ const Profile = observer(() => {
                     hasDashBottom
                     rightIcon={<ArrowIC />}
                     leftIcon={<PolicyIC />}
-                    styleColor={styles.dash}
+                    styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
                 />
                 <KeyValue
@@ -184,7 +206,7 @@ const Profile = observer(() => {
                     hasDashBottom
                     rightIcon={<ArrowIC />}
                     leftIcon={<ShareIC />}
-                    styleColor={styles.dash}
+                    styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
                 />
                 <KeyValue
@@ -193,7 +215,7 @@ const Profile = observer(() => {
                     hasDashBottom
                     rightIcon={<ArrowIC />}
                     leftIcon={<TienngayWebIC />}
-                    styleColor={styles.dash}
+                    styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
                 />
                 <KeyValue
@@ -202,7 +224,7 @@ const Profile = observer(() => {
                     hasDashBottom
                     rightIcon={<ArrowIC />}
                     leftIcon={<TienngayFBIC />}
-                    styleColor={styles.dash}
+                    styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
                 />
                 <KeyValue
@@ -211,7 +233,7 @@ const Profile = observer(() => {
                     hasDashBottom
                     rightIcon={<ArrowIC />}
                     leftIcon={<ManualIC />}
-                    styleColor={styles.dash}
+                    styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
                 />
                 <KeyValue
@@ -220,7 +242,7 @@ const Profile = observer(() => {
                     hasDashBottom
                     rightIcon={<ArrowIC />}
                     leftIcon={<AnswerIC />}
-                    styleColor={styles.dash}
+                    styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
                 />
                 <KeyValue
@@ -229,7 +251,7 @@ const Profile = observer(() => {
                     hasDashBottom
                     rightIcon={<ArrowIC />}
                     leftIcon={<PhoneIC />}
-                    styleColor={styles.dash}
+                    styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
                 />
                 <KeyValue
@@ -237,7 +259,7 @@ const Profile = observer(() => {
                     noIndicator
                     rightIcon={<ArrowIC />}
                     leftIcon={<StarIC />}
-                    styleColor={styles.dash}
+                    styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
                 />
             </View>
@@ -369,10 +391,20 @@ const styles = StyleSheet.create({
     fingerWrap: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginHorizontal: 16,
+        alignItems: 'center'
+    },
+    dashFinger: {
+        marginTop: 8,
         marginHorizontal: 16
     },
-    dashFinger:{
-        marginTop:8
+    txtAuthenFinger: {
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_7,
+        paddingVertical: 5
+    },
+    switch: {
+        // width: 55
     }
 });
 export default Profile;

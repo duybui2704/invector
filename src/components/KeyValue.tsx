@@ -6,7 +6,7 @@ import { COLORS, Styles } from '../theme';
 import { Touchable } from './elements/touchable';
 
 const KeyValue = (
-    { title, content, noIndicator, styleColor, styleContainer, leftIcon, rightIcon, hasDashBottom, styleTouchable, onPress }:
+    { title, content, noIndicator, styleColor, styleContainer, leftIcon, rightIcon, hasDashBottom, styleTouchable, onPress, styleTitle }:
         {
             noIndicator?: boolean,
             title: string,
@@ -17,7 +17,8 @@ const KeyValue = (
             rightIcon?: any,
             styleTouchable?:any,
             hasDashBottom?: boolean,
-            onPress?:any
+            onPress?:any,
+            styleTitle?:any
         }
 ) => {
 
@@ -33,7 +34,7 @@ const KeyValue = (
 
             <Touchable style={[styles.row, styleTouchable]} onPress={onPress}>
                 {leftIcon || null}
-                <Text style={styles.leftText}>{title}</Text>
+                <Text style={[styles.leftText, styleTitle]}>{title}</Text>
                 <Text style={[styles.contentText, styleColor]}>{content}</Text>
                 {rightIcon || null}
             </Touchable>

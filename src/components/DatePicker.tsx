@@ -7,12 +7,14 @@ import React, {
 } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import DatePicker, { DatePickerProps } from 'react-native-date-picker';
+
 import Languages from '../common/Languages';
 import { COLORS, Styles } from '../theme';
 import DateUtils from '../utils/DateUtils';
 import { Touchable } from './elements/touchable';
 import ICCalender from '@/asset/icon/ic_calender.svg';
 import { Configs } from '@/common/config';
+
 interface DatePickerTransactionProps extends DatePickerProps {
   title?: string;
   onConfirmDatePicker?: (date: Date,tag?:string) => void;
