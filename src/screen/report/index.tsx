@@ -5,7 +5,7 @@ import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryTheme, Vic
 import { FlatList } from 'react-native-gesture-handler';
 import { observer } from 'mobx-react';
 
-import { Configs } from '@/common/Config';
+import { Configs } from '@/common/Configs';
 import { Touchable } from '@/components/elements/touchable';
 import KeyValue from '@/components/KeyValue';
 import { COLORS, Styles } from '@/theme';

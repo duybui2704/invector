@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {useMemo} from "react";
 import {COLORS} from "@/theme";
-import {Configs, PADDING_TOP} from "@/common/Config";
+import {Configs, PADDING_TOP} from "@/common/Configs";
 import DimensionUtils from "@/utils/DimensionUtils";
 
 export const MyStylesOtp = () => {

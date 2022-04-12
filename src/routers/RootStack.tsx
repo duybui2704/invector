@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react';
 import React, { useCallback, useMemo } from 'react';
 
-import { ScreenName } from '../common/screenName';
+import { ScreenName } from '../common/screenNames';
 import Login from '../screen/auth/login';
 import Auth from '@/screen/auth';
 import Otp from '../screen/auth/otp';

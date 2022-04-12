@@ -36,7 +36,8 @@ const Transaction = observer(() => {
     const { apiServices } = useAppStore();
 
     const fetchHistory = useCallback(() => {
-        const res = apiServices.history.getHistory(condition.current.startDate,
+        const res = apiServices.history.getHistory(
+            condition.current.startDate,
             condition.current.endDate, 
             condition.current.option);
     }, [apiServices.history]);
@@ -121,7 +122,6 @@ const Transaction = observer(() => {
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
             case Languages?.transaction.fromDate:
-                condition.current.startDate;
                 onRefresh(date, condition.current.endDate);
                 break;
             case Languages.transaction.toDate:

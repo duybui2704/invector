@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { COLORS, Styles } from '@/theme';
-import { Configs } from '@/common/Config';
+import { Configs } from '@/common/Configs';
 
 export const useStyleButton = () => {
 

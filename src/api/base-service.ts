@@ -3,7 +3,7 @@ import apiSauce from 'apisauce';
 import StorageUtils from '../utils/StorageUtils';
 import Validate from '../utils/Validate';
 import { Events } from '../common/constants';
-import { TIMEOUT_API } from '../common/Config';
+import { TIMEOUT_API } from '../common/Configs';
 import Languages from "@/common/Languages";
 import { EventEmitter } from '../utils/EventEmitter';
 import ToastUtils from '../utils/ToastUtils';

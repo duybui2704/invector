@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AnimatedTabBarNavigator } from 'react-native-animated-nav-tab-bar';
 import { observer } from 'mobx-react';
 
-import { ScreenName, TabsName } from '../common/screenName';
+import { ScreenName, TabsName } from '../common/screenNames';
 import { COLORS, Styles } from '@/theme';
 import Home from '@/screen/home';
 import Invest from '@/screen/invest';

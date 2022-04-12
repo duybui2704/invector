@@ -6,7 +6,7 @@ import StorageUtils from '@/utils/StorageUtils';
 import { StorageKeys } from '@/common/constants';
 import RsaUtils from '@/utils/RsaUtils';
 import Navigator from '@/routers/Navigator';
-import ScreenNames from '@/common/screenName';
+import ScreenNames from '@/common/screenNames';
 // import { PropertyValuationModel } from '@/models/property-valuation';
 
 export const DeviceInfos = {

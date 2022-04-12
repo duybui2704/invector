@@ -12,7 +12,7 @@ import { COLORS, Styles } from '../theme';
 import DateUtils from '../utils/DateUtils';
 import { Touchable } from './elements/touchable';
 import ICCalender from '@/asset/icon/ic_calender.svg';
-import { Configs } from '@/common/Config';
+import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
 
 interface DatePickerTransactionProps extends DatePickerProps {

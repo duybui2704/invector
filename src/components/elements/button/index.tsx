@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { TextStyle, Text } from 'react-native';
 
-import { Configs } from '@/common/Config';
+import { Configs } from '@/common/Configs';
 import { useStyleButton } from './styles';
 import { ButtonProps } from './types';
 import { COLORS } from '@/theme';

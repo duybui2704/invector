@@ -3,7 +3,7 @@ import React from 'react';
 import Dash from 'react-native-dash';
 
 import { COLORS, Styles } from '../theme';
-import { Configs } from '../common/Config';
+import { Configs } from '../common/Configs';
 import Languages from '@/common/Languages';
 
 const KeyValueTransaction = ({ title, dateTime, content, noIndicator ,styleColor, debtNow}: 

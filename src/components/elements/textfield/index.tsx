@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { Animated, TextInput, TextStyle, View, Text } from 'react-native';
 
-import { isIOS } from '../../../common/Config';
+import { isIOS } from '../../../common/Configs';
 import { COLORS } from '../../../theme';
 import Validate from "@/utils/Validate";
 import { myTextFieldStyle } from './styles';

@@ -6,7 +6,7 @@ import Dash from 'react-native-dash';
 import { Switch } from 'react-native-switch';
 
 import { COLORS, Styles } from '@/theme';
-import { Configs } from '@/common/Config';
+import { Configs } from '@/common/Configs';
 
 const KeyToggleValue = ({ leftIcon, label, isEnabledSwitch, onToggleSwitch, hasDash }:
     { label: string, isEnabledSwitch: boolean, onToggleSwitch: () => any, hasDash?: boolean, leftIcon?: any }) => {

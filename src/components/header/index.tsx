@@ -4,7 +4,7 @@ import { Image, ImageBackground, StatusBar, Text, View } from 'react-native';
 import IcBack from '../../assets/image/header/ic_back_header.svg';
 import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import Images from '../../assets/Images';
-import { isIOS } from '../../common/Config';
+import { isIOS } from '../../common/Configs';
 import Navigator from '../../routers/Navigator';
 import { Touchable } from '../elements/touchable';
 import { HeaderProps } from './types';
