@@ -49,7 +49,8 @@
     "react-native-svg": "^12.3.0",
     "react-native-vector-icons": "^9.1.0",
     "styled-components": "^5.3.5",
-    "yarn": "^1.22.18"
+    "yarn": "^1.22.18",
+    "react-native-touch-id": "./src/libs/react-native-touch-id"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

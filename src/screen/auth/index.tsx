@@ -16,6 +16,7 @@ import SignIn from "@/screen/auth/signIn";
 import Loading from "@/components/loading";
 import SvgComponent from "@/screen/auth/SvgText";
 import { Touchable } from '@/components/elements/touchable';
+import Navigator from '@/routers/Navigator';
 
 const Auth = observer(() => {
     const styles = myStylesAuth();
@@ -48,7 +49,7 @@ const Auth = observer(() => {
                 <View style={styles.viewBottom}>
                     <Text style={styles.txtLogin}>{Languages.Auth.txtLogin}</Text>
                     <View style={styles.viewIcon}>
-                        <Touchable style={styles.icon}>
+                        <Touchable onPress={() => Navigator.goBack()} style={styles.icon}>
                             <IcFaceAuth width={32} height={32} />
                         </Touchable>
                         <Touchable style={styles.icon}>

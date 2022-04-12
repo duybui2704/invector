@@ -102,9 +102,6 @@ const TabBar = ({ props }: any) => {
             color={getColor()}
             size={size}
         />
-        // <Text style={Styles.typography.bold}>
-        //     lklaka
-        // </Text>
     );
 };
 
@@ -113,7 +110,14 @@ const MyBottomTabs = observer(() => {
 
     const onTabPress = useCallback((e: any, navigation: any, route: any) => {
         e?.preventDefault();
-        navigation.navigate(route?.name);
+        if (route?.name !== TabsName.homeTabs) {
+            navigation.navigate(ScreenName.auth);
+        }
+        else {
+            navigation.navigate(route?.name);
+        }
+        console.log('route', route);
+
     }, []);
 
     return (
