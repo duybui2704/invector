@@ -34,7 +34,7 @@ export const Touchable = forwardRef(
             }
 
             if(radius){
-                customSize.borderRadius = radius;    
+                customSize.borderRadius = radius;
             }
 
             return [style, customSize];

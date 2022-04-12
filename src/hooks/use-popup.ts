@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { PopupContext } from '../provider/popup-provider/context';
+import { PopupContext } from '../provider/popups-provider/context';
 
 export const usePopup = () => {
     const payload = useContext(PopupContext);

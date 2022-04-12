@@ -12,6 +12,10 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1A2F456727FE7EFB0082D213 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F456327FE7EDD0082D213 /* OpenSans-Bold.ttf */; };
+		1A2F456827FE7EFF0082D213 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F456127FE7EDD0082D213 /* OpenSans-Regular.ttf */; };
+		1A2F456927FE7EFF0082D213 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F456227FE7EDD0082D213 /* OpenSans-SemiBold.ttf */; };
+		1A2F456C27FE84AC0082D213 /* tienngay.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F456B27FE84AC0082D213 /* tienngay.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-investorV2-investorV2Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-investorV2-investorV2Tests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -37,6 +41,10 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = investorV2/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = investorV2/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-investorV2-investorV2Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-investorV2-investorV2Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A2F456127FE7EDD0082D213 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "../src/assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		1A2F456227FE7EDD0082D213 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-SemiBold.ttf"; path = "../src/assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		1A2F456327FE7EDD0082D213 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "../src/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		1A2F456B27FE84AC0082D213 /* tienngay.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = tienngay.ttf; path = ../src/assets/fonts/tienngay.ttf; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-investorV2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investorV2.debug.xcconfig"; path = "Target Support Files/Pods-investorV2/Pods-investorV2.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-investorV2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investorV2.release.xcconfig"; path = "Target Support Files/Pods-investorV2/Pods-investorV2.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-investorV2-investorV2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investorV2-investorV2Tests.debug.xcconfig"; path = "Target Support Files/Pods-investorV2-investorV2Tests/Pods-investorV2-investorV2Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -96,6 +104,16 @@
 			name = investorV2;
 			sourceTree = "<group>";
 		};
+		1A2F455E27FE7E920082D213 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1A2F456327FE7EDD0082D213 /* OpenSans-Bold.ttf */,
+				1A2F456127FE7EDD0082D213 /* OpenSans-Regular.ttf */,
+				1A2F456227FE7EDD0082D213 /* OpenSans-SemiBold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +134,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				1A2F456B27FE84AC0082D213 /* tienngay.ttf */,
+				1A2F455E27FE7E920082D213 /* Resources */,
 				13B07FAE1A68108700A75B9A /* investorV2 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* investorV2Tests */,
@@ -242,6 +262,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A2F456C27FE84AC0082D213 /* tienngay.ttf in Resources */,
+				1A2F456827FE7EFF0082D213 /* OpenSans-Regular.ttf in Resources */,
+				1A2F456927FE7EFF0082D213 /* OpenSans-SemiBold.ttf in Resources */,
+				1A2F456727FE7EFB0082D213 /* OpenSans-Bold.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

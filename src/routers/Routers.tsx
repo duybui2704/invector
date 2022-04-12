@@ -1,11 +1,12 @@
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 
-import { AppStoreProvider } from '../provider/app-provider/index';
-import { COLORS } from '../theme/colors';
-import { navigationRef } from './Navigator';
+import {AppStoreProvider} from '../provider/app-provider/index';
+import {COLORS} from '../theme/colors';
+import {navigationRef} from './Navigator';
 import RootStack from './RootStack';
+import {PopupsProvider} from "@/provider/popups-provider";
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 
 const MyTheme = {
@@ -26,6 +27,12 @@ const App = () => {
                     <RootStack />
                 </BottomSheetModalProvider>
             </NavigationContainer>
+            <PopupsProvider>
+                <NavigationContainer ref={navigationRef}
+                                     theme={MyTheme}>
+                    <RootStack/>
+                </NavigationContainer>
+            </PopupsProvider>
         </AppStoreProvider>
     );
 };
