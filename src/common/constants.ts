@@ -33,7 +33,25 @@ export enum StorageKeys {
     KEY_RATE = 'KEY_RATING',
     KEY_ENABLE_FAST_AUTHENTICATION = 'KEY_FAST_AUTHENTICATION',
     KEY_PIN = 'KEY_PIN',
-    KEY_TEMP_DATA_FOR_PROPERTY_VALUATION='TEMP_DATA_FOR_PROPERTY_VALUATION',
+    KEY_TEMP_DATA_FOR_PROPERTY_VALUATION = 'TEMP_DATA_FOR_PROPERTY_VALUATION',
     KEY_SAVE_LOGIN_PHONE = 'KEY_SAVE_LOGIN_PHONE',
 }
+export enum ENUM_BIOMETRIC_TYPE {
+    TOUCH_ID = 'TouchID',
+    FACE_ID = 'FaceID',
+    KEY_PIN = 'KEY_PIN'
+}
 
+export enum ERROR_BIOMETRIC {
+    // ios
+    RCTTouchIDNotSupported = 'RCTTouchIDNotSupported',
+    RCTTouchIDUnknownError = 'RCTTouchIDUnknownError',
+    LAErrorTouchIDNotEnrolled = 'LAErrorTouchIDNotEnrolled',
+    LAErrorTouchIDNotAvailable = 'LAErrorTouchIDNotAvailable',
+    // android
+    NOT_SUPPORTED = 'NOT_SUPPORTED',
+    NOT_AVAILABLE = 'NOT_AVAILABLE',
+    NOT_ENROLLED = 'NOT_ENROLLED',
+    FINGERPRINT_ERROR_LOCKOUT_PERMANENT = 'FINGERPRINT_ERROR_LOCKOUT_PERMANENT',
+    ErrorFaceId = 'ErrorFaceId',
+}

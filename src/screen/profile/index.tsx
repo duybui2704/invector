@@ -32,8 +32,11 @@ import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { ScreenName } from '@/common/screenName';
 import Languages from '@/common/Languages';
+import { useAppStore } from '@/hooks';
+import SessionManager from '@/manager/SessionManager';
 
 const Profile = observer(() => {
+    const { userManager } = useAppStore();
     const [isEnabledSwitch, setIsEnabledSwitch] = useState(false);
     const onNavigate = useCallback((title: string) => {
         switch (title) {
@@ -269,14 +272,16 @@ const Profile = observer(() => {
 
     const renderLogoutBtn = useMemo(() => {
         const onLogout = () => {
-
+            SessionManager.logout();
+            userManager.updateUserInfo(null);
+            Navigator.navigateScreen(ScreenName.home);
         };
         return <Button label={Languages.account.logout}
             style={styles.wrapBtn}
             buttonStyle={BUTTON_STYLES.GRAY_RED}
             onPress={onLogout}
         />;
-    }, []);
+    }, [userManager]);
 
     return (
         <View style={styles.container}>

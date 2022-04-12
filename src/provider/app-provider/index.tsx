@@ -10,10 +10,10 @@ export const AppStoreProvider = ({ children }: any) => {
 
     useEffect(() => {
         SessionManager.initData(async () => {
-            if (!SessionManager.isEnableFastAuthentication) {
-                SessionManager.setUserInfo();
-                SessionManager.setAccessToken();
-            }
+            // if (!SessionManager.isEnableFastAuthentication) {
+            //     SessionManager.setUserInfo();
+            //     SessionManager.setAccessToken();
+            // }
             setAppStore(new AppStore());
         });
     }, []);

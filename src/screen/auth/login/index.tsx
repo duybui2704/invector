@@ -1,25 +1,26 @@
-import {observer} from 'mobx-react-lite';
-import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
-import {View, TextInput, ImageBackground, Text, TouchableWithoutFeedback, Keyboard, StatusBar} from 'react-native';
+import { observer } from 'mobx-react-lite';
+import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
+import { View, TextInput, ImageBackground, Text, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
+import placeholder from 'lodash/fp/placeholder';
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import CheckIcon from '@/assets/image/auth/ic_check_login.svg';
 import UnCheckIcon from '@/assets/image/auth/ic_un_check_login.svg';
-import {Touchable} from '../../../components/elements/touchable';
-import {MyTextInput} from '../../../components/elements/textfield';
-import {myStylesAuth} from './styles';
-import {TextFieldActions} from '../../../components/elements/textfield/types';
-import {COLORS} from '../../../theme';
-import Languages from "@/common/Languages";
-import arrayIcon from "@/common/arrayIcon";
-import FormValidate from "@/utils/FormValidate";
+import { Touchable } from '../../../components/elements/touchable';
+import { MyTextInput } from '../../../components/elements/textfield';
+import { myStylesAuth } from './styles';
+import { TextFieldActions } from '../../../components/elements/textfield/types';
+import { COLORS } from '../../../theme';
+import Languages from '@/common/Languages';
+import arrayIcon from '@/common/arrayIcon';
+import FormValidate from '@/utils/FormValidate';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import Navigator from "@/routers/Navigator";
+import Navigator from '@/routers/Navigator';
 import { LoginWithThirdPartyModel } from '@/models/auth';
-import placeholder from "lodash/fp/placeholder";
-import {UserInfoModal} from "@/models/user-modal";
-import Loading from "@/components/loading";
+import { UserInfoModal } from '@/models/user-modal';
+import Loading from '@/components/loading';
+import ScreenName, { TabNamesArray } from '@/common/screenName';
 
 const Login = observer(() => {
     const {
@@ -70,50 +71,29 @@ const Login = observer(() => {
 
     const checkbox = useMemo(() => {
         if (checked) {
-            return <CheckIcon width={24} height={24}/>;
+            return <CheckIcon width={24} height={24} />;
         }
-        return <UnCheckIcon width={20} height={20}/>;
+        return <UnCheckIcon width={20} height={20} />;
     }, [checked]);
 
 
     const onLoginPhone = async () => {
-        const errMsgPhone = FormValidate.passConFirmPhone(phone);
-        const errMsgPwd = FormValidate.passValidate(pass);
-        refPhone.current?.setErrorMsg(errMsgPhone);
-        refPass.current?.setErrorMsg(errMsgPwd);
-        if (`${errMsgPwd}${errMsgPhone}`.length === 0) {
-            setLoading(true);
-            const res = await apiServices.auth.loginPhone(phone, pass);
-            setLoading(false);
-            if (res.success) {
-                if (!checked) {
-                    SessionManager.setSavePhoneLogin('');
-                } else {
-                    SessionManager.setSavePhoneLogin(phone);
-                }
-                userManager.updateUserInfo(res.data as UserInfoModal);
-                fastAuthInfo.setEnableFastAuthentication(false);
-                setTimeout(() => {
-                    if (SessionManager.lastTabIndexBeforeOpenAuthTab) {
-                        // Navigator.navigateToDeepScreen(
-                        //     [ScreenNames.tabs],
-                        //     TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab]
-                        // );
-                    }
-                }, 100);
-            }
-        }
+        userManager.updateUserInfo({
+            name: 'Dinh Giang'
+        });
+        Navigator.navigateToDeepScreen(
+            [ScreenName.tabs],
+            TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+        );
     };
 
-    // const checkLoading = ((isLoading : boolean) => {
-    //     onLoading(isLoading);
-    // }, [isLoading]);
+
 
     return (
         <View style={styles.content}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={styles.txtTitle}>{Languages.Auth.txtTitle}</Text>
-                <IcLine/>
+                <IcLine />
             </View>
             <MyTextInput
                 ref={refPhone}
@@ -143,16 +123,16 @@ const Login = observer(() => {
                     </Touchable>
                     <Text style={styles.txtSave}>Lưu tài khoản</Text>
                 </View>
-                <Touchable onPress={onLoginPhone} disabled={checked ? false : true}
-                           style={checked ? styles.tobLogin : [styles.tobLogin, {backgroundColor: COLORS.GRAY}]}>
-                    <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, {color: COLORS.BLACK}]}>
+                <Touchable onPress={onLoginPhone} disabled={!checked}
+                    style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY }]}>
+                    <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.BLACK }]}>
                         {Languages.Auth.txtTitle}
                     </Text>
                 </Touchable>
             </View>
-            {/*{isLoading && <Loading isOverview/>}*/}
+            {/* {isLoading && <Loading isOverview/>} */}
         </View>
     );
-})
+});
 
 export default Login;

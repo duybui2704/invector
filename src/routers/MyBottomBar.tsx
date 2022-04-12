@@ -1,53 +1,51 @@
-import React, { useCallback } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AnimatedTabBarNavigator } from 'react-native-animated-nav-tab-bar';
 import { observer } from 'mobx-react';
+import React, { useCallback } from 'react';
+import { AnimatedTabBarNavigator } from 'react-native-animated-nav-tab-bar';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
-import { ScreenName, TabsName } from '../common/screenName';
-import { COLORS, Styles } from '@/theme';
-import Home from '@/screen/home';
-import Invest from '@/screen/invest';
-import Report from '@/screen/report';
-import Profile from '@/screen/profile';
-import IcHomeActive from '@/assets/image/bottomTabs/ic_home_active.svg';
-import IcHomeInactive from '@/assets/image/bottomTabs/ic_home_inactive.svg';
-import IcInvestActive from '@/assets/image/bottomTabs/ic_invest_active.svg';
-import IcInvestInactive from '@/assets/image/bottomTabs/ic_invest_inactive.svg';
-import IcReportActive from '@/assets/image/bottomTabs/ic_report_active.svg';
-import IcReportInactive from '@/assets/image/bottomTabs/ic_report_inactive.svg';
-import IcTransactionActive from '@/assets/image/bottomTabs/ic_transaction_active.svg';
-import IcTransactionInactive from '@/assets/image/bottomTabs/ic_transaction_inactive.svg';
-import IcAccountActive from '@/assets/image/bottomTabs/ic_account_active.svg';
-import IcAccountInactive from '@/assets/image/bottomTabs/ic_account_inactive.svg';
-import Transaction from '@/screen/payment/Transaction';
 import { ICONS } from '@/assets/icons/constant';
 import { IconTienngay } from '@/assets/icons/icon-tienngay';
+import Home from '@/screen/home';
+import Invest from '@/screen/invest';
+import Transaction from '@/screen/payment/Transaction';
+import Profile from '@/screen/profile';
+import Report from '@/screen/report';
+import { COLORS, Styles } from '@/theme';
+import { ScreenName, TabsName } from '../common/screenName';
+import { useAppStore } from '@/hooks';
+import SessionManager from '@/manager/SessionManager';
 
 const TabsData = [
     {
         name: TabsName.homeTabs,
         icon: ICONS.HOME,
-        color: COLORS.GRAY
+        color: COLORS.GRAY,
+        index: 0
     },
     {
         name: TabsName.investTabs,
         icon: ICONS.INVEST,
-        color: COLORS.GRAY
+        color: COLORS.GRAY,
+        index: 1
     },
     {
         name: TabsName.reportTabs,
         icon: ICONS.REPORT,
-        color: COLORS.GRAY
+        color: COLORS.GRAY,
+        index: 2
     },
     {
         name: TabsName.paymentTabs,
         icon: ICONS.TRANSACTION,
-        color: COLORS.GRAY
+        color: COLORS.GRAY,
+        index: 3
     },
     {
         name: TabsName.accountTabs,
         icon: ICONS.ACCOUNT,
-        color: COLORS.GRAY
+        color: COLORS.GRAY,
+        index: 4
     }
 
 ];
@@ -59,7 +57,7 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.homeScreen} component={Home} />
+            <Stack.Screen name={ScreenName.home} component={Home} />
         </Stack.Navigator>
     );
 };
@@ -67,7 +65,7 @@ const HomeStack = () => {
 const InvestStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.investScreen} component={Invest} />
+            <Stack.Screen name={ScreenName.invest} component={Invest} />
         </Stack.Navigator>
     );
 };
@@ -75,7 +73,7 @@ const InvestStack = () => {
 const ReportStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.reportScreen} component={Report} />
+            <Stack.Screen name={ScreenName.report} component={Report} />
         </Stack.Navigator>
     );
 };
@@ -91,7 +89,7 @@ const PaymentStack = () => {
 const AccountStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.accountScreen} component={Profile} />
+            <Stack.Screen name={ScreenName.account} component={Profile} />
             <Stack.Screen name={ScreenName.transaction} component={Transaction} />
         </Stack.Navigator>
     );
@@ -118,18 +116,43 @@ const TabBar = ({ props }: any) => {
 
 
 const MyBottomTabs = observer(() => {
+    const { userManager } = useAppStore();
 
     const onTabPress = useCallback((e: any, navigation: any, route: any) => {
         e?.preventDefault();
-        if (route?.name !== TabsName.homeTabs) {
+        const tab = TabsData.filter((item) => item.name === route?.name)[0];
+        if (route?.name !== TabsName.homeTabs && !userManager?.userInfo) {
             navigation.navigate(ScreenName.auth);
+            SessionManager.lastTabIndexBeforeOpenAuthTab = tab?.index;
         }
         else {
             navigation.navigate(route?.name);
         }
-        console.log('route', route);
 
+    }, [userManager]);
+
+    const getTabBarVisibility = useCallback((route: any) => {
+        const routeName = getFocusedRouteNameFromRoute(route);
+        if (
+            routeName === undefined ||
+            routeName === ScreenName.home ||
+            routeName === ScreenName.invest ||
+            routeName === ScreenName.report ||
+            routeName === ScreenName.transaction ||
+            routeName === ScreenName.account
+        ) {
+            return true;
+        }
+        return false;
     }, []);
+
+    const getOptions = useCallback((props: any) => {
+        return {
+            tabBarIcon: (data: any) => <TabBar props={{ ...data, tabName: props.route.name }} />,
+            tabBarVisible: getTabBarVisibility(props?.route)
+        };
+
+    }, [getTabBarVisibility]);
 
     return (
         <Tab.Navigator
@@ -149,10 +172,7 @@ const MyBottomTabs = observer(() => {
             <Tab.Screen
                 name={TabsName.homeTabs}
                 component={HomeStack}
-                options={{
-                    tabBarIcon: (props: any) => <TabBar props={{ ...props, tabName: TabsName.homeTabs }} />
-
-                }}
+                options={getOptions}
                 listeners={({ navigation, route }) => ({
                     tabPress: e => {
                         onTabPress(e, navigation, route);
@@ -162,9 +182,7 @@ const MyBottomTabs = observer(() => {
             <Tab.Screen
                 name={TabsName.investTabs}
                 component={InvestStack}
-                options={{
-                    tabBarIcon: (props: any) => <TabBar props={{ ...props, tabName: TabsName.investTabs }} />
-                }}
+                options={getOptions}
                 listeners={({ navigation, route }) => ({
                     tabPress: e => {
                         onTabPress(e, navigation, route);
@@ -174,9 +192,7 @@ const MyBottomTabs = observer(() => {
             <Tab.Screen
                 name={TabsName.reportTabs}
                 component={ReportStack}
-                options={{
-                    tabBarIcon: (props: any) => <TabBar props={{ ...props, tabName: TabsName.reportTabs }} />
-                }}
+                options={getOptions}
                 listeners={({ navigation, route }) => ({
                     tabPress: e => {
                         onTabPress(e, navigation, route);
@@ -186,9 +202,7 @@ const MyBottomTabs = observer(() => {
             <Tab.Screen
                 name={TabsName.paymentTabs}
                 component={PaymentStack}
-                options={{
-                    tabBarIcon: (props: any) => <TabBar props={{ ...props, tabName: TabsName.paymentTabs }} />
-                }}
+                options={getOptions}
                 listeners={({ navigation, route }) => ({
                     tabPress: e => {
                         onTabPress(e, navigation, route);
@@ -198,9 +212,7 @@ const MyBottomTabs = observer(() => {
             <Tab.Screen
                 name={TabsName.accountTabs}
                 component={AccountStack}
-                options={{
-                    tabBarIcon: (props: any) => <TabBar props={{ ...props, tabName: TabsName.accountTabs }} />
-                }}
+                options={getOptions}
                 listeners={({ navigation, route }) => ({
                     tabPress: e => {
                         onTabPress(e, navigation, route);

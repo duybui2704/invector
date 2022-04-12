@@ -1,22 +1,21 @@
-import {observer} from 'mobx-react-lite';
-import React, {useState} from 'react';
-import {View, ImageBackground, Text, StatusBar, Switch} from 'react-native';
+import { observer } from 'mobx-react-lite';
+import React, { useState } from 'react';
+import { ImageBackground, StatusBar, Text, View } from 'react-native';
 
 import IcFaceAuth from '@/assets/image/auth/ic_face_auth.svg';
+import IcGoogleAuth from '@/assets/image/auth/ic_gg_auth.svg';
 import IcInsAuth from '@/assets/image/auth/ic_ins_auth.svg';
 import IcInAuth from '@/assets/image/auth/ic_in_auth.svg';
-import IcGoogleAuth from '@/assets/image/auth/ic_gg_auth.svg';
-import {myStylesAuth} from './styles';
-import Images from '../../assets/Images';
-import {HeaderBar} from '../../components/header';
-import {COLORS} from '../../theme';
-import Languages from "@/common/Languages";
-import Login from "@/screen/auth/login";
-import SignIn from "@/screen/auth/signIn";
-import Loading from "@/components/loading";
-import SvgComponent from "@/screen/auth/SvgText";
+import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
 import Navigator from '@/routers/Navigator';
+import Login from '@/screen/auth/login';
+import SignIn from '@/screen/auth/signIn';
+import SvgComponent from '@/screen/auth/SvgText';
+import Images from '../../assets/Images';
+import { COLORS } from '../../theme';
+import { myStylesAuth } from './styles';
+
 
 const Auth = observer(() => {
     const styles = myStylesAuth();

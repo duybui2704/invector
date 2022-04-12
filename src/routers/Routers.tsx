@@ -7,10 +7,6 @@ import { COLORS } from '../theme/colors';
 import { navigationRef } from './Navigator';
 import RootStack from './RootStack';
 import { PopupsProvider } from '@/provider/popups-provider';
-<<<<<<< HEAD
-
-=======
->>>>>>> transaction
 
 const MyTheme = {
     ...DefaultTheme,
@@ -23,14 +19,14 @@ const MyTheme = {
 const App = () => {
     return (
         <AppStoreProvider>
-            < BottomSheetModalProvider>
-                <PopupsProvider>
-                    <NavigationContainer ref={navigationRef}
-                        theme={MyTheme}>
+            <PopupsProvider>
+                <NavigationContainer ref={navigationRef}
+                    theme={MyTheme}>
+                    <BottomSheetModalProvider>
                         <RootStack />
-                    </NavigationContainer>
-                </PopupsProvider>
-            </BottomSheetModalProvider>
+                    </BottomSheetModalProvider>
+                </NavigationContainer>
+            </PopupsProvider>
         </AppStoreProvider>
     );
 };

@@ -178,7 +178,6 @@ class SessionManager {
         this.setRatingPoint(0);
         this.setEnableFastAuthentication(false);
         this.lastTabIndexBeforeOpenAuthTab = 0;
-        Navigator.navigateScreen(ScreenNames.auth);
     }
 }
 
