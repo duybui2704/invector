@@ -14,7 +14,7 @@ import HeaderBar from '../../components/header';
 import KeyValueTransaction from '../../components/KeyValueTransaction';
 import { DATA, TransactionTypes } from '../../mocks/data';
 import { COLORS } from '../../theme';
-import Languages from '@/common/languages';
+import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 
 
@@ -22,9 +22,9 @@ const Transaction = observer(() => {
     const isFocused = useIsFocused();
     
     const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
-    const [startDate, setStartDate] = useState<string>('');
-    const [endDate, setEndDate] = useState<string>('');
-    const [option, setOption] = useState<string>('');
+    // const [startDate, setStartDate] = useState<string>('');
+    // const [endDate, setEndDate] = useState<string>('');
+    // const [option, setOption] = useState<string>('');
     const condition = useRef<PagingConditionTypes>({
         isLoading: true,
         canLoadMore: true,
@@ -36,8 +36,10 @@ const Transaction = observer(() => {
     const { apiServices } = useAppStore();
 
     const fetchHistory = useCallback(() => {
-        const res = apiServices.history.getHistory(startDate, endDate, option);
-    }, [apiServices.history, endDate, option, startDate]);
+        const res = apiServices.history.getHistory(condition.current.startDate,
+            condition.current.endDate, 
+            condition.current.option);
+    }, [apiServices.history]);
 
     useEffect(()=>{
         if(isFocused){

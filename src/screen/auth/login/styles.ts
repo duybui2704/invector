@@ -1,7 +1,7 @@
 import {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 
-import {Configs, PADDING_TOP} from '../../../common/config';
+import {Configs, PADDING_TOP} from '../../../common/Config';
 import {COLORS, Styles} from '../../../theme';
 import DimensionUtils from '../../../utils/DimensionUtils';
 

@@ -5,7 +5,7 @@ import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryTheme, Vic
 import { FlatList } from 'react-native-gesture-handler';
 import { observer } from 'mobx-react';
 
-import { Configs } from '@/common/config';
+import { Configs } from '@/common/Config';
 import { Touchable } from '@/components/elements/touchable';
 import KeyValue from '@/components/KeyValue';
 import { COLORS, Styles } from '@/theme';
@@ -15,7 +15,7 @@ import { MonthReportModel } from '@/models/monthOfQuarter-model';
 import Utils from '@/utils/Utils';
 import ICUnderArrow from '@/asset/icon/ic_under_arrow.svg';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
-import Languages from '@/common/languages';
+import Languages from '@/common/Languages';
 
 const Report = observer(()=> {
     const [quarter, setQuarter] = useState<string>('');

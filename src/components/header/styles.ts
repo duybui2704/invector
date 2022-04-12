@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import DimensionUtils from '../../utils/DimensionUtils';
 import { COLORS, Styles } from '../../theme';
-import { Configs, PADDING_TOP, STATUSBAR_HEIGHT } from '../../common/config';
+import { Configs, PADDING_TOP, STATUSBAR_HEIGHT } from '../../common/Config';
 
 const IMG_HEADER_HEIGHT = DimensionUtils.SCREEN_WIDTH / 375 * 85;
 export const styles = StyleSheet.create({

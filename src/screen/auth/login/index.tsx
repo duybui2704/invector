@@ -6,7 +6,7 @@ import CheckIcon from '@/assets/image/auth/ic_check_login.svg';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import UnCheckIcon from '@/assets/image/auth/ic_un_check_login.svg';
 import arrayIcon from '@/common/arrayIcon';
-import Languages from '@/common/languages';
+import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 import { UserInfoModal } from '@/models/user-modal';

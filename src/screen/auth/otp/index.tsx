@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import {ImageBackground, Text, View} from "react-native";
 import Images from "@/assets/Images";
 import {MyStylesOtp} from './styles';
-import Languages from "@/common/languages";
+import Languages from "@/common/Languages";
 import IcLine from "@/assets/image/auth/ic_line_auth.svg";
 import {MyTextInput} from "@/components/elements/textfield";
 import {observer} from "mobx-react";

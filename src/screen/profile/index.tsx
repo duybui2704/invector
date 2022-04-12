@@ -25,11 +25,11 @@ import LinkAccIC from '@/asset/icon/ic_acc_link.svg';
 import { Touchable } from '@/components/elements/touchable';
 import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
-import { Configs } from '@/common/config';
+import { Configs } from '@/common/Config';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { ScreenName } from '@/common/screenName';
-import Languages from '@/common/languages';
+import Languages from '@/common/Languages';
 import KeyToggleValue from '@/components/KeyToggleSwitch';
 
 const Profile = observer(() => {

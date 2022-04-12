@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Configs } from '../../../common/config';
+import { Configs } from '../../../common/Config';
 import { COLORS, Styles } from '../../../theme';
 
 export const myTextFieldStyle = () => {

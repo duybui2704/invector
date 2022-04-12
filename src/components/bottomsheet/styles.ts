@@ -1,7 +1,7 @@
 import {StyleSheet} from "react-native";
 import {useMemo} from "react";
 import {COLORS} from "@/theme";
-import {PADDING_BOTTOM, Configs} from "@/common/config";
+import {PADDING_BOTTOM, Configs} from "@/common/Config";
 
 const ITEM_HEIGHT = Configs.FontSize.size40;
 

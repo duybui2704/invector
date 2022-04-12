@@ -10,7 +10,7 @@ import {myStylesAuth} from './styles';
 import Images from '../../assets/Images';
 import {HeaderBar} from '../../components/header';
 import {COLORS} from '../../theme';
-import Languages from "@/common/languages";
+import Languages from "@/common/Languages";
 import Login from "@/screen/auth/login";
 import SignIn from "@/screen/auth/signIn";
 import Loading from "@/components/loading";
