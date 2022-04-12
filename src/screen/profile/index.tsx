@@ -8,7 +8,6 @@ import Dash from 'react-native-dash';
 import { Switch } from 'react-native-switch';
 
 import { COLORS, Styles } from '@/theme';
-import Languages from '@/common/Languages';
 import HeaderBar from '@/components/header';
 import KeyValue from '@/components/KeyValue';
 import ArrowIC from '@/asset/icon/ic_arrow_right.svg';
@@ -32,6 +31,7 @@ import { Configs } from '@/common/config';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { ScreenName } from '@/common/screenName';
+import Languages from '@/common/languages';
 
 const Profile = observer(() => {
     const [isEnabledSwitch, setIsEnabledSwitch] = useState(false);

@@ -1,7 +1,7 @@
+import Languages from '@/common/languages';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { TransactionModel } from '@/models/transaction-model';
 import { UserModel } from '@/models/user-model';
-import Languages from '../common/Languages';
 
 export const DATA = [
     {

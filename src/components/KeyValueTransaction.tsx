@@ -4,7 +4,7 @@ import Dash from 'react-native-dash';
 
 import { COLORS, Styles } from '../theme';
 import { Configs } from '../common/config';
-import Languages from '../common/Languages';
+import Languages from '@/common/languages';
 
 const KeyValueTransaction = ({ title, dateTime, content, noIndicator ,styleColor, debtNow}: 
     { noIndicator?: boolean, title?: string, dateTime?: string, content?: string , styleColor?:any, debtNow?:string}) => {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         marginVertical:4
     },
     debtText:{
-        ...Styles.typography.regular,
+        ...Styles.typography.regular
     },
     debtNumber:{
         ...Styles.typography.medium
@@ -85,5 +85,5 @@ const styles = StyleSheet.create({
     },
     green:{
         color:COLORS.GREEN
-    },
+    }
 });
