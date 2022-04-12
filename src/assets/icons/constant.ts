@@ -1,9 +1,7 @@
 export enum ICONS {
-    ACCOUNT = 'ic_account_active',
+  ACCOUNT = 'ic_account_active',
+  INVEST = 'ic_invest_active',
+  HOME = 'ic_home_active',
+  REPORT = 'ic_report_active',
+  TRANSACTION = 'ic_transaction_active'
 }
-<!-- Customize your theme here. -->
-          <!-- Change DayNight to Light for disable a dark theme -->
-        <item name="colorAccent">@color/colorAccent</item>
-                <item name="primary">@color/primary</item>
-                        <item name="primaryDark">@color/primaryDark</item>
-        <!-- Change colorAccent for button text color -->

@@ -12,7 +12,6 @@ import Payment from '@/screen/payment';
 import Profile from '@/screen/profile';
 import { ICONS } from '@/assets/icons/constant';
 import { IconTienngay } from '@/assets/icons/icon-tienngay';
-import { Text } from 'react-native';
 
 const TabsData = [
     {
@@ -27,7 +26,7 @@ const TabsData = [
     },
     {
         name: TabsName.reportTabs,
-        icon: ICONS.CHART,
+        icon: ICONS.REPORT,
         color: COLORS.GRAY
     },
     {
