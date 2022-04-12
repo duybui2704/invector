@@ -46,7 +46,7 @@ const SvgComponent = (props) => {
                 <Svg height="100%" width="100%" viewBox='100 20 160 300'  {...props}>
                     <G id="circle">
                         <Circle
-                            r={DimensionUtils.SCREEN_WIDTH * 0.24}
+                            r={DimensionUtils.SCREEN_WIDTH * 0.245}
                             x={DimensionUtils.SCREEN_WIDTH * 0.36}
                             y={DimensionUtils.SCREEN_WIDTH * 0.36}
                             fill="white"
@@ -58,9 +58,9 @@ const SvgComponent = (props) => {
                           onResponderStart={onNavigateFW}
                           key='1'>
                         <TextPath href="#circle">
-                            <TSpan dy={-DimensionUtils.SCREEN_WIDTH * 0.012}
-                                   dx={DimensionUtils.SCREEN_WIDTH * 0.15}>
-                                Q u ê n M â t K h ẩ u
+                            <TSpan dy={-DimensionUtils.SCREEN_WIDTH * 0.013}
+                                   dx={DimensionUtils.SCREEN_WIDTH * 0.16}>
+                                Q u ê n  M â t  K h ẩ u
                             </TSpan>
                         </TextPath>
                     </Text>
@@ -68,16 +68,16 @@ const SvgComponent = (props) => {
                         COLORS.WHITE : COLORS.GRAY
                     } fontSize="10" onPress={onNavigateLogin} key='2'>
                         <TextPath href="#circle">
-                            <TSpan dx={1.170 * DimensionUtils.SCREEN_WIDTH}
+                            <TSpan dx={1.175 * DimensionUtils.SCREEN_WIDTH}
                                    dy={-DimensionUtils.SCREEN_WIDTH * 0.012}>
-                                Đ ă n g N h ậ p
+                                Đ ă n g  N h ậ p
                             </TSpan>
                         </TextPath>
                     </Text>
                     <Text onPress={onNavigateSign} key='3'>
                         <Text fill={pressDK ? COLORS.WHITE : COLORS.GRAY} fontSize="10">
                             <TextPath href="#circle">
-                                <TSpan dx={1.412 * DimensionUtils.SCREEN_WIDTH}
+                                <TSpan dx={1.44 * DimensionUtils.SCREEN_WIDTH}
                                        dy={-DimensionUtils.SCREEN_WIDTH * 0.012}>Đ ă n g </TSpan>
                             </TextPath>
                         </Text>

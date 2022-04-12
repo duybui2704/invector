@@ -16,7 +16,7 @@ const RootStack = observer(() => {
     const AuthStack = useCallback(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
-                <Stack.Screen name={ScreenName.homeScreen} component={Home}/>
+                {/*<Stack.Screen name={ScreenName.homeScreen} component={Home}/>*/}
                 <Stack.Screen name={ScreenName.auth} component={Auth}/>
                 <Stack.Screen name={ScreenName.login} component={Login}/>
             </Stack.Navigator>

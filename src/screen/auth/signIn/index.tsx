@@ -20,6 +20,7 @@ import {useAppStore} from "@/hooks";
 import OtpSign from "@/screen/auth/otpSignIn";
 import Loading from '@/components/loading';
 import PopupSignIn from "@/components/popupSignIn";
+import DimensionUtils from "@/utils/DimensionUtils";
 
 const SignIn = observer(() => {
 
@@ -138,12 +139,12 @@ const SignIn = observer(() => {
 
     const renderView = () => {
         return (
-            <View style={{flex: 1, marginLeft: 10}}>
+            <View style={styles.container}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.txtTitle}>{Languages.Auth.txtSignIn}</Text>
                     <IcLine/>
                 </View>
-                <ScrollViewWithKeyboard style={{marginBottom: 20}}>
+                <ScrollViewWithKeyboard style={{marginBottom: 20, width: DimensionUtils.SCREEN_WIDTH * 0.8, backgroundColor: COLORS.TRANSPARENT}}>
                     <MyTextInput
                         ref={userNameRef}
                         value={username}

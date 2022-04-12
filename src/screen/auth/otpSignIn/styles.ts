@@ -13,7 +13,8 @@ export const MyStylesOtp = () => {
             viewTop: {
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.1
+                marginLeft: -8
+                // marginTop: DimensionUtils.SCREEN_HEIGHT * 0.1
             },
             containerBox: {
                 paddingVertical: 16,
@@ -30,7 +31,7 @@ export const MyStylesOtp = () => {
                 justifyContent: 'center',
                 marginTop: DimensionUtils.SCREEN_HEIGHT * 0.02,
                 marginBottom: DimensionUtils.SCREEN_HEIGHT * 0.01,
-                marginLeft: DimensionUtils.SCREEN_WIDTH * 0.12
+                // marginLeft: DimensionUtils.SCREEN_WIDTH * 0.12
             },
             viewOtp: {
                 width: DimensionUtils.SCREEN_WIDTH * 0.12,
@@ -77,6 +78,7 @@ export const MyStylesOtp = () => {
             },
             tobConfirm: {
                 marginTop: 10,
+                marginLeft: -8,
                 width: DimensionUtils.SCREEN_WIDTH * 0.4,
                 height: Configs.FontSize.size40,
                 backgroundColor: COLORS.GREEN,

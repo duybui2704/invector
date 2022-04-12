@@ -8,6 +8,12 @@ import DimensionUtils from '../../../utils/DimensionUtils';
 export const myStylesSign = () => {
     return useMemo(() => {
         return StyleSheet.create({
+            container: {
+                flex: 1,
+                marginLeft: 10,
+                width: '85%',
+                height: '50%'
+            },
             main: {
                 flex: 1,
                 backgroundColor: COLORS.GREEN,
@@ -29,7 +35,7 @@ export const myStylesSign = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '100%',
+                width: '90%',
                 marginVertical: 5,
                 height: Configs.FontSize.size40
             },
@@ -40,7 +46,7 @@ export const myStylesSign = () => {
                 borderColor: COLORS.GRAY,
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '100%',
+                width: '90%',
                 marginVertical: 5,
                 height: Configs.FontSize.size40
             },
@@ -48,7 +54,7 @@ export const myStylesSign = () => {
                 borderRadius: 20,
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: '100%',
+                width: '90%',
                 marginVertical: 5,
                 height: 40,
             },

@@ -35,12 +35,9 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
             const actionYes = (item) => {
                 // onConfirm(item.item.name);
                 // hide(
-                    setTimeout(() => {
-                        if(onConfirm) {
-                            onConfirm(item.item.name);
-                        }
-                    }, 10000);
-                    hide();
+
+                onConfirm(item.item.name);
+                hide();
             }
 
             const renderFlatList = (item) => {
@@ -67,23 +64,23 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
                     avoidKeyboard={true}
                     hideModalContentWhileAnimating
                 >
-                 <View style={{flex :1, flexDirection: 'column'}}>
-                     <View style={styles.popup} >
-                         <View style={styles.tobModal}>
-                             <View style={[styles.tobView, {marginTop: 12}]}>
-                                 <Text style={styles.textModel}>{title}</Text>
-                             </View>
-                             <View
-                                 style={styles.viewFL}>
-                                 <FlatList
-                                     data={data}
-                                     renderItem={renderFlatList}
-                                     keyExtractor={item => item.type}
-                                 />
-                             </View>
-                         </View>
-                     </View>
-                 </View>
+                    <View style={{flex: 1, flexDirection: 'column'}}>
+                        <View style={styles.popup}>
+                            <View style={styles.tobModal}>
+                                <View style={[styles.tobView, {marginTop: 12}]}>
+                                    <Text style={styles.textModel}>{title}</Text>
+                                </View>
+                                <View
+                                    style={styles.viewFL}>
+                                    <FlatList
+                                        data={data}
+                                        renderItem={renderFlatList}
+                                        keyExtractor={item => item.type}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    </View>
                 </Modal>
             );
         }
