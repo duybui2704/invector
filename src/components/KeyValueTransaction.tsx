@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 import Dash from 'react-native-dash';
 
@@ -7,7 +7,7 @@ import { Configs } from '../common/Configs';
 import Languages from '@/common/Languages';
 
 const KeyValueTransaction = ({ title, dateTime, content, noIndicator ,styleColor, debtNow}: 
-    { noIndicator?: boolean, title?: string, dateTime?: string, content?: string , styleColor?:any, debtNow?:string}) => {
+    { noIndicator?: boolean, title?: string, dateTime?: string, content?: string , styleColor?:string, debtNow?:string}) => {
 
     return (
         <View style={styles.container}>

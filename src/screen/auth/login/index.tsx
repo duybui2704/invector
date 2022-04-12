@@ -16,6 +16,8 @@ import { TextFieldActions } from '../../../components/elements/textfield/types';
 import { Touchable } from '../../../components/elements/touchable';
 import { COLORS } from '../../../theme';
 import { myStylesAuth } from './styles';
+import Navigator from '@/routers/Navigator';
+import ScreenName, { TabNamesArray } from '@/common/screenNames';
 
 
 const Login = observer(() => {

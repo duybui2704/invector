@@ -16,11 +16,12 @@ import { DATA, TransactionTypes } from '../../mocks/data';
 import { COLORS } from '../../theme';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
+import { HistoryModel } from '@/models/history-model';
 
 
 const Transaction = observer(() => {
     const isFocused = useIsFocused();
-    
+
     const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
     // const [startDate, setStartDate] = useState<string>('');
     // const [endDate, setEndDate] = useState<string>('');
@@ -30,23 +31,23 @@ const Transaction = observer(() => {
         canLoadMore: true,
         offset: 0,
         startDate: undefined,
-        endDate: undefined, 
-        option: '0'
+        endDate: undefined,
+        option: undefined
     });
     const { apiServices } = useAppStore();
 
     const fetchHistory = useCallback(() => {
         const res = apiServices.history.getHistory(
             condition.current.startDate,
-            condition.current.endDate, 
+            condition.current.endDate,
             condition.current.option);
     }, [apiServices.history]);
 
-    useEffect(()=>{
-        if(isFocused){
+    useEffect(() => {
+        if (isFocused) {
             fetchHistory();
         }
-    },[fetchHistory, isFocused]);
+    }, [fetchHistory, isFocused]);
 
     const onRefresh = useCallback((startDate?: Date, endDate?: Date) => {
         condition.current.canLoadMore = true;
@@ -65,7 +66,8 @@ const Transaction = observer(() => {
 
             const _onPress = () => {
                 setSelectedFilter(item.value);
-                console.log('hhh',selectedFilter);
+                condition.current.option = item.type;
+                console.log('.option = ', condition.current.option);
             };
 
             return (
@@ -121,11 +123,11 @@ const Transaction = observer(() => {
 
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
-            case Languages?.transaction.fromDate:
+            case Languages?.transaction?.fromDate:
                 onRefresh(date, condition.current.endDate);
                 break;
-            case Languages.transaction.toDate:
-                onRefresh( condition.current.startDate,date);
+            case Languages?.transaction?.toDate:
+                onRefresh(condition.current.startDate, date);
                 break;
             default:
                 break;
@@ -134,6 +136,8 @@ const Transaction = observer(() => {
 
     const onConfirmValue = (date: Date, tag?: string) => {
         onChange(date, tag);
+        console.log('start', condition.current.startDate);
+        console.log('end', condition.current.endDate);
     };
 
     return (

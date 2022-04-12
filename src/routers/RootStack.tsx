@@ -65,6 +65,7 @@ const RootStack = observer(() => {
             <Stack.Navigator screenOptions={screenOptions}>
                 <Stack.Screen name={ScreenName.auth} component={Auth} />
                 <Stack.Screen name={ScreenName.login} component={Login} />
+                <Stack.Screen name={ScreenName.home} component={Home} />
                 <Stack.Screen name={ScreenName.otp} component={Otp} />
             </Stack.Navigator>
         );
@@ -78,6 +79,7 @@ const RootStack = observer(() => {
             </Stack.Navigator>
         );
     }, [AuthStack]);
+
     const renderRootStack = useMemo(() => {
         return <AppStack />;
     }, [AppStack]);

@@ -83,7 +83,7 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
                     <ICCalender/>
                     <DatePicker
                         modal
-                        mode='datetime'
+                        mode='date'
                         open={visible}
                         locale={'vi'}
                         androidVariant={'iosClone'}
