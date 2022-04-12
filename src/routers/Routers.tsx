@@ -1,10 +1,11 @@
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 
-import { AppStoreProvider } from '../provider/app-provider/index';
-import { COLORS } from '../theme/colors';
-import { navigationRef } from './Navigator';
+import {AppStoreProvider} from '../provider/app-provider/index';
+import {COLORS} from '../theme/colors';
+import {navigationRef} from './Navigator';
 import RootStack from './RootStack';
+import {PopupsProvider} from "@/provider/popups-provider";
 
 
 const MyTheme = {
@@ -19,10 +20,12 @@ const App = () => {
     console.log('aaaa');
     return (
         <AppStoreProvider>
-            <NavigationContainer ref={navigationRef}
-                theme={MyTheme}>
-                <RootStack />
-            </NavigationContainer>
+            <PopupsProvider>
+                <NavigationContainer ref={navigationRef}
+                                     theme={MyTheme}>
+                    <RootStack/>
+                </NavigationContainer>
+            </PopupsProvider>
         </AppStoreProvider>
     );
 };

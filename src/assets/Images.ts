@@ -1,5 +1,5 @@
 // login
-const bg_login = require('./image/auth/bg_login.jpg');
+const bg_login = require('./image/auth/bg_auth.jpg');
 
 // Tabs
 const ic_home = require('./image/bottomTabs/ic_home.png');

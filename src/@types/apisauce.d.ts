@@ -46,12 +46,12 @@ export interface ApiErrorResponse<T> {
     config?: AxiosRequestConfig
     duration?: number
 
-     // custom
-     success: boolean
-     message?: string
-     code?: number
-     accessToken?: string
-     refreshToken?: string
+    // custom
+    success: boolean
+    message?: string
+    code?: number
+    accessToken?: string
+    refreshToken?: string
 }
 export interface ApiOkResponse<T> {
     ok: true
