@@ -11,14 +11,12 @@ import {MyTextInput} from '@/components/elements/textfield';
 import {myStylesSign} from './styles';
 import {TextFieldActions} from '@/components/elements/textfield/types';
 import {COLORS} from '@/theme';
-import PickerValuation from "@/components/PickerValuation";
-import {PickerAction} from "@/components/PickerValuation/types";
 import Languages from "@/common/languages";
 import arrayIcon from "@/common/arrayIcon";
 import FormValidate from "@/utils/FormValidate";
-import {ItemProps} from "@/components/bottomSheet/types";
 import {useAppStore} from "@/hooks";
-import {ChannelModal} from "@/models/ChannelModal";
+import OtpSign from "@/screen/auth/otpSignIn";
+import Loading from '@/components/loading';
 
 const SignIn = observer(() => {
 
@@ -32,8 +30,6 @@ const SignIn = observer(() => {
     const [conFirmPass, setConFirmPass] = useState<string>('');
     const [keyRefer, setKeyRerFe] = useState<string>('');
     const [disable, setDisable] = useState<boolean>(false);
-    const [channel, setChannel] = useState<ItemProps>();
-    const [dataChannel, setDataChannel] = useState<ItemProps[]>();
 
     const userNameRef = useRef<TextFieldActions>(null);
     const phoneRef = useRef<TextFieldActions>(null);
@@ -45,7 +41,6 @@ const SignIn = observer(() => {
     const [checked, setChecked] = useState<boolean>(false);
     const [isNavigate, setIsNavigate] = useState<boolean>(false);
     const [data, setData] = useState<any>();
-    const channelRef = useRef<PickerAction>(null);
     const styles = myStylesSign();
 
     const onValidation = useCallback(() => {
@@ -55,7 +50,6 @@ const SignIn = observer(() => {
         const errMsgCard = FormValidate.cardValidate(card);
         const errMsgPwd = FormValidate.passValidate(pass);
         const errMsgConFirmPwd = FormValidate.passConFirmValidate(pass, conFirmPass);
-        const errMsgChannelRef = FormValidate.inputNameEmpty(channel, Languages.errorMsg.msgChannel);
 
         userNameRef.current?.setErrorMsg(errMsgUsername);
         phoneRef.current?.setErrorMsg(errMsgPhone);
@@ -63,41 +57,33 @@ const SignIn = observer(() => {
         cardRef.current?.setErrorMsg(errMsgCard);
         pwdRef.current?.setErrorMsg(errMsgPwd);
         pwdCfRef.current?.setErrorMsg(errMsgConFirmPwd);
-        channelRef.current?.setErrorMsg(errMsgChannelRef);
 
         if (`${errMsgUsername}${errMsgEmail}${errMsgCard}${errMsgPwd}${errMsgConFirmPwd}${errMsgPhone}`.length === 0) {
             return true;
         }
         return false;
-    }, [card, channel, conFirmPass, email, pass, phone, username]);
+    }, [card, conFirmPass, email, pass, phone, username]);
 
     const onPressSignUp = async () => {
+        setIsNavigate(true)
         if (onValidation()) {
-            // setLoading(true);
+            setLoading(true);
             setDisable(!disable);
             const res = await apiServices.auth.registerAuth(phone, username, pass, conFirmPass, email, card, '123', channel?.value);
             if (res.success) {
-                // setLoading(false);
-                setData(res.data);
+                setLoading(false);
+                // Navigator.pushScreen(ScreenName.otp, {
+                //     phone,
+                //     data: res.data
+                // });
             }
         }
-
     };
 
     const fetchData = async () => {
         setLoading(true);
         const res = await apiServices.auth.getChanelSource();
         if (res.success) {
-            setLoading(false);
-            const data = res.data as ChannelModal[];
-            const temp = [] as ItemProps[];
-            data?.forEach((item: any) => {
-                temp.push({
-                    value: item?.name,
-                    id: item.type
-                });
-            });
-            setDataChannel(temp);
         }
         setLoading(false);
     };
@@ -105,10 +91,6 @@ const SignIn = observer(() => {
     useEffect(() => {
         fetchData();
     }, [apiServices.auth]);
-
-    const onChangeFormality = useCallback((item: any) => {
-        setChannel(item);
-    }, []);
 
     const onChangeText = (value: string, tag?: string) => {
         switch (tag) {
@@ -232,16 +214,6 @@ const SignIn = observer(() => {
                         onChangeText={onChangeText}
                     />
 
-                    <PickerValuation
-                        ref={channelRef}
-                        containerStyle={styles.Picker}
-                        rightIcon={arrayIcon.login.channel}
-                        label={Languages.Auth.knowChannel}
-                        placeholder={Languages.Auth.knowChannel}
-                        onPressItem={onChangeFormality}
-                        value={channel?.value}
-                        data={data}/>
-
                     <View style={styles.rowInfo}>
                         <View style={styles.row}>
                             <Touchable style={styles.checkbox} onPress={onChangeChecked}>
@@ -257,13 +229,14 @@ const SignIn = observer(() => {
                         </Touchable>
                     </View>
                 </ScrollViewWithKeyboard>
+                {isLoading && <Loading isOverview/>}
             </View>
         );
     }
 
     return (
         <View style={{flex: 1}}>
-            {renderView()}
+            {isNavigate ? <OtpSign phone={'0862319100'}/> : renderView()}
         </View>
     );
 })

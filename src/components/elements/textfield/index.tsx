@@ -133,9 +133,9 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
 
         const eventEndEditing = useCallback(() => {
             if (onEndEditing) {
-                onEndEditing(`${textfieldVal}`, placeHolder);
+                onEndEditing(`${textfieldVal}`, placeHolder || testID);
             }
-        }, [onEndEditing, placeHolder, textfieldVal]);
+        }, [onEndEditing, placeHolder, textfieldVal, testID]);
 
         const onFocus = useCallback(() => {
             onFocusCallback?.(placeHolder);

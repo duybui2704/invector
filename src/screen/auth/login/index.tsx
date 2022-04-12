@@ -15,9 +15,6 @@ import arrayIcon from "@/common/arrayIcon";
 import FormValidate from "@/utils/FormValidate";
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import Navigator from "@/routers/Navigator";
-import { LoginWithThirdPartyModel } from '@/models/auth';
-import placeholder from "lodash/fp/placeholder";
 import {UserInfoModal} from "@/models/user-modal";
 import Loading from "@/components/loading";
 
@@ -113,7 +110,7 @@ const Login = observer(() => {
         <View style={styles.content}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.txtTitle}>{Languages.Auth.txtTitle}</Text>
-                <IcLine/>
+                <IcLine width={'40%'} height={40}/>
             </View>
             <MyTextInput
                 ref={refPhone}
@@ -150,7 +147,7 @@ const Login = observer(() => {
                     </Text>
                 </Touchable>
             </View>
-            {/*{isLoading && <Loading isOverview/>}*/}
+            {isLoading && <Loading isOverview/>}
         </View>
     );
 })

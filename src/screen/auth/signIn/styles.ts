@@ -34,7 +34,7 @@ export const myStylesSign = () => {
                 alignItems: 'center',
                 width: '100%',
                 marginVertical: 5,
-                height: Configs.FontSize.size40
+                height: 40,
             },
 
             rowInfo: {

@@ -25,7 +25,7 @@ const Auth = observer(() => {
                 <SvgComponent/>
             </View>
             <View style={styles.wrapAll}>
-                <View style={styles.func}><SignIn/></View>
+                <View style={styles.func}><Login/></View>
                 <View style={styles.viewBottom}>
                     <Text style={styles.txtLogin}>{Languages.Auth.txtLogin}</Text>
                     <View style={styles.viewIcon}>
