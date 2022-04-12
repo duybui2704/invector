@@ -201,24 +201,19 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         const checkIconRight = useMemo(() => {
             switch (rightIcon){
                 case arrayIcon.login.phone:
-                    return <IcPhone width={20} height={20}/>
-                    break;
+                    return <IcPhone width={20} height={20}/>;
                 case arrayIcon.login.pass:
-                    return <IcPass width={20} height={20}/>
-                    break;
+                    return <IcPass width={20} height={20}/>;
                 case arrayIcon.login.email:
-                    return <IcEmailAuth width={20} height={20}/>
-                    break;
+                    return <IcEmailAuth width={20} height={20}/>;
                 case arrayIcon.login.confirmPass:
-                    return <IcPass width={20} height={20}/>
-                    break;
+                    return <IcPass width={20} height={20}/>;
                 case arrayIcon.login.name:
-                    return <IcName width={20} height={20}/>
-                    break;
+                    return <IcName width={20} height={20}/>;
                 default:
                     break;
             }
-        }, [rightIcon])
+        }, [rightIcon]);
 
         return (
             <>
