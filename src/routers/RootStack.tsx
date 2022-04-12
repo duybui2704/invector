@@ -13,6 +13,7 @@ const screenOptions = { headerShown: false };
 const Stack = createNativeStackNavigator();
 
 
+
 const RootStack = observer(() => {
 
     const AuthStack = useCallback(() => {

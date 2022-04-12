@@ -1,4 +1,6 @@
 export const DELAY_CLICK = 3e2;
+
+export const QUARTER = [' Quý 1', ' Quý 2', 'Quý 3', 'Quý 4'];
 export const PHONE_PREFIX = '+84';
 
 export const PHONE_REGEX = /^0+[3,5,7,8,9]{1}[0-9]{1}[1-9]{1}[0-9]{6}$/;

@@ -1,4 +1,4 @@
-module.exports = (api) => {
+module.exports = api => {
     api.cache(true);
 
     return {
@@ -13,7 +13,8 @@ module.exports = (api) => {
                     }
                 }
             ],
-            ['@babel/plugin-proposal-decorators', { legacy: true }],
+            'react-native-reanimated/plugin',
+            ['@babel/plugin-proposal-decorators', { legacy: true }]
         ]
     };
 };

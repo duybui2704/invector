@@ -9,7 +9,8 @@ export const ScreenName = {
     reportScreen: 'ReportScreen',
     paymentScreen: 'PaymentScreen',
     accountScreen: 'AccountScreen',
-    introduceScreen: 'IntroduceScreen'
+    introduceScreen: 'IntroduceScreen',
+    transaction: 'Transaction'
 };
 
 export default ScreenName;
