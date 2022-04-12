@@ -13,7 +13,7 @@ import HeaderBar from '../../components/header';
 import KeyValueTransaction from '../../components/KeyValueTransaction';
 import { DATA, TransactionTypes } from '../../mocks/data';
 import { COLORS } from '../../theme';
-import Languages from '@/common/languages';
+import Languages from '@/common/Languages';
 
 
 const Transaction = observer(() => {

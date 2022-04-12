@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Circle, TextPath, TSpan, G, Svg, Text } from 'react-native-svg';
 import { COLORS } from "@/theme";
-import Languages from "@/common/languages";
+import Languages from "@/common/Languages";
 import { useCallback, useState, useEffect } from "react";
 const SvgComponent = (props) => {
 

@@ -14,7 +14,7 @@ import { Touchable } from '@/components/elements/touchable';
 import { MyStylesHome } from './styles';
 import HeaderBar from '@/components/header';
 import { COLORS } from '@/theme';
-import Languages from '@/common/languages';
+import Languages from '@/common/Languages';
 
 
 

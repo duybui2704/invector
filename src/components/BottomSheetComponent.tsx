@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { Configs, PADDING_BOTTOM } from '@/common/config';
+import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import { Touchable } from './elements/touchable';
 import { Styles } from '@/theme';
 import { ItemProps } from '@/models/common-model';

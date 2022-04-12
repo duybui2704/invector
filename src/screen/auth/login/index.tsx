@@ -10,7 +10,7 @@ import {MyTextInput} from '../../../components/elements/textfield';
 import {myStylesAuth} from './styles';
 import {TextFieldActions} from '../../../components/elements/textfield/types';
 import {COLORS} from '../../../theme';
-import Languages from "@/common/languages";
+import Languages from "@/common/Languages";
 import arrayIcon from "@/common/arrayIcon";
 import FormValidate from "@/utils/FormValidate";
 import { useAppStore } from '@/hooks';

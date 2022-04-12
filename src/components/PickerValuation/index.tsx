@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 
 // import SelectIcon from '@/assets/images/ic_retangle.svg';
-import { Configs } from '@/common/config';
+import { Configs } from '@/common/Configs';
 import { COLORS, Styles } from '@/theme';
 import Utils from '@/utils/Utils';
 import BottomSheetComponent, { ItemProps } from '@/components/bottomsheet';
 
 import { Touchable } from '../../components/elements/touchable';
 import Validate from '@/utils/Validate';
-import Languages from '@/common/languages';
+import Languages from '@/common/Languages';
 import { PopupActionTypes } from '@/components/PickerValuation/types';
 
 

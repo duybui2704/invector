@@ -7,7 +7,7 @@ import Toast from 'react-native-easy-toast';
 import Validate from '@/utils/Validate';
 import { EventEmitter } from '@/utils/EventEmitter';
 import { Events } from '@/common/constants';
-import { TOAST_POSITION } from '../../common/config';
+import { TOAST_POSITION } from '../../common/Configs';
 import { COLORS } from '../../theme';
 import { PopupContext } from './context';
 

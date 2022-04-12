@@ -1,4 +1,4 @@
-import { isIOS } from '@/common/config';
+import { isIOS } from '@/common/Configs';
 
 // README: Should be using react native config
 
