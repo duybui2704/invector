@@ -20,7 +20,7 @@ import Navigator from '@/routers/Navigator';
 import { LoginWithThirdPartyModel } from '@/models/auth';
 import { UserInfoModal } from '@/models/user-modal';
 import Loading from '@/components/loading';
-import ScreenName, { TabNamesArray } from '@/common/screenName';
+import ScreenName, { TabNamesArray } from '@/common/screenNames';
 
 const Login = observer(() => {
     const {

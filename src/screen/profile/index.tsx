@@ -30,7 +30,7 @@ import Navigator from '@/routers/Navigator';
 import { Configs } from '@/common/Configs';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
-import { ScreenName } from '@/common/screenName';
+import { ScreenName } from '@/common/screenNames';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';

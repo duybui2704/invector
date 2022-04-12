@@ -5,7 +5,7 @@ import TouchID from 'react-native-touch-id';
 import { Platform } from 'react-native';
 
 import Auth from '@/screen/auth';
-import { ScreenName } from '../common/screenName';
+import { ScreenName } from '../common/screenNames';
 import Login from '../screen/auth/login';
 import Otp from '../screen/auth/otp';
 import MyBottomTabs from './MyBottomBar';
