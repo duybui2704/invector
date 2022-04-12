@@ -34,6 +34,7 @@ import KeyToggleValue from '@/components/KeyToggleSwitch';
 
 const Profile = observer(() => {
     const [isEnabledSwitch, setIsEnabledSwitch] = useState(false);
+    
     const onNavigate = useCallback((title: string) => {
         switch (title) {
             case Languages.account.accountLink:

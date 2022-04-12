@@ -38,7 +38,7 @@ const Languages={
         title: 'Tài khoản',
         payMethod: 'Phương thức thanh toán',
         changePwd: 'Đổi mật khẩu',
-        authenFinger: 'Xác thực nhanh vân tay',
+        authnFinger: 'Xác thực nhanh vân tay',
         accountLink: 'Tài khoản liên kết',
         policy: 'Điều kiện và tài khoản',
         shareFriends: 'Mời bạn bè',
@@ -97,7 +97,8 @@ const Languages={
         knowChannel: 'Bạn biết chúng tôi qua kênh nào ?',
         txtTitleOtp: 'Xác nhận OTP',
         txtConfirmOtp: 'Nhập mã OTP đã được gửi về điện thoại bạn đã xác nhận',
-        conFirm: 'Xác nhận'
+        conFirm: 'Xác nhận',
+        saveAcc: 'Lưu tài khoản'
     },
     errorMsg: {
         userNameRequired: 'Họ và tên không được để trống',

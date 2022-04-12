@@ -16,16 +16,12 @@ import { DATA, TransactionTypes } from '../../mocks/data';
 import { COLORS } from '../../theme';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
-import { HistoryModel } from '@/models/history-model';
-
 
 const Transaction = observer(() => {
     const isFocused = useIsFocused();
 
     const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
-    // const [startDate, setStartDate] = useState<string>('');
-    // const [endDate, setEndDate] = useState<string>('');
-    // const [option, setOption] = useState<string>('');
+
     const condition = useRef<PagingConditionTypes>({
         isLoading: true,
         canLoadMore: true,
@@ -36,11 +32,12 @@ const Transaction = observer(() => {
     });
     const { apiServices } = useAppStore();
 
-    const fetchHistory = useCallback(() => {
+    const fetchHistory = useCallback(() => { 
         const res = apiServices.history.getHistory(
             condition.current.startDate,
             condition.current.endDate,
             condition.current.option);
+       
     }, [apiServices.history]);
 
     useEffect(() => {
@@ -158,6 +155,7 @@ const Transaction = observer(() => {
                     onConfirmDatePicker={onConfirmValue}
                     onDateChangeDatePicker={onChange}
                     date={condition.current.endDate || new Date()}
+                    minimumDate={condition.current.startDate }
                     maximumDate={new Date()}
                 />
             </View>
