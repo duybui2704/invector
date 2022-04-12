@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 import React from 'react';
 import Dash from 'react-native-dash';
 
 import { COLORS, Styles } from '../theme';
 import { Touchable } from './elements/touchable';
+import { TouchableProps } from './elements/touchable/types';
 
 const KeyValue = (
     { title, content, noIndicator, styleColor,
@@ -13,15 +14,15 @@ const KeyValue = (
             noIndicator?: boolean,
             title: string,
             content?: string,
-            styleColor?: any,
-            styleContainer?: any,
+            styleColor?: TextStyle,
+            styleContainer?: ViewStyle,
             leftIcon?: any,
             rightIcon?: any,
-            styleTouchable?: any,
+            styleTouchable?: TouchableProps,
             hasDashBottom?: boolean,
             onPress?: any,
-            styleTitle?: any,
-            containerContent?: any
+            styleTitle?: TextStyle,
+            containerContent?: ViewStyle
         }
 ) => {
 

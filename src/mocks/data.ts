@@ -39,9 +39,9 @@ export const DATA = [
 ] as TransactionModel[];
 
 export const TransactionTypes = [
-    { label: Languages.transaction.all, value: 1, type: 1 },
-    { label: Languages.transaction.inMoney, value: 2, type: 2 },
-    { label: Languages.transaction.outMoney, value: 3, type: 3 }
+    { label: Languages.transaction.all, value: 1, type: 'all' },
+    { label: Languages.transaction.inMoney, value: 2, type: 'investor' },
+    { label: Languages.transaction.outMoney, value: 3, type: 'pay' }
 ] as KeyValueModel[];
 
 export const DataChart = {

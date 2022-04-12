@@ -8,6 +8,7 @@ import React, {
 import {
     StyleSheet,
     Text,
+    TextStyle,
     TouchableOpacity,
     View,
     ViewStyle
@@ -25,12 +26,12 @@ type PickerProps = {
     value?: string;
     data?: ItemProps[];
     labelContainer?: ViewStyle;
-    labelStyle?: any;
+    labelStyle?: TextStyle;
     btnContainer?: any;
-    placeholderStyle?: any;
+    placeholderStyle?: TextStyle;
     rightIcon?: any;
     disable?: boolean;
-    valueText?: any;
+    valueText?: TextStyle;
 };
 type BottomSheetAction = {
     show: (content?: string) => any;
