@@ -1,10 +1,12 @@
 import {observer} from 'mobx-react-lite';
 import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
 import {View, Text} from 'react-native';
+import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import ScrollViewWithKeyboard from "@/components/scrollViewWithKeyboard";
-
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import CheckIcon from '@/assets/image/auth/ic_check_login.svg';
+import IcChannel from '@/assets/image/auth/ic_down_auth.svg';
 import UnCheckIcon from '@/assets/image/auth/ic_un_check_login.svg';
 import {Touchable} from '@/components/elements/touchable';
 import {MyTextInput} from '@/components/elements/textfield';
@@ -17,6 +19,7 @@ import FormValidate from "@/utils/FormValidate";
 import {useAppStore} from "@/hooks";
 import OtpSign from "@/screen/auth/otpSignIn";
 import Loading from '@/components/loading';
+import PopupSignIn from "@/components/popupSignIn";
 
 const SignIn = observer(() => {
 
@@ -25,19 +28,18 @@ const SignIn = observer(() => {
     const [username, setUsername] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
     const [email, setEmail] = useState<string>('');
-    const [card, setCard] = useState<string>('');
+    const [channel, setchannel] = useState<string>('');
     const [pass, setPass] = useState<string>('');
     const [conFirmPass, setConFirmPass] = useState<string>('');
-    const [keyRefer, setKeyRerFe] = useState<string>('');
     const [disable, setDisable] = useState<boolean>(false);
+    const [modal, setModal] = useState<boolean>(false)
 
     const userNameRef = useRef<TextFieldActions>(null);
     const phoneRef = useRef<TextFieldActions>(null);
     const emailRef = useRef<TextFieldActions>(null);
-    const cardRef = useRef<TextFieldActions>(null);
     const pwdRef = useRef<TextFieldActions>(null);
     const pwdCfRef = useRef<TextFieldActions>(null);
-    const keyReferRef = useRef<TextFieldActions>(null);
+    const modalRef = useRef();
     const [checked, setChecked] = useState<boolean>(false);
     const [isNavigate, setIsNavigate] = useState<boolean>(false);
     const [data, setData] = useState<any>();
@@ -47,36 +49,34 @@ const SignIn = observer(() => {
         const errMsgUsername = FormValidate.userNameValidate(username);
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
         const errMsgEmail = FormValidate.emailValidate(email);
-        const errMsgCard = FormValidate.cardValidate(card);
         const errMsgPwd = FormValidate.passValidate(pass);
         const errMsgConFirmPwd = FormValidate.passConFirmValidate(pass, conFirmPass);
 
         userNameRef.current?.setErrorMsg(errMsgUsername);
         phoneRef.current?.setErrorMsg(errMsgPhone);
         emailRef.current?.setErrorMsg(errMsgEmail);
-        cardRef.current?.setErrorMsg(errMsgCard);
         pwdRef.current?.setErrorMsg(errMsgPwd);
         pwdCfRef.current?.setErrorMsg(errMsgConFirmPwd);
 
-        if (`${errMsgUsername}${errMsgEmail}${errMsgCard}${errMsgPwd}${errMsgConFirmPwd}${errMsgPhone}`.length === 0) {
+        if (`${errMsgUsername}${errMsgEmail}${errMsgPwd}${errMsgConFirmPwd}${errMsgPhone}`.length === 0) {
             return true;
         }
         return false;
-    }, [card, conFirmPass, email, pass, phone, username]);
+    }, [channel, conFirmPass, email, pass, phone, username]);
 
     const onPressSignUp = async () => {
         setIsNavigate(true)
         if (onValidation()) {
             setLoading(true);
             setDisable(!disable);
-            const res = await apiServices.auth.registerAuth(phone, username, pass, conFirmPass, email, card, '123', channel?.value);
-            if (res.success) {
-                setLoading(false);
-                // Navigator.pushScreen(ScreenName.otp, {
-                //     phone,
-                //     data: res.data
-                // });
-            }
+            // const res = await apiServices.auth.registerAuth(phone, username, pass, conFirmPass, email, channel?.value);
+            // if (res.success) {
+            //     setLoading(false);
+            //     // Navigator.pushScreen(ScreenName.otp, {
+            //     //     phone,
+            //     //     data: res.data
+            //     // });
+            // }
         }
     };
 
@@ -84,6 +84,8 @@ const SignIn = observer(() => {
         setLoading(true);
         const res = await apiServices.auth.getChanelSource();
         if (res.success) {
+            setData(res.data);
+            console.log(res.data)
         }
         setLoading(false);
     };
@@ -103,18 +105,11 @@ const SignIn = observer(() => {
             case Languages.Auth.email:
                 setEmail(value);
                 break;
-            case Languages.Auth.card:
-                setCard(value);
-                break;
             case Languages.Auth.enterPwd:
                 setPass(value);
                 break;
             case Languages.Auth.currentPass:
                 setConFirmPass(value);
-
-                break;
-            case Languages.Auth.enterKeyRefer:
-                setKeyRerFe(value);
                 break;
             default:
                 break;
@@ -132,6 +127,14 @@ const SignIn = observer(() => {
     const onChangeChecked = useCallback(() => {
         setChecked(last => !last);
     }, []);
+
+    const onModal = useCallback(() => {
+        modalRef.current?.show();
+    }, []);
+
+    const actionYes = useCallback((txt) => {
+        setchannel(txt);
+    }, [])
 
     const renderView = () => {
         return (
@@ -175,15 +178,6 @@ const SignIn = observer(() => {
                         keyboardType={'EMAIL'}
                     />
                     <MyTextInput
-                        ref={cardRef}
-                        value={card}
-                        isPhoneNumber={false}
-                        placeHolder={Languages.Auth.card}
-                        onChangeText={onChangeText}
-                        containerInput={styles.inputPass}
-                        keyboardType={'NUMERIC'}
-                    />
-                    <MyTextInput
                         ref={pwdRef}
                         value={pass}
                         isPassword
@@ -205,14 +199,14 @@ const SignIn = observer(() => {
                         onChangeText={onChangeText}
                     />
 
-                    <MyTextInput
-                        ref={keyReferRef}
-                        value={keyRefer}
-                        isPhoneNumber={false}
-                        containerInput={styles.inputPass}
-                        placeHolder={Languages.Auth.enterKeyRefer}
-                        onChangeText={onChangeText}
-                    />
+                    <Touchable onPress={() => onModal()} style={styles.tob} disabled={data ? false : true}>
+                        <Text style={channel !== '' ?
+                            [styles.txtTitleModal, {color: COLORS.BLACK}] : styles.txtTitleModal}>
+                            {channel !== '' ? channel : Languages.Auth.knowChannel}</Text>
+                        <View style={styles.viewIcon}>
+                            <IcChannel width={20} height={20}/>
+                        </View>
+                    </Touchable>
 
                     <View style={styles.rowInfo}>
                         <View style={styles.row}>
@@ -229,6 +223,13 @@ const SignIn = observer(() => {
                         </Touchable>
                     </View>
                 </ScrollViewWithKeyboard>
+                {data &&
+                  <PopupSignIn
+                    ref={modalRef}
+                    onConfirm={actionYes}
+                    title={Languages.Auth.knowChannel}
+                    data={data}
+                  />}
                 {isLoading && <Loading isOverview/>}
             </View>
         );
@@ -236,7 +237,7 @@ const SignIn = observer(() => {
 
     return (
         <View style={{flex: 1}}>
-            {isNavigate ? <OtpSign phone={'0862319100'}/> : renderView()}
+            {!isNavigate ? <OtpSign phone={'0862319100'} check={true}/> : renderView()}
         </View>
     );
 })

@@ -11,7 +11,7 @@ const Languages={
         title:'Trang chủ',
         sumInvest: 'Tổng đầu tư',
         sumpProfit: 'Tổng lãi đã nhận',
-        sumResidualProfit: 'Tổng lãi còn lại', 
+        sumResidualProfit: 'Tổng lãi còn lại',
         have: 'Đang có',
         vnd: 'VNĐ',
         invest: 'Đầu tư',
@@ -74,7 +74,6 @@ const Languages={
         currentPass: 'Nhập lại mật khẩu',
         about: 'Nơi bạn biết về chúng tôi',
         keyRefer: 'Mã giới thiệu',
-        enterKeyRefer: 'Nhập mã giới thiệu'
     },
     errorMsg: {
         userNameRequired: 'Họ và tên không được để trống',
@@ -108,7 +107,9 @@ const Languages={
         popupOtpErrorTitle: 'Thông báo OTP',
         popupOtpErrorDescription: 'OTP không chính xác',
         popupOtpSuccessDescription: 'Đăng ký thành công',
-        popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại'
+        popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
+        sentOtp1: 'Gửi lại mã sau: ',
+        sentOtp2: 'Gửi lại mã'
     },
 };
 export default Languages;

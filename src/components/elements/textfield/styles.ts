@@ -55,7 +55,7 @@ export const myTextFieldStyle = () => {
                 flexRow: {
                     flexDirection: 'row',
                     paddingHorizontal: 10,
-                    alignItems:'center',
+                    alignItems:'center'
                 },
                 leftIconContainer: {
                     width: 20,

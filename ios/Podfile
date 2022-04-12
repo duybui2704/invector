@@ -29,6 +29,8 @@ target 'investorV2' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'investorV2Tests' do
     inherit! :complete
     # Pods for testing

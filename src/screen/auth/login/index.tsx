@@ -102,10 +102,6 @@ const Login = observer(() => {
         }
     };
 
-    // const checkLoading = ((isLoading : boolean) => {
-    //     onLoading(isLoading);
-    // }, [isLoading]);
-
     return (
         <View style={styles.content}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>

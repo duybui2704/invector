@@ -10,6 +10,11 @@ export const MyStylesOtp = () => {
             container: {
                 flex: 1
             },
+            viewTop: {
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.1
+            },
             containerBox: {
                 paddingVertical: 16,
                 paddingHorizontal: 16
@@ -23,14 +28,14 @@ export const MyStylesOtp = () => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.08,
-                marginBottom: DimensionUtils.SCREEN_HEIGHT * 0.05,
-                marginLeft: DimensionUtils.SCREEN_WIDTH * 0.18
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.02,
+                marginBottom: DimensionUtils.SCREEN_HEIGHT * 0.01,
+                marginLeft: DimensionUtils.SCREEN_WIDTH * 0.12
             },
             viewOtp: {
                 width: DimensionUtils.SCREEN_WIDTH * 0.12,
                 height: DimensionUtils.SCREEN_WIDTH * 0.12,
-                marginVertical: 10,
+                marginVertical: 6,
                 marginHorizontal: 4,
                 borderWidth: 1,
                 borderRadius: DimensionUtils.SCREEN_WIDTH * 0.06,
@@ -81,7 +86,17 @@ export const MyStylesOtp = () => {
             },
             txtConfirm: {
                 color: COLORS.WHITE,
-                fontSize: Configs.FontSize.size12
+                fontSize: Configs.FontSize.size14
+            },
+            sentOtp: {
+                width: DimensionUtils.SCREEN_WIDTH * 0.3,
+                height: DimensionUtils.SCREEN_HEIGHT * 0.05,
+                marginVertical: 20,
+                marginLeft: 5
+            },
+            txtOtp: {
+                color: COLORS.RED,
+                fontSize: Configs.FontSize.size14
             }
         })
         , [])

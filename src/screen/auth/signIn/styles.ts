@@ -19,9 +19,25 @@ export const myStylesSign = () => {
                 fontSize: Configs.FontSize.size20,
                 borderRadius: 20
             },
+            txtTitleModal: {
+                color: COLORS.GRAY,
+                fontSize: 14,
+                marginHorizontal: 20
+            },
             inputPass: {
                 borderRadius: 20,
                 justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+                width: '100%',
+                marginVertical: 5,
+                height: Configs.FontSize.size40
+            },
+            tob: {
+                borderRadius: 20,
+                // justifyContent: 'center',
+                borderWidth: 0.8,
+                borderColor: COLORS.GRAY,
                 alignItems: 'center',
                 flexDirection: 'row',
                 width: '100%',
@@ -158,6 +174,12 @@ export const myStylesSign = () => {
             channelContainer: {
                 marginTop: 0,
                 marginBottom: 15
+            },
+            viewIcon: {
+                position: 'absolute',
+                right: 15,
+                justifyContent: 'center',
+                alignItems: 'center'
             }
         });
     }, []);
