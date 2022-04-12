@@ -7,7 +7,6 @@ import Login from '../screen/auth/login';
 import Auth from '@/screen/auth';
 import Otp from '../screen/auth/otp';
 import Home from '@/screen/home';
-
 import MyBottomTabs from './MyBottomBar';
 
 const screenOptions = { headerShown: false };

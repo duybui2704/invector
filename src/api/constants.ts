@@ -63,7 +63,7 @@ export enum API_CONFIG {
   UPLOAD_HTTP_IMAGE = '/user/upload',
 
   // history
-  HISTORY = '/transaction/utility_payments',
+  HISTORY = '/investor/history_transaction_investor',
   DETAILS_HISTORY = '/transaction/detail_transaction',
 
   // notification

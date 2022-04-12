@@ -1,25 +1,22 @@
-import {observer} from 'mobx-react-lite';
-import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
-import {View, TextInput, ImageBackground, Text, TouchableWithoutFeedback, Keyboard, StatusBar} from 'react-native';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Text, View } from 'react-native';
 
-import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import CheckIcon from '@/assets/image/auth/ic_check_login.svg';
+import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import UnCheckIcon from '@/assets/image/auth/ic_un_check_login.svg';
-import {Touchable} from '../../../components/elements/touchable';
-import {MyTextInput} from '../../../components/elements/textfield';
-import {myStylesAuth} from './styles';
-import {TextFieldActions} from '../../../components/elements/textfield/types';
-import {COLORS} from '../../../theme';
-import Languages from "@/common/languages";
-import arrayIcon from "@/common/arrayIcon";
-import FormValidate from "@/utils/FormValidate";
+import arrayIcon from '@/common/arrayIcon';
+import Languages from '@/common/languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import Navigator from "@/routers/Navigator";
-import { LoginWithThirdPartyModel } from '@/models/auth';
-import placeholder from "lodash/fp/placeholder";
-import {UserInfoModal} from "@/models/user-modal";
-import Loading from "@/components/loading";
+import { UserInfoModal } from '@/models/user-modal';
+import FormValidate from '@/utils/FormValidate';
+import { MyTextInput } from '../../../components/elements/textfield';
+import { TextFieldActions } from '../../../components/elements/textfield/types';
+import { Touchable } from '../../../components/elements/touchable';
+import { COLORS } from '../../../theme';
+import { myStylesAuth } from './styles';
+
 
 const Login = observer(() => {
     const {
@@ -70,9 +67,9 @@ const Login = observer(() => {
 
     const checkbox = useMemo(() => {
         if (checked) {
-            return <CheckIcon width={24} height={24}/>;
+            return <CheckIcon width={24} height={24} />;
         }
-        return <UnCheckIcon width={20} height={20}/>;
+        return <UnCheckIcon width={20} height={20} />;
     }, [checked]);
 
 
@@ -111,9 +108,9 @@ const Login = observer(() => {
 
     return (
         <View style={styles.content}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={styles.txtTitle}>{Languages.Auth.txtTitle}</Text>
-                <IcLine/>
+                <IcLine />
             </View>
             <MyTextInput
                 ref={refPhone}
@@ -143,16 +140,16 @@ const Login = observer(() => {
                     </Touchable>
                     <Text style={styles.txtSave}>Lưu tài khoản</Text>
                 </View>
-                <Touchable onPress={onLoginPhone} disabled={checked ? false : true}
-                           style={checked ? styles.tobLogin : [styles.tobLogin, {backgroundColor: COLORS.GRAY}]}>
-                    <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, {color: COLORS.BLACK}]}>
+                <Touchable onPress={onLoginPhone} disabled={!checked}
+                    style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY }]}>
+                    <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.BLACK }]}>
                         {Languages.Auth.txtTitle}
                     </Text>
                 </Touchable>
             </View>
-            {/*{isLoading && <Loading isOverview/>}*/}
+            {/* {isLoading && <Loading isOverview/>} */}
         </View>
     );
-})
+});
 
 export default Login;

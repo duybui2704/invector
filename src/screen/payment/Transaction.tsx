@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import ICCalender from '@/asset/icon/ic_arrow_date_picker.svg';
 import { KeyValueModel } from '@/models/keyValue-model';
@@ -14,17 +15,43 @@ import KeyValueTransaction from '../../components/KeyValueTransaction';
 import { DATA, TransactionTypes } from '../../mocks/data';
 import { COLORS } from '../../theme';
 import Languages from '@/common/languages';
+import { useAppStore } from '@/hooks';
 
 
 const Transaction = observer(() => {
+    const isFocused = useIsFocused();
+    
     const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
+    const [startDate, setStartDate] = useState<string>('');
+    const [endDate, setEndDate] = useState<string>('');
+    const [option, setOption] = useState<string>('');
     const condition = useRef<PagingConditionTypes>({
         isLoading: true,
         canLoadMore: true,
         offset: 0,
         startDate: undefined,
-        endDate: undefined
+        endDate: undefined, 
+        option: '0'
     });
+    const { apiServices } = useAppStore();
+
+    const fetchHistory = useCallback(() => {
+        const res = apiServices.history.getHistory(startDate, endDate, option);
+    }, [apiServices.history, endDate, option, startDate]);
+
+    useEffect(()=>{
+        if(isFocused){
+            fetchHistory();
+        }
+    },[fetchHistory, isFocused]);
+
+    const onRefresh = useCallback((startDate?: Date, endDate?: Date) => {
+        condition.current.canLoadMore = true;
+        condition.current.offset = 0;
+        condition.current.startDate = startDate;
+        condition.current.endDate = endDate;
+        fetchHistory();
+    }, [fetchHistory]);
 
     const renderFilterTemplate = useCallback(
         (item: KeyValueModel) => {
@@ -35,6 +62,7 @@ const Transaction = observer(() => {
 
             const _onPress = () => {
                 setSelectedFilter(item.value);
+                console.log('hhh',selectedFilter);
             };
 
             return (
@@ -91,10 +119,11 @@ const Transaction = observer(() => {
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
             case Languages?.transaction.fromDate:
-                // condition.current.startDate;
+                condition.current.startDate;
+                onRefresh(date, condition.current.endDate);
                 break;
             case Languages.transaction.toDate:
-                // condition.current.endDate;
+                onRefresh( condition.current.startDate,date);
                 break;
             default:
                 break;
@@ -117,7 +146,7 @@ const Transaction = observer(() => {
                     date={condition.current.startDate || new Date()}
                     maximumDate={new Date()}
                 />
-                <ICCalender style={styles.arrow}/>
+                <ICCalender style={styles.arrow} />
                 <DatePickerTransaction
                     title={Languages.transaction.toDate}
                     onConfirmDatePicker={onConfirmValue}
@@ -154,9 +183,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginHorizontal: 16,
         marginTop: 10,
-        marginBottom:20
-    }, 
+        marginBottom: 20
+    },
     arrow: {
-        marginTop:6
+        marginTop: 6
     }
 });
