@@ -4,8 +4,6 @@ import { observer } from 'mobx-react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
-import Dash from 'react-native-dash';
-import { Switch } from 'react-native-switch';
 
 import { COLORS, Styles } from '@/theme';
 import HeaderBar from '@/components/header';
@@ -34,6 +32,7 @@ import { ScreenName } from '@/common/screenNames';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
+import KeyToggleValue from '@/components/KeyToggleSwitch';
 
 const Profile = observer(() => {
     const { userManager } = useAppStore();
@@ -72,7 +71,7 @@ const Profile = observer(() => {
 
         };
         return (
-            <View style={styles.row}>
+            <View style={styles.accContainer}>
                 {!dataUser.avatar ?
                     <AvatarIC style={styles.circleWrap} />
                     :
@@ -110,8 +109,10 @@ const Profile = observer(() => {
             noIndicator
             rightIcon={<ArrowIC />}
             leftIcon={<PayMethodIC />}
-            styleTouchable={styles.stylePayMethodContainer}
             onPress={onNavigatePayMethod}
+            styleTitle={styles.txtAuthenFinger}
+            containerContent={styles.featureContainer}
+            styleContainer={styles.stylePayMethodContainer}
         />;
     }, []);
 
@@ -120,49 +121,15 @@ const Profile = observer(() => {
             setIsEnabledSwitch(previousState => !previousState);
         };
         return (
-            <>
-                <View style={styles.fingerWrap}>
-                    <FingerIC />
-                    <Text style={styles.txtAuthenFinger}>{Languages.account.authenFinger}</Text>
-                    {/* <Switch
-                        trackColor={{ false: COLORS.BACKDROP, true: COLORS.GREEN }}
-                        thumbColor={isEnabledSwitch ? COLORS.WHITE : COLORS.WHITE}
-                        ios_backgroundColor={COLORS.GRAY_13}
-                        onValueChange={toggleSwitch}
-                        value={isEnabledSwitch}
-                        style={styles.switch}
-                    /> */}
-                    <Switch
-                        value={true}
-                        onValueChange={toggleSwitch}
-                        disabled={isEnabledSwitch}
-                        circleSize={28}
-                        barHeight={Configs.FontSize.size28}
-                        circleBorderWidth={1}
-                        backgroundActive={COLORS.GREEN}
-                        backgroundInactive={COLORS.BACKDROP}
-                        circleActiveColor={COLORS.WHITE}
-                        circleInActiveColor={COLORS.BACKDROP}
-                        renderActiveText={false}
-                        renderInActiveText={false}
-                        // renderInsideCircle={() => <CustomComponent />} // custom component to render inside the Switch circle (Text, Image, etc.)
-                        changeValueImmediately={isEnabledSwitch} // if rendering inside circle, change state immediately or wait for animation to complete
-                    // switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
-                    // switchRightPx={2} // denominator for logic when sliding to FALSE position. Higher number = more space from LEFT of the circle to BEGINNING of the slider
-                    // switchWidthMultiplier={2} // multiplied by the `circleSize` prop to calculate total width of the Switch
-                    // switchBorderRadius={0} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
-                    />
-                </View>
-                <Dash
-                    style={styles.dashFinger}
-                    dashThickness={1}
-                    dashLength={10}
-                    dashGap={5}
-                    dashColor={COLORS.GRAY_13} />
-            </>
-
+            <KeyToggleValue
+                label={Languages.account.authenFinger}
+                isEnabledSwitch={isEnabledSwitch}
+                onToggleSwitch={toggleSwitch}
+                hasDash
+                leftIcon={<FingerIC />}
+            />
         );
-    }, []);
+    }, [isEnabledSwitch]);
 
     const renderAccountFeature = useMemo(() => {
 
@@ -176,6 +143,7 @@ const Profile = observer(() => {
                     leftIcon={<ChangePwdIC />}
                     styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
+                    containerContent={styles.featureContainer}
                 />
                 {renderAuthenFinger}
                 <KeyValue
@@ -185,6 +153,7 @@ const Profile = observer(() => {
                     leftIcon={<LinkAccIC />}
                     styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
+                    containerContent={styles.featureContainer}
                 />
             </View>
         );
@@ -202,6 +171,7 @@ const Profile = observer(() => {
                     leftIcon={<PolicyIC />}
                     styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
+                    containerContent={styles.featureContainer}
                 />
                 <KeyValue
                     title={Languages.account.shareFriends}
@@ -211,6 +181,7 @@ const Profile = observer(() => {
                     leftIcon={<ShareIC />}
                     styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
+                    containerContent={styles.featureContainer}
                 />
                 <KeyValue
                     title={Languages.account.tienngayWeb}
@@ -220,6 +191,7 @@ const Profile = observer(() => {
                     leftIcon={<TienngayWebIC />}
                     styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
+                    containerContent={styles.featureContainer}
                 />
                 <KeyValue
                     title={Languages.account.tienngayFacebook}
@@ -229,6 +201,7 @@ const Profile = observer(() => {
                     leftIcon={<TienngayFBIC />}
                     styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
+                    containerContent={styles.featureContainer}
                 />
                 <KeyValue
                     title={Languages.account.useManual}
@@ -238,6 +211,7 @@ const Profile = observer(() => {
                     leftIcon={<ManualIC />}
                     styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
+                    containerContent={styles.featureContainer}
                 />
                 <KeyValue
                     title={Languages.account.answer}
@@ -247,6 +221,7 @@ const Profile = observer(() => {
                     leftIcon={<AnswerIC />}
                     styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
+                    containerContent={styles.featureContainer}
                 />
                 <KeyValue
                     title={Languages.account.hotline}
@@ -256,6 +231,7 @@ const Profile = observer(() => {
                     leftIcon={<PhoneIC />}
                     styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
+                    containerContent={styles.featureContainer}
                 />
                 <KeyValue
                     title={Languages.account.rate}
@@ -264,6 +240,7 @@ const Profile = observer(() => {
                     leftIcon={<StarIC />}
                     styleTitle={styles.txtAuthenFinger}
                     onPress={onNavigate}
+                    containerContent={styles.featureContainer}
                 />
             </View>
         );
@@ -276,10 +253,11 @@ const Profile = observer(() => {
             userManager.updateUserInfo(null);
             Navigator.navigateScreen(ScreenName.home);
         };
-        return <Button label={Languages.account.logout}
+        return <Button label={`${Languages.account.logout}`}
             style={styles.wrapBtn}
             buttonStyle={BUTTON_STYLES.GRAY_RED}
             onPress={onLogout}
+            isLowerCase
         />;
     }, [userManager]);
 
@@ -310,7 +288,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.GRAY_13,
         backgroundColor: COLORS.WHITE,
         borderRadius: 16,
-        marginTop: 10,
+        marginTop: 16,
         paddingVertical: 2
     },
     row: {
@@ -321,6 +299,19 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.WHITE,
         borderRadius: 16,
         marginVertical: 12,
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        marginHorizontal: 16,
+        alignItems: 'center'
+    },
+    accContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderWidth: 1,
+        borderColor: COLORS.GRAY_13,
+        backgroundColor: COLORS.WHITE,
+        borderRadius: 16,
+        marginTop: 12,
         paddingVertical: 12,
         paddingHorizontal: 16,
         marginHorizontal: 16,
@@ -338,7 +329,8 @@ const styles = StyleSheet.create({
         paddingBottom: 10
     },
     stylePayMethodContainer: {
-        paddingVertical: 10
+        paddingVertical: 10,
+        marginTop: 16
     },
     headerAccRight: {
         justifyContent: 'space-around'
@@ -391,25 +383,15 @@ const styles = StyleSheet.create({
     wrapBtn: {
         marginVertical: 15,
         width: SCREEN_WIDTH - 32,
-        height: SCREEN_HEIGHT * 0.1 - 30
-    },
-    fingerWrap: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginHorizontal: 16,
-        alignItems: 'center'
-    },
-    dashFinger: {
-        marginTop: 8,
-        marginHorizontal: 16
+        height: SCREEN_HEIGHT * 0.1 - 40
     },
     txtAuthenFinger: {
         ...Styles.typography.regular,
         color: COLORS.GRAY_7,
-        paddingVertical: 5
+        paddingVertical: 7
     },
-    switch: {
-        // width: 55
+    featureContainer: {
+        width: '80%'
     }
 });
 export default Profile;

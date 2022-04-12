@@ -6,13 +6,13 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import { ICONS } from '@/assets/icons/constant';
 import { IconTienngay } from '@/assets/icons/icon-tienngay';
+import ScreenName, { TabsName } from '../common/screenNames';
+import { COLORS, Styles } from '@/theme';
 import Home from '@/screen/home';
 import Invest from '@/screen/invest';
 import Transaction from '@/screen/payment/Transaction';
 import Profile from '@/screen/profile';
 import Report from '@/screen/report';
-import { COLORS, Styles } from '@/theme';
-import { ScreenName, TabsName } from '../common/screenNames';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 

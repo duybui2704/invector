@@ -1,7 +1,7 @@
 import {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 
-import { Configs, PADDING_TOP } from '../../common/Configs';
+import { Configs, PADDING_TOP } from '@/common/Configs';
 import {COLORS, Styles} from '../../theme';
 import DimensionUtils from '../../utils/DimensionUtils';
 
@@ -26,7 +26,7 @@ export const myStylesAuth = () => {
                     {rotateX: '-30deg'},
                     {rotateY: '0deg'},
                     {rotateZ: '40deg'}
-                ],
+                ]
             },
             tob1: {
                 justifyContent: 'center',

@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     leftText: {
         ...Styles.typography.medium,
         color: COLORS.GREEN,
-        fontSize: Configs.FontSize.size20
+        fontSize: Configs.FontSize.size20,
+        alignSelf: 'center'
     },
     dateText: {
         ...Styles.typography.regular,

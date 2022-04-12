@@ -8,6 +8,7 @@ import Auth from '@/screen/auth';
 import { ScreenName } from '../common/screenNames';
 import Login from '../screen/auth/login';
 import Otp from '../screen/auth/otp';
+import Home from '@/screen/home';
 import MyBottomTabs from './MyBottomBar';
 import SessionManager, { DeviceInfos } from '@/manager/SessionManager';
 import { useAppStore } from '@/hooks';

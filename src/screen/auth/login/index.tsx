@@ -1,26 +1,22 @@
 import { observer } from 'mobx-react-lite';
-import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
-import { View, TextInput, ImageBackground, Text, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
-import placeholder from 'lodash/fp/placeholder';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Text, View } from 'react-native';
 
-import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import CheckIcon from '@/assets/image/auth/ic_check_login.svg';
+import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import UnCheckIcon from '@/assets/image/auth/ic_un_check_login.svg';
-import { Touchable } from '../../../components/elements/touchable';
-import { MyTextInput } from '../../../components/elements/textfield';
-import { myStylesAuth } from './styles';
-import { TextFieldActions } from '../../../components/elements/textfield/types';
-import { COLORS } from '../../../theme';
-import Languages from '@/common/Languages';
 import arrayIcon from '@/common/arrayIcon';
-import FormValidate from '@/utils/FormValidate';
+import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import Navigator from '@/routers/Navigator';
-import { LoginWithThirdPartyModel } from '@/models/auth';
 import { UserInfoModal } from '@/models/user-modal';
-import Loading from '@/components/loading';
-import ScreenName, { TabNamesArray } from '@/common/screenNames';
+import FormValidate from '@/utils/FormValidate';
+import { MyTextInput } from '../../../components/elements/textfield';
+import { TextFieldActions } from '../../../components/elements/textfield/types';
+import { Touchable } from '../../../components/elements/touchable';
+import { COLORS } from '../../../theme';
+import { myStylesAuth } from './styles';
+
 
 const Login = observer(() => {
     const {
