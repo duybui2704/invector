@@ -1,28 +1,28 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { observer } from 'mobx-react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
 
-import { COLORS, Styles } from '@/theme';
-import HeaderBar from '@/components/header';
+import ChangePwdIC from '@/assets/image/ic_change_pwd.svg';
+import FaceIdIC from '@/assets/image/ic_faceid_big.svg';
+import StarIC from '@/assets/image/ic_arrow_right.svg';
+import WebIC from '@/assets/image/ic_tienngay_web.svg';
+import FacebookIC from '@/assets/image/ic_tienngay_fb.svg';
+import PayMethodIC from '@/assets/image/ic_pay_method.svg';
+import AvatarIC from '@/assets/image/ic_avatar.svg';
+import ManualIC from '@/assets/image/ic_manual.svg';
+import FingerIC from '@/assets/image/ic_finger.svg';
+import PolicyIC from '@/assets/image/ic_policy.svg';
+import PhoneIC from '@/assets/image/ic_phone.svg';
+import ShareIC from '@/assets/image/ic_share.svg';
+import AnswerIC from '@/assets/image/ic_answer.svg';
+import LinkAccIC from '@/assets/image/ic_acc_link.svg';
+import ArrowIC from '@/assets/image/ic_under_arrow.svg';
 import KeyValue from '@/components/KeyValue';
-import ArrowIC from '@/asset/icon/ic_arrow_right.svg';
-import StarIC from '@/asset/icon/ic_star_rate.svg';
-import WebIC from '@/asset/icon/ic_tienngay_web.svg';
-import FacebookIC from '@/asset/icon/ic_tienngay_fb.svg';
-import PayMethodIC from '@/asset/icon/ic_pay_method.svg';
-import ChangePwdIC from '@/asset/icon/ic_change_pwd.svg';
-import AvatarIC from '@/asset/icon/ic_avatar.svg';
-import ManualIC from '@/asset/icon/ic_manual.svg';
-import FingerIC from '@/asset/icon/ic_finger.svg';
-import PolicyIC from '@/asset/icon/ic_policy.svg';
-import PhoneIC from '@/asset/icon/ic_phone.svg';
-import ShareIC from '@/asset/icon/ic_share.svg';
-import AnswerIC from '@/asset/icon/ic_answer.svg';
-import LinkAccIC from '@/asset/icon/ic_acc_link.svg';
-import FaceIdIC from '@/asset/icon/ic_faceid_big.svg';
+import HeaderBar from '@/components/header';
+import { COLORS, Styles } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';
 import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
@@ -35,11 +35,25 @@ import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 import KeyToggleValue from '@/components/KeyToggleSwitch';
 import { ENUM_BIOMETRIC_TYPE } from '@/common/constants';
+import PopupConfirmBiometry from '@/components/PopupConfirmBiometry';
+import { PopupActionTypes } from '@/models/typesPopup';
+import PopupErrorBiometry from '@/components/PopupErrorBiometry';
+import { PinCode, PinCodeT } from '@/components/pinCode';
+import { CustomBackdropBottomSheet } from '@/components/CustomBottomSheet';
 
+const customTexts = {
+    set: Languages.setPassCode
+};
 const Profile = observer(() => {
     const { userManager, fastAuthInfoManager } = useAppStore();
     const { supportedBiometry } = fastAuthInfoManager;
+    const popupError = useRef<PopupActionTypes>(null);
     const [isEnabledSwitch, setIsEnabledSwitch] = useState(false);
+    const popupConfirm = useRef<PopupActionTypes>(null);
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    const animationConfigs = useBottomSheetTimingConfigs({
+        duration: 800
+    });
 
     const onNavigate = useCallback((title: string) => {
         switch (title) {
@@ -76,6 +90,20 @@ const Profile = observer(() => {
             />
         );
     }, [onNavigate]);
+
+    const popupUpdatePassCode = useMemo(() => {
+        return (
+            <PopupConfirmBiometry
+                ref={popupConfirm}
+                type={supportedBiometry}
+            // onConfirm={onConfirm}
+            />
+        );
+    }, [supportedBiometry]);
+
+    const renderPopupError = useMemo(() => {
+        return <PopupErrorBiometry title={'Loi'} ref={popupError} />;
+    }, []);
 
     const renderAuthnFinger = useMemo(() => {
         if (supportedBiometry === ENUM_BIOMETRIC_TYPE.TOUCH_ID) {
@@ -126,6 +154,41 @@ const Profile = observer(() => {
                 );
         }
     }, []);
+    const renderPinCode = useMemo(() => {
+        return (
+            <BottomSheetModal
+                ref={bottomSheetModalRef}
+                index={1}
+                snapPoints={['20%', '82%']}
+                keyboardBehavior={'interactive'}
+                enablePanDownToClose={true}
+                backdropComponent={CustomBackdropBottomSheet}
+                animationConfigs={animationConfigs}
+                style={{ backgroundColor: COLORS.TRANSPARENT }}
+            >
+                <View style={styles.wrapPin}>
+                    <PinCode
+                        mode={PinCodeT.Modes.Set}
+                        visible={true}
+                        options={{
+                            pinLength: 4,
+                            maxAttempt: 4,
+                            lockDuration: 10000,
+                            disableLock: false
+                        }}
+                        mainStyle={customStyles.main}
+                        textOptions={customTexts}
+                        titleStyle={customStyles.title}
+                        buttonsStyle={customStyles.buttons}
+                        subTitleStyle={customStyles.subTitle}
+                        buttonTextStyle={customStyles.buttonText}
+                        pinContainerStyle={customStyles.pinContainer}
+                    // onSetSuccess={onSetPinCodeSuccess}
+                    />
+                </View>
+            </BottomSheetModal>
+        );
+    }, [animationConfigs]);
 
     return (
         <View style={styles.container}>
@@ -173,6 +236,9 @@ const Profile = observer(() => {
                     isLowerCase
                 />
             </ScrollView>
+            {popupUpdatePassCode}
+            {renderPopupError}
+            {renderPinCode}
         </View>
     );
 });
@@ -294,6 +360,44 @@ const styles = StyleSheet.create({
     featureContainer: {
         flex: 1,
         marginLeft: 16
+    },
+    wrapPin: {
+        flex: 1
+    }
+});
+const customStyles = StyleSheet.create({
+    main: {
+        marginTop: 20,
+        paddingHorizontal: 20,
+        backgroundColor: COLORS.TRANSPARENT
+    },
+
+    title: {
+        fontSize: Configs.FontSize.size16,
+        fontFamily: Configs.FontFamily.medium,
+        color: COLORS.GREEN
+    },
+    subTitle: {
+        color: COLORS.BLACK
+    },
+    buttonText: {
+        color: COLORS.GREEN,
+        fontSize: Configs.FontSize.size32,
+        fontFamily: Configs.FontFamily.medium
+    },
+    buttons: {
+        backgroundColor: COLORS.WHITE,
+        borderWidth: 1.5,
+        marginHorizontal: 15,
+        borderColor: COLORS.GREEN,
+        width: 65,
+        height: 65,
+        borderRadius: 35
+    },
+    pinContainer: {
+        height: 30,
+        justifyContent: 'center',
+        marginBottom: 10
     }
 });
 export default Profile;

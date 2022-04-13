@@ -115,6 +115,41 @@ const Languages={
         phoneIsEmpty: 'Số điện thoại không được để trống',
         phoneRegex: 'Số điện thoại không đúng định dạng',
         phoneCount: 'Số điện thoại chỉ được 10 số'
+    },
+    quickAuThen: {
+        title: 'Mật khẩu và đăng nhập',
+        quickButton: 'Sử dụng xác thực nhanh',
+        fingerAuThen: 'Bảo mật vân tay',
+        faceid: 'Nhận diện khuôn mặt',
+        pin: 'Mã Pin',
+        changePwd: 'Chỉnh sửa mật khẩu',
+        confirm: 'Xác thực của bạn',
+        useFaceId: 'Đăng nhập nhanh bằng Face ID',
+        useTouchId: 'Đăng nhập nhanh bằng vân tay',
+        facIdConFirm:
+            'Quý khách có muốn sử dụng Face ID làm phương thức xác thực chính',
+        touchIdConfirm:
+            'Quý khách có muốn sử dụng vân tay làm phương thức xác thực chính',
+        passcodeConfirm:
+            'Quý khách có muốn sử dụng mã pin làm phương thức xác thực chính',
+        description: 'Đăng nhập bằng vân tay của bạn',
+        useFaceID: 'Sử dụng Face ID để đăng nhập vào Univest',
+        useTouchID: 'Sử dụng Touch ID để đăng nhập vào Univest',
+
+        goToSetting: 'Cài đặt',
+        desSetPasscode: 'Vui lòng thêm mã PIN để cài đặt xác thực nhanh',
+        desSetTouchId: 'Vui lòng thêm vân tay để xác thực nhanh',
+        desSetFaceId: 'Vui lòng thêm Face ID để xác thực nhanh',
+        successAddTouchId: 'Đã thêm vân tay vào xác thực nhanh của bạn',
+        successAddFaceId: 'Đã thêm Face ID vào xác thực của bạn'
+    },
+    setPassCode: {
+        titleEnter: 'Xác thực mã PIN',
+        titleSetPasscode: 'Sử dụng mã PIN để xác thực nhanh',
+        repeat: 'Nhập lại mã PIN',
+        errorSet: 'Mã PIN trước và mã PIN sau không trùng khớp',
+        errorEnter: 'Mã PIN không đúng',
+        footerText: 'Tiếp tục'
     }
 };
 export default Languages;
