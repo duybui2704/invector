@@ -24,13 +24,13 @@ const SvgComponent = (props) => {
         setPessDK(false);
         setPessDN(true);
         setPessQMK(false);
-        setKey(Languages.Auth.txtLogin);
+        setKey(Languages.auth.txtLogin);
     }, []);
     const onNavigateSign = useCallback(() => {
         setPessDK(true);
         setPessDN(false);
         setPessQMK(false);
-        setKey(Languages.Auth.txtTitle);
+        setKey(Languages.auth.txtTitle);
     }, []);
     const onNavigateFW = useCallback(() => {
         setPessDK(false);
@@ -39,7 +39,7 @@ const SvgComponent = (props) => {
     }, []);
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             <View style={styles.container}>
                 <Svg height="100%" width="100%" viewBox='100 20 160 300'  {...props}>
                     <G id="circle">

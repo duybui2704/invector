@@ -1,15 +1,20 @@
-import {StyleSheet} from 'react-native';
-import {useMemo} from "react";
-import {COLORS} from "@/theme";
-import {Configs, PADDING_TOP} from "@/common/Configs";
-import DimensionUtils from "@/utils/DimensionUtils";
+import { StyleSheet } from 'react-native';
+import { useMemo } from 'react';
+
+import { COLORS } from '@/theme';
+import { Configs, PADDING_TOP } from '@/common/Configs';
+import DimensionUtils from '@/utils/DimensionUtils';
 
 export const MyStylesOtp = () => {
     return useMemo(() =>
         StyleSheet.create({
-          main: {
-              flex:1
-          },
+            main: {
+                flex: 1
+            },
+            wrapTitle: {
+                flexDirection: 'row',
+                alignItems: 'center'
+            },
             txt: {
                 color: COLORS.WHITE,
                 fontSize: Configs.FontSize.size20,
@@ -90,5 +95,5 @@ export const MyStylesOtp = () => {
                 alignItems: 'center'
             }
         })
-    , [])
-}
+        , []);
+};

@@ -10,7 +10,6 @@ import { MyTextInput } from '../../../components/elements/textfield';
 import { myStylesAuth } from './styles';
 import { TextFieldActions } from '../../../components/elements/textfield/types';
 import { COLORS } from '../../../theme';
-import PickerValuation from '@/components/PickerValuation';
 import Languages from '@/common/Languages';
 import arrayIcon from '@/common/arrayIcon';
 import FormValidate from '@/utils/FormValidate';
@@ -19,7 +18,7 @@ import { ItemProps } from '@/components/bottomsheet';
 import { useAppStore } from '@/hooks';
 import { ChannelModal } from '@/models/ChannelModal';
 
-const SignIn = observer(() => {
+const SignUp = observer(() => {
     const { apiServices } = useAppStore();
     const [phone, setPhone] = useState<string>('');
     const [card, setCard] = useState<string>('');
@@ -42,19 +41,19 @@ const SignIn = observer(() => {
 
     const onChangeText = (value: string, tag?: string) => {
         switch (tag) {
-            case Languages.Auth.txtPhone:
+            case Languages.auth.txtPhone:
                 setPhone(value);
                 break;
-            case Languages.Auth.txtPass:
+            case Languages.auth.txtPass:
                 setPass(value);
                 break;
-            case Languages.Auth.txtName:
+            case Languages.auth.txtName:
                 setName(value);
                 break;
-            case Languages.Auth.txtConfirmPass:
+            case Languages.auth.txtConfirmPass:
                 setPassNew(value);
                 break;
-            case Languages.Auth.txtEmail:
+            case Languages.auth.txtEmail:
                 setEmail(value);
                 break;
             default:
@@ -91,7 +90,7 @@ const SignIn = observer(() => {
 
     const checkbox = useMemo(() => {
         if (checked) {
-            return <CheckIcon  />;
+            return <CheckIcon />;
         }
         return <UnCheckIcon />;
     }, [checked]);
@@ -102,7 +101,7 @@ const SignIn = observer(() => {
         const errMsgName = FormValidate.userNameValidate(name);
         const errMsgPwdNew = FormValidate.passConFirmPhone(passNew);
         const errMsgPwdEmail = FormValidate.emailValidate(email);
-        const errMsgChannel = FormValidate.inputNameEmpty(channel);
+        const errMsgChannel = FormValidate.inputNameEmpty(channel, '');
 
         refPhone.current?.setErrorMsg(errMsgPhone);
         refPass.current?.setErrorMsg(errMsgPwd);
@@ -130,8 +129,8 @@ const SignIn = observer(() => {
     const renderView = () => {
         return (
             <View style={styles.content}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.txtTitle}>{Languages.Auth.txtTitle}</Text>
+                <View style={styles.wrapLoginTxt}>
+                    <Text style={styles.txtTitle}>{Languages.auth.txtSignIn}</Text>
                     <IcLine />
                 </View>
                 <MyTextInput
@@ -139,7 +138,7 @@ const SignIn = observer(() => {
                     value={name}
                     isPhoneNumber={false}
                     rightIcon={arrayIcon.login.name}
-                    placeHolder={Languages.Auth.txtName}
+                    placeHolder={Languages.auth.txtName}
                     containerInput={styles.inputPhone}
                     onChangeText={onChangeText}
                 />
@@ -148,7 +147,7 @@ const SignIn = observer(() => {
                     value={phone}
                     isPhoneNumber={true}
                     rightIcon={arrayIcon.login.phone}
-                    placeHolder={Languages.Auth.txtPhone}
+                    placeHolder={Languages.auth.txtPhone}
                     containerInput={styles.inputPass}
                     onChangeText={onChangeText}
                     keyboardType={'NUMBER'}
@@ -158,7 +157,7 @@ const SignIn = observer(() => {
                     value={email}
                     isPhoneNumber={false}
                     rightIcon={arrayIcon.login.email}
-                    placeHolder={Languages.Auth.txtEmail}
+                    placeHolder={Languages.auth.txtEmail}
                     containerInput={styles.inputPass}
                     onChangeText={onChangeText}
                 />
@@ -169,7 +168,7 @@ const SignIn = observer(() => {
                     isPhoneNumber={false}
 
                     rightIcon={arrayIcon.login.pass}
-                    placeHolder={Languages.Auth.txtPass}
+                    placeHolder={Languages.auth.txtPass}
                     containerInput={styles.inputPass}
                     onChangeText={onChangeText}
                     isPassword
@@ -179,7 +178,7 @@ const SignIn = observer(() => {
                     value={passNew}
                     isPhoneNumber={false}
                     rightIcon={arrayIcon.login.pass}
-                    placeHolder={Languages.Auth.txtConfirmPass}
+                    placeHolder={Languages.auth.txtConfirmPass}
                     containerInput={styles.inputPass}
                     onChangeText={onChangeText}
                     isPassword
@@ -188,8 +187,8 @@ const SignIn = observer(() => {
                 {/*    ref={refChannel} */}
                 {/*    containerStyle={styles.inputPass} */}
                 {/*    // leftIcon={ICONS.LOCATION} */}
-                {/*    // label={Languages.profileAuth.about} */}
-                {/*    placeholder={Languages.Auth.knowChannel} */}
+                {/*    // label={Languages.profileauth.about} */}
+                {/*    placeholder={Languages.auth.knowChannel} */}
                 {/*    onPressItem={onChangeFormality} */}
                 {/*    value={channel?.value} */}
                 {/*    data={dataChannel} */}
@@ -199,12 +198,12 @@ const SignIn = observer(() => {
                         <Touchable style={styles.checkbox} onPress={onChangeChecked}>
                             {checkbox}
                         </Touchable>
-                        <Text style={styles.txtSave}>Lưu tài khoản</Text>
+                        <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                     </View>
                     <Touchable onPress={onSignIn} disabled={!checked}
-                        style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY }]}>
-                        <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.BLACK }]}>
-                            {Languages.Auth.txtSignIn}
+                        style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                        <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                            {Languages.auth.txtSignIn}
                         </Text>
                     </Touchable>
                 </View>
@@ -213,10 +212,10 @@ const SignIn = observer(() => {
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             {isNavigate ? <Otp phone={phone} data={data} /> : renderView()}
         </View>
     );
 });
 
-export default SignIn;
+export default SignUp;

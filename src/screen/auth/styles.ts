@@ -8,6 +8,9 @@ import DimensionUtils from '../../utils/DimensionUtils';
 export const myStylesAuth = () => {
     return useMemo(() => {
         return StyleSheet.create({
+            container:{
+                flex:1
+            },
             main: {
                 flex: 1,
                 backgroundColor: COLORS.GREEN,
@@ -26,7 +29,7 @@ export const myStylesAuth = () => {
                     {rotateX: '-30deg'},
                     {rotateY: '0deg'},
                     {rotateZ: '40deg'}
-                ],
+                ]
             },
             tob1: {
                 justifyContent: 'center',

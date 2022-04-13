@@ -1,18 +1,26 @@
-import {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 
-import {Configs, PADDING_TOP} from '../../../common/Configs';
-import {COLORS, Styles} from '../../../theme';
+import { Configs, PADDING_TOP } from '../../../common/Configs';
+import { COLORS, Styles } from '../../../theme';
 import DimensionUtils from '../../../utils/DimensionUtils';
 
 export const myStylesAuth = () => {
     return useMemo(() => {
         return StyleSheet.create({
+            container: {
+                flex: 1
+            },
             main: {
                 flex: 1,
                 backgroundColor: COLORS.GREEN,
                 width: DimensionUtils.SCREEN_WIDTH,
                 height: DimensionUtils.SCREEN_HEIGHT
+            },
+            wrapLoginTxt: {
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingBottom: 25
             },
             txt: {
                 color: COLORS.WHITE,
@@ -68,7 +76,8 @@ export const myStylesAuth = () => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'flex-end',
-                marginVertical: 8
+                marginVertical: 8,
+                paddingVertical: 10
             },
             content: {
                 marginTop: 30,
@@ -89,21 +98,21 @@ export const myStylesAuth = () => {
                 paddingVertical: 15
             },
             txtSave: {
-                fontFamily: Configs.FontFamily.medium,
-                color: COLORS.BLACK,
-                fontSize: Configs.FontSize.size12,
-                marginLeft: 5
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_12,
+                marginLeft: 20
             },
             txtSubmit: {
-                fontFamily: Configs.FontFamily.medium,
+                ...Styles.typography.medium,
                 color: COLORS.WHITE,
-                fontSize: Configs.FontSize.size12
+                fontSize: Configs.FontSize.size16
             },
             txtTitle: {
-                fontSize: Configs.FontSize.size24,
+                ...Styles.typography.medium,
+                fontSize: Configs.FontSize.size20,
                 fontWeight: '600',
-                color: COLORS.BLACK,
-                padding: 5
+                color: COLORS.GRAY_7,
+                paddingRight: 8
             },
             tobLogin: {
                 width: DimensionUtils.SCREEN_WIDTH * 0.4,

@@ -50,10 +50,10 @@ const Login = observer(() => {
 
     const onChangeText = (value: string, tag?: string) => {
         switch (tag) {
-            case Languages.Auth.txtPhone:
+            case Languages.auth.txtPhone:
                 setPhone(value);
                 break;
-            case Languages.Auth.txtPass:
+            case Languages.auth.txtPass:
                 setPass(value);
                 break;
             default:
@@ -109,7 +109,7 @@ const Login = observer(() => {
     return (
         <View style={styles.content}>
             <View style={styles.wrapLoginTxt}>
-                <Text style={styles.txtTitle}>{Languages.Auth.txtTitle}</Text>
+                <Text style={styles.txtTitle}>{Languages.auth.txtTitle}</Text>
                 <IcLine />
             </View>
             <MyTextInput
@@ -118,7 +118,7 @@ const Login = observer(() => {
                 isPhoneNumber={true}
                 maxLength={11}
                 rightIcon={arrayIcon.login.phone}
-                placeHolder={Languages.Auth.txtPhone}
+                placeHolder={Languages.auth.txtPhone}
                 containerInput={styles.inputPhone}
                 onChangeText={onChangeText}
                 keyboardType={'NUMBER'}
@@ -128,7 +128,7 @@ const Login = observer(() => {
                 value={pass}
                 isPhoneNumber={false}
                 rightIcon={arrayIcon.login.pass}
-                placeHolder={Languages.Auth.txtPass}
+                placeHolder={Languages.auth.txtPass}
                 containerInput={styles.inputPass}
                 onChangeText={onChangeText}
                 isPassword
@@ -137,14 +137,14 @@ const Login = observer(() => {
                
                 <Touchable style={styles.checkbox} onPress={onChangeChecked}>
                     {checkbox}
-                    <Text style={styles.txtSave}>{Languages.Auth.saveAcc}</Text>
+                    <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                 </Touchable>
                     
                
                 <Touchable onPress={onLoginPhone} disabled={!checked}
                     style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
                     <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                        {Languages.Auth.txtTitle}
+                        {Languages.auth.txtTitle}
                     </Text>
                 </Touchable>
             </View>

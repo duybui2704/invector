@@ -1,32 +1,31 @@
-import {observer} from 'mobx-react-lite';
-import React, {useState} from 'react';
-import {View, ImageBackground, Text, StatusBar, Switch} from 'react-native';
+import { observer } from 'mobx-react-lite';
+import React, { useState } from 'react';
+import { ImageBackground, StatusBar, Text, View } from 'react-native';
 
 import IcFace from '@/asset/icon/ic_login_fb.svg';
 import IcGoogle from '@/asset/icon/ic_login_gg.svg';
 import IcInstagram from '@/asset/icon/ic_login_instagram.svg';
 import IcLinkedin from '@/asset/icon/ic_login_linkedin.svg';
-import {myStylesAuth} from './styles';
-import Images from '../../assets/Images';
-import {HeaderBar} from '../../components/header';
-import {COLORS} from '../../theme';
 import Languages from '@/common/Languages';
-import Login from '@/screen/auth/login';
-import SignIn from '@/screen/auth/signIn';
-import Loading from '@/components/loading';
-import SvgComponent from '@/screen/auth/SvgText';
 import { Touchable } from '@/components/elements/touchable';
+import Login from '@/screen/auth/login';
+import SvgComponent from '@/screen/auth/SvgText';
+import Images from '../../assets/Images';
+import { COLORS } from '../../theme';
+import { myStylesAuth } from './styles';
+import SignUp from './signUp';
+
 
 const Auth = observer(() => {
     const styles = myStylesAuth();
-    const [isNavigate, setIsNavigate] = useState<string>(Languages.Auth.txtLogin);
+    const [isNavigate, setIsNavigate] = useState<string>(Languages.auth.txtLogin);
 
     const onNavigate = (key: string) => {
         switch (key){
-            case Languages.Auth.txtLogin:
+            case Languages.auth.txtLogin:
                 setIsNavigate(key);
                 break;
-            case Languages.Auth.txtTitle:
+            case Languages.auth.txtTitle:
                 setIsNavigate(key);
                 break;
             case '1':
@@ -44,9 +43,9 @@ const Auth = observer(() => {
                 <SvgComponent onNavigate={onNavigate}/>
             </View>
             <View style={styles.wrapAll}>
-                {isNavigate === Languages.Auth.txtLogin ? <Login /> : <SignIn/>}
+                {isNavigate === Languages.auth.txtLogin ? <Login /> : <SignUp/>}
                 <View style={styles.viewBottom}>
-                    <Text style={styles.txtLogin}>{Languages.Auth.txtLogin}</Text>
+                    <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
                     <View style={styles.viewIcon}>
                         <Touchable style={styles.icon}>
                             <IcFace  />
