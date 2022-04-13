@@ -47,7 +47,7 @@ const PopupConfirmBiometry = forwardRef<
 
     const renderIcon = useMemo(() => {
         if (Platform.OS === 'android') {
-            return <PinCodeIcon />;
+            return <PinIC />;
         }
         if (Platform.OS === 'ios') {
             if (type === ENUM_BIOMETRIC_TYPE.TOUCH_ID) return <FingerIC width={30} height={30} />;

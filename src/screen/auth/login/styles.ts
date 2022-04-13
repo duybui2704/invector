@@ -5,7 +5,7 @@ import { Configs, PADDING_TOP } from '../../../common/Configs';
 import { COLORS, Styles } from '../../../theme';
 import DimensionUtils from '../../../utils/DimensionUtils';
 
-export const myStylesAuth = () => {
+export const MyStylesLogin = () => {
     return useMemo(() => {
         return StyleSheet.create({
             main: {

@@ -9,9 +9,16 @@ import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import {UserInfoModal} from "@/models/user-modal";
-import Loading from "@/components/loading";
-∂
+import { UserInfoModal } from '@/models/user-modal';
+import Loading from '@/components/loading';
+import { TextFieldActions } from '@/components/elements/textfield/types';
+import { MyStylesLogin } from './styles';
+import { MyTextInput } from '@/components/elements/textfield';
+import Navigator from '@/routers/Navigator';
+import ScreenName, { TabNamesArray } from '@/common/screenNames';
+import { Touchable } from '@/components/elements/touchable';
+import { COLORS } from '@/theme';
+
 const Login = observer(() => {
     const {
         apiServices,
@@ -21,7 +28,7 @@ const Login = observer(() => {
     } = useAppStore();
     const [phone, setPhone] = useState<any>('');
     const [pass, setPass] = useState<any>('');
-    const styles = myStylesAuth();
+    const styles = MyStylesLogin();
     const refPhone = useRef<TextFieldActions>(null);
     const refPass = useRef<TextFieldActions>(null);
     const [checked, setCheck] = useState<boolean>(false);
@@ -80,7 +87,7 @@ const Login = observer(() => {
     return (
         <View style={styles.content}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={styles.txtTitle}>{Languages.Auth.txtTitle}</Text>
+                <Text style={styles.txtTitle}>{Languages.auth.txtTitle}</Text>
                 <IcLine width={'40%'} height={40}/>
             </View>
             <MyTextInput
@@ -108,7 +115,7 @@ const Login = observer(() => {
                
                 <Touchable style={styles.checkbox} onPress={onChangeChecked}>
                     {checkbox}
-                    <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
+                    <Text style={styles.txtSave}>Lu tai khoan</Text>
                 </Touchable>
                     
                

@@ -4,7 +4,7 @@ import {Circle, TextPath, TSpan, G, Svg, Text} from 'react-native-svg';
 import {useCallback, useState, useEffect} from 'react';
 
 import {COLORS} from '@/theme';
-import Languages from '@/common/languages';
+import Languages from '@/common/Languages';
 import DimensionUtils from '@/utils/DimensionUtils';
 
 const SvgComponent = (props) => {
@@ -25,14 +25,14 @@ const SvgComponent = (props) => {
         setPressDK(false);
         setPressDN(true);
         setPressQMK(false);
-        setKey(Languages.Auth.txtLogin);
+        setKey(Languages.auth.txtLogin);
     }, []);
 
     const onNavigateSign = useCallback(() => {
         setPressDK(true);
         setPressDN(false);
         setPressQMK(false);
-        setKey(Languages.Auth.txtTitle);
+        setKey(Languages.auth.txtTitle);
     }, []);
 
     const onNavigateFW = useCallback(() => {
@@ -47,7 +47,7 @@ const SvgComponent = (props) => {
                 <Svg height="100%" width="100%" viewBox='100 20 160 300'  {...props}>
                     <G id="circle">
                         <Circle
-                            r={DimensionUtils.SCREEN_WIDTH * 0.245}
+                            r={DimensionUtils.SCREEN_WIDTH * 0.3}
                             x={DimensionUtils.SCREEN_WIDTH * 0.36}
                             y={DimensionUtils.SCREEN_WIDTH * 0.36}
                             fill="white"
