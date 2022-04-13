@@ -10,23 +10,23 @@ import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
 import Navigator from '@/routers/Navigator';
 import Login from '@/screen/auth/login';
-import SignIn from '@/screen/auth/signIn';
 import SvgComponent from '@/screen/auth/SvgText';
 import Images from '../../assets/Images';
 import { COLORS } from '../../theme';
 import { myStylesAuth } from './styles';
+import SignUp from './signUp';
 
 
 const Auth = observer(() => {
     const styles = myStylesAuth();
-    const [isNavigate, setIsNavigate] = useState<string>(Languages.Auth.txtLogin);
+    const [isNavigate, setIsNavigate] = useState<string>(Languages.auth.txtLogin);
 
     const onNavigate = (key: string) => {
         switch (key){
-            case Languages.Auth.txtLogin:
+            case Languages.auth.txtLogin:
                 setIsNavigate(key);
                 break;
-            case Languages.Auth.txtTitle:
+            case Languages.auth.txtTitle:
                 setIsNavigate(key);
                 break;
             case '1':
@@ -44,21 +44,21 @@ const Auth = observer(() => {
                 <SvgComponent onNavigate={onNavigate}/>
             </View>
             <View style={styles.wrapAll}>
-                {isNavigate === Languages.Auth.txtLogin ? <Login /> : <SignIn/>}
+                {isNavigate === Languages.auth.txtLogin ? <Login /> : <SignUp/>}
                 <View style={styles.viewBottom}>
-                    <Text style={styles.txtLogin}>{Languages.Auth.txtLogin}</Text>
+                    <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
                     <View style={styles.viewIcon}>
-                        <Touchable onPress={() => Navigator.goBack()} style={styles.icon}>
-                            <IcFaceAuth width={32} height={32} />
+                        <Touchable style={styles.icon}>
+                            <IcFaceAuth  />
                         </Touchable>
                         <Touchable style={styles.icon}>
-                            <IcGoogleAuth width={32} height={32}/>
+                            <IcGoogleAuth />
                         </Touchable>
                         <Touchable style={styles.icon}>
-                            <IcInsAuth width={32} height={32}/>
+                            <IcInsAuth />
                         </Touchable>
                         <Touchable style={styles.icon}>
-                            <IcInAuth width={30} height={30}/>
+                            <IcInAuth />
                         </Touchable>
                     </View>
                 </View>

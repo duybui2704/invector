@@ -8,9 +8,9 @@ import Languages from '@/common/Languages';
 
 const SvgComponent = (props) => {
 
-    const [pressDN , setPessDN] = useState(true); 
-    const [pressDK , setPessDK] = useState(false);
-    const [pressQMK , setPessQMK] = useState(false);
+    const [pressDN, setPessDN] = useState(true);
+    const [pressDK, setPessDK] = useState(false);
+    const [pressQMK, setPessQMK] = useState(false);
     const [key, setKey] = useState<string>();
 
     useEffect(() => {
@@ -24,13 +24,13 @@ const SvgComponent = (props) => {
         setPessDK(false);
         setPessDN(true);
         setPessQMK(false);
-        setKey(Languages.Auth.txtLogin);
+        setKey(Languages.auth.txtLogin);
     }, []);
     const onNavigateSign = useCallback(() => {
         setPessDK(true);
         setPessDN(false);
         setPessQMK(false);
-        setKey(Languages.Auth.txtTitle);
+        setKey(Languages.auth.txtTitle);
     }, []);
     const onNavigateFW = useCallback(() => {
         setPessDK(false);
@@ -39,7 +39,7 @@ const SvgComponent = (props) => {
     }, []);
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             <View style={styles.container}>
                 <Svg height="100%" width="100%" viewBox='100 20 160 300'  {...props}>
                     <G id="circle">
@@ -60,7 +60,7 @@ const SvgComponent = (props) => {
                     <Text fill={pressDN ? 'white' : 'black'} fontSize="10" onPress={onNavigateLogin} key='2'>
                         <TextPath href="#circle">
                             <TSpan dx={490} dy={-5}>
-                               Đ ă n g  N h ậ p
+                                Đ ă n g  N h ậ p
                             </TSpan>
                         </TextPath>
                     </Text>

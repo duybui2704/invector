@@ -2,9 +2,9 @@ import { observer } from 'mobx-react-lite';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 
-import CheckIcon from '@/assets/image/auth/ic_check_login.svg';
+import CheckIcon from '@/asset/icon/ic_ischecked_save_acc.svg';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
-import UnCheckIcon from '@/assets/image/auth/ic_un_check_login.svg';
+import UnCheckIcon from '@/asset/icon/ic_unchecked_save_acc.svg';
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
@@ -52,10 +52,10 @@ const Login = observer(() => {
 
     const onChangeText = (value: string, tag?: string) => {
         switch (tag) {
-            case Languages.Auth.txtPhone:
+            case Languages.auth.txtPhone:
                 setPhone(value);
                 break;
-            case Languages.Auth.txtPass:
+            case Languages.auth.txtPass:
                 setPass(value);
                 break;
             default:
@@ -69,9 +69,9 @@ const Login = observer(() => {
 
     const checkbox = useMemo(() => {
         if (checked) {
-            return <CheckIcon width={24} height={24} />;
+            return <CheckIcon />;
         }
-        return <UnCheckIcon width={20} height={20} />;
+        return <UnCheckIcon />;
     }, [checked]);
 
 
@@ -89,8 +89,8 @@ const Login = observer(() => {
 
     return (
         <View style={styles.content}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.txtTitle}>{Languages.Auth.txtTitle}</Text>
+            <View style={styles.wrapLoginTxt}>
+                <Text style={styles.txtTitle}>{Languages.auth.txtTitle}</Text>
                 <IcLine />
             </View>
             <MyTextInput
@@ -99,7 +99,7 @@ const Login = observer(() => {
                 isPhoneNumber={true}
                 maxLength={11}
                 rightIcon={arrayIcon.login.phone}
-                placeHolder={Languages.Auth.txtPhone}
+                placeHolder={Languages.auth.txtPhone}
                 containerInput={styles.inputPhone}
                 onChangeText={onChangeText}
                 keyboardType={'NUMBER'}
@@ -109,22 +109,23 @@ const Login = observer(() => {
                 value={pass}
                 isPhoneNumber={false}
                 rightIcon={arrayIcon.login.pass}
-                placeHolder={Languages.Auth.txtPass}
+                placeHolder={Languages.auth.txtPass}
                 containerInput={styles.inputPass}
                 onChangeText={onChangeText}
                 isPassword
             />
             <View style={styles.rowInfo}>
-                <View style={styles.row}>
-                    <Touchable style={styles.checkbox} onPress={onChangeChecked}>
-                        {checkbox}
-                    </Touchable>
-                    <Text style={styles.txtSave}>Lưu tài khoản</Text>
-                </View>
+               
+                <Touchable style={styles.checkbox} onPress={onChangeChecked}>
+                    {checkbox}
+                    <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
+                </Touchable>
+                    
+               
                 <Touchable onPress={onLoginPhone} disabled={!checked}
-                    style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY }]}>
-                    <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.BLACK }]}>
-                        {Languages.Auth.txtTitle}
+                    style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                    <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                        {Languages.auth.txtTitle}
                     </Text>
                 </Touchable>
             </View>

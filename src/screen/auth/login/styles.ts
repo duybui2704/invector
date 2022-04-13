@@ -1,8 +1,8 @@
-import {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 
-import {Configs, PADDING_TOP} from '../../../common/Configs';
-import {COLORS, Styles} from '../../../theme';
+import { Configs, PADDING_TOP } from '../../../common/Configs';
+import { COLORS, Styles } from '../../../theme';
 import DimensionUtils from '../../../utils/DimensionUtils';
 
 export const myStylesAuth = () => {
@@ -13,11 +13,6 @@ export const myStylesAuth = () => {
                 backgroundColor: COLORS.GREEN,
                 width: DimensionUtils.SCREEN_WIDTH,
                 height: DimensionUtils.SCREEN_HEIGHT
-            },
-            txt: {
-                color: COLORS.WHITE,
-                fontSize: Configs.FontSize.size20,
-                borderRadius: 20
             },
             inputPhone: {
                 marginTop: 15,
@@ -38,7 +33,7 @@ export const myStylesAuth = () => {
                 height: Configs.FontSize.size40
             },
             rowInfo: {
-                marginTop: -10,
+                marginTop: 10,
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 marginHorizontal: 10
@@ -59,17 +54,16 @@ export const myStylesAuth = () => {
                 top: -20
             },
             checkbox: {
-                justifyContent: 'flex-end',
-                marginTop: 10,
-                width: 30,
-                height: 30,
-                alignItems: 'center'
+                justifyContent: 'space-between',
+                paddingVertical: 15,
+                alignItems: 'center',
+                flexDirection: 'row'
             },
             row: {
                 flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-                marginVertical: 8
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingVertical: 16
             },
             content: {
                 marginTop: 30,
@@ -78,20 +72,21 @@ export const myStylesAuth = () => {
                 height: DimensionUtils.SCREEN_HEIGHT * 0.3
             },
             txtSave: {
-                fontFamily: Configs.FontFamily.medium,
-                color: COLORS.BLACK,
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_12,
                 fontSize: Configs.FontSize.size12,
-                marginLeft: 5
+                marginLeft: 20
             },
             txtSubmit: {
-                fontFamily: Configs.FontFamily.medium,
+                ...Styles.typography.medium,
                 color: COLORS.WHITE,
-                fontSize: Configs.FontSize.size12
+                fontSize: Configs.FontSize.size16
             },
             txtTitle: {
-                fontSize: Configs.FontSize.size24,
+                ...Styles.typography.medium,
+                fontSize: Configs.FontSize.size20,
                 fontWeight: '600',
-                color: COLORS.BLACK,
+                color: COLORS.GRAY_7,
                 padding: 5
             },
             tobLogin: {
@@ -101,6 +96,13 @@ export const myStylesAuth = () => {
                 backgroundColor: COLORS.GREEN,
                 borderRadius: 25,
                 justifyContent: 'center',
+                alignItems: 'center'
+            },
+            checkContainer: {
+                paddingTop: 20
+            },
+            wrapLoginTxt: {
+                flexDirection: 'row',
                 alignItems: 'center'
             }
         });
