@@ -1,9 +1,11 @@
 import React, { useMemo, useCallback, useState, useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Platform } from 'react-native';
 import { observer } from 'mobx-react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
+import TouchID from 'react-native-touch-id';
+import PasscodeAuth from '@el173/react-native-passcode-auth';
 
 import ChangePwdIC from '@/assets/image/ic_change_pwd.svg';
 import FaceIdIC from '@/assets/image/ic_faceid_big.svg';
@@ -34,26 +36,34 @@ import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 import KeyToggleValue from '@/components/KeyToggleSwitch';
-import { ENUM_BIOMETRIC_TYPE } from '@/common/constants';
+import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC, messageError, StorageKeys } from '@/common/constants';
 import PopupConfirmBiometry from '@/components/PopupConfirmBiometry';
 import { PopupActionTypes } from '@/models/typesPopup';
 import PopupErrorBiometry from '@/components/PopupErrorBiometry';
 import { PinCode, PinCodeT } from '@/components/pinCode';
 import { CustomBackdropBottomSheet } from '@/components/CustomBottomSheet';
+import StorageUtils from '@/utils/StorageUtils';
+import ToastUtils from '@/utils/ToastUtils';
 
 const customTexts = {
     set: Languages.setPassCode
+};
+const configTouchId = {
+    unifiedErrors: false,
+    passcodeFallback: false
 };
 const Profile = observer(() => {
     const { userManager, fastAuthInfoManager } = useAppStore();
     const { supportedBiometry } = fastAuthInfoManager;
     const popupError = useRef<PopupActionTypes>(null);
-    const [isEnabledSwitch, setIsEnabledSwitch] = useState(false);
+    const isEnable = SessionManager?.isEnableFastAuthentication;
+    const [isEnabledSwitch, setIsEnabledSwitch] = useState(isEnable || false);
     const popupConfirm = useRef<PopupActionTypes>(null);
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const animationConfigs = useBottomSheetTimingConfigs({
         duration: 800
     });
+    const [errorText, setErrorText] = useState<string>('');
 
     const onNavigate = useCallback((title: string) => {
         switch (title) {
@@ -72,10 +82,6 @@ const Profile = observer(() => {
         Navigator.navigateScreen(ScreenName.home);
     }, [userManager]);
 
-    const toggleSwitch = useCallback(() => {
-        setIsEnabledSwitch(!isEnabledSwitch);
-    }, [isEnabledSwitch]);
-
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
         return (
             <KeyValue
@@ -91,18 +97,89 @@ const Profile = observer(() => {
         );
     }, [onNavigate]);
 
+    const onToggleBiometry = useCallback(
+        (value) => {
+            if (value)
+                TouchID.isSupported(configTouchId)
+                    .then(() => {
+                        console.log('dd');
+                        popupConfirm.current?.show();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        let message;
+                        if (Platform.OS === 'ios') {
+                            if (supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
+                                message = messageError(ERROR_BIOMETRIC.ErrorFaceId);
+                            }
+                            if (
+                                supportedBiometry === ENUM_BIOMETRIC_TYPE.TOUCH_ID &&
+                                !message
+                            ) {
+                                message = messageError(ERROR_BIOMETRIC.LAErrorTouchIDLockout);
+                            } else {
+                                message = messageError(ERROR_BIOMETRIC.NOT_ENROLLED);
+                            }
+                        } else {
+                            message = messageError(error.code);
+                        }
+                        setErrorText(message || '');
+                        popupError.current?.show();
+                    });
+            else {
+                StorageUtils.clearDataOfKey(StorageKeys.KEY_ENABLE_FAST_AUTHENTICATION);
+                setIsEnabledSwitch(false);
+            }
+        },
+        [supportedBiometry]
+    );
+
+    const onConfirm = useCallback(() => {
+        if (Platform.OS === 'ios') {
+            popupConfirm?.current?.hide?.();
+            PasscodeAuth.authenticate(
+                supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID
+                    ? Languages.quickAuThen.useFaceID
+                    : Languages.quickAuThen.useTouchID
+            )
+                .then(() => {
+                    SessionManager.setEnableFastAuthentication(true);
+                    setIsEnabledSwitch(true);
+                })
+                .catch(() => { });
+        } else {
+            popupConfirm?.current?.hide?.();
+            bottomSheetModalRef.current?.present?.();
+        }
+    }, [supportedBiometry]);
+
+    const onSetPinCodeSuccess = useCallback(
+        (pin: string) => {
+            bottomSheetModalRef.current?.close?.();
+            SessionManager.setEnableFastAuthentication(true);
+            StorageUtils.saveDataToKey(StorageKeys.KEY_PIN, pin);
+            setIsEnabledSwitch(true);
+            const message =
+                supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID
+                    ? Languages.quickAuThen.successAddFaceId
+                    : Languages.quickAuThen.successAddTouchId;
+            ToastUtils.showMsgToast(message);
+        },
+        [supportedBiometry]
+    );
+
     const popupUpdatePassCode = useMemo(() => {
         return (
             <PopupConfirmBiometry
                 ref={popupConfirm}
                 type={supportedBiometry}
-            // onConfirm={onConfirm}
+                onConfirm={onConfirm}
             />
         );
-    }, [supportedBiometry]);
+    }, [onConfirm, supportedBiometry]);
 
     const renderPopupError = useMemo(() => {
-        return <PopupErrorBiometry title={'Loi'} ref={popupError} />;
+        return <PopupErrorBiometry title={Languages.quickAuThen.desSetTouchId} ref={popupError} />;
     }, []);
 
     const renderAuthnFinger = useMemo(() => {
@@ -111,7 +188,7 @@ const Profile = observer(() => {
                 <KeyToggleValue
                     label={Languages.account.loginWithFinger}
                     isEnabledSwitch={isEnabledSwitch}
-                    onToggleSwitch={toggleSwitch}
+                    onToggleSwitch={onToggleBiometry}
                     hasDash
                     leftIcon={<FingerIC />}
                 />
@@ -122,7 +199,7 @@ const Profile = observer(() => {
                 <KeyToggleValue
                     label={Languages.account.loginWithFaceId}
                     isEnabledSwitch={isEnabledSwitch}
-                    onToggleSwitch={toggleSwitch}
+                    onToggleSwitch={onToggleBiometry}
                     hasDash
                     leftIcon={<FaceIdIC width={Configs.IconSize.size18} height={Configs.IconSize.size18} />}
                 />
@@ -130,7 +207,7 @@ const Profile = observer(() => {
         }
         return null;
 
-    }, [isEnabledSwitch, supportedBiometry, toggleSwitch]);
+    }, [isEnabledSwitch, onToggleBiometry, supportedBiometry]);
 
     const renderAccuracy = useMemo(() => {
         switch (dataUser?.accuracy) {
@@ -183,36 +260,36 @@ const Profile = observer(() => {
                         subTitleStyle={customStyles.subTitle}
                         buttonTextStyle={customStyles.buttonText}
                         pinContainerStyle={customStyles.pinContainer}
-                    // onSetSuccess={onSetPinCodeSuccess}
+                        onSetSuccess={onSetPinCodeSuccess}
                     />
                 </View>
             </BottomSheetModal>
         );
-    }, [animationConfigs]);
+    }, [animationConfigs, onSetPinCodeSuccess]);
 
     return (
         <View style={styles.container}>
             <HeaderBar title={Languages.account.title} isLight={false} />
-            <View style={styles.accContainer}>
-                {!dataUser.avatar ?
-                    <AvatarIC style={styles.circleWrap} />
-                    :
-                    <FastImage
-                        style={styles.circleWrap}
-                        source={{
-                            uri: dataUser?.avatar
-                        }}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                }
-                <View style={styles.headerAccRight}>
-                    <Text style={styles.headerAccName}>{dataUser.name || ''}</Text>
-                    <Text style={styles.headerAccPhone}>{dataUser.phone || ''}</Text>
-                    {renderAccuracy}
-                </View>
-                <ArrowIC />
-            </View>
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
+                <View style={styles.accContainer}>
+                    {!dataUser.avatar ?
+                        <AvatarIC style={styles.circleWrap} />
+                        :
+                        <FastImage
+                            style={styles.circleWrap}
+                            source={{
+                                uri: dataUser?.avatar
+                            }}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                    }
+                    <View style={styles.headerAccRight}>
+                        <Text style={styles.headerAccName}>{dataUser.name || ''}</Text>
+                        <Text style={styles.headerAccPhone}>{dataUser.phone || ''}</Text>
+                        {renderAccuracy}
+                    </View>
+                    <ArrowIC />
+                </View>
                 {renderKeyValue(Languages.account.payMethod, <PayMethodIC />, true)}
                 <View style={styles.containerFeature}>
                     {renderKeyValue(Languages.account.changePwd, <ChangePwdIC />)}
@@ -280,7 +357,6 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         paddingVertical: 12,
         paddingHorizontal: 16,
-        marginHorizontal: 16,
         alignItems: 'center',
         marginVertical: 16
     },

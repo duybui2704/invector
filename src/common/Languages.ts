@@ -150,6 +150,26 @@ const Languages={
         errorSet: 'Mã PIN trước và mã PIN sau không trùng khớp',
         errorEnter: 'Mã PIN không đúng',
         footerText: 'Tiếp tục'
+    },
+    errorBiometryType: {
+        NOT_DEFINE: 'Vui lòng thêm ít nhất 1 vân tay vào thiết bị của bạn',
+        // ios
+        RCTTouchIDNotSupported: 'Không hỗ trợ xác thực vân tay trên thiết bị này',
+        RCTTouchIDUnknownError:
+            'Đăng nhập thất bại nhiều lần, vui lòng đăng nhập với mật khẩu',
+        LAErrorTouchIDNotEnrolled:
+            'Vui lòng thêm ít nhất 1 faceId vào thiết bị của bạn',
+        LAErrorTouchIDNotAvailable:
+            'Không có sẵn xác thực nhanh trên thiết bị của bạn',
+        ErrorFaceId: 'Vui lòng thêm ít nhất 1 xác thực faceId vào thiết bị của bạn',
+        // android
+        NOT_SUPPORTED: 'Không hỗ trợ xác thực vân tay trên thiết bị này',
+        NOT_AVAILABLE: 'Không hỗ trợ xác thực vân tay trên thiết bị này',
+        NOT_ENROLLED: 'Vui lòng thêm ít nhất 1 vân tay vào thiết bị của bạn',
+        FINGERPRINT_ERROR_LOCKOUT_PERMANENT:
+            'Xác thực không thành công, thử lại sau',
+        LAErrorTouchIDLockout:
+            'Đã xảy ra lỗi do đăng nhập quá nhiều lần, vui lòng thử lại sau'
     }
 };
 export default Languages;
