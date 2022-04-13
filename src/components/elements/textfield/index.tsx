@@ -18,7 +18,6 @@ import arrayIcon from "@/common/arrayIcon";
 import IcPhone from '@/assets/image/auth/ic_phone_auth.svg';
 import IcPass from '@/assets/image/auth/ic_pass_auth.svg';
 import IcEmailAuth from '@/assets/image/auth/ic_email_auth.svg';
-import IcDownAuth from '@/assets/image/auth/ic_down_auth.svg';
 import IcName from '@/assets/image/auth/ic_name_auth.svg';
 
 export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
@@ -45,7 +44,8 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             autoFocus,
             onKeyPress,
             placeHolderColor,
-            defaultValue
+            defaultValue,
+            isPhoneNumber
         }: TextFieldProps,
         ref?: any
     ) => {
@@ -133,9 +133,9 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
 
         const eventEndEditing = useCallback(() => {
             if (onEndEditing) {
-                onEndEditing(`${textfieldVal}`, placeHolder);
+                onEndEditing(`${textfieldVal}`, placeHolder || testID);
             }
-        }, [onEndEditing, placeHolder, textfieldVal]);
+        }, [onEndEditing, placeHolder, textfieldVal, testID]);
 
         const onFocus = useCallback(() => {
             onFocusCallback?.(placeHolder);
@@ -210,8 +210,6 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                     return <IcPass width={20} height={20}/>;
                 case arrayIcon.login.name:
                     return <IcName width={20} height={20}/>;
-                case arrayIcon.login.channel:
-                    return <IcDownAuth width={20} height={20}/>;
                 default:
                     break;
             }

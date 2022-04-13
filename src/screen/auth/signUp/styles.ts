@@ -5,11 +5,14 @@ import { Configs, PADDING_TOP } from '../../../common/Configs';
 import { COLORS, Styles } from '../../../theme';
 import DimensionUtils from '../../../utils/DimensionUtils';
 
-export const myStylesAuth = () => {
+export const myStylesSign = () => {
     return useMemo(() => {
         return StyleSheet.create({
             container: {
-                flex: 1
+                flex: 1,
+                marginLeft: 10,
+                width: '85%',
+                height: '50%'
             },
             main: {
                 flex: 1,
@@ -27,23 +30,40 @@ export const myStylesAuth = () => {
                 fontSize: Configs.FontSize.size20,
                 borderRadius: 20
             },
-            inputPhone: {
-                borderRadius: 30,
-                height: Configs.FontSize.size40,
-                width: '85%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row'
+            txtTitleModal: {
+                color: COLORS.GRAY,
+                fontSize: 14,
+                marginHorizontal: 20
             },
             inputPass: {
-                marginTop: 5,
-                borderRadius: 30,
+                borderRadius: 20,
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '85%',
+                width: '90%',
+                marginVertical: 5,
                 height: Configs.FontSize.size40
             },
+            tob: {
+                borderRadius: 20,
+                // justifyContent: 'center',
+                borderWidth: 0.8,
+                borderColor: COLORS.GRAY,
+                alignItems: 'center',
+                flexDirection: 'row',
+                width: '90%',
+                marginVertical: 5,
+                height: Configs.FontSize.size40
+            },
+            Picker: {
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '90%',
+                marginVertical: 5,
+                height: 40
+            },
+
             rowInfo: {
                 marginTop: -15,
                 flexDirection: 'column',
@@ -83,7 +103,7 @@ export const myStylesAuth = () => {
                 marginTop: 30,
                 justifyContent: 'center',
                 marginHorizontal: 10,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.3
+                height: DimensionUtils.SCREEN_HEIGHT * 0.5
             },
             hisLop: {
                 paddingVertical: 10,
@@ -135,6 +155,43 @@ export const myStylesAuth = () => {
                 fontSize: 16,
                 fontWeight: '600',
                 color: COLORS.WHITE
+            },
+            image: {
+                position: 'absolute',
+                zIndex: -1
+            },
+            form: {
+                // height: SCREEN_HEIGHT - (HEADER_PADDING + STATUSBAR_HEIGHT)
+            },
+            swapInput: {
+                paddingHorizontal: 15,
+                paddingTop: 15
+            },
+            formInput: {
+                marginBottom: 15,
+                borderRadius: 20,
+                height: 40
+            },
+            startVal: {
+                ...Styles.typography.regular,
+                color: COLORS.RED
+            },
+            label: {
+                ...Styles.typography.regular,
+                marginBottom: 5
+            },
+            buttonContainer: {
+                marginVertical: 20
+            },
+            channelContainer: {
+                marginTop: 0,
+                marginBottom: 15
+            },
+            viewIcon: {
+                position: 'absolute',
+                right: 15,
+                justifyContent: 'center',
+                alignItems: 'center'
             }
         });
     }, []);

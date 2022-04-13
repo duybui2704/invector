@@ -18,7 +18,7 @@ export const myStylesAuth = () => {
                 marginTop: 15,
                 borderRadius: 30,
                 height: Configs.FontSize.size40,
-                width: '85%',
+                width: '90%',
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row'
@@ -29,7 +29,7 @@ export const myStylesAuth = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '85%',
+                width: '90%',
                 height: Configs.FontSize.size40
             },
             rowInfo: {
@@ -66,7 +66,7 @@ export const myStylesAuth = () => {
                 paddingVertical: 16
             },
             content: {
-                marginTop: 30,
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.04,
                 justifyContent: 'center',
                 marginHorizontal: 10,
                 height: DimensionUtils.SCREEN_HEIGHT * 0.3

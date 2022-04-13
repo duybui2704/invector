@@ -4,7 +4,7 @@ module.exports = api => {
     return {
         presets: ['module:metro-react-native-babel-preset'],
         plugins: [
-            [
+            [∂
                 'module-resolver',
                 {
                     extensions: ['.ios.js', '.android.js', '.ts', '.tsx', '.json'],
@@ -13,8 +13,8 @@ module.exports = api => {
                     }
                 }
             ],
-            'react-native-reanimated/plugin',
-            ['@babel/plugin-proposal-decorators', { legacy: true }]
+            ['@babel/plugin-proposal-decorators', { legacy: true }],
+            'react-native-reanimated/plugin'
         ]
     };
 };

@@ -218,6 +218,12 @@ export const myStylesAuth = () => {
                 width: 50,
                 alignItems: 'center',
                 justifyContent: 'center'
+            },
+            func: {
+                height: DimensionUtils.SCREEN_HEIGHT * 0.5,
+                position: 'absolute',
+                top: -DimensionUtils.SCREEN_HEIGHT * 0.066,
+                width: DimensionUtils.SCREEN_WIDTH * 0.7
             }
         });
     }, []);

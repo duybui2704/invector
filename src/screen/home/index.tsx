@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { ScrollView, StatusBar, Text, View, TouchableOpacity } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -14,7 +14,8 @@ import { Touchable } from '@/components/elements/touchable';
 import { MyStylesHome } from './styles';
 import HeaderBar from '@/components/header';
 import { COLORS } from '@/theme';
-import Languages from '@/common/Languages';
+import Languages from '@/common/languages';
+import Loading from '@/components/loading';
 
 
 
@@ -22,6 +23,7 @@ const Home = () => {
 
     const isFocused = useIsFocused();
     const styles = MyStylesHome();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const arrayData = [
         {
@@ -202,8 +204,8 @@ const Home = () => {
                         </Touchable>
                     </Touchable>
                 </View>
-
             </ScrollView>
+            {isLoading && <Loading isOverview/>}
         </View>
     );
 };
