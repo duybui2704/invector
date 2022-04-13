@@ -10,8 +10,8 @@ import HeaderBar from '@/components/header';
 import KeyValue from '@/components/KeyValue';
 import ArrowIC from '@/asset/icon/ic_arrow_right.svg';
 import StarIC from '@/asset/icon/ic_star_rate.svg';
-import TienngayWebIC from '@/asset/icon/ic_tienngay_web.svg';
-import TienngayFBIC from '@/asset/icon/ic_tienngay_fb.svg';
+import WebIC from '@/asset/icon/ic_tienngay_web.svg';
+import FacebookIC from '@/asset/icon/ic_tienngay_fb.svg';
 import PayMethodIC from '@/asset/icon/ic_pay_method.svg';
 import ChangePwdIC from '@/asset/icon/ic_change_pwd.svg';
 import AvatarIC from '@/asset/icon/ic_avatar.svg';
@@ -22,6 +22,7 @@ import PhoneIC from '@/asset/icon/ic_phone.svg';
 import ShareIC from '@/asset/icon/ic_share.svg';
 import AnswerIC from '@/asset/icon/ic_answer.svg';
 import LinkAccIC from '@/asset/icon/ic_acc_link.svg';
+import FaceIdIC from '@/asset/icon/ic_faceid_big.svg';
 import { Touchable } from '@/components/elements/touchable';
 import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
@@ -33,44 +34,102 @@ import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 import KeyToggleValue from '@/components/KeyToggleSwitch';
+import { ENUM_BIOMETRIC_TYPE } from '@/common/constants';
 
 const Profile = observer(() => {
-    const { userManager } = useAppStore();
+    const { userManager, fastAuthInfoManager } = useAppStore();
+    const { supportedBiometry } = fastAuthInfoManager;
     const [isEnabledSwitch, setIsEnabledSwitch] = useState(false);
+
     const onNavigate = useCallback((title: string) => {
         switch (title) {
             case Languages.account.accountLink:
                 return Navigator.pushScreen(ScreenName.transaction);
             case Languages.account.changePwd:
                 return Navigator.pushScreen(ScreenName.transaction);
-                // case Languages.account.rate:
-
-                // case Languages.account.shareFriends:
-
-                // case Languages.account.tienngayWeb:
-
-                // case Languages.account.authenFinger:
-
-                // case Languages.account.policy:
-
-                // case Languages.account.tienngayFacebook:
-
-                // case Languages.account.answer:
-
-                // case Languages.account.hotline:
-
-                // case Languages.account.useManual:
-
             default:
                 return null;
         }
     }, []);
 
-    const renderHeaderAccount = useMemo(() => {
-        const onNavigateAccuracy = () => {
+    const onLogout = useCallback(() => {
+        SessionManager.logout();
+        userManager.updateUserInfo(null);
+        Navigator.navigateScreen(ScreenName.home);
+    }, [userManager]);
 
-        };
+    const toggleSwitch = useCallback(() => {
+        setIsEnabledSwitch(!isEnabledSwitch);
+    }, [isEnabledSwitch]);
+
+    const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
         return (
+            <KeyValue
+                title={title}
+                noIndicator
+                hasDashBottom={!hasDashBottom}
+                rightIcon={<ArrowIC />}
+                leftIcon={leftIcon}
+                styleTitle={styles.txtAuthnFinger}
+                onPress={onNavigate}
+                containerContent={styles.featureContainer}
+            />
+        );
+    }, [onNavigate]);
+
+    const renderAuthnFinger = useMemo(() => {
+        if (supportedBiometry === ENUM_BIOMETRIC_TYPE.TOUCH_ID) {
+            return (
+                <KeyToggleValue
+                    label={Languages.account.loginWithFinger}
+                    isEnabledSwitch={isEnabledSwitch}
+                    onToggleSwitch={toggleSwitch}
+                    hasDash
+                    leftIcon={<FingerIC />}
+                />
+            );
+        }
+        if (supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
+            return (
+                <KeyToggleValue
+                    label={Languages.account.loginWithFaceId}
+                    isEnabledSwitch={isEnabledSwitch}
+                    onToggleSwitch={toggleSwitch}
+                    hasDash
+                    leftIcon={<FaceIdIC width={Configs.IconSize.size18} height={Configs.IconSize.size18} />}
+                />
+            );
+        }
+        return null;
+
+    }, [isEnabledSwitch, supportedBiometry, toggleSwitch]);
+
+    const renderAccuracy = useMemo(() => {
+        switch (dataUser?.accuracy) {
+            case 1:
+                return (
+                    <Touchable style={styles.accuracyWrap}>
+                        <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
+                    </Touchable>
+                );
+            case 2:
+                return (
+                    <Touchable style={styles.notAccuracyWrap} disabled={true}>
+                        <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
+                    </Touchable>
+                );
+            default:
+                return (
+                    <Touchable style={styles.notAccuracyWrap} disabled={true}>
+                        <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
+                    </Touchable>
+                );
+        }
+    }, []);
+
+    return (
+        <View style={styles.container}>
+            <HeaderBar title={Languages.account.title} isLight={false} />
             <View style={styles.accContainer}>
                 {!dataUser.avatar ?
                     <AvatarIC style={styles.circleWrap} />
@@ -86,186 +145,33 @@ const Profile = observer(() => {
                 <View style={styles.headerAccRight}>
                     <Text style={styles.headerAccName}>{dataUser.name || ''}</Text>
                     <Text style={styles.headerAccPhone}>{dataUser.phone || ''}</Text>
-                    {dataUser.accuracy === 1 &&
-                        <Touchable style={styles.accuracyWrap} onPress={onNavigateAccuracy}>
-                            <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
-                        </Touchable>}
-                    {dataUser.accuracy === 2 &&
-                        <Touchable style={styles.notAccuracyWrap} disabled={true}>
-                            <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
-                        </Touchable>}
+                    {renderAccuracy}
                 </View>
                 <ArrowIC />
             </View>
-        );
-    }, []);
-
-    const renderPayMethod = useMemo(() => {
-        const onNavigatePayMethod = () => {
-
-        };
-        return <KeyValue
-            title={Languages.account.payMethod}
-            noIndicator
-            rightIcon={<ArrowIC />}
-            leftIcon={<PayMethodIC />}
-            onPress={onNavigatePayMethod}
-            styleTitle={styles.txtAuthnFinger}
-            containerContent={styles.featureContainer}
-            styleContainer={styles.stylePayMethodContainer}
-        />;
-    }, []);
-
-    const renderAuthnFinger = useMemo(() => {
-        const toggleSwitch = () => {
-            setIsEnabledSwitch(previousState => !previousState);
-        };
-        return (
-            <KeyToggleValue
-                label={Languages.account.authnFinger}
-                isEnabledSwitch={isEnabledSwitch}
-                onToggleSwitch={toggleSwitch}
-                hasDash
-                leftIcon={<FingerIC />}
-            />
-        );
-    }, [isEnabledSwitch]);
-
-    const renderKeyFeature = useMemo(() => {
-
-        return (
-            <>
-                <View style={styles.containerFeature}>
-                    <KeyValue
-                        title={Languages.account.changePwd}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<ChangePwdIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    {renderAuthnFinger}
-                    <KeyValue
-                        title={Languages.account.accountLink}
-                        noIndicator
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<LinkAccIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                </View>
-
-                <View style={styles.containerFeature}>
-                    <KeyValue
-                        title={Languages.account.policy}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<PolicyIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.shareFriends}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<ShareIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.tienngayWeb}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<TienngayWebIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.tienngayFacebook}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<TienngayFBIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.useManual}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<ManualIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.answer}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<AnswerIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.hotline}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<PhoneIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.rate}
-                        noIndicator
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<StarIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                </View>
-            </>
-        );
-
-    }, [onNavigate, renderAuthnFinger]);
-
-    const renderLogoutBtn = useMemo(() => {
-        const onLogout = () => {
-            SessionManager.logout();
-            userManager.updateUserInfo(null);
-            Navigator.navigateScreen(ScreenName.home);
-        };
-        return <Button label={`${Languages.account.logout}`}
-            style={styles.wrapBtn}
-            buttonStyle={BUTTON_STYLES.GRAY_RED}
-            onPress={onLogout}
-            isLowerCase
-        />;
-    }, [userManager]);
-
-    return (
-        <View style={styles.container}>
-            <HeaderBar title={Languages.account.title} isLight={false} />
-            {renderHeaderAccount}
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
-                {renderPayMethod}
-                {renderKeyFeature}
-                {renderLogoutBtn}
+                {renderKeyValue(Languages.account.payMethod, <PayMethodIC />, true)}
+                <View style={styles.containerFeature}>
+                    {renderKeyValue(Languages.account.changePwd, <ChangePwdIC />)}
+                    {renderAuthnFinger}
+                    {renderKeyValue(Languages.account.accountLink, <LinkAccIC />, true)}
+                </View>
+                <View style={styles.containerFeature}>
+                    {renderKeyValue(Languages.account.policy, <PolicyIC />)}
+                    {renderKeyValue(Languages.account.shareFriends, <ShareIC />)}
+                    {renderKeyValue(Languages.account.web, <WebIC />)}
+                    {renderKeyValue(Languages.account.facebook, <FacebookIC />)}
+                    {renderKeyValue(Languages.account.useManual, <ManualIC />)}
+                    {renderKeyValue(Languages.account.answer, <AnswerIC />)}
+                    {renderKeyValue(Languages.account.hotline, <PhoneIC />)}
+                    {renderKeyValue(Languages.account.rate, <StarIC />, true)}
+                </View>
+                <Button label={`${Languages.account.logout}`}
+                    style={styles.wrapBtn}
+                    buttonStyle={BUTTON_STYLES.GRAY_RED}
+                    onPress={onLogout}
+                    isLowerCase
+                />
             </ScrollView>
         </View>
     );
@@ -306,11 +212,11 @@ const styles = StyleSheet.create({
         borderColor: COLORS.GRAY_13,
         backgroundColor: COLORS.WHITE,
         borderRadius: 16,
-        marginTop: 12,
         paddingVertical: 12,
         paddingHorizontal: 16,
         marginHorizontal: 16,
-        alignItems: 'center'
+        alignItems: 'center',
+        marginVertical: 16
     },
     leftText: {
         ...Styles.typography.regular,
@@ -386,7 +292,8 @@ const styles = StyleSheet.create({
         paddingVertical: 7
     },
     featureContainer: {
-        width: '80%'
+        flex: 1,
+        marginLeft: 16
     }
 });
 export default Profile;
