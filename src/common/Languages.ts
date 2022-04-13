@@ -86,7 +86,7 @@ const Languages={
         introduce5: 'Rõ ràng - Minh bạch',
         introduce6: 'Tất cả các thao tác của Nhà đầu tư được ghi lại bằng hệ thống của TienNgay.vn, đảm bảo số tiền lãi nhận về rõ ràng, minh bạch.'
     },
-    Auth: {
+    auth: {
         txtPhone: 'Số điện thoại',
         txtPass: 'Mật khẩu',
         txtTitle: 'Đăng nhập',

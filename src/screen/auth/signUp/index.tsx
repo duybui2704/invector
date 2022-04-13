@@ -3,8 +3,8 @@ import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react'
 import { View, Text } from 'react-native';
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
-import CheckIcon from '@/asset/icon/ic_ischecked_save_acc.svg';
-import UnCheckIcon from '@/asset/icon/ic_unchecked_save_acc.svg';
+import CheckIcon from '@/assets/image/ic_ischecked_save_acc.svg';
+import UnCheckIcon from '@/assets/image/ic_unchecked_save_acc.svg';
 import { Touchable } from '../../../components/elements/touchable';
 import { MyTextInput } from '../../../components/elements/textfield';
 import { myStylesAuth } from './styles';
