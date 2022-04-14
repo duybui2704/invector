@@ -181,6 +181,25 @@ const Languages = {
             'Xác thực không thành công, thử lại sau',
         LAErrorTouchIDLockout:
             'Đã xảy ra lỗi do đăng nhập quá nhiều lần, vui lòng thử lại sau'
+    },
+    otp: {
+        keyOtp: 'Xác nhận mã OTP ',
+        confirmOtp: 'Hãy nhập và xác nhận mã OTP',
+        verificationCode: 'Mã xác thực đã được gửi đến số điện thoại ',
+        codeExpiresLater: ' Mã hết hiệu lực sau ',
+        resentCode: 'Gửi lại mã !',
+        otp1: 'otp1',
+        otp2: 'otp2',
+        otp3: 'otp3',
+        otp4: 'otp4',
+        otp5: 'otp5',
+        otp6: 'otp6',
+        popupOtpErrorTitle: 'Thông báo OTP',
+        popupOtpErrorDescription: 'OTP không chính xác',
+        popupOtpSuccessDescription: 'Đăng ký thành công',
+        popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
+        sentOtp1: 'Gửi lại mã sau: ',
+        sentOtp2: 'Gửi lại mã'
     }
 
 };

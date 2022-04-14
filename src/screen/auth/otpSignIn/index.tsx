@@ -10,6 +10,7 @@ import { ActiveAccountSocialModel } from '@/models/auth';
 import { MyStylesOtp } from '@/screen/auth/otpSignIn/styles';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import { COLORS } from '@/theme';
+import { MyTextInput } from '@/components/elements/textfield';
 
 const OtpSignIn = (props) => {
     let timer = 0;
