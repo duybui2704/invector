@@ -1,21 +1,13 @@
-<<<<<<< HEAD
-import React, {useState, useRef, useCallback, useEffect} from 'react';
-=======
-import {MyTextInput} from '../../../components/elements/textfield';
-import {TextFieldActions} from '../../../components/elements/textfield/types';
-import {COLORS, Styles} from '../../../theme';
-import Languages from "@/common/Languages";
-import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
->>>>>>> dev
-import {View, Text} from 'react-native';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { View, Text } from 'react-native';
 
 import Languages from '@/common/Languages';
 import Validate from '@/utils/Validate';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
-import {Touchable} from '@/components/elements/touchable';
-import {useAppStore} from '@/hooks';
-import {ActiveAccountSocialModel} from '@/models/auth';
-import {MyStylesOtp} from '@/screen/auth/otpSignIn/styles';
+import { Touchable } from '@/components/elements/touchable';
+import { useAppStore } from '@/hooks';
+import { ActiveAccountSocialModel } from '@/models/auth';
+import { MyStylesOtp } from '@/screen/auth/otpSignIn/styles';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import { COLORS } from '@/theme';
 
@@ -38,7 +30,7 @@ const OtpSignIn = (props) => {
     const otp4Ref = useRef<TextFieldActions>();
     const otp5Ref = useRef<TextFieldActions>();
     const otp6Ref = useRef<TextFieldActions>();
-    const {apiServices, userManager} = useAppStore();
+    const { apiServices, userManager } = useAppStore();
 
     useEffect(() => {
         setCheck(true);
@@ -197,7 +189,7 @@ const OtpSignIn = (props) => {
             <View style={styles.containerBox}>
                 <View style={styles.viewTop}>
                     <Text style={styles.txtTitle}>{Languages.Auth.txtTitleOtp}</Text>
-                    <IcLine width={'35%'} height={'40%'}/>
+                    <IcLine width={'35%'} height={'40%'} />
                 </View>
                 <Text style={styles.confirmOtp}>{Languages.otp.confirmOtp}</Text>
                 <View style={styles.boxOtp}>
@@ -246,10 +238,10 @@ const OtpSignIn = (props) => {
                             style={styles.txtConfirm}>{Languages.auth.conFirm}</Text>
                     </Touchable>
                     :
-                    <Touchable style={[styles.tobConfirm, {backgroundColor: COLORS.GRAY}]}
+                    <Touchable style={[styles.tobConfirm, { backgroundColor: COLORS.GRAY }]}
                         onPress={onPressOtp} disabled={true}>
                         <Text
-                            style={[styles.txtConfirm, {color: COLORS.BLACK}]}>{Languages.auth.conFirm}</Text>
+                            style={[styles.txtConfirm, { color: COLORS.BLACK }]}>{Languages.auth.conFirm}</Text>
                     </Touchable>
                 }
 

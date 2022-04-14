@@ -1,8 +1,9 @@
-import React, {useMemo} from "react";
-import {StyleSheet} from "react-native";
-import {COLORS, Styles} from "@/theme";
-import {Configs} from "@/common/config";
-import DimensionUtils from "@/utils/DimensionUtils";
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+
+import { COLORS, Styles } from '@/theme';
+import { Configs } from '@/common/Configs';
+import DimensionUtils from '@/utils/DimensionUtils';
 
 export const MyStylesOtp = () => {
     return useMemo(() =>
@@ -30,7 +31,7 @@ export const MyStylesOtp = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginTop: DimensionUtils.SCREEN_HEIGHT * 0.02,
-                marginBottom: DimensionUtils.SCREEN_HEIGHT * 0.01,
+                marginBottom: DimensionUtils.SCREEN_HEIGHT * 0.01
                 // marginLeft: DimensionUtils.SCREEN_WIDTH * 0.12
             },
             viewOtp: {
@@ -101,5 +102,5 @@ export const MyStylesOtp = () => {
                 fontSize: Configs.FontSize.size14
             }
         })
-        , [])
-}
+        , []);
+};

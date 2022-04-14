@@ -106,7 +106,9 @@ const Languages = {
         knowChannel: 'Bạn biết chúng tôi qua kênh nào ?',
         txtTitleOtp: 'Xác nhận OTP',
         txtConfirmOtp: 'Nhập mã OTP đã được gửi về điện thoại bạn đã xác nhận',
-        conFirm: 'Xác nhận'
+        conFirm: 'Xác nhận',
+        saveAcc: 'Lưu tài khoản',
+        txtSignUp: 'Đăng kí'
     },
     errorMsg: {
         userNameRequired: 'Họ và tên không được để trống',
