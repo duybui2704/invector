@@ -170,7 +170,7 @@ export default Transaction;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.GRAY_8
+        backgroundColor: COLORS.GRAY_5
     },
     topBarContainer: {
         backgroundColor: COLORS.GRAY_13,

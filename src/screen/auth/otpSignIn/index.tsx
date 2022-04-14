@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 import React, {useState, useRef, useCallback, useEffect} from 'react';
+=======
+import {MyTextInput} from '../../../components/elements/textfield';
+import {TextFieldActions} from '../../../components/elements/textfield/types';
+import {COLORS, Styles} from '../../../theme';
+import Languages from "@/common/Languages";
+import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
+>>>>>>> dev
 import {View, Text} from 'react-native';
 
 import Languages from '@/common/Languages';

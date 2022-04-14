@@ -179,8 +179,12 @@ const Profile = observer(() => {
     }, [onConfirm, supportedBiometry]);
 
     const renderPopupError = useMemo(() => {
-        return <PopupErrorBiometry title={Languages.quickAuThen.desSetTouchId} ref={popupError} />;
-    }, []);
+
+        return <PopupErrorBiometry
+            typeSupportBiometry={supportedBiometry}
+            ref={popupError}
+        />;
+    }, [supportedBiometry]);
 
     const renderAuthnFinger = useMemo(() => {
         if (supportedBiometry === ENUM_BIOMETRIC_TYPE.TOUCH_ID) {
@@ -322,7 +326,7 @@ const Profile = observer(() => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.GRAY_2
+        backgroundColor: COLORS.GRAY_5
     },
     contentContainer: {
         marginHorizontal: 16

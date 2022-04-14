@@ -1,16 +1,32 @@
-import React from 'react';
-import {Text, View } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { ScrollView, Text, View } from 'react-native';
 
+import Languages from '@/common/Languages';
 import {HeaderBar} from '../../components/header';
-import { styles } from './styles';
+import { Touchable } from '@/components/elements/touchable';
+import styles from './styles';
 
 function Invest () {
+
+    const renderInvest = useCallback((title: string) => {
+        return (
+            <Touchable>
+                <Text>{title}</Text>
+            </Touchable>
+        );
+    }, []);
+
+
     return (
         <View style={styles.main}>
-            <HeaderBar title='Invest' isLight={false} />
-            <Text style={styles.txt}>
-               Invest
-            </Text>
+            <HeaderBar title={Languages.invest.title} isLight={false} />
+            <ScrollView>
+                <View>
+                    {renderInvest(Languages.invest.attractInvest)}
+                    {renderInvest(Languages.invest.investing)}
+                    {renderInvest(Languages.invest.history)}
+                </View>
+            </ScrollView>
         </View>
     );
 };

@@ -11,4 +11,5 @@ export type PopupPropsTypes = {
     title?: string;
     content?: string;
     btnText?: string;
+    type?: string
 };

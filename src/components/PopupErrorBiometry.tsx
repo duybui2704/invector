@@ -13,62 +13,63 @@ import { PopupActionTypes, PopupPropsTypes } from '../models/typesPopup';
 import { Touchable } from './elements/touchable';
 import Languages from '@/common/Languages';
 import { Configs } from '@/common/Configs';
+import { ENUM_BIOMETRIC_TYPE } from '@/common/constants';
 
 // import { PopupActions, PopupProps } from './types';
 interface PopupErrorBiometryProps extends PopupPropsTypes {
-    type?: string;
+    typeSupportBiometry?: string;
     btnText?: string;
 }
 
 const PopupErrorBiometry = forwardRef<
     PopupActionTypes,
     PopupErrorBiometryProps
->(({ onClose, title }: PopupErrorBiometryProps, ref) => {
-    const [visible, setVisible] = useState<boolean>(false);
-    const show = useCallback(() => {
-        setVisible(true);
-    }, []);
+    >(({ onClose, title, typeSupportBiometry }: PopupErrorBiometryProps, ref) => {
+        const [visible, setVisible] = useState<boolean>(false);
+        const show = useCallback(() => {
+            setVisible(true);
+        }, []);
 
-    const hide = useCallback(() => {
-        setVisible(false);
-    }, []);
+        const hide = useCallback(() => {
+            setVisible(false);
+        }, []);
 
-    useImperativeHandle(ref, () => ({
-        show,
-        hide
-    }));
+        useImperativeHandle(ref, () => ({
+            show,
+            hide
+        }));
 
-    const _onClose = useCallback(() => {
-        hide();
-        onClose?.();
-    }, [hide, onClose]);
+        const _onClose = useCallback(() => {
+            hide();
+            onClose?.();
+        }, [hide, onClose]);
 
-    const _openSetting = useCallback(() => {
-        _onClose();
+        const _openSetting = useCallback(() => {
+            _onClose();
         // Utils.openSetting();
-    }, [_onClose]);
+        }, [_onClose]);
 
-    return (
-        <Modal
-            isVisible={visible}
-            animationIn="slideInUp"
-            useNativeDriver={true}
-            onBackdropPress={hide}
-            avoidKeyboard={true}
-            hideModalContentWhileAnimating
-        >
-            <View style={styles.popup}>
-                <Text style={styles.txtTitle}>Xác thực nhanh của bạn</Text>
-                <Text style={styles.txtContent}>{title}</Text>
-                <Touchable onPress={_openSetting} style={styles.setting}>
-                    <Text style={styles.txtSetting}>
-                        {Languages.quickAuThen.goToSetting}
-                    </Text>
-                </Touchable>
-            </View>
-        </Modal>
-    );
-});
+        return (
+            <Modal
+                isVisible={visible}
+                animationIn="slideInUp"
+                useNativeDriver={true}
+                onBackdropPress={hide}
+                avoidKeyboard={true}
+                hideModalContentWhileAnimating
+            >
+                <View style={styles.popup}>
+                    <Text style={styles.txtTitle}>{Languages.quickAuThen.quickAuthn}</Text>
+                    <Text style={styles.txtContent}>{typeSupportBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID ? Languages.quickAuThen.desSetFaceId : Languages.quickAuThen.desSetTouchId}</Text>
+                    <Touchable onPress={_openSetting} style={styles.setting}>
+                        <Text style={styles.txtSetting}>
+                            {Languages.quickAuThen.goToSetting}
+                        </Text>
+                    </Touchable>
+                </View>
+            </Modal>
+        );
+    });
 
 export default PopupErrorBiometry;
 
