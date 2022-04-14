@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Configs, PADDING_TOP } from '../../../common/Configs';
-import { COLORS, Styles } from '../../../theme';
-import DimensionUtils from '../../../utils/DimensionUtils';
+import { Configs, PADDING_TOP } from '@/common/Configs';
+import { COLORS, Styles } from '@/theme';
+import DimensionUtils from '@/utils/DimensionUtils';
+
 
 export const MyStylesLogin = () => {
     return useMemo(() => {
@@ -74,8 +75,8 @@ export const MyStylesLogin = () => {
             txtSave: {
                 ...Styles.typography.regular,
                 color: COLORS.GRAY_12,
-                fontSize: Configs.FontSize.size12,
-                marginLeft: 20
+                marginLeft: 20,
+                fontSize: Configs.FontSize.size16
             },
             txtSubmit: {
                 ...Styles.typography.medium,
@@ -103,7 +104,8 @@ export const MyStylesLogin = () => {
             },
             wrapLoginTxt: {
                 flexDirection: 'row',
-                alignItems: 'center'
+                alignItems: 'center',
+                marginTop: 150
             }
         });
     }, []);

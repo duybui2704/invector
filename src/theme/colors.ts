@@ -42,4 +42,5 @@ export enum COLORS {
   PINK = 'rgba(226, 177, 223, 0.2)',
   BACKDROP = 'rgba(0,0,0,0.5)',
   BACKDROP_2 = 'rgba(0,0,0,0.4)',
+  NO_BACKDROP = 'rgba(0,0,0,0)',
 }

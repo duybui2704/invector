@@ -1,4 +1,4 @@
-import { SCREEN_WIDTH } from '../utils/DimensionUtils';
+import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
 export const IconSize = {
     sizeHeader: {

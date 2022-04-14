@@ -86,9 +86,9 @@ const Login = observer(() => {
 
     return (
         <View style={styles.content}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={styles.txtTitle}>{Languages.auth.txtTitle}</Text>
-                <IcLine width={'40%'} height={40}/>
+            <View style={styles.wrapLoginTxt}>
+                <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
+                <IcLine />
             </View>
             <MyTextInput
                 ref={refPhone}
@@ -115,14 +115,13 @@ const Login = observer(() => {
                
                 <Touchable style={styles.checkbox} onPress={onChangeChecked}>
                     {checkbox}
-                    <Text style={styles.txtSave}>Lu tai khoan</Text>
+                    <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                 </Touchable>
                     
-               
                 <Touchable onPress={onLoginPhone} disabled={!checked}
                     style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
                     <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                        {Languages.auth.txtTitle}
+                        {Languages.auth.txtLogin}
                     </Text>
                 </Touchable>
             </View>

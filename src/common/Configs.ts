@@ -33,7 +33,10 @@ export const Configs = {
     },
     FontSize: {
         size2: actuatedNormalize(2),
+        size3: actuatedNormalize(3),
         size4: actuatedNormalize(4),
+        size5: actuatedNormalize(5),
+        size6: actuatedNormalize(6),
         size7: actuatedNormalize(7),
         size8: actuatedNormalize(8),
         size9: actuatedNormalize(9),

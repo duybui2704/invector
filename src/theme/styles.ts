@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-import { Configs } from '../common/Configs';
+import { Configs } from '@/common/Configs';
 import { COLORS } from './colors';
+
 
 export const Styles = {
     flexColumn: {

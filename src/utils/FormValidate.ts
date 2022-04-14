@@ -1,4 +1,4 @@
-import Languages from '../common/Languages';
+import Languages from '@/common/Languages';
 import Validate from './Validate';
 
 const validateEmoji = (username: string) => {

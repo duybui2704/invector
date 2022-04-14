@@ -2,20 +2,18 @@ import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
 
-import IcFaceAuth from '@/assets/image/auth/ic_face_auth.svg';
-import IcGoogleAuth from '@/assets/image/auth/ic_gg_auth.svg';
-import IcInsAuth from '@/assets/image/auth/ic_ins_auth.svg';
-import IcInAuth from '@/assets/image/auth/ic_in_auth.svg';
+import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
+import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';
+import IcInsAuth from '@/assets/image/ic_login_instagram.svg';
+import IcLinkedInAuth from '@/assets/image/ic_login_linkedin.svg';
 import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
-import Navigator from '@/routers/Navigator';
 import Login from '@/screen/auth/login';
 import SvgComponent from '@/screen/auth/SvgText';
-import Images from '../../assets/Images';
-import { COLORS } from '../../theme';
 import { myStylesAuth } from './styles';
 import SignUp from './signUp';
-
+import { COLORS } from '@/theme';
+import Images from '@/assets/Images';
 
 const Auth = observer(() => {
     const styles = myStylesAuth();
@@ -26,7 +24,7 @@ const Auth = observer(() => {
             case Languages.auth.txtLogin:
                 setIsNavigate(key);
                 break;
-            case Languages.auth.txtTitle:
+            case Languages.auth.txtSignUp:
                 setIsNavigate(key);
                 break;
             case '1':
@@ -46,7 +44,7 @@ const Auth = observer(() => {
             <View style={styles.wrapAll}>
                 {isNavigate === Languages.auth.txtLogin ? <Login /> : <SignUp/>}
                 <View style={styles.viewBottom}>
-                    <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
+                    <Text style={styles.txtLogin}>{Languages.auth.txtLoginWith}</Text>
                     <View style={styles.viewIcon}>
                         <Touchable style={styles.icon}>
                             <IcFaceAuth  />
@@ -58,7 +56,7 @@ const Auth = observer(() => {
                             <IcInsAuth />
                         </Touchable>
                         <Touchable style={styles.icon}>
-                            <IcInAuth />
+                            <IcLinkedInAuth />
                         </Touchable>
                     </View>
                 </View>

@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Configs, PADDING_TOP } from '../../../common/Configs';
-import { COLORS, Styles } from '../../../theme';
-import DimensionUtils from '../../../utils/DimensionUtils';
+import { Configs, PADDING_TOP } from '@/common/Configs';
+import { COLORS, Styles } from '@/theme';
+import DimensionUtils from '@/utils/DimensionUtils';
 
 export const myStylesSign = () => {
     return useMemo(() => {
@@ -23,7 +23,7 @@ export const myStylesSign = () => {
             wrapLoginTxt: {
                 flexDirection: 'row',
                 alignItems: 'center',
-                paddingBottom: 25
+                paddingBottom: 15
             },
             txt: {
                 color: COLORS.WHITE,
@@ -40,30 +40,33 @@ export const myStylesSign = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '90%',
-                marginVertical: 5,
-                height: Configs.FontSize.size40
+                width: '110%',
+                height: Configs.FontSize.size40,
+                marginBottom:3
             },
-            tob: {
-                borderRadius: 20,
-                // justifyContent: 'center',
-                borderWidth: 0.8,
-                borderColor: COLORS.GRAY,
+            containerOverViewPicker:{
+                marginTop: 12,
+                borderRadius: 30,
+                borderWidth: 1 ,
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '90%',
-                marginVertical: 5,
-                height: Configs.FontSize.size40
+                width: '100%',
+                borderColor: COLORS.GRAY_11
             },
-            Picker: {
-                borderRadius: 20,
-                justifyContent: 'center',
+            valuePicker:{
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_12                
+            },
+            containerPicker:{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
-                width: '90%',
-                marginVertical: 5,
-                height: 40
+                width: '100%',
+                paddingHorizontal: 20
             },
-
+            containerPlaceholderPicker:{
+            },
             rowInfo: {
                 marginTop: -15,
                 flexDirection: 'column',
@@ -96,14 +99,12 @@ export const myStylesSign = () => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'flex-end',
-                marginVertical: 8,
                 paddingVertical: 10
             },
             content: {
                 marginTop: 30,
                 justifyContent: 'center',
-                marginHorizontal: 10,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.5
+                marginHorizontal: 10
             },
             hisLop: {
                 paddingVertical: 10,
@@ -130,9 +131,8 @@ export const myStylesSign = () => {
             txtTitle: {
                 ...Styles.typography.medium,
                 fontSize: Configs.FontSize.size20,
-                fontWeight: '600',
                 color: COLORS.GRAY_7,
-                paddingRight: 8
+                marginRight: 6
             },
             tobLogin: {
                 width: DimensionUtils.SCREEN_WIDTH * 0.4,

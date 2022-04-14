@@ -1,15 +1,23 @@
+<<<<<<< HEAD
+import React, {useState, useRef, useCallback, useEffect} from 'react';
+=======
 import {MyTextInput} from '../../../components/elements/textfield';
 import {TextFieldActions} from '../../../components/elements/textfield/types';
 import {COLORS, Styles} from '../../../theme';
 import Languages from "@/common/Languages";
 import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
+>>>>>>> dev
 import {View, Text} from 'react-native';
-import Validate from "@/utils/Validate";
-import IcLine from "@/assets/image/auth/ic_line_auth.svg";
-import {Touchable} from "@/components/elements/touchable";
-import {useAppStore} from "@/hooks";
+
+import Languages from '@/common/Languages';
+import Validate from '@/utils/Validate';
+import IcLine from '@/assets/image/auth/ic_line_auth.svg';
+import {Touchable} from '@/components/elements/touchable';
+import {useAppStore} from '@/hooks';
 import {ActiveAccountSocialModel} from '@/models/auth';
-import {MyStylesOtp} from "@/screen/auth/otpSignIn/styles";
+import {MyStylesOtp} from '@/screen/auth/otpSignIn/styles';
+import { TextFieldActions } from '@/components/elements/textfield/types';
+import { COLORS } from '@/theme';
 
 const OtpSignIn = (props) => {
     let timer = 0;
@@ -49,7 +57,7 @@ const OtpSignIn = (props) => {
                 setTimerCount(timer - getTime());
                 refreshCountdown();
             }
-        }, 1000)
+        }, 1000);
     };
 
     const getTime = () => {
@@ -91,7 +99,7 @@ const OtpSignIn = (props) => {
             default:
                 break;
         }
-    }, [textInputChange])
+    }, [textInputChange]);
 
     const renderInput =
         (
@@ -116,7 +124,7 @@ const OtpSignIn = (props) => {
                     onKeyPress={onKeyPress}
                 />
             );
-        }
+        };
 
     const onPressOtp = async () => {
         const OTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
@@ -233,15 +241,15 @@ const OtpSignIn = (props) => {
                 {(otp1 !== '' && otp2 !== '' && otp3 && otp4 !== '' && otp5 !== '' && otp6 !== '') ?
 
                     <Touchable style={styles.tobConfirm}
-                               onPress={onPressOtp} disabled={false}>
+                        onPress={onPressOtp} disabled={false}>
                         <Text
-                            style={styles.txtConfirm}>{Languages.Auth.conFirm}</Text>
+                            style={styles.txtConfirm}>{Languages.auth.conFirm}</Text>
                     </Touchable>
                     :
                     <Touchable style={[styles.tobConfirm, {backgroundColor: COLORS.GRAY}]}
-                               onPress={onPressOtp} disabled={true}>
+                        onPress={onPressOtp} disabled={true}>
                         <Text
-                            style={[styles.txtConfirm, {color: COLORS.BLACK}]}>{Languages.Auth.conFirm}</Text>
+                            style={[styles.txtConfirm, {color: COLORS.BLACK}]}>{Languages.auth.conFirm}</Text>
                     </Touchable>
                 }
 
@@ -254,6 +262,6 @@ const OtpSignIn = (props) => {
             </View>
         </View>
     );
-}
+};
 export default OtpSignIn;
 

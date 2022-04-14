@@ -31,7 +31,7 @@ type PickerProps = {
     placeholderStyle?: TextStyle;
     rightIcon?: any;
     disable?: boolean;
-    valueText?: TextStyle;
+    valueText?: any;
 };
 type BottomSheetAction = {
     show: (content?: string) => any;

@@ -13,11 +13,19 @@ import {MyTextInput} from '@/components/elements/textfield';
 import {myStylesSign} from './styles';
 import {TextFieldActions} from '@/components/elements/textfield/types';
 import {COLORS} from '@/theme';
+<<<<<<< HEAD
+import Languages from "@/common/Languages";
+import arrayIcon from "@/common/arrayIcon";
+import FormValidate from "@/utils/FormValidate";
+import {useAppStore} from "@/hooks";
+import OtpSign from "@/screen/auth/otpSignIn";
+=======
 import Languages from '@/common/Languages';
 import arrayIcon from '@/common/arrayIcon';
 import FormValidate from '@/utils/FormValidate';
 import { useAppStore } from '@/hooks';
 import OtpSign from '@/screen/auth/otpSignIn';
+>>>>>>> dev
 import Loading from '@/components/loading';
 import PopupSignIn from '@/components/popupSignIn';
 import DimensionUtils from '@/utils/DimensionUtils';
