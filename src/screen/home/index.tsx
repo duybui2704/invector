@@ -34,7 +34,7 @@ const Home = observer(() => {
 
     return (
         <View style={styles.main}>
-            <HeaderBar noHeader={false} noStatusBar isLight={true} exitApp />
+            <HeaderBar exitApp imageBackground />
             <View style={styles.viewTop}>
                 <Text style={styles.txt1}>{Languages.home.sumInvest}</Text>
                 <View style={styles.viewTop2}>
