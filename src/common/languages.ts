@@ -85,12 +85,12 @@ const Languages={
         introduce5: 'Rõ ràng - Minh bạch',
         introduce6: 'Tất cả các thao tác của Nhà đầu tư được ghi lại bằng hệ thống của TienNgay.vn, đảm bảo số tiền lãi nhận về rõ ràng, minh bạch.'
     },
-    Auth: {
+    auth: {
         txtPhone: 'Số điện thoại',
         txtPass: 'Mật khẩu',
-        txtTitle: 'Đăng nhập',
-        txtLogin: 'Đăng nhập với',
-        txtSignIn: 'Đăng ký',
+        txtLogin: 'Đăng nhập',
+        txtLoginWith: 'Đăng nhập với',
+        txtSignUp: 'Đăng ký',
         txtName: 'Họ và tên',
         txtEmail: 'Email',
         txtConfirmPass: 'Xác nhận mật khẩu',
@@ -98,7 +98,8 @@ const Languages={
         txtTitleOtp: 'Xác nhận OTP',
         txtConfirmOtp: 'Nhập mã OTP đã được gửi về điện thoại bạn đã xác nhận',
         conFirm: 'Xác nhận',
-        saveAcc: 'Lưu tài khoản'
+        saveAcc: 'Lưu tài khoản',
+        forgotPwd: 'Quên mật khẩu'
     },
     errorMsg: {
         userNameRequired: 'Họ và tên không được để trống',

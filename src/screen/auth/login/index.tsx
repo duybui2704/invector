@@ -11,11 +11,11 @@ import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 import { UserInfoModal } from '@/models/user-modal';
 import FormValidate from '@/utils/FormValidate';
-import { MyTextInput } from '../../../components/elements/textfield';
-import { TextFieldActions } from '../../../components/elements/textfield/types';
-import { Touchable } from '../../../components/elements/touchable';
-import { COLORS } from '../../../theme';
 import { myStylesAuth } from './styles';
+import { TextFieldActions } from '@/components/elements/textfield/types';
+import { MyTextInput } from '@/components/elements/textfield';
+import { Touchable } from '@/components/elements/touchable';
+import { COLORS } from '@/theme';
 
 
 const Login = observer(() => {
@@ -109,7 +109,7 @@ const Login = observer(() => {
     return (
         <View style={styles.content}>
             <View style={styles.wrapLoginTxt}>
-                <Text style={styles.txtTitle}>{Languages.auth.txtTitle}</Text>
+                <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
                 <IcLine />
             </View>
             <MyTextInput
@@ -144,7 +144,7 @@ const Login = observer(() => {
                 <Touchable onPress={onLoginPhone} disabled={!checked}
                     style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
                     <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                        {Languages.auth.txtTitle}
+                        {Languages.auth.txtLogin}
                     </Text>
                 </Touchable>
             </View>

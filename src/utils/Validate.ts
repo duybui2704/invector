@@ -1,6 +1,7 @@
 import { _ } from 'lodash';
 
-import { EMAIL_REGEX, NUMBER_REGEX, PHONE_REGEX } from '../common/constants';
+import { EMAIL_REGEX, NUMBER_REGEX, PHONE_REGEX } from '@/common/constants';
+
 
 const YOUTUBE_LINK_REGEX = /^(http(s)?:\/\/)?((w){3}.)?(m.)?youtu(be|.be)?(\.com)?\/.+/;
 const FACEBOOK_LINK_REGEX = /^(?:(?:http|https):\/\/)?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[?\w\-]*\/)?(?:profile.php\?id=(?=\d.*))?([\w\-]*)?/;

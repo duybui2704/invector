@@ -1,4 +1,4 @@
-import { Events, ToastTypes } from '../common/constants';
+import { Events, ToastTypes } from '@/common/constants';
 import { EventEmitter } from './EventEmitter';
 
 function showToast(msg: string, type: keyof typeof ToastTypes) {

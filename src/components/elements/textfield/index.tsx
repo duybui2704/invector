@@ -11,10 +11,10 @@ import { Animated, TextInput, TextStyle, View, Text } from 'react-native';
 
 import { isIOS } from '../../../common/Configs';
 import { COLORS } from '../../../theme';
-import Validate from "@/utils/Validate";
+import Validate from '@/utils/Validate';
 import { myTextFieldStyle } from './styles';
 import { TextFieldActions, TextFieldProps, TypeKeyBoard } from './types';
-import arrayIcon from "@/common/arrayIcon";
+import arrayIcon from '@/common/arrayIcon';
 import IcPhone from '@/assets/image/auth/ic_phone_auth.svg';
 import IcPass from '@/assets/image/auth/ic_pass_auth.svg';
 import IcEmailAuth from '@/assets/image/auth/ic_email_auth.svg';
@@ -74,7 +74,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                             ? keyboardType
                             : 'NUMERIC'
                         : keyboardType
-                    ],
+                ],
             editable: !disabled
         };
 

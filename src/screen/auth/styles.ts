@@ -1,9 +1,11 @@
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 
-import {Configs, PADDING_TOP} from '../../common/Configs';
-import {COLORS, Styles} from '../../theme';
-import DimensionUtils from '../../utils/DimensionUtils';
+import DimensionUtils from '@/utils/DimensionUtils';
+import { COLORS, Styles } from '@/theme';
+import { Configs, PADDING_TOP } from '../../common/Configs';
+
 
 export const myStylesAuth = () => {
     return useMemo(() => {
@@ -60,6 +62,7 @@ export const myStylesAuth = () => {
                 ]
             },
             txt: {
+                ...Styles.typography.regular,
                 color: COLORS.WHITE,
                 fontSize: Configs.FontSize.size20,
                 borderRadius: 20
@@ -194,28 +197,27 @@ export const myStylesAuth = () => {
                 alignItems: 'center'
             },
             viewBottom: {
+                flex:1,
+                width: SCREEN_WIDTH,
                 flexDirection: 'row',
                 position: 'absolute',
-                top: DimensionUtils.SCREEN_HEIGHT * 0.5,
-                left: 0,
-                width: DimensionUtils.SCREEN_WIDTH,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.1,
                 alignItems: 'center',
-                marginHorizontal: 15
+                paddingHorizontal: 16,
+                marginTop: SCREEN_HEIGHT*0.6-40,
+                justifyContent: 'space-between'
             },
             txtLogin: {
-                fontSize: 16,
-                fontWeight: '600',
+                ...Styles.typography.regular,
+                fontSize: Configs.FontSize.size16,
                 color: COLORS.WHITE
             },
             viewIcon: {
                 flexDirection: 'row',
-                marginLeft: DimensionUtils.SCREEN_WIDTH * 0.2,
-                alignItems: 'center'
+                alignItems: 'center',
+                justifyContent: 'space-between'
             },
             icon: {
-                height: 50,
-                width: 50,
+                paddingLeft: 10,
                 alignItems: 'center',
                 justifyContent: 'center'
             }

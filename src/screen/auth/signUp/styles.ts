@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Configs, PADDING_TOP } from '../../../common/Configs';
-import { COLORS, Styles } from '../../../theme';
-import DimensionUtils from '../../../utils/DimensionUtils';
+import { Configs, PADDING_TOP } from '@/common/Configs';
+import { COLORS, Styles } from '@/theme';
+import DimensionUtils from '@/utils/DimensionUtils';
 
 export const myStylesAuth = () => {
     return useMemo(() => {
@@ -20,7 +20,7 @@ export const myStylesAuth = () => {
             wrapLoginTxt: {
                 flexDirection: 'row',
                 alignItems: 'center',
-                paddingBottom: 25
+                paddingBottom: 8
             },
             txt: {
                 color: COLORS.WHITE,
@@ -41,8 +41,31 @@ export const myStylesAuth = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '85%',
+                width: '90%',
                 height: Configs.FontSize.size40
+            },
+            containerOverViewPicker:{
+                marginTop: 12,
+                borderRadius: 30,
+                borderWidth: 1 ,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexDirection: 'row',
+                width: '100%',
+                borderColor: COLORS.GRAY_11
+            },
+            valuePicker:{
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_12                
+            },
+            containerPicker:{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
+                paddingHorizontal: 20
+            },
+            containerPlaceholderPicker:{
             },
             rowInfo: {
                 marginTop: -15,
@@ -76,7 +99,6 @@ export const myStylesAuth = () => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'flex-end',
-                marginVertical: 8,
                 paddingVertical: 10
             },
             content: {
@@ -110,9 +132,8 @@ export const myStylesAuth = () => {
             txtTitle: {
                 ...Styles.typography.medium,
                 fontSize: Configs.FontSize.size20,
-                fontWeight: '600',
                 color: COLORS.GRAY_7,
-                paddingRight: 8
+                marginRight: 6
             },
             tobLogin: {
                 width: DimensionUtils.SCREEN_WIDTH * 0.4,

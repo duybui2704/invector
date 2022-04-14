@@ -1,22 +1,25 @@
 import { observer } from 'mobx-react-lite';
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { View, Text } from 'react-native';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import CheckIcon from '@/asset/icon/ic_ischecked_save_acc.svg';
 import UnCheckIcon from '@/asset/icon/ic_unchecked_save_acc.svg';
-import { Touchable } from '../../../components/elements/touchable';
-import { MyTextInput } from '../../../components/elements/textfield';
 import { myStylesAuth } from './styles';
-import { TextFieldActions } from '../../../components/elements/textfield/types';
-import { COLORS } from '../../../theme';
 import Languages from '@/common/Languages';
 import arrayIcon from '@/common/arrayIcon';
 import FormValidate from '@/utils/FormValidate';
-import Otp from '../otp';
+import ICUnderArrow from '@/asset/icon/ic_under_arrow.svg';
 import { ItemProps } from '@/components/bottomsheet';
 import { useAppStore } from '@/hooks';
 import { ChannelModal } from '@/models/ChannelModal';
+import { TextFieldActions } from '@/components/elements/textfield/types';
+import { MyTextInput } from '@/components/elements/textfield';
+import { Touchable } from '@/components/elements/touchable';
+import { COLORS } from '@/theme';
+import Otp from '../otp';
+import PickerBottomSheet from '@/components/PickerBottomSheet';
 
 const SignUp = observer(() => {
     const { apiServices } = useAppStore();
@@ -34,7 +37,7 @@ const SignUp = observer(() => {
     const refPhone = useRef<TextFieldActions>(null);
     const refName = useRef<TextFieldActions>(null);
     const refEmail = useRef<TextFieldActions>(null);
-    const refChannel = useRef<TextFieldActions>(null);
+    const refChannel = useRef<BottomSheetModal>(null);
     const refPass = useRef<TextFieldActions>(null);
     const refPassNew = useRef<TextFieldActions>(null);
     const [checked, setCheck] = useState<boolean>(false);
@@ -101,7 +104,7 @@ const SignUp = observer(() => {
         const errMsgName = FormValidate.userNameValidate(name);
         const errMsgPwdNew = FormValidate.passConFirmPhone(passNew);
         const errMsgPwdEmail = FormValidate.emailValidate(email);
-        const errMsgChannel = FormValidate.inputNameEmpty(channel, '');
+        const errMsgChannel = FormValidate.inputNameEmpty(channel);
 
         refPhone.current?.setErrorMsg(errMsgPhone);
         refPass.current?.setErrorMsg(errMsgPwd);
@@ -109,7 +112,7 @@ const SignUp = observer(() => {
         refPassNew.current?.setErrorMsg(errMsgPwdNew);
         refEmail.current?.setErrorMsg(errMsgPwdEmail);
         refChannel.current?.setErrorMsg(errMsgChannel);
-    }, []);
+    }, [channel, email, name, pass, passNew, phone]);
 
     const onSignIn = async () => {
         setNavigate(true);
@@ -122,77 +125,51 @@ const SignUp = observer(() => {
         }
     };
 
-    const onChangeFormality = (item: any) => {
+    const onChangeChanel = (item: any) => {
         setChannel(item);
     };
+
+    const renderInput = useCallback((
+        ref: any, value: string, isPhoneNumber: boolean, rightIcon: string, placeHolder: string, isPassword?: boolean, keyboardType?: any) => {
+        return <MyTextInput
+            ref={ref}
+            value={value}
+            isPhoneNumber={isPhoneNumber}
+            rightIcon={rightIcon}
+            placeHolder={placeHolder}
+            containerInput={styles.inputPass}
+            onChangeText={onChangeText}
+            keyboardType={keyboardType}
+            isPassword={isPassword}
+        />;
+    }, [styles.inputPass]);
 
     const renderView = () => {
         return (
             <View style={styles.content}>
                 <View style={styles.wrapLoginTxt}>
-                    <Text style={styles.txtTitle}>{Languages.auth.txtSignIn}</Text>
+                    <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
                     <IcLine />
                 </View>
-                <MyTextInput
-                    ref={refName}
-                    value={name}
-                    isPhoneNumber={false}
-                    rightIcon={arrayIcon.login.name}
-                    placeHolder={Languages.auth.txtName}
-                    containerInput={styles.inputPhone}
-                    onChangeText={onChangeText}
-                />
-                <MyTextInput
-                    ref={refPhone}
-                    value={phone}
-                    isPhoneNumber={true}
-                    rightIcon={arrayIcon.login.phone}
-                    placeHolder={Languages.auth.txtPhone}
-                    containerInput={styles.inputPass}
-                    onChangeText={onChangeText}
-                    keyboardType={'NUMBER'}
-                />
-                <MyTextInput
-                    ref={refEmail}
-                    value={email}
-                    isPhoneNumber={false}
-                    rightIcon={arrayIcon.login.email}
-                    placeHolder={Languages.auth.txtEmail}
-                    containerInput={styles.inputPass}
-                    onChangeText={onChangeText}
-                />
-
-                <MyTextInput
-                    ref={refPass}
-                    value={pass}
-                    isPhoneNumber={false}
-
-                    rightIcon={arrayIcon.login.pass}
-                    placeHolder={Languages.auth.txtPass}
-                    containerInput={styles.inputPass}
-                    onChangeText={onChangeText}
-                    isPassword
-                />
-                <MyTextInput
-                    ref={refPass}
-                    value={passNew}
-                    isPhoneNumber={false}
-                    rightIcon={arrayIcon.login.pass}
-                    placeHolder={Languages.auth.txtConfirmPass}
-                    containerInput={styles.inputPass}
-                    onChangeText={onChangeText}
-                    isPassword
-                />
-                {/* <PickerValuation */}
-                {/*    ref={refChannel} */}
-                {/*    containerStyle={styles.inputPass} */}
-                {/*    // leftIcon={ICONS.LOCATION} */}
-                {/*    // label={Languages.profileauth.about} */}
-                {/*    placeholder={Languages.auth.knowChannel} */}
-                {/*    onPressItem={onChangeFormality} */}
-                {/*    value={channel?.value} */}
-                {/*    data={dataChannel} */}
-                {/* /> */}
+                {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName)}
+                {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, false, 'NUMBER')}
+                {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail)}
+                {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, true)}
+                {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, true)}
+                <View style={styles.inputPass}>
+                    <PickerBottomSheet
+                        ref={refChannel}
+                        containerStyle={styles.containerOverViewPicker}
+                        rightIcon={<ICUnderArrow />}
+                        placeholder={Languages.auth.knowChannel}
+                        onPressItem={onChangeChanel}
+                        value={channel?.value}
+                        data={dataChannel}
+                        valueText={styles.valuePicker}
+                        btnContainer={styles.containerPicker}
+                        placeholderStyle={styles.containerPlaceholderPicker}
+                    />
+                </View>
                 <View style={styles.rowInfo}>
                     <View style={styles.row}>
                         <Touchable style={styles.checkbox} onPress={onChangeChecked}>
@@ -203,7 +180,7 @@ const SignUp = observer(() => {
                     <Touchable onPress={onSignIn} disabled={!checked}
                         style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
                         <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                            {Languages.auth.txtSignIn}
+                            {Languages.auth.txtSignUp}
                         </Text>
                     </Touchable>
                 </View>

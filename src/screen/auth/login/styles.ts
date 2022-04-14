@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Configs, PADDING_TOP } from '../../../common/Configs';
-import { COLORS, Styles } from '../../../theme';
-import DimensionUtils from '../../../utils/DimensionUtils';
+import { Configs, PADDING_TOP } from '@/common/Configs';
+import { COLORS, Styles } from '@/theme';
+import DimensionUtils from '@/utils/DimensionUtils';
+
 
 export const myStylesAuth = () => {
     return useMemo(() => {

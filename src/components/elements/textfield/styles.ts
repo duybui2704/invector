@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Configs } from '../../../common/Configs';
-import { COLORS, Styles } from '../../../theme';
+import { Configs } from '@/common/Configs';
+import { COLORS, Styles } from '@/theme';
+
 
 export const myTextFieldStyle = () => {
     return useMemo(
@@ -54,7 +55,7 @@ export const myTextFieldStyle = () => {
                 flexRow: {
                     flexDirection: 'row',
                     paddingHorizontal: 10,
-                    alignItems:'center',
+                    alignItems:'center'
                 },
                 leftIconContainer: {
                     width: 20,

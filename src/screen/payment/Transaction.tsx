@@ -7,15 +7,15 @@ import ICCalender from '@/asset/icon/ic_arrow_date_picker.svg';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { PagingConditionTypes } from '@/models/paging';
 import { TransactionModel } from '@/models/transaction-model';
-import DatePickerTransaction from '../../components/DatePicker';
-import { Touchable } from '../../components/elements/touchable';
-import Filter from '../../components/Filter';
-import HeaderBar from '../../components/header';
-import KeyValueTransaction from '../../components/KeyValueTransaction';
-import { DATA, TransactionTypes } from '../../mocks/data';
-import { COLORS } from '../../theme';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
+import { Touchable } from '@/components/elements/touchable';
+import { DATA, TransactionTypes } from '@/mocks/data';
+import Filter from '@/components/Filter';
+import KeyValueTransaction from '@/components/KeyValueTransaction';
+import HeaderBar from '@/components/header';
+import DatePickerTransaction from '@/components/DatePicker';
+import { COLORS } from '@/theme';
 
 const Transaction = observer(() => {
     const isFocused = useIsFocused();

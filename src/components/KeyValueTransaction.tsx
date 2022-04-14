@@ -1,10 +1,10 @@
-import { StyleSheet, Text, TextStyle, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Dash from 'react-native-dash';
 
-import { COLORS, Styles } from '../theme';
-import { Configs } from '../common/Configs';
 import Languages from '@/common/Languages';
+import { COLORS, Styles } from '@/theme';
+import { Configs } from '@/common/Configs';
 
 const KeyValueTransaction = ({ title, dateTime, content, noIndicator ,styleColor, debtNow}: 
     { noIndicator?: boolean, title?: string, dateTime?: string, content?: string , styleColor?:string, debtNow?:string}) => {

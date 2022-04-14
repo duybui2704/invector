@@ -1,87 +1,108 @@
+import { observer } from 'mobx-react';
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Circle, TextPath, TSpan, G, Svg, Text } from 'react-native-svg';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Circle, G, Svg, Text, TextPath, TSpan } from 'react-native-svg';
 
 import { COLORS } from '@/theme';
 import Languages from '@/common/Languages';
+import { Configs } from '@/common/Configs';
 
-const SvgComponent = (props) => {
 
-    const [pressDN, setPessDN] = useState(true);
-    const [pressDK, setPessDK] = useState(false);
-    const [pressQMK, setPessQMK] = useState(false);
+const SvgComponent = observer((props: any) => {
+
+    const [login, setLogin] = useState<boolean>(true);
+    const [signUp, setSignUp] = useState<boolean>(false);
+    const [forgotPwd, setForgotPwd] = useState<boolean>(false);
     const [key, setKey] = useState<string>();
 
     useEffect(() => {
         if (props.onNavigate) {
             props.onNavigate(key);
         }
-    }, [props.onNavigate, key]);
+    }, [props.onNavigate, key, props]);
 
 
     const onNavigateLogin = useCallback(() => {
-        setPessDK(false);
-        setPessDN(true);
-        setPessQMK(false);
+        setSignUp(false);
+        setLogin(true);
+        setForgotPwd(false);
         setKey(Languages.auth.txtLogin);
     }, []);
-    const onNavigateSign = useCallback(() => {
-        setPessDK(true);
-        setPessDN(false);
-        setPessQMK(false);
-        setKey(Languages.auth.txtTitle);
+    const onNavigateSignUp = useCallback(() => {
+        setSignUp(true);
+        setLogin(false);
+        setForgotPwd(false);
+        setKey(Languages.auth.txtSignUp);
     }, []);
-    const onNavigateFW = useCallback(() => {
-        setPessDK(false);
-        setPessDN(false);
-        setPessQMK(true);
+    const onNavigateForgotPwd = useCallback(() => {
+        setSignUp(false);
+        setLogin(false);
+        setForgotPwd(true);
     }, []);
 
     return (
         <View style={styles.container}>
             <View style={styles.container}>
-                <Svg height="100%" width="100%" viewBox='100 20 160 300'  {...props}>
+                <Svg height="100%" width="100%" viewBox='100 20 160 300' {...props} >
                     <G id="circle">
                         <Circle
                             r={100}
                             x={150}
                             y={150}
-                            fill="white"
+                            fill={COLORS.WHITE}
                         />
                     </G>
-                    <Text fill={pressQMK ? 'white' : 'black'} fontSize="10" onPress={onNavigateFW} key='1'>
-                        <TextPath href="#circle">
-                            <TSpan dy={-5} dx={50}>
-                                Q u ê n  M â t  K h ẩ u
+                    <Text fill={login ? COLORS.WHITE : COLORS.BLACK}
+                        fontSize={Configs.FontSize.size8}
+                        onPress={onNavigateLogin}
+                        key='1'
+                        fontFamily={Configs.FontFamily.regular}
+                        letterSpacing={Configs.FontSize.size4}
+                        strokeWidth={Configs.FontSize.size28}
+                        stroke={COLORS.NO_BACKDROP}
+                    >
+                        <TextPath href="#circle" >
+                            <TSpan dx={515} dy={-8}>
+                                {Languages.auth.txtLogin}
                             </TSpan>
                         </TextPath>
                     </Text>
-                    <Text fill={pressDN ? 'white' : 'black'} fontSize="10" onPress={onNavigateLogin} key='2'>
-                        <TextPath href="#circle">
-                            <TSpan dx={490} dy={-5}>
-                                Đ ă n g  N h ậ p
+                    <Text fill={signUp ? COLORS.WHITE : COLORS.BLACK}
+                        fontSize={Configs.FontSize.size8}
+                        onPress={onNavigateSignUp}
+                        key='2'
+                        fontFamily={Configs.FontFamily.regular}
+                        letterSpacing={Configs.FontSize.size4}
+                        strokeWidth={Configs.FontSize.size28}
+                        stroke={COLORS.NO_BACKDROP}
+                    >
+                        <TextPath href="#circle" >
+                            <TSpan dx={590} dy={-8}>
+                                {Languages.auth.txtSignUp}
                             </TSpan>
                         </TextPath>
                     </Text>
-                    <Text onPress={onNavigateSign} key='3'>
-                        <Text fill={pressDK ? 'white' : 'black'} fontSize="10">
-                            <TextPath href="#circle">
-                                <TSpan dx={590} dy={-5}>Đ ă n g </TSpan>
-                            </TextPath>
-                        </Text>
-                        <Text fill={pressDK ? 'white' : 'black'} fontSize="10">
-                            <TextPath href="#circle">
-                                <TSpan dx={0} dy={-5}>K ý</TSpan>
-                            </TextPath>
-                        </Text>
+                    <Text fill={forgotPwd ? COLORS.WHITE : COLORS.BLACK}
+                        fontSize={Configs.FontSize.size8}
+                        onPress={onNavigateForgotPwd}
+                        key='3'
+                        fontFamily={Configs.FontFamily.regular}
+                        letterSpacing={Configs.FontSize.size4}
+                        strokeWidth={Configs.FontSize.size28}
+                        stroke={COLORS.NO_BACKDROP}
+                    >
+                        <TextPath href="#circle" >
+                            <TSpan dx={35} dy={-8} >
+                                {Languages.auth.forgotPwd}
+                            </TSpan>
+                        </TextPath>
                     </Text>
                 </Svg>
-
             </View>
         </View>
     );
-};
+});
 
 
 export default SvgComponent;

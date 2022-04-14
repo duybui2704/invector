@@ -10,10 +10,10 @@ import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
 import Login from '@/screen/auth/login';
 import SvgComponent from '@/screen/auth/SvgText';
-import Images from '../../assets/Images';
-import { COLORS } from '../../theme';
 import { myStylesAuth } from './styles';
 import SignUp from './signUp';
+import { COLORS } from '@/theme';
+import Images from '@/assets/Images';
 
 
 const Auth = observer(() => {
@@ -25,7 +25,7 @@ const Auth = observer(() => {
             case Languages.auth.txtLogin:
                 setIsNavigate(key);
                 break;
-            case Languages.auth.txtTitle:
+            case Languages.auth.txtSignUp:
                 setIsNavigate(key);
                 break;
             case '1':
@@ -45,7 +45,7 @@ const Auth = observer(() => {
             <View style={styles.wrapAll}>
                 {isNavigate === Languages.auth.txtLogin ? <Login /> : <SignUp/>}
                 <View style={styles.viewBottom}>
-                    <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
+                    <Text style={styles.txtLogin}>{Languages.auth.txtLoginWith}</Text>
                     <View style={styles.viewIcon}>
                         <Touchable style={styles.icon}>
                             <IcFace  />

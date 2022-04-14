@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 
 import { KeyValueModel } from '@/models/keyValue-model';
-import { COLORS, Styles } from '../theme';
 import { Touchable } from './elements/touchable';
+import { COLORS, Styles } from '@/theme';
 
 const Filter = ({ item, selected, onPress, style }:
     { item: KeyValueModel , selected: boolean, onPress: any, style?: TextStyle }) => {

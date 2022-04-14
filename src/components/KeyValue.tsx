@@ -2,9 +2,10 @@ import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 import React from 'react';
 import Dash from 'react-native-dash';
 
-import { COLORS, Styles } from '../theme';
-import { Touchable } from './elements/touchable';
 import { TouchableProps } from './elements/touchable/types';
+import { COLORS, Styles } from '@/theme';
+import { Touchable } from './elements/touchable';
+
 
 const KeyValue = (
     { title, content, noIndicator, styleColor,
