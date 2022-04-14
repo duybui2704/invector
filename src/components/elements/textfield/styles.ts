@@ -32,8 +32,9 @@ export const myTextFieldStyle = () => {
                 inputStyle: {
                     flex: 1,
                     color:COLORS.BLACK,
-                    width: '50%',
-                    height: '70%'
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 20
                 },
                 inputFont: {
                     ...Styles.typography.regular,

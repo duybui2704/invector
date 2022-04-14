@@ -17,17 +17,16 @@ const MyTheme = {
 };
 
 const App = () => {
-    console.log('aaaa');
     return (
         <AppStoreProvider>
-            < BottomSheetModalProvider>
-                <PopupsProvider>
-                    <NavigationContainer ref={navigationRef}
-                        theme={MyTheme}>
+            <PopupsProvider>
+                <NavigationContainer ref={navigationRef}
+                    theme={MyTheme}>
+                    <BottomSheetModalProvider>
                         <RootStack />
-                    </NavigationContainer>
-                </PopupsProvider>
-            </BottomSheetModalProvider>
+                    </BottomSheetModalProvider>
+                </NavigationContainer>
+            </PopupsProvider>
         </AppStoreProvider>
     );
 };

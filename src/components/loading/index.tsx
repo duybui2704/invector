@@ -7,8 +7,8 @@ import {
 import { COLORS } from '@/theme';
 import MyStyleLoading from "@/components/loading/styles";
 
-const styles = MyStyleLoading();
 const Loading = ({ isOverview }: { isOverview?: boolean }) => {
+    const styles = MyStyleLoading();
   return(
       <View style={{flex:1}}>
           {  isOverview ?

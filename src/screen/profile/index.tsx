@@ -1,27 +1,30 @@
-import React, { useMemo, useCallback, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useMemo, useCallback, useState, useRef } from 'react';
+import { View, StyleSheet, Text, Platform } from 'react-native';
 import { observer } from 'mobx-react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
+import TouchID from 'react-native-touch-id';
+import PasscodeAuth from '@el173/react-native-passcode-auth';
 
-import { COLORS, Styles } from '@/theme';
-import HeaderBar from '@/components/header';
+import ChangePwdIC from '@/assets/image/ic_change_pwd.svg';
+import FaceIdIC from '@/assets/image/ic_faceid_big.svg';
+import StarIC from '@/assets/image/ic_arrow_right.svg';
+import WebIC from '@/assets/image/ic_tienngay_web.svg';
+import FacebookIC from '@/assets/image/ic_tienngay_fb.svg';
+import PayMethodIC from '@/assets/image/ic_pay_method.svg';
+import AvatarIC from '@/assets/image/ic_avatar.svg';
+import ManualIC from '@/assets/image/ic_manual.svg';
+import FingerIC from '@/assets/image/ic_finger.svg';
+import PolicyIC from '@/assets/image/ic_policy.svg';
+import PhoneIC from '@/assets/image/ic_phone.svg';
+import ShareIC from '@/assets/image/ic_share.svg';
+import AnswerIC from '@/assets/image/ic_answer.svg';
+import LinkAccIC from '@/assets/image/ic_acc_link.svg';
+import ArrowIC from '@/assets/image/ic_under_arrow.svg';
 import KeyValue from '@/components/KeyValue';
-import ArrowIC from '@/asset/icon/ic_arrow_right.svg';
-import StarIC from '@/asset/icon/ic_star_rate.svg';
-import TienngayWebIC from '@/asset/icon/ic_tienngay_web.svg';
-import TienngayFBIC from '@/asset/icon/ic_tienngay_fb.svg';
-import PayMethodIC from '@/asset/icon/ic_pay_method.svg';
-import ChangePwdIC from '@/asset/icon/ic_change_pwd.svg';
-import AvatarIC from '@/asset/icon/ic_avatar.svg';
-import ManualIC from '@/asset/icon/ic_manual.svg';
-import FingerIC from '@/asset/icon/ic_finger.svg';
-import PolicyIC from '@/asset/icon/ic_policy.svg';
-import PhoneIC from '@/asset/icon/ic_phone.svg';
-import ShareIC from '@/asset/icon/ic_share.svg';
-import AnswerIC from '@/asset/icon/ic_answer.svg';
-import LinkAccIC from '@/asset/icon/ic_acc_link.svg';
+import HeaderBar from '@/components/header';
+import { COLORS, Styles } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';
 import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
@@ -30,239 +33,289 @@ import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { ScreenName } from '@/common/screenNames';
 import Languages from '@/common/Languages';
+import { useAppStore } from '@/hooks';
+import SessionManager from '@/manager/SessionManager';
 import KeyToggleValue from '@/components/KeyToggleSwitch';
+import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC, messageError, StorageKeys } from '@/common/constants';
+import PopupConfirmBiometry from '@/components/PopupConfirmBiometry';
+import { PopupActionTypes } from '@/models/typesPopup';
+import PopupErrorBiometry from '@/components/PopupErrorBiometry';
+import { PinCode, PinCodeT } from '@/components/pinCode';
+import { CustomBackdropBottomSheet } from '@/components/CustomBottomSheet';
+import StorageUtils from '@/utils/StorageUtils';
+import ToastUtils from '@/utils/ToastUtils';
 
+const customTexts = {
+    set: Languages.setPassCode
+};
+const configTouchId = {
+    unifiedErrors: false,
+    passcodeFallback: false
+};
 const Profile = observer(() => {
-    const [isEnabledSwitch, setIsEnabledSwitch] = useState(false);
-    
+    const { userManager, fastAuthInfoManager } = useAppStore();
+    const { supportedBiometry } = fastAuthInfoManager;
+    const popupError = useRef<PopupActionTypes>(null);
+    const isEnable = SessionManager?.isEnableFastAuthentication;
+    const [isEnabledSwitch, setIsEnabledSwitch] = useState(isEnable || false);
+    const popupConfirm = useRef<PopupActionTypes>(null);
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    const animationConfigs = useBottomSheetTimingConfigs({
+        duration: 800
+    });
+    const [errorText, setErrorText] = useState<string>('');
+
     const onNavigate = useCallback((title: string) => {
         switch (title) {
             case Languages.account.accountLink:
                 return Navigator.pushScreen(ScreenName.transaction);
             case Languages.account.changePwd:
                 return Navigator.pushScreen(ScreenName.transaction);
-                // case Languages.account.rate:
-
-                // case Languages.account.shareFriends:
-
-                // case Languages.account.tienngayWeb:
-
-                // case Languages.account.authenFinger:
-
-                // case Languages.account.policy:
-
-                // case Languages.account.tienngayFacebook:
-
-                // case Languages.account.answer:
-
-                // case Languages.account.hotline:
-
-                // case Languages.account.useManual:
-
             default:
                 return null;
         }
     }, []);
 
-    const renderHeaderAccount = useMemo(() => {
-        const onNavigateAccuracy = () => {
+    const onLogout = useCallback(() => {
+        SessionManager.logout();
+        userManager.updateUserInfo(null);
+        Navigator.navigateScreen(ScreenName.home);
+    }, [userManager]);
 
-        };
+    const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
         return (
-            <View style={styles.accContainer}>
-                {!dataUser.avatar ?
-                    <AvatarIC style={styles.circleWrap} />
-                    :
-                    <FastImage
-                        style={styles.circleWrap}
-                        source={{
-                            uri: dataUser?.avatar
-                        }}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                }
-                <View style={styles.headerAccRight}>
-                    <Text style={styles.headerAccName}>{dataUser.name || ''}</Text>
-                    <Text style={styles.headerAccPhone}>{dataUser.phone || ''}</Text>
-                    {dataUser.accuracy === 1 &&
-                        <Touchable style={styles.accuracyWrap} onPress={onNavigateAccuracy}>
-                            <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
-                        </Touchable>}
-                    {dataUser.accuracy === 2 &&
-                        <Touchable style={styles.notAccuracyWrap} disabled={true}>
-                            <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
-                        </Touchable>}
-                </View>
-                <ArrowIC />
-            </View>
+            <KeyValue
+                title={title}
+                noIndicator
+                hasDashBottom={!hasDashBottom}
+                rightIcon={<ArrowIC />}
+                leftIcon={leftIcon}
+                styleTitle={styles.txtAuthnFinger}
+                onPress={onNavigate}
+                containerContent={styles.featureContainer}
+            />
         );
-    }, []);
+    }, [onNavigate]);
 
-    const renderPayMethod = useMemo(() => {
-        const onNavigatePayMethod = () => {
+    const onToggleBiometry = useCallback(
+        (value) => {
+            if (value)
+                TouchID.isSupported(configTouchId)
+                    .then(() => {
+                        console.log('dd');
+                        popupConfirm.current?.show();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        let message;
+                        if (Platform.OS === 'ios') {
+                            if (supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
+                                message = messageError(ERROR_BIOMETRIC.ErrorFaceId);
+                            }
+                            if (
+                                supportedBiometry === ENUM_BIOMETRIC_TYPE.TOUCH_ID &&
+                                !message
+                            ) {
+                                message = messageError(ERROR_BIOMETRIC.LAErrorTouchIDLockout);
+                            } else {
+                                message = messageError(ERROR_BIOMETRIC.NOT_ENROLLED);
+                            }
+                        } else {
+                            message = messageError(error.code);
+                        }
+                        setErrorText(message || '');
+                        popupError.current?.show();
+                    });
+            else {
+                StorageUtils.clearDataOfKey(StorageKeys.KEY_ENABLE_FAST_AUTHENTICATION);
+                setIsEnabledSwitch(false);
+            }
+        },
+        [supportedBiometry]
+    );
 
-        };
-        return <KeyValue
-            title={Languages.account.payMethod}
-            noIndicator
-            rightIcon={<ArrowIC />}
-            leftIcon={<PayMethodIC />}
-            onPress={onNavigatePayMethod}
-            styleTitle={styles.txtAuthnFinger}
-            containerContent={styles.featureContainer}
-            styleContainer={styles.stylePayMethodContainer}
-        />;
+    const onConfirm = useCallback(() => {
+        if (Platform.OS === 'ios') {
+            popupConfirm?.current?.hide?.();
+            PasscodeAuth.authenticate(
+                supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID
+                    ? Languages.quickAuThen.useFaceID
+                    : Languages.quickAuThen.useTouchID
+            )
+                .then(() => {
+                    SessionManager.setEnableFastAuthentication(true);
+                    setIsEnabledSwitch(true);
+                })
+                .catch(() => { });
+        } else {
+            popupConfirm?.current?.hide?.();
+            bottomSheetModalRef.current?.present?.();
+        }
+    }, [supportedBiometry]);
+
+    const onSetPinCodeSuccess = useCallback(
+        (pin: string) => {
+            bottomSheetModalRef.current?.close?.();
+            SessionManager.setEnableFastAuthentication(true);
+            StorageUtils.saveDataToKey(StorageKeys.KEY_PIN, pin);
+            setIsEnabledSwitch(true);
+            const message =
+                supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID
+                    ? Languages.quickAuThen.successAddFaceId
+                    : Languages.quickAuThen.successAddTouchId;
+            ToastUtils.showMsgToast(message);
+        },
+        [supportedBiometry]
+    );
+
+    const popupUpdatePassCode = useMemo(() => {
+        return (
+            <PopupConfirmBiometry
+                ref={popupConfirm}
+                type={supportedBiometry}
+                onConfirm={onConfirm}
+            />
+        );
+    }, [onConfirm, supportedBiometry]);
+
+    const renderPopupError = useMemo(() => {
+        return <PopupErrorBiometry title={Languages.quickAuThen.desSetTouchId} ref={popupError} />;
     }, []);
 
     const renderAuthnFinger = useMemo(() => {
-        const toggleSwitch = () => {
-            setIsEnabledSwitch(previousState => !previousState);
-        };
-        return (
-            <KeyToggleValue
-                label={Languages.account.authnFinger}
-                isEnabledSwitch={isEnabledSwitch}
-                onToggleSwitch={toggleSwitch}
-                hasDash
-                leftIcon={<FingerIC />}
-            />
-        );
-    }, [isEnabledSwitch]);
+        if (supportedBiometry === ENUM_BIOMETRIC_TYPE.TOUCH_ID) {
+            return (
+                <KeyToggleValue
+                    label={Languages.account.loginWithFinger}
+                    isEnabledSwitch={isEnabledSwitch}
+                    onToggleSwitch={onToggleBiometry}
+                    hasDash
+                    leftIcon={<FingerIC />}
+                />
+            );
+        }
+        if (supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
+            return (
+                <KeyToggleValue
+                    label={Languages.account.loginWithFaceId}
+                    isEnabledSwitch={isEnabledSwitch}
+                    onToggleSwitch={onToggleBiometry}
+                    hasDash
+                    leftIcon={<FaceIdIC width={Configs.IconSize.size18} height={Configs.IconSize.size18} />}
+                />
+            );
+        }
+        return null;
 
-    const renderKeyFeature = useMemo(() => {
+    }, [isEnabledSwitch, onToggleBiometry, supportedBiometry]);
 
-        return (
-            <>
-                <View style={styles.containerFeature}>
-                    <KeyValue
-                        title={Languages.account.changePwd}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<ChangePwdIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    {renderAuthnFinger}
-                    <KeyValue
-                        title={Languages.account.accountLink}
-                        noIndicator
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<LinkAccIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                </View>
-
-                <View style={styles.containerFeature}>
-                    <KeyValue
-                        title={Languages.account.policy}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<PolicyIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.shareFriends}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<ShareIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.tienngayWeb}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<TienngayWebIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.tienngayFacebook}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<TienngayFBIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.useManual}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<ManualIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.answer}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<AnswerIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.hotline}
-                        noIndicator
-                        hasDashBottom
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<PhoneIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                    <KeyValue
-                        title={Languages.account.rate}
-                        noIndicator
-                        rightIcon={<ArrowIC />}
-                        leftIcon={<StarIC />}
-                        styleTitle={styles.txtAuthnFinger}
-                        onPress={onNavigate}
-                        containerContent={styles.featureContainer}
-                    />
-                </View>
-            </>
-        );
-
-    }, [onNavigate, renderAuthnFinger]);
-
-    const renderLogoutBtn = useMemo(() => {
-        const onLogout = () => {
-
-        };
-        return <Button label={`${Languages.account.logout}`}
-            style={styles.wrapBtn}
-            buttonStyle={BUTTON_STYLES.GRAY_RED}
-            onPress={onLogout}
-            isLowerCase
-        />;
+    const renderAccuracy = useMemo(() => {
+        switch (dataUser?.accuracy) {
+            case 1:
+                return (
+                    <Touchable style={styles.accuracyWrap}>
+                        <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
+                    </Touchable>
+                );
+            case 2:
+                return (
+                    <Touchable style={styles.notAccuracyWrap} disabled={true}>
+                        <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
+                    </Touchable>
+                );
+            default:
+                return (
+                    <Touchable style={styles.notAccuracyWrap} disabled={true}>
+                        <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
+                    </Touchable>
+                );
+        }
     }, []);
+    const renderPinCode = useMemo(() => {
+        return (
+            <BottomSheetModal
+                ref={bottomSheetModalRef}
+                index={1}
+                snapPoints={['20%', '82%']}
+                keyboardBehavior={'interactive'}
+                enablePanDownToClose={true}
+                backdropComponent={CustomBackdropBottomSheet}
+                animationConfigs={animationConfigs}
+                style={{ backgroundColor: COLORS.TRANSPARENT }}
+            >
+                <View style={styles.wrapPin}>
+                    <PinCode
+                        mode={PinCodeT.Modes.Set}
+                        visible={true}
+                        options={{
+                            pinLength: 4,
+                            maxAttempt: 4,
+                            lockDuration: 10000,
+                            disableLock: false
+                        }}
+                        mainStyle={customStyles.main}
+                        textOptions={customTexts}
+                        titleStyle={customStyles.title}
+                        buttonsStyle={customStyles.buttons}
+                        subTitleStyle={customStyles.subTitle}
+                        buttonTextStyle={customStyles.buttonText}
+                        pinContainerStyle={customStyles.pinContainer}
+                        onSetSuccess={onSetPinCodeSuccess}
+                    />
+                </View>
+            </BottomSheetModal>
+        );
+    }, [animationConfigs, onSetPinCodeSuccess]);
 
     return (
         <View style={styles.container}>
             <HeaderBar title={Languages.account.title} isLight={false} />
-            {renderHeaderAccount}
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
-                {renderPayMethod}
-                {renderKeyFeature}
-                {renderLogoutBtn}
+                <View style={styles.accContainer}>
+                    {!dataUser.avatar ?
+                        <AvatarIC style={styles.circleWrap} />
+                        :
+                        <FastImage
+                            style={styles.circleWrap}
+                            source={{
+                                uri: dataUser?.avatar
+                            }}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                    }
+                    <View style={styles.headerAccRight}>
+                        <Text style={styles.headerAccName}>{dataUser.name || ''}</Text>
+                        <Text style={styles.headerAccPhone}>{dataUser.phone || ''}</Text>
+                        {renderAccuracy}
+                    </View>
+                    <ArrowIC />
+                </View>
+                {renderKeyValue(Languages.account.payMethod, <PayMethodIC />, true)}
+                <View style={styles.containerFeature}>
+                    {renderKeyValue(Languages.account.changePwd, <ChangePwdIC />)}
+                    {renderAuthnFinger}
+                    {renderKeyValue(Languages.account.accountLink, <LinkAccIC />, true)}
+                </View>
+                <View style={styles.containerFeature}>
+                    {renderKeyValue(Languages.account.policy, <PolicyIC />)}
+                    {renderKeyValue(Languages.account.shareFriends, <ShareIC />)}
+                    {renderKeyValue(Languages.account.web, <WebIC />)}
+                    {renderKeyValue(Languages.account.facebook, <FacebookIC />)}
+                    {renderKeyValue(Languages.account.useManual, <ManualIC />)}
+                    {renderKeyValue(Languages.account.answer, <AnswerIC />)}
+                    {renderKeyValue(Languages.account.hotline, <PhoneIC />)}
+                    {renderKeyValue(Languages.account.rate, <StarIC />, true)}
+                </View>
+                <Button label={`${Languages.account.logout}`}
+                    style={styles.wrapBtn}
+                    buttonStyle={BUTTON_STYLES.GRAY_RED}
+                    onPress={onLogout}
+                    isLowerCase
+                />
             </ScrollView>
+            {popupUpdatePassCode}
+            {renderPopupError}
+            {renderPinCode}
         </View>
     );
 });
@@ -302,11 +355,10 @@ const styles = StyleSheet.create({
         borderColor: COLORS.GRAY_13,
         backgroundColor: COLORS.WHITE,
         borderRadius: 16,
-        marginTop: 12,
         paddingVertical: 12,
         paddingHorizontal: 16,
-        marginHorizontal: 16,
-        alignItems: 'center'
+        alignItems: 'center',
+        marginVertical: 16
     },
     leftText: {
         ...Styles.typography.regular,
@@ -382,7 +434,46 @@ const styles = StyleSheet.create({
         paddingVertical: 7
     },
     featureContainer: {
-        width: '80%'
+        flex: 1,
+        marginLeft: 16
+    },
+    wrapPin: {
+        flex: 1
+    }
+});
+const customStyles = StyleSheet.create({
+    main: {
+        marginTop: 20,
+        paddingHorizontal: 20,
+        backgroundColor: COLORS.TRANSPARENT
+    },
+
+    title: {
+        fontSize: Configs.FontSize.size16,
+        fontFamily: Configs.FontFamily.medium,
+        color: COLORS.GREEN
+    },
+    subTitle: {
+        color: COLORS.BLACK
+    },
+    buttonText: {
+        color: COLORS.GREEN,
+        fontSize: Configs.FontSize.size32,
+        fontFamily: Configs.FontFamily.medium
+    },
+    buttons: {
+        backgroundColor: COLORS.WHITE,
+        borderWidth: 1.5,
+        marginHorizontal: 15,
+        borderColor: COLORS.GREEN,
+        width: 65,
+        height: 65,
+        borderRadius: 35
+    },
+    pinContainer: {
+        height: 30,
+        justifyContent: 'center',
+        marginBottom: 10
     }
 });
 export default Profile;

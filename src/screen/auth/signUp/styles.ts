@@ -5,11 +5,14 @@ import { Configs, PADDING_TOP } from '@/common/Configs';
 import { COLORS, Styles } from '@/theme';
 import DimensionUtils from '@/utils/DimensionUtils';
 
-export const myStylesAuth = () => {
+export const myStylesSign = () => {
     return useMemo(() => {
         return StyleSheet.create({
             container: {
-                flex: 1
+                flex: 1,
+                marginLeft: 10,
+                width: '85%',
+                height: '50%'
             },
             main: {
                 flex: 1,
@@ -20,29 +23,26 @@ export const myStylesAuth = () => {
             wrapLoginTxt: {
                 flexDirection: 'row',
                 alignItems: 'center',
-                paddingBottom: 8
+                paddingBottom: 15
             },
             txt: {
                 color: COLORS.WHITE,
                 fontSize: Configs.FontSize.size20,
                 borderRadius: 20
             },
-            inputPhone: {
-                borderRadius: 30,
-                height: Configs.FontSize.size40,
-                width: '85%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row'
+            txtTitleModal: {
+                color: COLORS.GRAY,
+                fontSize: 14,
+                marginHorizontal: 20
             },
             inputPass: {
-                marginTop: 5,
-                borderRadius: 30,
+                borderRadius: 20,
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '90%',
-                height: Configs.FontSize.size40
+                width: '110%',
+                height: Configs.FontSize.size40,
+                marginBottom:3
             },
             containerOverViewPicker:{
                 marginTop: 12,
@@ -104,8 +104,7 @@ export const myStylesAuth = () => {
             content: {
                 marginTop: 30,
                 justifyContent: 'center',
-                marginHorizontal: 10,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.3
+                marginHorizontal: 10
             },
             hisLop: {
                 paddingVertical: 10,
@@ -156,6 +155,43 @@ export const myStylesAuth = () => {
                 fontSize: 16,
                 fontWeight: '600',
                 color: COLORS.WHITE
+            },
+            image: {
+                position: 'absolute',
+                zIndex: -1
+            },
+            form: {
+                // height: SCREEN_HEIGHT - (HEADER_PADDING + STATUSBAR_HEIGHT)
+            },
+            swapInput: {
+                paddingHorizontal: 15,
+                paddingTop: 15
+            },
+            formInput: {
+                marginBottom: 15,
+                borderRadius: 20,
+                height: 40
+            },
+            startVal: {
+                ...Styles.typography.regular,
+                color: COLORS.RED
+            },
+            label: {
+                ...Styles.typography.regular,
+                marginBottom: 5
+            },
+            buttonContainer: {
+                marginVertical: 20
+            },
+            channelContainer: {
+                marginTop: 0,
+                marginBottom: 15
+            },
+            viewIcon: {
+                position: 'absolute',
+                right: 15,
+                justifyContent: 'center',
+                alignItems: 'center'
             }
         });
     }, []);

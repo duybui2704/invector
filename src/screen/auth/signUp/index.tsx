@@ -1,16 +1,15 @@
-import { observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react';
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
-import CheckIcon from '@/asset/icon/ic_ischecked_save_acc.svg';
-import UnCheckIcon from '@/asset/icon/ic_unchecked_save_acc.svg';
-import { myStylesAuth } from './styles';
+import CheckIcon from '@/assets/image/ic_ischecked_save_acc.svg';
+import UnCheckIcon from '@/assets/image/ic_unchecked_save_acc.svg';
 import Languages from '@/common/Languages';
 import arrayIcon from '@/common/arrayIcon';
 import FormValidate from '@/utils/FormValidate';
-import ICUnderArrow from '@/asset/icon/ic_under_arrow.svg';
+import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
 import { ItemProps } from '@/components/bottomsheet';
 import { useAppStore } from '@/hooks';
 import { ChannelModal } from '@/models/ChannelModal';
@@ -20,6 +19,7 @@ import { Touchable } from '@/components/elements/touchable';
 import { COLORS } from '@/theme';
 import Otp from '../otp';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
+import { myStylesSign } from './styles';
 
 const SignUp = observer(() => {
     const { apiServices } = useAppStore();
@@ -33,7 +33,7 @@ const SignUp = observer(() => {
     const [dataChannel, setDataChannel] = useState<ItemProps[]>();
     const [data, setData] = useState<any>('');
     const [isNavigate, setNavigate] = useState<boolean>(false);
-    const styles = myStylesAuth();
+    const styles = myStylesSign();
     const refPhone = useRef<TextFieldActions>(null);
     const refName = useRef<TextFieldActions>(null);
     const refEmail = useRef<TextFieldActions>(null);

@@ -4,8 +4,7 @@ import {StyleSheet} from 'react-native';
 
 import DimensionUtils from '@/utils/DimensionUtils';
 import { COLORS, Styles } from '@/theme';
-import { Configs, PADDING_TOP } from '../../common/Configs';
-
+import { Configs } from '../../common/Configs';
 
 export const myStylesAuth = () => {
     return useMemo(() => {
@@ -110,12 +109,9 @@ export const myStylesAuth = () => {
             },
             wrapAll: {
                 flex: 1,
-                paddingBottom: PADDING_TOP,
-                marginTop: DimensionUtils.SCREEN_HEIGHT / 3,
-                height: DimensionUtils.SCREEN_HEIGHT / 3,
+                marginTop: DimensionUtils.SCREEN_HEIGHT *0.3 - 50,
                 width: '85%',
-                position: 'absolute',
-                top: -20
+                position: 'absolute'
             },
             checkbox: {
                 justifyContent: 'flex-end',
@@ -142,7 +138,6 @@ export const myStylesAuth = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginHorizontal: 5
-                // marginLeft: 15
             },
             bottom: {
                 justifyContent: 'flex-start',
@@ -184,7 +179,6 @@ export const myStylesAuth = () => {
             },
             viewSvg: {
                 paddingTop: 100,
-                // backgroundColor: COLORS.RED,
                 height: DimensionUtils.SCREEN_HEIGHT,
                 width: DimensionUtils.SCREEN_WIDTH
             },
@@ -203,7 +197,7 @@ export const myStylesAuth = () => {
                 position: 'absolute',
                 alignItems: 'center',
                 paddingHorizontal: 16,
-                marginTop: SCREEN_HEIGHT*0.6-40,
+                marginTop: SCREEN_HEIGHT*0.62,
                 justifyContent: 'space-between'
             },
             txtLogin: {
@@ -217,9 +211,13 @@ export const myStylesAuth = () => {
                 justifyContent: 'space-between'
             },
             icon: {
-                paddingLeft: 10,
-                alignItems: 'center',
-                justifyContent: 'center'
+                paddingLeft: 10
+            },
+            func: {
+                height: DimensionUtils.SCREEN_HEIGHT * 0.5,
+                position: 'absolute',
+                top: -DimensionUtils.SCREEN_HEIGHT * 0.066,
+                width: DimensionUtils.SCREEN_WIDTH * 0.7
             }
         });
     }, []);

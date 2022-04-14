@@ -4,16 +4,17 @@ export const ScreenName = {
     tabs: 'Tabs',
     auth: 'Auth',
     signIn: 'SignIn',
-    homeScreen: 'HomeScreen',
-    investScreen: 'InvestScreen',
-    reportScreen: 'ReportScreen',
-    paymentScreen: 'PaymentScreen',
-    accountScreen: 'AccountScreen',
-    introduceScreen: 'IntroduceScreen',
+    home: 'Home',
+    invest: 'Invest',
+    report: 'Report',
+    payment: 'Payment',
+    account: 'Account',
+    introduce: 'Introduce',
     transaction: 'Transaction'
 };
 
 export default ScreenName;
+
 
 export const TabsName = {
     homeTabs: 'Trang chủ',
@@ -22,5 +23,5 @@ export const TabsName = {
     paymentTabs: 'Giao dịch',
     accountTabs: 'Tài khoản'
 };
-
+export const TabNamesArray = [TabsName.homeTabs, TabsName.investTabs, TabsName.reportTabs, TabsName.paymentTabs, TabsName.accountTabs];
 

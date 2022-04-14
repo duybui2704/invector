@@ -10,10 +10,10 @@ const Languages={
         toDate: 'Tới ngày'
     },
     home:{
-        title:'Trang chủ',
+        title: 'Trang chủ',
         sumInvest: 'Tổng đầu tư',
         sumpProfit: 'Tổng lãi đã nhận',
-        sumResidualProfit: 'Tổng lãi còn lại', 
+        sumResidualProfit: 'Tổng lãi còn lại',
         have: 'Đang có',
         vnd: 'VNĐ',
         invest: 'Đầu tư',
@@ -38,12 +38,13 @@ const Languages={
         title: 'Tài khoản',
         payMethod: 'Phương thức thanh toán',
         changePwd: 'Đổi mật khẩu',
-        authnFinger: 'Xác thực nhanh vân tay',
+        loginWithFinger: 'Xác thực nhanh vân tay',
+        loginWithFaceId: 'Xác thực nhanh Face ID',
         accountLink: 'Tài khoản liên kết',
         policy: 'Điều kiện và tài khoản',
         shareFriends: 'Mời bạn bè',
-        tienngayWeb: 'TienNgay.vn trên website',
-        tienngayFacebook: 'TienNgay.vn trên Facebook',
+        web: 'TienNgay.vn trên website',
+        facebook: 'TienNgay.vn trên Facebook',
         useManual: 'Hướng dẫn sử dụng',
         answer: 'Hỏi đáp',
         hotline: 'Hotline',
@@ -116,6 +117,61 @@ const Languages={
         phoneIsEmpty: 'Số điện thoại không được để trống',
         phoneRegex: 'Số điện thoại không đúng định dạng',
         phoneCount: 'Số điện thoại chỉ được 10 số'
+    },
+    quickAuThen: {
+        title: 'Mật khẩu và đăng nhập',
+        quickButton: 'Sử dụng xác thực nhanh',
+        fingerAuThen: 'Bảo mật vân tay',
+        faceid: 'Nhận diện khuôn mặt',
+        pin: 'Mã Pin',
+        changePwd: 'Chỉnh sửa mật khẩu',
+        confirm: 'Xác thực của bạn',
+        useFaceId: 'Đăng nhập nhanh bằng Face ID',
+        useTouchId: 'Đăng nhập nhanh bằng vân tay',
+        facIdConFirm:
+            'Quý khách có muốn sử dụng Face ID làm phương thức xác thực chính',
+        touchIdConfirm:
+            'Quý khách có muốn sử dụng vân tay làm phương thức xác thực chính',
+        passcodeConfirm:
+            'Quý khách có muốn sử dụng mã pin làm phương thức xác thực chính',
+        description: 'Đăng nhập bằng vân tay của bạn',
+        useFaceID: 'Sử dụng Face ID để đăng nhập vào Univest',
+        useTouchID: 'Sử dụng Touch ID để đăng nhập vào Univest',
+
+        goToSetting: 'Cài đặt',
+        desSetPasscode: 'Vui lòng thêm mã PIN để cài đặt xác thực nhanh',
+        desSetTouchId: 'Vui lòng thêm vân tay để xác thực nhanh',
+        desSetFaceId: 'Vui lòng thêm Face ID để xác thực nhanh',
+        successAddTouchId: 'Đã thêm vân tay vào xác thực nhanh của bạn',
+        successAddFaceId: 'Đã thêm Face ID vào xác thực của bạn'
+    },
+    setPassCode: {
+        titleEnter: 'Xác thực mã PIN',
+        titleSetPasscode: 'Sử dụng mã PIN để xác thực nhanh',
+        repeat: 'Nhập lại mã PIN',
+        errorSet: 'Mã PIN trước và mã PIN sau không trùng khớp',
+        errorEnter: 'Mã PIN không đúng',
+        footerText: 'Tiếp tục'
+    },
+    errorBiometryType: {
+        NOT_DEFINE: 'Vui lòng thêm ít nhất 1 vân tay vào thiết bị của bạn',
+        // ios
+        RCTTouchIDNotSupported: 'Không hỗ trợ xác thực vân tay trên thiết bị này',
+        RCTTouchIDUnknownError:
+            'Đăng nhập thất bại nhiều lần, vui lòng đăng nhập với mật khẩu',
+        LAErrorTouchIDNotEnrolled:
+            'Vui lòng thêm ít nhất 1 faceId vào thiết bị của bạn',
+        LAErrorTouchIDNotAvailable:
+            'Không có sẵn xác thực nhanh trên thiết bị của bạn',
+        ErrorFaceId: 'Vui lòng thêm ít nhất 1 xác thực faceId vào thiết bị của bạn',
+        // android
+        NOT_SUPPORTED: 'Không hỗ trợ xác thực vân tay trên thiết bị này',
+        NOT_AVAILABLE: 'Không hỗ trợ xác thực vân tay trên thiết bị này',
+        NOT_ENROLLED: 'Vui lòng thêm ít nhất 1 vân tay vào thiết bị của bạn',
+        FINGERPRINT_ERROR_LOCKOUT_PERMANENT:
+            'Xác thực không thành công, thử lại sau',
+        LAErrorTouchIDLockout:
+            'Đã xảy ra lỗi do đăng nhập quá nhiều lần, vui lòng thử lại sau'
     }
 };
 export default Languages;

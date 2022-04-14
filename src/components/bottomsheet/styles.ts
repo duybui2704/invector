@@ -1,7 +1,8 @@
-import {StyleSheet} from "react-native";
-import {useMemo} from "react";
-import {COLORS} from "@/theme";
-import {PADDING_BOTTOM, Configs} from "@/common/Configs";
+import {StyleSheet} from 'react-native';
+import {useMemo} from 'react';
+
+import {COLORS} from '@/theme';
+import { PADDING_BOTTOM, Configs } from '@/common/Configs';
 
 const ITEM_HEIGHT = Configs.FontSize.size40;
 
@@ -60,6 +61,6 @@ const MyStyleBottomSheet = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
             }
-        }),[])
-}
+        }),[]);
+};
 export default MyStyleBottomSheet;

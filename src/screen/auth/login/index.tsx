@@ -2,21 +2,22 @@ import { observer } from 'mobx-react-lite';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 
-import CheckIcon from '@/asset/icon/ic_ischecked_save_acc.svg';
+import CheckIcon from '@/assets/image/ic_ischecked_save_acc.svg';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
-import UnCheckIcon from '@/asset/icon/ic_unchecked_save_acc.svg';
+import UnCheckIcon from '@/assets/image/ic_unchecked_save_acc.svg';
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 import { UserInfoModal } from '@/models/user-modal';
-import FormValidate from '@/utils/FormValidate';
-import { myStylesAuth } from './styles';
+import Loading from '@/components/loading';
 import { TextFieldActions } from '@/components/elements/textfield/types';
+import { MyStylesLogin } from './styles';
 import { MyTextInput } from '@/components/elements/textfield';
+import Navigator from '@/routers/Navigator';
+import ScreenName, { TabNamesArray } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
 import { COLORS } from '@/theme';
-
 
 const Login = observer(() => {
     const {
@@ -27,7 +28,7 @@ const Login = observer(() => {
     } = useAppStore();
     const [phone, setPhone] = useState<any>('');
     const [pass, setPass] = useState<any>('');
-    const styles = myStylesAuth();
+    const styles = MyStylesLogin();
     const refPhone = useRef<TextFieldActions>(null);
     const refPass = useRef<TextFieldActions>(null);
     const [checked, setCheck] = useState<boolean>(false);
@@ -74,37 +75,14 @@ const Login = observer(() => {
 
 
     const onLoginPhone = async () => {
-        const errMsgPhone = FormValidate.passConFirmPhone(phone);
-        const errMsgPwd = FormValidate.passValidate(pass);
-        refPhone.current?.setErrorMsg(errMsgPhone);
-        refPass.current?.setErrorMsg(errMsgPwd);
-        if (`${errMsgPwd}${errMsgPhone}`.length === 0) {
-            setLoading(true);
-            const res = await apiServices.auth.loginPhone(phone, pass);
-            setLoading(false);
-            if (res.success) {
-                if (!checked) {
-                    SessionManager.setSavePhoneLogin('');
-                } else {
-                    SessionManager.setSavePhoneLogin(phone);
-                }
-                userManager.updateUserInfo(res.data as UserInfoModal);
-                fastAuthInfo.setEnableFastAuthentication(false);
-                setTimeout(() => {
-                    if (SessionManager.lastTabIndexBeforeOpenAuthTab) {
-                        // Navigator.navigateToDeepScreen(
-                        //     [ScreenNames.tabs],
-                        //     TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab]
-                        // );
-                    }
-                }, 100);
-            }
-        }
+        userManager.updateUserInfo({
+            name: 'Dinh Giang'
+        });
+        Navigator.navigateToDeepScreen(
+            [ScreenName.tabs],
+            TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+        );
     };
-
-    // const checkLoading = ((isLoading : boolean) => {
-    //     onLoading(isLoading);
-    // }, [isLoading]);
 
     return (
         <View style={styles.content}>
@@ -140,7 +118,6 @@ const Login = observer(() => {
                     <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                 </Touchable>
                     
-               
                 <Touchable onPress={onLoginPhone} disabled={!checked}
                     style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
                     <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
@@ -148,7 +125,7 @@ const Login = observer(() => {
                     </Text>
                 </Touchable>
             </View>
-            {/* {isLoading && <Loading isOverview/>} */}
+            {isLoading && <Loading isOverview/>}
         </View>
     );
 });

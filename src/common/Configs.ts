@@ -9,7 +9,7 @@ export const isIOS = Platform.OS === 'ios';
 export const STATUSBAR_HEIGHT = isIOS ? 20 : (StatusBar.currentHeight ? StatusBar.currentHeight : 0);
 export const PADDING_BOTTOM = DimensionUtils.getPaddingBottomByDevice();
 export const PADDING_TOP = DimensionUtils.getPaddingTopByDevice();
-export const BOTTOM_HEIGHT = isIOS ?  75 + PADDING_BOTTOM : 60 + PADDING_BOTTOM;
+export const BOTTOM_HEIGHT = isIOS ? 75 + PADDING_BOTTOM : 60 + PADDING_BOTTOM;
 export const HEADER_PADDING = STATUSBAR_HEIGHT + PADDING_TOP;
 export const TAB_BAR_HEIGHT = 50;
 

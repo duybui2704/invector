@@ -12,7 +12,7 @@ import { COLORS, Styles } from '@/theme';
 import { DataChart, dataQuarterReport, dataYearReport } from '@/mocks/data';
 import { MonthReportModel } from '@/models/monthOfQuarter-model';
 import Utils from '@/utils/Utils';
-import ICUnderArrow from '@/asset/icon/ic_under_arrow.svg';
+import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
 import Languages from '@/common/Languages';
 import HeaderBar from '@/components/header';

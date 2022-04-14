@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { ScrollView, StatusBar, Text, View, TouchableOpacity } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
@@ -17,11 +17,13 @@ import HeaderBar from '@/components/header';
 import { COLORS } from '@/theme';
 import Languages from '@/common/Languages';
 import { arrayData } from '@/mocks/data';
+import Loading from '@/components/loading';
 
 const Home = observer(() => {
 
     const isFocused = useIsFocused();
     const styles = MyStylesHome();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         console.log('focus home:', isFocused);
@@ -172,8 +174,8 @@ const Home = observer(() => {
                         </Touchable>
                     </Touchable>
                 </View>
-
             </ScrollView>
+            {isLoading && <Loading isOverview/>}
         </View>
     );
 });

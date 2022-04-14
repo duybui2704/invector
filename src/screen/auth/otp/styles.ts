@@ -95,5 +95,5 @@ export const MyStylesOtp = () => {
                 alignItems: 'center'
             }
         })
-        , []);
+    , []);
 };

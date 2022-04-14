@@ -46,7 +46,6 @@ const KeyValue = (
                 {rightIcon || null}
             </Touchable>
             {hasDashBottom && <Dash
-                style={styles.dashBottom}
                 dashThickness={1}
                 dashLength={10}
                 dashGap={5}
@@ -62,18 +61,18 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: COLORS.WHITE,
         paddingHorizontal: 16,
-        paddingVertical: 4,
-        borderRadius: 16
+        borderRadius: 16,
+        width: '100%'
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginRight: 12,
+        paddingVertical: 4
     },
     rowCenter: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%'
+        justifyContent: 'space-between'
     },
     leftText: {
         ...Styles.typography.regular,
@@ -87,8 +86,6 @@ const styles = StyleSheet.create({
     },
     dash: {
         paddingBottom: 10
-    },
-    dashBottom: {
-        paddingTop: 8
     }
+
 });

@@ -8,7 +8,7 @@ import React, {
 import { StyleSheet, Text } from 'react-native';
 import DatePicker, { DatePickerProps } from 'react-native-date-picker';
 
-import ICCalender from '@/asset/icon/ic_calender.svg';
+import ICCalender from '@/assets/image/ic_calender.svg';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { Touchable } from './elements/touchable';

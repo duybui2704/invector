@@ -9,7 +9,7 @@ import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
 
 const KeyToggleValue = ({ leftIcon, label, isEnabledSwitch, onToggleSwitch, hasDash }:
-    { label: string, isEnabledSwitch: boolean, onToggleSwitch: () => any, hasDash?: boolean, leftIcon?: any }) => {
+    { label: string, isEnabledSwitch: boolean, onToggleSwitch: (value: boolean) => any, hasDash?: boolean, leftIcon?: any }) => {
 
     return (
         <>
