@@ -7,5 +7,5 @@ const arrayIcon = {
         confirmPass: 'confirmPass',
         channel: 'channel'
     }
-}
+};
 export default arrayIcon;

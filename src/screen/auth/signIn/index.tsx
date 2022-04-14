@@ -1,9 +1,9 @@
 import {observer} from 'mobx-react-lite';
 import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
 import {View, Text} from 'react-native';
-import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import ScrollViewWithKeyboard from "@/components/scrollViewWithKeyboard";
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
+
+import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import CheckIcon from '@/assets/image/auth/ic_check_login.svg';
 import IcChannel from '@/assets/image/auth/ic_down_auth.svg';
@@ -13,14 +13,14 @@ import {MyTextInput} from '@/components/elements/textfield';
 import {myStylesSign} from './styles';
 import {TextFieldActions} from '@/components/elements/textfield/types';
 import {COLORS} from '@/theme';
-import Languages from "@/common/languages";
-import arrayIcon from "@/common/arrayIcon";
-import FormValidate from "@/utils/FormValidate";
-import {useAppStore} from "@/hooks";
-import OtpSign from "@/screen/auth/otpSignIn";
+import Languages from '@/common/languages';
+import arrayIcon from '@/common/arrayIcon';
+import FormValidate from '@/utils/FormValidate';
+import { useAppStore } from '@/hooks';
+import OtpSign from '@/screen/auth/otpSignIn';
 import Loading from '@/components/loading';
-import PopupSignIn from "@/components/popupSignIn";
-import DimensionUtils from "@/utils/DimensionUtils";
+import PopupSignIn from '@/components/popupSignIn';
+import DimensionUtils from '@/utils/DimensionUtils';
 
 const SignIn = observer(() => {
 
@@ -33,7 +33,7 @@ const SignIn = observer(() => {
     const [pass, setPass] = useState<string>('');
     const [conFirmPass, setConFirmPass] = useState<string>('');
     const [disable, setDisable] = useState<boolean>(false);
-    const [modal, setModal] = useState<boolean>(false)
+    const [modal, setModal] = useState<boolean>(false);
 
     const userNameRef = useRef<TextFieldActions>(null);
     const phoneRef = useRef<TextFieldActions>(null);
@@ -66,7 +66,7 @@ const SignIn = observer(() => {
     }, [channel, conFirmPass, email, pass, phone, username]);
 
     const onPressSignUp = async () => {
-        setIsNavigate(true)
+        setIsNavigate(true);
         if (onValidation()) {
             setLoading(true);
             setDisable(!disable);
@@ -86,7 +86,7 @@ const SignIn = observer(() => {
         const res = await apiServices.auth.getChanelSource();
         if (res.success) {
             setData(res.data);
-            console.log(res.data)
+            console.log(res.data);
         }
         setLoading(false);
     };
@@ -135,7 +135,7 @@ const SignIn = observer(() => {
 
     const actionYes = useCallback((txt) => {
         setchannel(txt);
-    }, [])
+    }, []);
 
     const renderView = () => {
         return (
@@ -200,7 +200,7 @@ const SignIn = observer(() => {
                         onChangeText={onChangeText}
                     />
 
-                    <Touchable onPress={() => onModal()} style={styles.tob} disabled={data ? false : true}>
+                    <Touchable onPress={() => onModal()} style={styles.tob} disabled={!data}>
                         <Text style={channel !== '' ?
                             [styles.txtTitleModal, {color: COLORS.BLACK}] : styles.txtTitleModal}>
                             {channel !== '' ? channel : Languages.Auth.knowChannel}</Text>
@@ -216,8 +216,8 @@ const SignIn = observer(() => {
                             </Touchable>
                             <Text style={styles.txtSave}>Lưu tài khoản</Text>
                         </View>
-                        <Touchable onPress={onPressSignUp} disabled={checked ? false : true}
-                                   style={checked ? styles.tobLogin : [styles.tobLogin, {backgroundColor: COLORS.GRAY}]}>
+                        <Touchable onPress={onPressSignUp} disabled={!checked}
+                            style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY }]}>
                             <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, {color: COLORS.BLACK}]}>
                                 {Languages.Auth.txtSignIn}
                             </Text>
@@ -234,13 +234,13 @@ const SignIn = observer(() => {
                 {isLoading && <Loading isOverview/>}
             </View>
         );
-    }
+    };
 
     return (
         <View style={{flex: 1}}>
             {!isNavigate ? <OtpSign phone={'0862319100'} check={true}/> : renderView()}
         </View>
     );
-})
+});
 
 export default SignIn;
