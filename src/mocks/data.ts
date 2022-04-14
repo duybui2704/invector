@@ -111,3 +111,33 @@ export const dataUser = {
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAznG13WJ4ayysR3Q07BNXsRTdDbP0PQ_Efw&usqp=CAU'
 
 } as UserModel;
+
+export const arrayData = [
+    {
+        id: '1',
+        value: '500000',
+        interestRate: '5%',
+        expInterest: '10000',
+        time: '5 tháng',
+        format: 'Lãi hàng tháng gốc hàng tháng'
+
+    },
+    {
+        id: '2',
+        value: '200000',
+        interestRate: '5%',
+        expInterest: '10000',
+        time: '3 tháng',
+        format: 'Lãi hàng tháng gốc hàng tháng'
+
+    },
+    {
+        id: '3',
+        value: '500000',
+        interestRate: '5%',
+        expInterest: '10000',
+        time: '5 tháng',
+        format: 'Lãi hàng tháng gốc hàng tháng'
+
+    }
+];

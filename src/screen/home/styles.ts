@@ -1,9 +1,9 @@
-import { width } from './../introduce/index';
+import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import React, { useMemo } from 'react';
 
-import { COLORS, Styles } from '../../theme';
 import DimensionUtils from '@/utils/DimensionUtils';
+import { COLORS, Styles } from '@/theme';
+
 
 export const MyStylesHome = () => {
     return useMemo(() =>

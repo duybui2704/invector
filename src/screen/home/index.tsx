@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { ScrollView, StatusBar, Text, View, TouchableOpacity } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import { observer } from 'mobx-react';
 
 import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
 import IcChevronRight from '@/assets/image/home/ic_chevron_right.svg';
@@ -15,43 +16,12 @@ import { MyStylesHome } from './styles';
 import HeaderBar from '@/components/header';
 import { COLORS } from '@/theme';
 import Languages from '@/common/Languages';
+import { arrayData } from '@/mocks/data';
 
-
-
-const Home = () => {
+const Home = observer(() => {
 
     const isFocused = useIsFocused();
     const styles = MyStylesHome();
-
-    const arrayData = [
-        {
-            id: '1',
-            value: '500000',
-            interestRate: '5%',
-            expInterest: '10000',
-            time: '5 tháng',
-            format: 'Lãi hàng tháng gốc hàng tháng'
-
-        },
-        {
-            id: '2',
-            value: '200000',
-            interestRate: '5%',
-            expInterest: '10000',
-            time: '3 tháng',
-            format: 'Lãi hàng tháng gốc hàng tháng'
-
-        },
-        {
-            id: '3',
-            value: '500000',
-            interestRate: '5%',
-            expInterest: '10000',
-            time: '5 tháng',
-            format: 'Lãi hàng tháng gốc hàng tháng'
-
-        }
-    ];
 
     useEffect(() => {
         console.log('focus home:', isFocused);
@@ -116,7 +86,7 @@ const Home = () => {
                 <Text style={[styles.txt, { color: COLORS.BLACK, marginVertical: 5 }]}>{Languages.home.investPackages}</Text>
                 {arrayData.map(item => {
                     return (
-                        <View style={styles.item}>
+                        <View style={styles.item} key={item.id}>
                             <View style={styles.itemChild}>
                                 <Text style={[styles.txt1, { color: COLORS.GREEN }]}>{item.value}</Text>
                                 <View style={styles.itemRight}>
@@ -125,7 +95,7 @@ const Home = () => {
                                 </View>
                                 {/* <IcLine /> */}
                             </View>
-                            <IcLine width={'100%'}/>
+                            <IcLine width={'100%'} />
                             <View style={styles.itemChild}>
                                 <View style={styles.itemLeft}>
                                     <Text style={styles.txt3}>Thời gian đầu tư</Text>
@@ -136,7 +106,7 @@ const Home = () => {
                                     <Text style={[styles.txt3, { color: COLORS.GREEN }]}>{item.expInterest}</Text>
                                 </View>
                             </View>
-                            <IcLine width={'100%'}/>
+                            <IcLine width={'100%'} />
                             <View style={styles.itemChild}>
                                 <View style={styles.itemLeft}>
                                     <Text style={styles.txt3}>Hình thức trả lãi</Text>
@@ -174,7 +144,7 @@ const Home = () => {
                             <IcChevronRight width={20} height={20} />
                         </Touchable>
                     </Touchable>
-                    <IcLine width={'90%'}/>
+                    <IcLine width={'90%'} />
                     <Touchable style={styles.txtQuestion}>
                         <View style={styles.viewTxtBottom}>
                             <Text style={styles.txt3}>{Languages.home.investNow}?</Text>
@@ -183,7 +153,7 @@ const Home = () => {
                             <IcChevronRight width={20} height={20} />
                         </Touchable>
                     </Touchable>
-                    <IcLine width={'90%'}/>
+                    <IcLine width={'90%'} />
                     <Touchable style={styles.txtQuestion}>
                         <View style={styles.viewTxtBottom}>
                             <Text style={styles.txt3}>{Languages.home.percentCalculated}</Text>
@@ -192,7 +162,7 @@ const Home = () => {
                             <IcChevronRight width={20} height={20} />
                         </Touchable>
                     </Touchable>
-                    <IcLine width={'90%'}/>
+                    <IcLine width={'90%'} />
                     <Touchable style={styles.txtQuestion}>
                         <View style={styles.viewTxtBottom}>
                             <Text style={styles.txt3}>{Languages.home.paymentMethod}</Text>
@@ -206,6 +176,6 @@ const Home = () => {
             </ScrollView>
         </View>
     );
-};
+});
 
 export default Home;
