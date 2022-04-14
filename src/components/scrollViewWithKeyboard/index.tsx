@@ -4,7 +4,7 @@ import {
     KeyboardAwareScrollView as KeyboardAwareScrollViewIos, KeyboardAwareScrollViewProps
 } from 'react-native-keyboard-aware-scroll-view';
 
-import { isIOS } from '@/common/config';
+import { isIOS } from '@/common/Configs';
 
 const ScrollViewWithKeyboard = (
     props: KeyboardAwareScrollViewProps

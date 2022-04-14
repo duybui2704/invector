@@ -189,7 +189,7 @@ const OtpSignIn = (props) => {
         <View style={styles.container}>
             <View style={styles.containerBox}>
                 <View style={styles.viewTop}>
-                    <Text style={styles.txtTitle}>{Languages.Auth.txtTitleOtp}</Text>
+                    <Text style={styles.txtTitle}>{Languages.auth.txtTitleOtp}</Text>
                     <IcLine width={'35%'} height={'40%'} />
                 </View>
                 <Text style={styles.confirmOtp}>{Languages.otp.confirmOtp}</Text>
