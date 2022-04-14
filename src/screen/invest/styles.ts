@@ -1,14 +1,17 @@
 import { StyleSheet } from 'react-native';
+import { useMemo } from 'react';
 
-import { COLORS } from '../../theme';
+import { COLORS } from '@/theme';
+import { Configs, PADDING_TOP } from '@/common/Configs';
+import DimensionUtils from '@/utils/DimensionUtils';
 
-export const styles = StyleSheet.create({
-    main: {
-        flex: 1,
-        backgroundColor: COLORS.WHITE
-    },
-    txt: {
-        fontSize: 15,
-        color: COLORS.BLACK
-    }
-});
+const styles = () => {
+    return useMemo(() =>
+        StyleSheet.create({
+            main: {
+                flex: 1
+            }
+        })
+        , []);
+};
+export default styles;

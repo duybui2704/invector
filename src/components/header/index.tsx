@@ -38,7 +38,7 @@ export const HeaderBar = ({
 
     const renderBack = useMemo(() => (
         <Touchable style={styles.goBack} onPress={_onBackPressed} size={40}>
-          <IcBack width={27} height={27}/>
+            <IcBack width={27} height={27} />
         </Touchable>
     ), [_onBackPressed]);
 
@@ -47,7 +47,7 @@ export const HeaderBar = ({
             <Text
                 numberOfLines={1}
                 style={(!exitApp) ? styles.titleCenter1 : styles.titleCenter}>
-                {title}
+                {title?.toLocaleUpperCase()}
             </Text>
         </View>
     ), [title]);

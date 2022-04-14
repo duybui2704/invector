@@ -39,18 +39,22 @@ const Report = observer(()=> {
                 </Text>
                 <KeyValue
                     title={Languages.report.contractNumber}
+                    styleTitle={styles.title}
                     content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.contractNumberQuarter) : Utils.formatMoney(item?.contractNumber)}
                     styleColor={styles.txtContractNumber} />
                 <KeyValue
                     title={Languages.report.investMoney}
+                    styleTitle={styles.title}
                     content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.investMountQuarter) : Utils.formatMoney(item?.investMount)}
                     styleColor={styles.txtInvestNumber} />
                 <KeyValue
                     title={Languages.report.originMoneyCollected}
+                    styleTitle={styles.title}
                     content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.originAmountEarningQuarter) : Utils.formatMoney(item?.originAmountEarning)}
                     styleColor={styles.txtEarning} />
                 <KeyValue
                     title={Languages.report.interest}
+                    styleTitle={styles.title}
                     content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.interestQuarter) : Utils.formatMoney(item?.interest)}
                     styleColor={styles.txtInterest}
                 />
@@ -312,5 +316,8 @@ const styles = StyleSheet.create({
     },
     containerItemFilter: {
         marginBottom: -45
+    },
+    title: {
+        marginRight: 5
     }
 });

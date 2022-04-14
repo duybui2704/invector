@@ -1,7 +1,7 @@
 import {MyTextInput} from '../../../components/elements/textfield';
 import {TextFieldActions} from '../../../components/elements/textfield/types';
 import {COLORS, Styles} from '../../../theme';
-import Languages from "@/common/languages";
+import Languages from "@/common/Languages";
 import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import Validate from "@/utils/Validate";

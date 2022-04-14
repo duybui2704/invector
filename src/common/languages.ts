@@ -1,5 +1,5 @@
-const Languages={
-    transaction:{
+const Languages = {
+    transaction: {
         title: 'Lịch sử giao dịch',
         debtNow: 'Số dư hiện có',
         all: 'Tất cả',
@@ -9,7 +9,7 @@ const Languages={
         fromDate: 'Từ ngày',
         toDate: 'Tới ngày'
     },
-    home:{
+    home: {
         title: 'Trang chủ',
         sumInvest: 'Tổng đầu tư',
         sumpProfit: 'Tổng lãi đã nhận',
@@ -31,10 +31,18 @@ const Languages={
         paymentMethod: 'Hình thức trả tiền như thế nao?'
 
     },
-    invest:{
-        title: 'Đầu tư'
+    invest: {
+        title: 'Đầu tư',
+        investing: 'Đang đầu tư',
+        history: 'Lịch sử',
+        enter: 'Nhập số tiền mà bạn muốn tìm kiếm',
+        time: 'Thời gian đầu tư',
+        formalPayment: 'Hình thức trả lại',
+        investNow: 'Đầu tư ngay',
+        interest: 'Lãi suất',
+        attractInvest: 'Đầu tư hấp dẫn'
     },
-    account:{
+    account: {
         title: 'Tài khoản',
         payMethod: 'Phương thức thanh toán',
         changePwd: 'Đổi mật khẩu',
@@ -53,7 +61,7 @@ const Languages={
         accuracyNow: 'Xác thực ngay',
         logout: 'Đăng xuất'
     },
-    report:{
+    report: {
         title: 'Báo cáo',
         quarterlyOverview: 'Tổng quan theo quý',
         financialChart: 'Biểu đồ tài chính',
@@ -77,7 +85,7 @@ const Languages={
         VND: 'VNĐ',
         hotline: '1900690'
     },
-    introduce:{
+    introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng Tienngay',
         txtIntroduce2: 'TienNgay.vn có giấy phép kinh doanh và hoạt động theo quy định của pháp luật và đồng nhất trên toàn hệ thống. Số tiền lãi được trả đúng hạn theo cam kết, giải quyết thắc mắc (nếu có) tận tình, nhanh chóng',
         txtContinue: 'Tiếp tục',
@@ -141,7 +149,8 @@ const Languages={
         desSetTouchId: 'Vui lòng thêm vân tay để xác thực nhanh',
         desSetFaceId: 'Vui lòng thêm Face ID để xác thực nhanh',
         successAddTouchId: 'Đã thêm vân tay vào xác thực nhanh của bạn',
-        successAddFaceId: 'Đã thêm Face ID vào xác thực của bạn'
+        successAddFaceId: 'Đã thêm Face ID vào xác thực của bạn',
+        quickAuthn: 'Xác thực nhanh của bạn'
     },
     setPassCode: {
         titleEnter: 'Xác thực mã PIN',
@@ -171,5 +180,6 @@ const Languages={
         LAErrorTouchIDLockout:
             'Đã xảy ra lỗi do đăng nhập quá nhiều lần, vui lòng thử lại sau'
     }
+
 };
 export default Languages;
