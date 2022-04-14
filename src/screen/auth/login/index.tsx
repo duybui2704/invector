@@ -2,22 +2,22 @@ import { observer } from 'mobx-react-lite';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 
-import CheckIcon from '@/assets/image/ic_ischecked_save_acc.svg';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
+import CheckIcon from '@/assets/image/ic_ischecked_save_acc.svg';
 import UnCheckIcon from '@/assets/image/ic_unchecked_save_acc.svg';
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
+import ScreenName, { TabNamesArray } from '@/common/screenNames';
+import { MyTextInput } from '@/components/elements/textfield';
+import { TextFieldActions } from '@/components/elements/textfield/types';
+import { Touchable } from '@/components/elements/touchable';
+import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import { UserInfoModal } from '@/models/user-modal';
-import Loading from '@/components/loading';
-import { TextFieldActions } from '@/components/elements/textfield/types';
-import { MyStylesLogin } from './styles';
-import { MyTextInput } from '@/components/elements/textfield';
 import Navigator from '@/routers/Navigator';
-import ScreenName, { TabNamesArray } from '@/common/screenNames';
-import { Touchable } from '@/components/elements/touchable';
 import { COLORS } from '@/theme';
+import { MyStylesLogin } from './styles';
+
 
 const Login = observer(() => {
     const {

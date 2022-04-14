@@ -1,19 +1,16 @@
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 
-import { Configs, PADDING_TOP } from '@/common/Configs';
-import { COLORS, Styles } from '@/theme';
 import DimensionUtils from '@/utils/DimensionUtils';
+import { COLORS, Styles } from '@/theme';
+import { Configs } from '../../common/Configs';
 
-
-export const myStylesSign = () => {
+export const myStylesAuth = () => {
     return useMemo(() => {
         return StyleSheet.create({
-            container: {
-                flex: 1,
-                marginLeft: 10,
-                width: '85%',
-                height: '50%'
+            container:{
+                flex:1
             },
             main: {
                 flex: 1,
@@ -21,47 +18,85 @@ export const myStylesSign = () => {
                 width: DimensionUtils.SCREEN_WIDTH,
                 height: DimensionUtils.SCREEN_HEIGHT
             },
+            tob: {
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                top: DimensionUtils.SCREEN_HEIGHT * 0.18,
+                right: DimensionUtils.SCREEN_WIDTH * 0.18,
+                width: DimensionUtils.SCREEN_WIDTH * 0.3,
+                height: DimensionUtils.SCREEN_HEIGHT * 0.1,
+                transform: [
+                    {rotateX: '-30deg'},
+                    {rotateY: '0deg'},
+                    {rotateZ: '40deg'}
+                ]
+            },
+            tob1: {
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                top: DimensionUtils.SCREEN_HEIGHT * 0.5,
+                width: 150,
+                height: 30,
+                right: -50,
+                transform: [
+                    {rotateX: '-30deg'},
+                    {rotateY: '-20deg'},
+                    {rotateZ: '90deg'}
+                ]
+            },
+            tob2: {
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                bottom: DimensionUtils.SCREEN_HEIGHT * 0.16,
+                right: DimensionUtils.SCREEN_WIDTH * 0.2,
+                width: 200,
+                height: 30,
+                transform: [
+                    {rotateX: '-30deg'},
+                    {rotateY: '0deg'},
+                    {rotateZ: '140deg'}
+                ]
+            },
             txt: {
+                ...Styles.typography.regular,
                 color: COLORS.WHITE,
                 fontSize: Configs.FontSize.size20,
                 borderRadius: 20
             },
-            txtTitleModal: {
-                color: COLORS.GRAY,
-                fontSize: 14,
-                marginHorizontal: 20
+            wrapContent: {
+                paddingHorizontal: 16,
+                flex: 1
+            },
+            wrapLogo: {
+                alignItems: 'center',
+                justifyContent: 'flex-start'
+            },
+            logo: {
+                width: 200,
+                height: 80,
+                resizeMode: 'contain'
+            },
+            inputPhone: {
+                borderRadius: 30,
+                height: Configs.FontSize.size50,
+                width: '80%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row'
             },
             inputPass: {
-                borderRadius: 20,
+                marginTop: 20,
+                borderRadius: 30,
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '90%',
-                marginVertical: 5,
-                height: Configs.FontSize.size40
+                width: '80%',
+                height: Configs.FontSize.size50
             },
-            tob: {
-                borderRadius: 20,
-                // justifyContent: 'center',
-                borderWidth: 0.8,
-                borderColor: COLORS.GRAY,
-                alignItems: 'center',
-                flexDirection: 'row',
-                width: '90%',
-                marginVertical: 5,
-                height: Configs.FontSize.size40
-            },
-            Picker: {
-                borderRadius: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '90%',
-                marginVertical: 5,
-                height: 40
-            },
-
             rowInfo: {
-                marginTop: -15,
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 marginHorizontal: 4
@@ -74,12 +109,9 @@ export const myStylesSign = () => {
             },
             wrapAll: {
                 flex: 1,
-                paddingBottom: PADDING_TOP,
-                marginTop: DimensionUtils.SCREEN_HEIGHT / 3,
-                height: DimensionUtils.SCREEN_HEIGHT / 3,
-                width: '80%',
-                position: 'absolute',
-                top: -20
+                marginTop: DimensionUtils.SCREEN_HEIGHT *0.3 - 50,
+                width: '85%',
+                position: 'absolute'
             },
             checkbox: {
                 justifyContent: 'flex-end',
@@ -92,13 +124,29 @@ export const myStylesSign = () => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'flex-end',
-                marginVertical: 8
+                marginBottom: 20
+            },
+            inputStyle: {},
+            height100: {
+                height: 100
+            },
+            circle: {
+                ...Styles.shadow,
+                width: 50,
+                height: 50,
+                borderRadius: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginHorizontal: 5
+            },
+            bottom: {
+                justifyContent: 'flex-start',
+                flex: 1
             },
             content: {
-                marginTop: 30,
                 justifyContent: 'center',
                 marginHorizontal: 10,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.5
+                height: DimensionUtils.SCREEN_HEIGHT * 0.3
             },
             hisLop: {
                 paddingVertical: 10,
@@ -127,66 +175,49 @@ export const myStylesSign = () => {
                 fontSize: Configs.FontSize.size24,
                 fontWeight: '600',
                 color: COLORS.BLACK,
-                padding: 5
+                padding: 20
+            },
+            viewSvg: {
+                paddingTop: 100,
+                height: DimensionUtils.SCREEN_HEIGHT,
+                width: DimensionUtils.SCREEN_WIDTH
             },
             tobLogin: {
                 width: DimensionUtils.SCREEN_WIDTH * 0.4,
-                height: Configs.FontSize.size40,
+                height: DimensionUtils.SCREEN_WIDTH * 0.12,
                 backgroundColor: COLORS.GREEN,
                 borderRadius: 25,
                 justifyContent: 'center',
                 alignItems: 'center'
             },
             viewBottom: {
+                flex:1,
+                width: SCREEN_WIDTH,
                 flexDirection: 'row',
                 position: 'absolute',
-                top: DimensionUtils.SCREEN_HEIGHT * 0.5,
-                left: 0,
-                width: DimensionUtils.SCREEN_WIDTH,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.1,
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingHorizontal: 16,
+                marginTop: SCREEN_HEIGHT*0.62,
+                justifyContent: 'space-between'
             },
             txtLogin: {
-                fontSize: 16,
-                fontWeight: '600',
+                ...Styles.typography.regular,
+                fontSize: Configs.FontSize.size16,
                 color: COLORS.WHITE
             },
-            image: {
-                position: 'absolute',
-                zIndex: -1
-            },
-            form: {
-                // height: SCREEN_HEIGHT - (HEADER_PADDING + STATUSBAR_HEIGHT)
-            },
-            swapInput: {
-                paddingHorizontal: 15,
-                paddingTop: 15
-            },
-            formInput: {
-                marginBottom: 15,
-                borderRadius: 20,
-                height: 40
-            },
-            startVal: {
-                ...Styles.typography.regular,
-                color: COLORS.RED
-            },
-            label: {
-                ...Styles.typography.regular,
-                marginBottom: 5
-            },
-            buttonContainer: {
-                marginVertical: 20
-            },
-            channelContainer: {
-                marginTop: 0,
-                marginBottom: 15
-            },
             viewIcon: {
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+            },
+            icon: {
+                paddingLeft: 10
+            },
+            func: {
+                height: DimensionUtils.SCREEN_HEIGHT * 0.5,
                 position: 'absolute',
-                right: 15,
-                justifyContent: 'center',
-                alignItems: 'center'
+                top: -DimensionUtils.SCREEN_HEIGHT * 0.066,
+                width: DimensionUtils.SCREEN_WIDTH * 0.7
             }
         });
     }, []);
