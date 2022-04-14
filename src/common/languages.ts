@@ -97,16 +97,18 @@ const Languages = {
     auth: {
         txtPhone: 'Số điện thoại',
         txtPass: 'Mật khẩu',
-        txtTitle: 'Đăng nhập',
-        txtLogin: 'Đăng nhập với',
-        txtSignIn: 'Đăng ký',
+        txtLogin: 'Đăng nhập',
+        txtLoginWith: 'Đăng nhập với',
+        txtSignUp: 'Đăng ký',
         txtName: 'Họ và tên',
         txtEmail: 'Email',
         txtConfirmPass: 'Xác nhận mật khẩu',
         knowChannel: 'Bạn biết chúng tôi qua kênh nào ?',
         txtTitleOtp: 'Xác nhận OTP',
         txtConfirmOtp: 'Nhập mã OTP đã được gửi về điện thoại bạn đã xác nhận',
-        conFirm: 'Xác nhận'
+        conFirm: 'Xác nhận', 
+        saveAcc: 'Lưu tài khoản',
+        forgotPwd: 'Quên mật khẩu'
     },
     errorMsg: {
         userNameRequired: 'Họ và tên không được để trống',
@@ -179,6 +181,17 @@ const Languages = {
             'Xác thực không thành công, thử lại sau',
         LAErrorTouchIDLockout:
             'Đã xảy ra lỗi do đăng nhập quá nhiều lần, vui lòng thử lại sau'
+    },
+    accountInfo:{
+        accountInfo: 'Thông tin cá nhân',
+        content: 'Xác thực tài khoản để tăng độ an toàn khi đầu tư và sử dụng ứng dụng',
+        phoneNumber: 'Số điện thoại',
+        gender: 'Giới tính',
+        fullName: 'Họ và tên',
+        birthday: 'Ngày sinh',
+        email: 'Email',
+        job: 'Nghề nghiệp',
+        address: 'Địa chỉ'
     }
 
 };

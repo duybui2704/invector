@@ -1,4 +1,4 @@
-import { observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react';
 import React, { useState } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
 
@@ -6,7 +6,6 @@ import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
 import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';
 import IcInsAuth from '@/assets/image/ic_login_instagram.svg';
 import IcLinkedInAuth from '@/assets/image/ic_login_linkedin.svg';
-import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
 import Login from '@/screen/auth/login';
 import SvgComponent from '@/screen/auth/SvgText';
@@ -14,6 +13,7 @@ import { myStylesAuth } from './styles';
 import SignUp from './signUp';
 import { COLORS } from '@/theme';
 import Images from '@/assets/Images';
+import Languages from '@/common/Languages';
 
 const Auth = observer(() => {
     const styles = myStylesAuth();

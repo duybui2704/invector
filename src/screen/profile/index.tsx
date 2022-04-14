@@ -76,6 +76,10 @@ const Profile = observer(() => {
         }
     }, []);
 
+    const onNavigateAccInfo = useCallback(() => {
+        return Navigator.pushScreen(ScreenName.accountInfo);
+    }, []);
+
     const onLogout = useCallback(() => {
         SessionManager.logout();
         userManager.updateUserInfo(null);
@@ -276,17 +280,19 @@ const Profile = observer(() => {
             <HeaderBar title={Languages.account.title} isLight={false} />
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.accContainer}>
-                    {!dataUser.avatar ?
-                        <AvatarIC style={styles.circleWrap} />
-                        :
-                        <FastImage
-                            style={styles.circleWrap}
-                            source={{
-                                uri: dataUser?.avatar
-                            }}
-                            resizeMode={FastImage.resizeMode.cover}
-                        />
-                    }
+                    <Touchable onPress={onNavigateAccInfo}>
+                        {!dataUser.avatar ?
+                            <AvatarIC style={styles.circleWrap} />
+                            :
+                            <FastImage
+                                style={styles.circleWrap}
+                                source={{
+                                    uri: dataUser?.avatar
+                                }}
+                                resizeMode={FastImage.resizeMode.cover}
+                            />
+                        }
+                    </Touchable>
                     <View style={styles.headerAccRight}>
                         <Text style={styles.headerAccName}>{dataUser.name || ''}</Text>
                         <Text style={styles.headerAccPhone}>{dataUser.phone || ''}</Text>
