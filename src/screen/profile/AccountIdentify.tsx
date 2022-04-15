@@ -135,7 +135,7 @@ const AccountIdentify = observer(() => {
         <View style={styles.container}>
             <HeaderBar isLight={false} title={Languages.accountInfo.editAcc} hasBack />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.topContainer}>
+                {/* <View style={styles.topContainer}>
                     {!dataUser.avatar ?
                         <AvatarIC style={styles.circleWrap} />
                         :
@@ -148,7 +148,7 @@ const AccountIdentify = observer(() => {
                         />
                     }
                 </View>
-                {renderInfoAcc}
+                {renderInfoAcc} */}
             </ScrollView>
         </View>
     );

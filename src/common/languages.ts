@@ -203,6 +203,17 @@ const Languages = {
         edit: 'Chỉnh sửa',
         save: 'Lưu lại',
         editAcc: 'Chỉnh sửa thông tin'
+    },
+    accountIdentify:{
+        accountIdentify: 'Xác thực tài khoản',
+        KYC: 'Số CMND/CCCD',
+        imageIdentify: 'Ảnh giấy tờ tùy thân',
+        beforeKYC: 'Mặt trước CMND',
+        afterKYC: 'Mặt sau CMND',
+        avatarPhoto: 'Ảnh chân dung chụp:',
+        note: 'Chú ý: Hãy xác thực chính xác thông tin của bạn để bắt đầu đầu tư. Sau khi tài khoản bạn được xác thực thành công, bạn không thể thực hiện xác thực lại.',
+        avatar: 'Chân dung khuôn mặt',
+        confirmKYC: 'Xác thực giấy tờ'
     }
 
 };

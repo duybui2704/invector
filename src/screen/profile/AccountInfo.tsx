@@ -87,7 +87,7 @@ const AccountInfo = observer(() => {
 
     return (
         <View style={styles.container}>
-            <HeaderBar isLight={false} title={Languages.accountInfo.accountInfo} hasBack />
+            <HeaderBar isLight={false} title={Languages.accountInfo.accountInfo} hasBack  />
             <View style={styles.mainContainer}>
                 <View style={styles.topContainer}>
                     <KYCIcon />
