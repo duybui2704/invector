@@ -106,9 +106,23 @@ const Languages = {
         knowChannel: 'Bạn biết chúng tôi qua kênh nào ?',
         txtTitleOtp: 'Xác nhận OTP',
         txtConfirmOtp: 'Nhập mã OTP đã được gửi về điện thoại bạn đã xác nhận',
-        conFirm: 'Xác nhận', 
+        conFirm: 'Xác nhận',
         saveAcc: 'Lưu tài khoản',
-        forgotPwd: 'Quên mật khẩu'
+        forgotPwd: 'Quên mật khẩu',
+        txtD: 'Đăng',
+        txtK: 'ký',
+        titleForgotPass: 'Xác minh số điện thoại',
+        txtForgotPass: 'Nhập mã OTP đã được gửi về số điện thoại bạn đã xác nhận',
+        accuracy: 'Xác thực',
+        sentOTP: 'Gửi mã',
+        txtConfirmNewPass: 'Nhập lại mật khẩu mới',
+        txtNewPass: 'Mật khẩu mới',
+        titleChangePass: 'Thay đổi mật khẩu',
+        txtChange: 'Thay đổi mật khẩu của bạn và đăng nhập lại',
+        change: 'Thay đổi',
+        succuss: 'Đăng ký thành công',
+        notifySuccess: 'Chúc mừng bạn đã đăng ký thành công TienNgay.vn Đầu tư & Tích luỹ. Tiến hành đầu tư ngay và nhận lãi khủng hàng tháng',
+        continue: 'Tiếp tục'
     },
     errorMsg: {
         userNameRequired: 'Họ và tên không được để trống',
@@ -214,6 +228,25 @@ const Languages = {
         note: 'Chú ý: Hãy xác thực chính xác thông tin của bạn để bắt đầu đầu tư. Sau khi tài khoản bạn được xác thực thành công, bạn không thể thực hiện xác thực lại.',
         avatar: 'Chân dung khuôn mặt',
         confirmKYC: 'Xác thực giấy tờ'
+    },
+    otp: {
+        keyOtp: 'Xác nhận mã OTP ',
+        confirmOtp: 'Hãy nhập và xác nhận mã OTP',
+        verificationCode: 'Mã xác thực đã được gửi đến số điện thoại ',
+        codeExpiresLater: ' Mã hết hiệu lực sau ',
+        resentCode: 'Gửi lại mã !',
+        otp1: 'otp1',
+        otp2: 'otp2',
+        otp3: 'otp3',
+        otp4: 'otp4',
+        otp5: 'otp5',
+        otp6: 'otp6',
+        popupOtpErrorTitle: 'Thông báo OTP',
+        popupOtpErrorDescription: 'OTP không chính xác',
+        popupOtpSuccessDescription: 'Đăng ký thành công',
+        popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
+        sentOtp1: 'Gửi lại mã sau: ',
+        sentOtp2: 'Gửi lại mã'
     }
 
 };

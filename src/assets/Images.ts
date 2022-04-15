@@ -1,5 +1,6 @@
 // login
 const bg_login = require('./image/auth/bg_auth.jpg');
+const bg_successSignUp = require('./image/auth/bg_success.jpg')
 
 // Tabs
 const ic_home = require('./image/bottomTabs/ic_home.png');
@@ -30,5 +31,6 @@ export default {
     ic_payment_on,
     bg_header_home,
     logo_header_home,
-    bg_login
+    bg_login,
+    bg_successSignUp
 };

@@ -11,8 +11,7 @@ export const myStylesSign = () => {
             container: {
                 flex: 1,
                 marginLeft: 10,
-                width: '85%',
-                height: '50%'
+                width: '85%'
             },
             main: {
                 flex: 1,
@@ -40,9 +39,9 @@ export const myStylesSign = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '110%',
+                width: '100%',
                 height: Configs.FontSize.size40,
-                marginBottom:3
+                marginBottom: 10
             },
             containerOverViewPicker:{
                 marginTop: 12,
@@ -68,10 +67,8 @@ export const myStylesSign = () => {
             containerPlaceholderPicker:{
             },
             rowInfo: {
-                marginTop: -15,
                 flexDirection: 'column',
-                alignItems: 'flex-start',
-                marginHorizontal: 4
+                alignItems: 'flex-start'
             },
             wrapIcon: {
                 flexDirection: 'row',
@@ -99,12 +96,13 @@ export const myStylesSign = () => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'flex-end',
-                paddingVertical: 10
+                marginBottom: 20
             },
             content: {
-                marginTop: 30,
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.05,
                 justifyContent: 'center',
-                marginHorizontal: 10
+                width: '90%',
+                height: DimensionUtils.SCREEN_HEIGHT / 2.5
             },
             hisLop: {
                 paddingVertical: 10,
@@ -121,12 +119,12 @@ export const myStylesSign = () => {
             txtSave: {
                 ...Styles.typography.regular,
                 color: COLORS.GRAY_12,
-                marginLeft: 20
+                marginLeft: 10
             },
             txtSubmit: {
                 ...Styles.typography.medium,
                 color: COLORS.WHITE,
-                fontSize: Configs.FontSize.size16
+                fontSize: Configs.FontSize.size14
             },
             txtTitle: {
                 ...Styles.typography.medium,

@@ -17,14 +17,14 @@ import { TextFieldActions } from '@/components/elements/textfield/types';
 import { MyTextInput } from '@/components/elements/textfield';
 import { Touchable } from '@/components/elements/touchable';
 import { COLORS } from '@/theme';
-import Otp from '../otp';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
 import { myStylesSign } from './styles';
+import OtpSignIn from '../otpSignIn';
+import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
 
 const SignUp = observer(() => {
     const { apiServices } = useAppStore();
     const [phone, setPhone] = useState<string>('');
-    const [card, setCard] = useState<string>('');
     const [pass, setPass] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -116,13 +116,6 @@ const SignUp = observer(() => {
 
     const onSignIn = async () => {
         setNavigate(true);
-        if (onValidate()) {
-            const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, card, '123', channel?.value);
-            if (res.success) {
-                setNavigate(true);
-                setData(res.data);
-            }
-        }
     };
 
     const onChangeChanel = (item: any) => {
@@ -149,8 +142,9 @@ const SignUp = observer(() => {
             <View style={styles.content}>
                 <View style={styles.wrapLoginTxt}>
                     <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
-                    <IcLine />
+                    <IcLine width={'40%'}/>
                 </View>
+                <ScrollViewWithKeyboard style={{marginVertical: 20}}>
                 {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName)}
                 {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, false, 'NUMBER')}
                 {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail)}
@@ -184,13 +178,14 @@ const SignUp = observer(() => {
                         </Text>
                     </Touchable>
                 </View>
+                </ScrollViewWithKeyboard>
             </View>
         );
     };
 
     return (
         <View style={styles.container}>
-            {isNavigate ? <Otp phone={phone} data={data} /> : renderView()}
+            {isNavigate ? <OtpSignIn phone={phone} data={data} /> : renderView()}
         </View>
     );
 });

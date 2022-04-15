@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">investorV2</string>
-    <string name="facebook_app_id">investorV2</string>
+    <string name="facebook_app_id">945443669696174</string>
+    <string name="facebook_client_token">7d25275c326ffa55b095c209e39681b7</string>
 </resources>

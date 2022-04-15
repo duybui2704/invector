@@ -34,10 +34,9 @@ export const MyStylesLogin = () => {
                 height: Configs.FontSize.size40
             },
             rowInfo: {
-                marginTop: 10,
+                marginTop: 15,
                 flexDirection: 'column',
-                alignItems: 'flex-start',
-                marginHorizontal: 10
+                alignItems: 'flex-start'
             },
             wrapIcon: {
                 flexDirection: 'row',
@@ -67,21 +66,19 @@ export const MyStylesLogin = () => {
                 paddingVertical: 16
             },
             content: {
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.04,
                 justifyContent: 'center',
-                marginHorizontal: 10,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.3
+                marginHorizontal: 10
             },
             txtSave: {
                 ...Styles.typography.regular,
                 color: COLORS.GRAY_12,
-                marginLeft: 20,
+                marginLeft: 10,
                 fontSize: Configs.FontSize.size16
             },
             txtSubmit: {
                 ...Styles.typography.medium,
                 color: COLORS.WHITE,
-                fontSize: Configs.FontSize.size16
+                fontSize: Configs.FontSize.size14
             },
             txtTitle: {
                 ...Styles.typography.medium,
@@ -105,7 +102,7 @@ export const MyStylesLogin = () => {
             wrapLoginTxt: {
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginTop: 150
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.1
             }
         });
     }, []);

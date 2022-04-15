@@ -7,12 +7,12 @@ import { Platform } from 'react-native';
 import Auth from '@/screen/auth';
 import { ScreenName } from '../common/screenNames';
 import Login from '../screen/auth/login';
-import Otp from '../screen/auth/otp';
 import Home from '@/screen/home';
 import MyBottomTabs from './MyBottomBar';
 import SessionManager, { DeviceInfos } from '@/manager/SessionManager';
 import { useAppStore } from '@/hooks';
 import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC } from '@/common/constants';
+import { SuccessSignUp } from '@/screen/auth/signUp/successSignUp';
 
 
 const screenOptions = { headerShown: false };
@@ -64,9 +64,9 @@ const RootStack = observer(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
                 <Stack.Screen name={ScreenName.auth} component={Auth} />
-                <Stack.Screen name={ScreenName.login} component={Login} />
-                <Stack.Screen name={ScreenName.home} component={Home} />
-                <Stack.Screen name={ScreenName.otp} component={Otp} />
+                <Stack.Screen name={ScreenName.success} component={SuccessSignUp} />
+                {/* <Stack.Screen name={ScreenName.login} component={Login} /> */}
+
                 {/* <Stack.Screen name={ScreenName.homeScreen} component={Home}/> */}
             </Stack.Navigator>
         );
@@ -75,8 +75,8 @@ const RootStack = observer(() => {
     const AppStack = useCallback(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
-                <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
                 <Stack.Screen name={ScreenName.auth} component={AuthStack} />
+                 <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
             </Stack.Navigator>
         );
     }, [AuthStack]);

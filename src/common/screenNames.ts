@@ -13,7 +13,8 @@ export const ScreenName = {
     transaction: 'Transaction',
     accountInfo: 'AccountInfo',
     editAccountInfo: 'EditAccountInfo',
-    accountIdentify: 'AccountIdentify'
+    accountIdentify: 'AccountIdentify',
+    success: 'Success'
 };
 
 export default ScreenName;

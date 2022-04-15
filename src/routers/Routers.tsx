@@ -12,7 +12,7 @@ const MyTheme = {
     ...DefaultTheme,
     colors: {
         ...DefaultTheme.colors,
-        background: COLORS.WHITE
+        background: COLORS.GRAY_5
     }
 };
 

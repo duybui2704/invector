@@ -11,5 +11,6 @@ export type HeaderProps = {
     rightText?: string;
     barStyle?: boolean;
     isTitleInCenter?: boolean;
-    isLight: boolean;
+    isLight?: boolean;
+    imageBackground?: boolean
 };

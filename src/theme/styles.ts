@@ -21,6 +21,11 @@ export const Styles = {
             fontSize: Configs.FontSize.size14,
             fontFamily: Configs.FontFamily.medium
         },
+        mediumSmall: {
+            color: COLORS.BLACK,
+            fontSize: Configs.FontSize.size10,
+            fontFamily: Configs.FontFamily.medium
+        },
         bold: {
             color: COLORS.BLACK,
             fontSize: Configs.FontSize.size14,

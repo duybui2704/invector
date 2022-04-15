@@ -19,6 +19,7 @@ export const HeaderBar = ({
     noHeader,
     noStatusBar,
     isLight,
+    imageBackground,
     exitApp }: HeaderProps) => {
 
     const _onBackPressed = useCallback(() => {
@@ -54,13 +55,7 @@ export const HeaderBar = ({
 
     return (
         <View style={styles.container}>
-            {!exitApp ? (
-                <Image
-                    source={Images.bg_header_home}
-                    style={styles.imageBg1}
-                    resizeMode='stretch'
-                />
-            ) : (
+            {imageBackground && (
                 <ImageBackground
                     source={Images.bg_header_home}
                     style={styles.imageBg}

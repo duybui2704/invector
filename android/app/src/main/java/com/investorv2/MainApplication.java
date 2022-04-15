@@ -16,6 +16,7 @@ import com.facebook.soloader.SoLoader;
 import com.investorv2.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -30,9 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
+            // packages.add(new  FBSDKPackage());
           return packages;
         }
-
         @Override
         protected String getJSMainModuleName() {
           return "index";
