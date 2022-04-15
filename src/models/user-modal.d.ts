@@ -27,6 +27,8 @@ export interface UserInfoModal {
     id_fblogin?: string;
     id_google?: string;
     user_apple?: string;
+    gender?: string;
+    accuracy?:number;   // 1: da xac thuc, 2: chua xac thuc
 }
 interface OtpModal {
     otp1: any;

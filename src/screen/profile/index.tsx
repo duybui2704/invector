@@ -294,8 +294,8 @@ const Profile = observer(() => {
                         }
                     </Touchable>
                     <View style={styles.headerAccRight}>
-                        <Text style={styles.headerAccName}>{dataUser.name || ''}</Text>
-                        <Text style={styles.headerAccPhone}>{dataUser.phone || ''}</Text>
+                        <Text style={styles.headerAccName}>{dataUser.full_name || ''}</Text>
+                        <Text style={styles.headerAccPhone}>{dataUser.phone_number || ''}</Text>
                         {renderAccuracy}
                     </View>
                     <ArrowIC />

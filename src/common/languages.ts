@@ -124,7 +124,15 @@ const Languages = {
         conFirmPwd: 'Xác nhận mật khẩu không trùng khớp với mật khẩu',
         phoneIsEmpty: 'Số điện thoại không được để trống',
         phoneRegex: 'Số điện thoại không đúng định dạng',
-        phoneCount: 'Số điện thoại chỉ được 10 số'
+        phoneCount: 'Số điện thoại chỉ được 10 số',
+        genderRequired: 'Giới tính không được để trống',
+        addressNull: 'Địa chỉ không được để trống',
+        addressRegex: 'Địa chỉ không được chứa kí tự đặc biệt',
+        jobNull: 'Nghề nghiệp không được để trống',
+        jobRegex: 'Nghề nghiệp không được chứa kí tự đặc biệt',
+        birthdayNull: 'Ngày sinh không được để trống',
+        birthdayRegex: 'Ngày sinh không đúng định dạng (vd: 05/11/1999)',
+        birthdayCompare18: 'Chưa đủ 18 tuổi'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
@@ -191,7 +199,10 @@ const Languages = {
         birthday: 'Ngày sinh',
         email: 'Email',
         job: 'Nghề nghiệp',
-        address: 'Địa chỉ'
+        address: 'Địa chỉ',
+        edit: 'Chỉnh sửa',
+        save: 'Lưu lại',
+        editAcc: 'Chỉnh sửa thông tin'
     }
 
 };

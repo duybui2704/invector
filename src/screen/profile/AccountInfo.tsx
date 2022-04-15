@@ -1,82 +1,66 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, StyleSheet, View, Text } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
-import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { TransactionModel } from '@/models/transaction-model';
+import TickedIcon from '@/assets/image/ic_ticked_round.svg';
+import KYCIcon from '@/assets/image/ic_KYC_account.svg';
 import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
-import { DATA, dataUser, TransactionTypes } from '@/mocks/data';
-import KYCIcon from '@/assets/image/ic_KYC_account.svg';
-import KeyValueTransaction from '@/components/KeyValueTransaction';
 import HeaderBar from '@/components/header';
-import { COLORS, Styles } from '@/theme';
 import KeyValue from '@/components/KeyValue';
-import { Configs } from '@/common/Configs';
+import { dataUser } from '@/mocks/data';
+import Navigator from '@/routers/Navigator';
+import { COLORS, Styles } from '@/theme';
+import SessionManager from '@/manager/SessionManager';
+import ScreenName from '@/common/screenNames';
+
 
 const AccountInfo = observer(() => {
-    const isFocused = useIsFocused();
-
-    const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
-
-
 
     useEffect(() => {
-        // if (isFocused) {
-        // }
-    }, [isFocused]);
-
-    const keyExtractor = useCallback((item: TransactionModel) => {
-        return `${item.id}`;
     }, []);
 
-    const renderItem = useCallback(({ item }: { item: TransactionModel }) => {
-        const _onPress = () => {
+    const onNavigateKYC = useCallback(() => {
+        return Navigator.pushScreen(ScreenName.accountIdentify);
+    }, []);
 
-        };
-        return (<Touchable onPress={_onPress}>
-            <KeyValueTransaction
-                title={item.growth}
-                content={item.content}
-                dateTime={item.date}
-                debtNow={item.debt}
-                styleColor={item.color}
-            />
-        </Touchable>);
+    const onNavigateEdit = useCallback(() => {
+        return Navigator.pushScreen(ScreenName.editAccountInfo);
     }, []);
 
     const renderAccuracy = useMemo(() => {
         switch (dataUser?.accuracy) {
             case 1:
                 return (
-                    <Touchable style={styles.accuracyWrap}>
+                    <Touchable style={styles.accuracyWrap} disabled={true}>
                         <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
                     </Touchable>
                 );
             case 2:
                 return (
-                    <Touchable style={styles.notAccuracyWrap} disabled={true}>
+                    <Touchable style={styles.notAccuracyWrap} onPress={onNavigateKYC}>
                         <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
                     </Touchable>
                 );
             default:
                 return (
-                    <Touchable style={styles.notAccuracyWrap} disabled={true}>
+                    <Touchable style={styles.notAccuracyWrap} onPress={onNavigateKYC}>
                         <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
                     </Touchable>
                 );
         }
-    }, []);
+    }, [onNavigateKYC]);
 
-    const renderKeyFeature = useCallback((title: string, content: string, rightIcon?: any) => {
+    const renderKeyFeature = useCallback((title: string, content?: string) => {
         return (
             <KeyValue title={title}
-                content={content}
-                containerContent={styles.styleTouchable}
+                content={content || undefined}
+                styleTouchable={styles.wrapAllItemInfo}
+                containerContent={content ? styles.wrapCheckedInfo: styles.wrapUnCheckedInfo}
                 styleTitle={styles.styleTextInfo}
+                styleColor={content ? styles.styleValueCheckedInfo: styles.styleValueUnCheckedInfo}
                 noIndicator
-                rightIcon={rightIcon}
+                rightIcon={content ? <TickedIcon width={20} height={20} /> : null}
                 hasDashBottom
             />
         );
@@ -85,20 +69,21 @@ const AccountInfo = observer(() => {
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
-                {renderKeyFeature(Languages.accountInfo.phoneNumber, 'đ')}
-                {renderKeyFeature(Languages.accountInfo.email, '')}
-                {renderKeyFeature(Languages.accountInfo.fullName, '')}
-                {renderKeyFeature(Languages.accountInfo.gender, '')}
-                {renderKeyFeature(Languages.accountInfo.birthday, '')}
-                {renderKeyFeature(Languages.accountInfo.address, '')}
-                {renderKeyFeature(Languages.accountInfo.job, '')}
-                <Touchable style={styles.accuracyWrap}>
-                    <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
-                </Touchable>
+                {renderKeyFeature(Languages.accountInfo.phoneNumber,SessionManager.savePhone?.toString())}
+                {renderKeyFeature(Languages.accountInfo.email)}
+                {renderKeyFeature(Languages.accountInfo.fullName)}
+                {renderKeyFeature(Languages.accountInfo.gender)}
+                {renderKeyFeature(Languages.accountInfo.birthday)}
+                {renderKeyFeature(Languages.accountInfo.address)}
+                {renderKeyFeature(Languages.accountInfo.job)}
+                <View style={styles.wrapEdit}>
+                    <Touchable style={styles.accuracyWrap} onPress={onNavigateEdit}>
+                        <Text style={styles.txtAccuracy}>{Languages.accountInfo.edit}</Text>
+                    </Touchable>
+                </View>
             </View>
-
         );
-    }, [renderKeyFeature]);
+    }, [onNavigateEdit, renderKeyFeature]);
 
     return (
         <View style={styles.container}>
@@ -131,6 +116,12 @@ const styles = StyleSheet.create({
         marginTop: 16,
         alignItems: 'center'
     },
+    wrapEdit: {
+        paddingHorizontal: 16,
+        width: '100%',
+        paddingTop: 25,
+        paddingBottom: 20
+    },
     topContainer: {
         width: '100%',
         backgroundColor: COLORS.WHITE,
@@ -143,12 +134,27 @@ const styles = StyleSheet.create({
     },
     styleTextInfo: {
         ...Styles.typography.regular,
-        color: COLORS.GRAY
+        color: COLORS.GRAY_12
     },
-    arrow: {
-        marginTop: 6
+    styleValueCheckedInfo: {
+        ...Styles.typography.medium,
+        color: COLORS.GRAY_7,
+        textAlign: 'right',
+        width: '70%'
     },
-    styleTouchable: {
+    styleValueUnCheckedInfo: {
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_7
+    },
+    wrapAllItemInfo: {
+        width: '100%',
+        justifyContent: 'space-between'
+    },
+    wrapCheckedInfo: {
+        width: '90%',
+        paddingVertical: 10
+    },
+    wrapUnCheckedInfo: {
         width: '100%',
         paddingVertical: 10
     },
@@ -156,7 +162,8 @@ const styles = StyleSheet.create({
         width: '100%',
         ...Styles.typography.medium,
         color: COLORS.GRAY_7,
-        textAlign: 'center'
+        textAlign: 'center',
+        paddingVertical: 5
     },
     accuracyWrap: {
         width: '100%',
@@ -177,10 +184,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 60
     },
     notAccuracyWrap: {
+        width: '100%',
         backgroundColor: COLORS.PINK,
         borderRadius: 70,
         alignItems: 'center',
         marginTop: 5,
         paddingVertical: 8
+    },
+    iconTicked: {
+
     }
 });

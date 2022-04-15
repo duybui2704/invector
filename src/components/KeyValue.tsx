@@ -19,7 +19,7 @@ const KeyValue = (
             styleContainer?: ViewStyle,
             leftIcon?: any,
             rightIcon?: any,
-            styleTouchable?: TouchableProps,
+            styleTouchable?: any,
             hasDashBottom?: boolean,
             onPress?: any,
             styleTitle?: TextStyle,

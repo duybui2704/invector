@@ -113,7 +113,7 @@ export const Button = ({
             onPress={_onPress}>
             {leftIcon}
             <Text style={getTextStyle}>
-                {`${label}`.toUpperCase()}
+                {!isLowerCase?`${label}`.toUpperCase(): `${label}`}
             </Text>
         </Touchable>
     );
