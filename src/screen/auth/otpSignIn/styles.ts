@@ -99,5 +99,5 @@ export const MyStylesOtp = () => {
                 fontSize: Configs.FontSize.size14
             }
         })
-        , [])
-}
+        , []);
+};

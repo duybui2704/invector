@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
 import Languages from '@/common/Languages';
-import {HeaderBar} from '../../components/header';
 import { Touchable } from '@/components/elements/touchable';
+import { HeaderBar } from '../../components/header';
 import styles from './styles';
+
 
 function Invest () {
 

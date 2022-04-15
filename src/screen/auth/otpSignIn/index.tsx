@@ -1,8 +1,4 @@
-import {MyTextInput} from '../../../components/elements/textfield';
-import {TextFieldActions} from '../../../components/elements/textfield/types';
-import {COLORS, Styles} from '../../../theme';
-import Languages from "@/common/Languages";
-import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {View, Text} from 'react-native';
 import Validate from '@/utils/Validate';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
@@ -10,6 +6,10 @@ import {Touchable} from '@/components/elements/touchable';
 import {useAppStore} from '@/hooks';
 import {ActiveAccountSocialModel} from '@/models/auth';
 import {MyStylesOtp} from '@/screen/auth/otpSignIn/styles';
+import { TextFieldActions } from '@/components/elements/textfield/types';
+import { COLORS } from '@/theme';
+import { MyTextInput } from '@/components/elements/textfield';
+import Languages from '@/common/Languages';
 import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
 
