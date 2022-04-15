@@ -109,7 +109,7 @@ export const myStylesAuth = () => {
             },
             wrapAll: {
                 flex: 1,
-                marginTop: DimensionUtils.SCREEN_HEIGHT *0.3 - 50,
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.23,
                 width: '85%',
                 position: 'absolute'
             },
@@ -178,7 +178,6 @@ export const myStylesAuth = () => {
                 padding: 20
             },
             viewSvg: {
-                paddingTop: 100,
                 height: DimensionUtils.SCREEN_HEIGHT,
                 width: DimensionUtils.SCREEN_WIDTH
             },

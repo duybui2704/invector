@@ -121,7 +121,7 @@ const Login = observer(() => {
                 <Touchable onPress={onLoginPhone} disabled={!checked}
                     style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
                     <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                        {Languages.auth.txtLogin}
+                        {Languages.auth.txtTitle}
                     </Text>
                 </Touchable>
             </View>

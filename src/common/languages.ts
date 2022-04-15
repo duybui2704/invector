@@ -108,7 +108,22 @@ const Languages = {
         txtConfirmOtp: 'Nhập mã OTP đã được gửi về điện thoại bạn đã xác nhận',
         conFirm: 'Xác nhận',
         saveAcc: 'Lưu tài khoản',
-        txtSignUp: 'Đăng kí'
+        txtSignUp: 'Đăng ký',
+        forgotPwd: 'Quên mật khẩu',
+        txtD: 'Đăng',
+        txtK: 'ký',
+        titleForgotPass: 'Xác minh số điện thoại',
+        txtForgotPass: 'Nhập mã OTP đã được gửi về số điện thoại bạn đã xác nhận',
+        accuracy: 'Xác thực',
+        sentOTP: 'Gửi mã',
+        txtConfirmNewPass: 'Nhập lại mật khẩu mới',
+        txtNewPass: 'Mật khẩu mới',
+        titleChangePass: 'Thay đổi mật khẩu',
+        txtChange: 'Thay đổi mật khẩu của bạn và đăng nhập lại',
+        change: 'Thay đổi',
+        succuss: 'Đăng ký thành công',
+        notifySuccess: 'Chúc mừng bạn đã đăng ký thành công TienNgay.vn Đầu tư & Tích luỹ. Tiến hành đầu tư ngay và nhận lãi khủng hàng tháng',
+        continue: 'Tiếp tục'
     },
     errorMsg: {
         userNameRequired: 'Họ và tên không được để trống',

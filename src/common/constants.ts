@@ -77,3 +77,11 @@ export enum ERROR_BIOMETRIC {
     ErrorFaceId = 'ErrorFaceId',
     FINGERPRINT_ERROR_LOCKOUT = 'FINGERPRINT_ERROR_LOCKOUT',
 }
+export enum ENUM_PROVIDER {
+    FACEBOOK = 'facebook',
+    GOOGLE = 'google'
+  }
+  export const configGoogleSignIn = {
+    webClientId:
+    '393388576958-sm1fbp2f3hk82bg654ku148hemhjpdhr.apps.googleusercontent.com'
+};

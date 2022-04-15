@@ -10,7 +10,8 @@ export const ScreenName = {
     payment: 'Payment',
     account: 'Account',
     introduce: 'Introduce',
-    transaction: 'Transaction'
+    transaction: 'Transaction',
+    success: 'Success'
 };
 
 export default ScreenName;

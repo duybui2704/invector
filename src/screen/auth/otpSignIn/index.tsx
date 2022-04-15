@@ -1,23 +1,17 @@
-<<<<<<< HEAD
-import React, {useState, useRef, useCallback, useEffect} from 'react';
-=======
 import {MyTextInput} from '../../../components/elements/textfield';
 import {TextFieldActions} from '../../../components/elements/textfield/types';
 import {COLORS, Styles} from '../../../theme';
 import Languages from "@/common/Languages";
 import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
->>>>>>> dev
 import {View, Text} from 'react-native';
-
-import Languages from '@/common/Languages';
 import Validate from '@/utils/Validate';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import {Touchable} from '@/components/elements/touchable';
 import {useAppStore} from '@/hooks';
 import {ActiveAccountSocialModel} from '@/models/auth';
 import {MyStylesOtp} from '@/screen/auth/otpSignIn/styles';
-import { TextFieldActions } from '@/components/elements/textfield/types';
-import { COLORS } from '@/theme';
+import Navigator from '@/routers/Navigator';
+import ScreenName from '@/common/screenNames';
 
 const OtpSignIn = (props) => {
     let timer = 0;
@@ -128,16 +122,17 @@ const OtpSignIn = (props) => {
 
     const onPressOtp = async () => {
         const OTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
-        const res = await apiServices.auth.activeAccountSocial(
-            OTP,
-            phone
-        );
-        if (res.success) {
-            const temp = res?.data as ActiveAccountSocialModel;
-            if (temp?.token_app) {
-                userManager.updateUserInfo(temp);
-            }
-        }
+        Navigator.navigateScreen(ScreenName.success);
+        // const res = await apiServices.auth.activeAccountSocial(
+        //     OTP,
+        //     phone
+        // );
+        // if (res.success) {
+        //     const temp = res?.data as ActiveAccountSocialModel;
+        //     if (temp?.token_app) {
+        //         userManager.updateUserInfo(temp);
+        //     }
+        // }
         // else {
         //     const res = await apiServices.auth.activeAuth(OTP, phone);
         //     if (res.success) {
@@ -194,9 +189,8 @@ const OtpSignIn = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.containerBox}>
                 <View style={styles.viewTop}>
-                    <Text style={styles.txtTitle}>{Languages.Auth.txtTitleOtp}</Text>
+                    <Text style={styles.txtTitle}>{Languages.auth.txtTitleOtp}</Text>
                     <IcLine width={'35%'} height={'40%'}/>
                 </View>
                 <Text style={styles.confirmOtp}>{Languages.otp.confirmOtp}</Text>
@@ -259,7 +253,6 @@ const OtpSignIn = (props) => {
                         <Text style={styles.txtOtp}>{Languages.otp.sentOtp2}</Text>
                     }
                 </Touchable>
-            </View>
         </View>
     );
 };
