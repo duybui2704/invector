@@ -86,3 +86,8 @@ export const noteAvatar = [
     '1. Chụp cận mặt, rõ, thẳng góc, không bị che, không chụp quá xa.',
     '2. Không chụp chân dung từ ảnh, màn hình thiết bị điện tử.'
 ];
+
+export enum ErrorCodes {
+    SUCCESS = 0,
+    IMAGE_LIMIT_SIZE = 1,
+  }

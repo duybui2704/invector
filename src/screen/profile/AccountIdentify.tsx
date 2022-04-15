@@ -1,69 +1,36 @@
-import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import { ScrollView } from 'react-native-gesture-handler';
+import Dash from 'react-native-dash';
+import HTMLView from 'react-native-htmlview';
 
-import AvatarIC from '@/assets/image/ic_edit_avatar_large.svg';
+import AfterIC from '@/assets/image/ic_identify_after.svg';
+import BeforeIC from '@/assets/image/ic_identify_before.svg';
+import AvatarIC from '@/assets/image/ic_KYC_avatar.svg';
+import { noteAvatar, noteKYC } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { MyTextInput } from '@/components/elements/textfield';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import HeaderBar from '@/components/header';
-import SessionManager from '@/manager/SessionManager';
-import { dataUser } from '@/mocks/data';
-import { COLORS, Styles } from '@/theme';
+import { COLORS, HtmlStyles, Styles } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
-
+import { Configs } from '@/common/Configs';
+import { dataUser } from '@/mocks/data';
+import { Touchable } from '@/components/elements/touchable';
 
 const AccountIdentify = observer(() => {
-    const [name, setName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [phone, setPhone] = useState<string>('');
-    const [gender, setGender] = useState<string>('');
-    const [address, setAddress] = useState<string>('');
-    const [job, setJob] = useState<string>('');
-    const [birthday, setBirthday] = useState<string>('');
+    const [identify, setIdentify] = useState<string>('');
 
-    const nameRef = useRef<TextFieldActions>();
-    const emailRef = useRef<TextFieldActions>();
-    const phoneRef = useRef<TextFieldActions>();
-    const birthdayRef = useRef<TextFieldActions>();
-    const genderRef = useRef<TextFieldActions>();
-    const addressRef = useRef<TextFieldActions>();
-    const jobRef = useRef<TextFieldActions>();
+    const identifyRef = useRef<TextFieldActions>();
 
-    const onChangeText = useCallback((value?: any, tag?: any) => {
-        switch (tag) {
-            case Languages.accountInfo.fullName:
-                setName(value);
-                break;
-            case Languages.accountInfo.gender:
-                setGender(value);
-                break;
-            case Languages.accountInfo.birthday:
-                setBirthday(value);
-                break;
-            case Languages.accountInfo.phoneNumber:
-                setPhone(value);
-                break;
-            case Languages.accountInfo.email:
-                setEmail(value);
-                break;
-            case Languages.accountInfo.address:
-                setAddress(value);
-                break;
-            case Languages.accountInfo.job:
-                setJob(value);
-                break;
-            default:
-                break;
-        }
+    const onChangeText = useCallback((value?: any) => {
+        setIdentify(value);
     }, []);
 
-    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?:boolean) => {
+    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean) => {
         return (
             <View style={styles.wrapInput}>
                 <Text style={styles.labelStyle}>{label}</Text>
@@ -74,7 +41,7 @@ const AccountIdentify = observer(() => {
                     keyboardType={keyboardType}
                     value={value}
                     onChangeText={onChangeText}
-                    containerInput={ styles.inputStyle}
+                    containerInput={styles.inputStyle}
                     disabled={disabled}
                 />
             </View>
@@ -82,73 +49,84 @@ const AccountIdentify = observer(() => {
     }, [onChangeText]);
 
     const onValidate = useCallback(() => {
-        const errMsgName = FormValidate.userNameValidate(name);
-        const errMsgGender = FormValidate.genderValidate(gender);
-        const errMsgBirthday = FormValidate.birthdayValidate(birthday);
-        const errMsgPhone = FormValidate.passConFirmPhone(phone);
-        const errMsgPwdEmail = FormValidate.emailValidate(email);
-        const errMsgAddress = FormValidate.addressValidate(address);
-        const errMsgJob = FormValidate.jobValidate(job);
+        const errMsgIdentify = FormValidate.cardValidate(identify);
 
-        nameRef.current?.setErrorMsg(errMsgName);
-        genderRef.current?.setErrorMsg(errMsgGender);
-        birthdayRef.current?.setErrorMsg(errMsgBirthday);
-        phoneRef.current?.setErrorMsg(errMsgPhone);
-        emailRef.current?.setErrorMsg(errMsgPwdEmail);
-        addressRef.current?.setErrorMsg(errMsgAddress);
-        jobRef.current?.setErrorMsg(errMsgJob);
-        if (`${errMsgName}${errMsgGender}${errMsgBirthday}${errMsgPhone}${errMsgPwdEmail}${errMsgAddress}${errMsgJob}`.length === 0) {
+        identifyRef.current?.setErrorMsg(errMsgIdentify);
+
+        if (`${errMsgIdentify}`.length === 0) {
             return true;
         } return false;
-    }, [address, birthday, email, gender, job, name, phone]);
+    }, [identify]);
 
-    const onSaveInfo = useCallback(() => {
+    const onVerify = useCallback(() => {
         if (onValidate()) {
-            console.log('name = ', name);
+            console.log('name = ', identify);
         }
-    }, [name, onValidate]);
+    }, [identify, onValidate]);
 
+    const renderDash = useMemo(() => {
+        return <Dash
+            dashThickness={1}
+            dashLength={10}
+            dashGap={5}
+            dashColor={COLORS.GRAY_13}
+            style={styles.dash} />;
+    }, []);
 
-    const renderInfoAcc = useMemo(() => {
+    const renderPhoto = useMemo(() => {
         return (
-            <View style={styles.wrapContent}>
-                {renderKeyFeature(nameRef, Languages.accountInfo.fullName, name)}
-                {renderKeyFeature(genderRef, Languages.accountInfo.gender, gender)}
-                {renderKeyFeature(birthdayRef, Languages.accountInfo.birthday, birthday)}
-                {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, SessionManager.savePhone?.toString(), 'PHONE', true)}
-                {renderKeyFeature(emailRef, Languages.accountInfo.email, email, 'EMAIL')}
-                {renderKeyFeature(addressRef, Languages.accountInfo.address, address)}
-                {renderKeyFeature(jobRef, Languages.accountInfo.job, job)}
-                <View style={styles.wrapEdit}>
-                    <Button
-                        style={styles.accuracyWrap}
-                        onPress={onSaveInfo}
-                        label={Languages.accountInfo.save}
-                        buttonStyle={BUTTON_STYLES.GREEN_1}
-                        isLowerCase />
+            <View style={styles.wrapEdit}>
+                <View style={styles.contentContainer}>
+                    <Text style={styles.titlePhoto}>{Languages.accountIdentify.imageIdentify}</Text>
+                    <Text style={styles.txtNotePhoto}>{noteKYC[0]}</Text>
+                    <Text style={styles.txtNotePhoto}>{noteKYC[1]}</Text>
+
+                    <Touchable style={styles.wrapItemPhoto}>
+                        <Text style={styles.identifyTextStyle}>{Languages.accountIdentify.beforeKYC}</Text>
+                        <BeforeIC />
+                    </Touchable>
+                    {renderDash}
+                    <Touchable style={styles.wrapItemPhoto}>
+                        <Text style={styles.identifyTextStyle}>{Languages.accountIdentify.afterKYC}</Text>
+                        <AfterIC />
+                    </Touchable>
+                    {renderDash}
+                    <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
+                    <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
+                    <Text style={styles.txtNotePhoto}>{noteAvatar[1]}</Text>
+
+                    <Touchable style={styles.wrapItemPhoto}>
+                        <Text style={styles.identifyTextStyle}>{Languages.accountIdentify.avatar}</Text>
+                        <AvatarIC />
+                    </Touchable>
+                    {renderDash}
                 </View>
+                <HTMLView
+                    value={Languages.accountIdentify.note}
+                    stylesheet={HtmlStyles || undefined}
+                />
+                {dataUser.accuracy !== 1 && <Button
+                    style={styles.accuracyWrap}
+                    onPress={onVerify}
+                    label={Languages.accountIdentify.confirmKYC}
+                    buttonStyle={BUTTON_STYLES.GREEN_1}
+                    isLowerCase />}
             </View>
         );
-    }, [address, birthday, email, gender, job, name, onSaveInfo, renderKeyFeature]);
+    }, [onVerify, renderDash]);
 
     return (
         <View style={styles.container}>
-            <HeaderBar isLight={false} title={Languages.accountInfo.editAcc} hasBack />
+            <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack />
             <ScrollView showsVerticalScrollIndicator={false}>
-                {/* <View style={styles.topContainer}>
-                    {!dataUser.avatar ?
-                        <AvatarIC style={styles.circleWrap} />
-                        :
-                        <FastImage
-                            style={styles.circleWrap}
-                            source={{
-                                uri: dataUser?.avatar
-                            }}
-                            resizeMode={FastImage.resizeMode.cover}
-                        />
-                    }
-                </View>
-                {renderInfoAcc} */}
+                {dataUser.accuracy === 1 &&
+                    <View style={styles.wrapTopHtml}><HTMLView
+                        value={Languages.accountIdentify.noteTopIdentify}
+                        stylesheet={HtmlStyles || undefined}
+                    />
+                    </View>}
+                {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, identify, 'NUMBER')}
+                {renderPhoto}
             </ScrollView>
         </View>
     );
@@ -161,19 +139,19 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.GRAY_5
     },
-    wrapContent: {
-        marginTop: 16
-    },
     wrapEdit: {
         paddingHorizontal: 16,
         width: '100%',
-        paddingTop: 25,
-        paddingBottom: 20
+        paddingTop: 10,
+        paddingBottom: 16
     },
-    topContainer: {
-        paddingVertical: 6,
-        alignItems: 'center',
-        justifyContent: 'space-between'
+    contentContainer: {
+        paddingHorizontal: 16,
+        paddingBottom: 26,
+        backgroundColor: COLORS.WHITE,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: COLORS.GRAY_13
     },
     wrapInput: {
         justifyContent: 'space-between',
@@ -181,7 +159,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingBottom: 5
     },
-
+    wrapTopHtml: {
+        alignSelf: 'center',
+        paddingHorizontal: 16
+    },
     accuracyWrap: {
         width: '100%',
         borderRadius: 70,
@@ -194,16 +175,6 @@ const styles = StyleSheet.create({
         color: COLORS.GREEN,
         paddingHorizontal: 40
     },
-
-    circleWrap: {
-        width: SCREEN_WIDTH * 0.4 - 25,
-        height: SCREEN_WIDTH * 0.4 - 25,
-        borderRadius: 70,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 2,
-        borderColor: COLORS.GREEN
-    },
     inputStyle: {
         borderWidth: 1,
         borderColor: COLORS.GRAY_11,
@@ -213,5 +184,29 @@ const styles = StyleSheet.create({
     labelStyle: {
         ...Styles.typography.regular,
         color: COLORS.GRAY_7
+    },
+    wrapItemPhoto: {
+        alignItems: 'center',
+        paddingBottom: 8
+    },
+    identifyTextStyle: {
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_7,
+        alignSelf: 'flex-start',
+        paddingVertical: 8
+    },
+    titlePhoto: {
+        ...Styles.typography.medium,
+        color: COLORS.RED_2,
+        paddingTop: 16
+    },
+    txtNotePhoto: {
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_12,
+        fontSize: Configs.FontSize.size12,
+        paddingVertical: 4
+    },
+    dash: {
+        paddingTop: 2
     }
 });

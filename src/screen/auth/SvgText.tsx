@@ -9,7 +9,6 @@ import Languages from '@/common/Languages';
 import { Configs } from '@/common/Configs';
 import DimensionUtils from '@/utils/DimensionUtils';
 
-
 const SvgComponent = observer((props: any) => {
 
     const [login, setLogin] = useState<boolean>(true);
@@ -67,7 +66,7 @@ const SvgComponent = observer((props: any) => {
                 >
                     <TextPath href="#circle" >
                         <TSpan dx={DimensionUtils.SCREEN_WIDTH * 3.1} dy={-15}>
-                            {Languages.auth.txtTitle}
+                            {Languages.auth.txtLogin}
                         </TSpan>
                     </TextPath>
                 </Text>

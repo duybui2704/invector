@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Configs } from '@/common/Configs';
+import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import { COLORS } from './colors';
 
 
@@ -85,14 +85,13 @@ export const HtmlStyles = {
     },
     r: {
         ...Styles.typography.medium,
-        color: COLORS.RED,
-        fontSize: Configs.FontSize.size13,
-        marginTop: 5
+        color: COLORS.RED_3,
+        fontSize: Configs.FontSize.size14,
+        marginTop: 15
     },
     s: {
         ...Styles.typography.regular,
-        fontSize: Configs.FontSize.size12,
-        padding: 15
+        fontSize: Configs.FontSize.size14
     },
     t: {
         ...Styles.typography.regular,
@@ -103,6 +102,9 @@ export const HtmlStyles = {
         ...Styles.typography.medium,
         fontSize: Configs.FontSize.size12,
         color: COLORS.DARK_GRAY
+    },
+    p:{
+        marginVertical: 16
     }
 };
 
