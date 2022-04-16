@@ -5,14 +5,15 @@ export const ScreenName = {
     auth: 'Auth',
     signIn: 'SignIn',
     home: 'Home',
-    invest: 'Invest',
+    investment: 'Investment',
     report: 'Report',
     payment: 'Payment',
     account: 'Account',
     introduce: 'Introduce',
     transaction: 'Transaction',
     success: 'Success',
-    detailInvestment: 'DetailInvestment'
+    detailInvestment: 'DetailInvestment',
+    invest: 'Invest'
 };
 
 export default ScreenName;

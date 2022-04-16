@@ -49,6 +49,7 @@
     "react-native-fast-image": "^8.5.11",
     "react-native-fbsdk-next": "^7.3.3",
     "react-native-gesture-handler": "^2.3.2",
+    "react-native-html": "^0.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-lightbox": "^0.8.1",
     "react-native-material-ripple": "^0.9.1",

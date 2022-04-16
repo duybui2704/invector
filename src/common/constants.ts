@@ -81,7 +81,16 @@ export enum ENUM_PROVIDER {
     FACEBOOK = 'facebook',
     GOOGLE = 'google'
   }
-  export const configGoogleSignIn = {
+export const configGoogleSignIn = {
     webClientId:
     '393388576958-sm1fbp2f3hk82bg654ku148hemhjpdhr.apps.googleusercontent.com'
 };
+export enum ENUM_INVEST_STATUS {
+    INVEST_NOW = 'INVEST_NOW',
+    INVESTING = 'INVESTING',
+    HISTORY = 'HISTORY'
+}
+export enum ENUM_METHOD_PAYMENT {
+    VIMO = 'VIMO',
+    NGAN_LUONG = 'NGAN_LUONG'
+}

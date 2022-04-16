@@ -217,6 +217,29 @@ const Languages = {
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         sentOtp1: 'Gửi lại mã sau: ',
         sentOtp2: 'Gửi lại mã'
+    },
+    detailInvest: {
+        title: 'Chi tiết khoản đầu tư',
+        information: 'Thông tin hợp đồng',
+        idContract: 'Mã số hợp đồng',
+        interest: 'Lãi suất hàng tháng',
+        amountInterest: 'Tổng lãi nhận được',
+        period: 'Kỳ hạn đầu tư',
+        day: 'Ngày đầu tư',
+        formality: 'Hình thức trả lãi',
+        investNow: 'Đầu tư ngay',
+        inforInterest: 'Thông tin trả lãi',
+        amountMoney: 'Tổng số tiền đầu tư',
+        moneyInvest: 'Số tiền đầu tư',
+        amountReceived: 'Tổng lãi đã nhận',
+        expectedDate: 'Ngày đáo hạn dự kiến',
+        reinvest: 'Đầu tư lại',
+        interestMonth: 'Lãi hàng tháng',
+        money: 'Số tiền cần đầu tư',
+        method: 'Phương thức đầu tư',
+        vimo: 'Tài khoản Vimo',
+        nganLuong: 'Tài khoản Ngân Lượng',
+        linked: 'Đã liên kết'
     }
 
 };
