@@ -39,8 +39,10 @@ const Languages = {
         time: 'Thời gian đầu tư',
         formalPayment: 'Hình thức trả lại',
         investNow: 'Đầu tư ngay',
-        interest: 'Lãi suất',
-        attractInvest: 'Đầu tư hấp dẫn'
+        interest: 'Lãi suất tháng',
+        attractInvest: 'Đầu tư hấp dẫn',
+        intent: 'Lãi dự kiến',
+        getMoney: 'Lãi đã nhận'
     },
     account: {
         title: 'Tài khoản',

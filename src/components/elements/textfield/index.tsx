@@ -19,6 +19,7 @@ import IcPhone from '@/assets/image/auth/ic_phone_auth.svg';
 import IcPass from '@/assets/image/auth/ic_pass_auth.svg';
 import IcEmailAuth from '@/assets/image/auth/ic_email_auth.svg';
 import IcName from '@/assets/image/auth/ic_name_auth.svg';
+import IcSearch from '@/assets/image/ic_search.svg';
 
 export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
     (
@@ -210,8 +211,10 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                     return <IcPass width={20} height={20}/>;
                 case arrayIcon.login.name:
                     return <IcName width={20} height={20}/>;
+                case arrayIcon.login.search:
+                    return <IcSearch />;
                 default:
-                    break;
+                    return null;
             }
         }, [rightIcon]);
 

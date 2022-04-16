@@ -15,6 +15,7 @@ import Profile from '@/screen/profile';
 import Report from '@/screen/report';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
+import DetailInvestment from '@/screen/invest/detailInvestment';
 
 const TabsData = [
     {
@@ -66,6 +67,7 @@ const InvestStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.invest} component={Invest} />
+            <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
         </Stack.Navigator>
     );
 };
