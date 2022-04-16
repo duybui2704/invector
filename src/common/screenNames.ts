@@ -14,7 +14,8 @@ export const ScreenName = {
     accountInfo: 'AccountInfo',
     editAccountInfo: 'EditAccountInfo',
     accountIdentify: 'AccountIdentify',
-    success: 'Success'
+    success: 'Success',
+    shareFriend: 'ShareFriend'
 };
 
 export default ScreenName;

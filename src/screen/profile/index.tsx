@@ -65,17 +65,6 @@ const Profile = observer(() => {
     });
     const [errorText, setErrorText] = useState<string>('');
 
-    const onNavigate = useCallback((title: string) => {
-        switch (title) {
-            case Languages.account.accountLink:
-                return Navigator.pushScreen(ScreenName.transaction);
-            case Languages.account.changePwd:
-                return Navigator.pushScreen(ScreenName.transaction);
-            default:
-                return null;
-        }
-    }, []);
-
     const onNavigateAccInfo = useCallback(() => {
         return Navigator.pushScreen(ScreenName.accountInfo);
     }, []);
@@ -87,6 +76,18 @@ const Profile = observer(() => {
     }, [userManager]);
 
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
+        const onNavigateScreen = () => {
+            switch (title) {
+                case Languages.account.shareFriends:
+                    Navigator.pushScreen(ScreenName.shareFriend);
+                    break;
+                case Languages.account.changePwd:
+                    
+                    break;
+                default:
+                    break;
+            }
+        };
         return (
             <KeyValue
                 title={title}
@@ -95,11 +96,11 @@ const Profile = observer(() => {
                 rightIcon={<ArrowIC />}
                 leftIcon={leftIcon}
                 styleTitle={styles.txtAuthnFinger}
-                onPress={onNavigate}
+                onPress={onNavigateScreen}
                 containerContent={styles.featureContainer}
             />
         );
-    }, [onNavigate]);
+    }, []);
 
     const onToggleBiometry = useCallback(
         (value) => {

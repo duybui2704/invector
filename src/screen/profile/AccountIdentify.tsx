@@ -23,7 +23,6 @@ import { Configs } from '@/common/Configs';
 import { dataUser, typePhoto } from '@/mocks/data';
 import ImageUtils from '@/utils/ImageUtils';
 import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
-import ToastUtils from '@/utils/ToastUtils';
 import { PopupActionTypes } from '@/models/typesPopup';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 

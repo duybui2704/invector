@@ -18,6 +18,7 @@ import SessionManager from '@/manager/SessionManager';
 import AccountInfo from '@/screen/profile/AccountInfo';
 import EditAccountInfo from '@/screen/profile/EditAccountInfo';
 import AccountIdentify from '@/screen/profile/AccountIdentify';
+import ShareFriend from '@/screen/profile/ShareFriend';
 
 const TabsData = [
     {
@@ -96,6 +97,7 @@ const AccountStack = () => {
             <Stack.Screen name={ScreenName.accountInfo} component={AccountInfo} /> 
             <Stack.Screen name={ScreenName.editAccountInfo} component={EditAccountInfo} /> 
             <Stack.Screen name={ScreenName.accountIdentify} component={AccountIdentify} /> 
+            <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} /> 
         </Stack.Navigator>
     );
 };

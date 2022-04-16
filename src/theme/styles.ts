@@ -72,6 +72,12 @@ export const HtmlStyles = {
         fontSize: Configs.FontSize.size13,
         textAlign: 'center'
     },
+    c:{
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_12,
+        fontSize: Configs.FontSize.size14,
+        textAlign: 'center'
+    },
     w: {
         ...Styles.typography.regular,
         color: COLORS.WHITE,
@@ -81,7 +87,7 @@ export const HtmlStyles = {
     g: {
         ...Styles.typography.medium,
         color: COLORS.GREEN,
-        fontSize: Configs.FontSize.size12
+        fontSize: Configs.FontSize.size14
     },
     r: {
         ...Styles.typography.medium,

@@ -1,3 +1,5 @@
+import { ShareFriend } from '@/screen/profile/ShareFriend';
+
 const Languages = {
     transaction: {
         title: 'Lịch sử giao dịch',
@@ -271,6 +273,12 @@ const Languages = {
         selectedThumb: 'Đã chọn hình đại diện',
         selectAsThumb: 'Đặt làm hình đại diện',
         uploadFailed: 'Xảy ra lỗi trong quá trình tải ảnh lên'
+    },
+    ShareFriend:{
+        introduce: 'Giới thiệu',
+        introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà lên tới 40 triệu đồng tới từ</c> <g>TienNgay.vn</g><c> Đầu tư & Tích luỹ</c></t>',
+        introduceCode: 'Mã giới thiệu của bạn',
+        qrcode: 'Qr code tải app'
     }
 
 };

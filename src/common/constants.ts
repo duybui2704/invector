@@ -95,4 +95,9 @@ export enum ErrorCodes {
 export enum GET_TYPE_PHOTO {
     CAMERA = 'Camera',
     LIBRARY = 'Library',
-}
+};
+
+export enum GET_LINK_INVESTOR {
+    LINK_IOS = 'https://apps.apple.com/ph/app/tienngay-vn-investor/id1563318851',
+    LINK_ANDROID = 'https://play.google.com/store/apps/details?id=vn.tienngay.investor&hl=en_US&gl=US'
+};
