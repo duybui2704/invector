@@ -2,9 +2,11 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import Dash from 'react-native-dash';
 import HTMLView from 'react-native-htmlview';
+import { ImageOrVideo } from 'react-native-image-crop-picker';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
+import WarnIC from '@/assets/image/ic_warn_round_yellow.svg';
 import AfterIC from '@/assets/image/ic_identify_after.svg';
 import BeforeIC from '@/assets/image/ic_identify_before.svg';
 import AvatarIC from '@/assets/image/ic_KYC_avatar.svg';
@@ -18,13 +20,25 @@ import HeaderBar from '@/components/header';
 import { COLORS, HtmlStyles, Styles } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
 import { Configs } from '@/common/Configs';
-import { dataUser } from '@/mocks/data';
-import { Touchable } from '@/components/elements/touchable';
+import { dataUser, typePhoto } from '@/mocks/data';
+import ImageUtils from '@/utils/ImageUtils';
+import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
+import ToastUtils from '@/utils/ToastUtils';
+import { PopupActionTypes } from '@/models/typesPopup';
+import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 
 const AccountIdentify = observer(() => {
-    const [identify, setIdentify] = useState<string>('');
+    const [identify, setIdentify] = useState<string>(dataUser.identify);
+    const [avatar, setAvatar] = useState<ImageOrVideo>();
+    const [frontIdentify, setFrontIdentify] = useState<ImageOrVideo>();
+    const [afterIdentify, setBehindIdentify] = useState<ImageOrVideo>();
 
     const identifyRef = useRef<TextFieldActions>();
+    const avatarRef = useRef<BottomSheetModal>();
+    const frontIdentifyRef = useRef<BottomSheetModal>();
+    const afterIdentifyRef = useRef<BottomSheetModal>();
+
+    const popupConfirmRef = useRef<PopupActionTypes>();
 
     const onChangeText = useCallback((value?: any) => {
         setIdentify(value);
@@ -58,20 +72,57 @@ const AccountIdentify = observer(() => {
         } return false;
     }, [identify]);
 
+    const renderPopupConfirm = useCallback((ref?: any) => {
+        return <PopupNotifyNoAction
+            ref={ref}
+            renderIcon={<WarnIC />}
+            renderTitle={Languages.accountIdentify.waitVerify}
+            renderContent={Languages.accountIdentify.waitVerifyContent}
+        />;
+    }, []);
+
     const onVerify = useCallback(() => {
         if (onValidate()) {
-            console.log('name = ', identify);
+            popupConfirmRef.current?.show();
         }
-    }, [identify, onValidate]);
+    }, [onValidate]);
 
-    const renderDash = useMemo(() => {
-        return <Dash
-            dashThickness={1}
-            dashLength={10}
-            dashGap={5}
-            dashColor={COLORS.GRAY_13}
-            style={styles.dash} />;
+    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any) => {
+        return <PhotoPickerBottomSheet
+            ref={ref}
+            label={label}
+            data={typePhoto}
+            image={image}
+            icon={icon}
+            onPressItem={onPressItem}
+            containerStyle={styles.pickerContainer}
+            hasDash
+            disable={!!dataUser?.front_facing_card && !!dataUser.card_back && !!dataUser.avatar}
+        />;
     }, []);
+
+    const onPressItemFrontPhoto = useCallback((item: any) => {
+        if (item?.value === 'Camera') {
+            ImageUtils.openCamera(setFrontIdentify);
+        } else {
+            ImageUtils.openLibrary(setFrontIdentify, 1);
+        }
+    }, []);
+    const onPressItemBehindPhoto = useCallback((item: any) => {
+        if (item?.value === 'Camera') {
+            ImageUtils.openCamera(setBehindIdentify);
+        } else {
+            ImageUtils.openLibrary(setBehindIdentify, 1);
+        }
+    }, []);
+    const onPressItemAvatar = useCallback((item: any) => {
+        if (item?.value === 'Camera') {
+            ImageUtils.openCamera(setAvatar);
+        } else {
+            ImageUtils.openLibrary(setAvatar, 1);
+        }
+    }, []);
+
 
     const renderPhoto = useMemo(() => {
         return (
@@ -80,26 +131,12 @@ const AccountIdentify = observer(() => {
                     <Text style={styles.titlePhoto}>{Languages.accountIdentify.imageIdentify}</Text>
                     <Text style={styles.txtNotePhoto}>{noteKYC[0]}</Text>
                     <Text style={styles.txtNotePhoto}>{noteKYC[1]}</Text>
-
-                    <Touchable style={styles.wrapItemPhoto}>
-                        <Text style={styles.identifyTextStyle}>{Languages.accountIdentify.beforeKYC}</Text>
-                        <BeforeIC />
-                    </Touchable>
-                    {renderDash}
-                    <Touchable style={styles.wrapItemPhoto}>
-                        <Text style={styles.identifyTextStyle}>{Languages.accountIdentify.afterKYC}</Text>
-                        <AfterIC />
-                    </Touchable>
-                    {renderDash}
+                    {renderPhotoPicker(frontIdentifyRef, Languages.accountIdentify.frontKYC, frontIdentify, <BeforeIC />, onPressItemFrontPhoto)}
+                    {renderPhotoPicker(afterIdentifyRef, Languages.accountIdentify.behindKYC, afterIdentify, <AfterIC />, onPressItemBehindPhoto)}
                     <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[1]}</Text>
-
-                    <Touchable style={styles.wrapItemPhoto}>
-                        <Text style={styles.identifyTextStyle}>{Languages.accountIdentify.avatar}</Text>
-                        <AvatarIC />
-                    </Touchable>
-                    {renderDash}
+                    {renderPhotoPicker(avatarRef, Languages.accountIdentify.avatar, avatar, <AvatarIC />, onPressItemAvatar)}
                 </View>
                 <HTMLView
                     value={Languages.accountIdentify.note}
@@ -113,20 +150,22 @@ const AccountIdentify = observer(() => {
                     isLowerCase />}
             </View>
         );
-    }, [onVerify, renderDash]);
+    }, [afterIdentify, avatar, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhoto, onVerify, renderPhotoPicker]);
 
     return (
         <View style={styles.container}>
             <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack />
             <ScrollView showsVerticalScrollIndicator={false}>
                 {dataUser.accuracy === 1 &&
-                    <View style={styles.wrapTopHtml}><HTMLView
-                        value={Languages.accountIdentify.noteTopIdentify}
-                        stylesheet={HtmlStyles || undefined}
-                    />
+                    <View style={styles.wrapTopHtml}>
+                        <HTMLView
+                            value={Languages.accountIdentify.noteTopIdentify}
+                            stylesheet={HtmlStyles || undefined}
+                        />
                     </View>}
-                {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, identify, 'NUMBER')}
+                {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, identify, 'NUMBER', !!dataUser.identify)}
                 {renderPhoto}
+                {renderPopupConfirm(popupConfirmRef)}
             </ScrollView>
         </View>
     );
@@ -147,11 +186,14 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         paddingHorizontal: 16,
-        paddingBottom: 26,
+        paddingBottom: 24,
         backgroundColor: COLORS.WHITE,
         borderRadius: 16,
         borderWidth: 1,
         borderColor: COLORS.GRAY_13
+    },
+    pickerContainer: {
+        marginBottom: -40
     },
     wrapInput: {
         justifyContent: 'space-between',
@@ -170,11 +212,6 @@ const styles = StyleSheet.create({
         marginTop: 5,
         paddingVertical: 8
     },
-    txtAccuracy: {
-        ...Styles.typography.medium,
-        color: COLORS.GREEN,
-        paddingHorizontal: 40
-    },
     inputStyle: {
         borderWidth: 1,
         borderColor: COLORS.GRAY_11,
@@ -184,16 +221,6 @@ const styles = StyleSheet.create({
     labelStyle: {
         ...Styles.typography.regular,
         color: COLORS.GRAY_7
-    },
-    wrapItemPhoto: {
-        alignItems: 'center',
-        paddingBottom: 8
-    },
-    identifyTextStyle: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_7,
-        alignSelf: 'flex-start',
-        paddingVertical: 8
     },
     titlePhoto: {
         ...Styles.typography.medium,
@@ -205,8 +232,5 @@ const styles = StyleSheet.create({
         color: COLORS.GRAY_12,
         fontSize: Configs.FontSize.size12,
         paddingVertical: 4
-    },
-    dash: {
-        paddingTop: 2
     }
 });

@@ -222,12 +222,15 @@ const Languages = {
         accountIdentify: 'Xác thực tài khoản',
         KYC: 'Số CMND/CCCD',
         imageIdentify: 'Ảnh giấy tờ tùy thân',
-        beforeKYC: 'Mặt trước CMND',
-        afterKYC: 'Mặt sau CMND',
+        frontKYC: 'Mặt trước CMND',
+        behindKYC: 'Mặt sau CMND',
         avatarPhoto: 'Ảnh chân dung chụp:',
-        note: 'Chú ý: Hãy xác thực chính xác thông tin của bạn để bắt đầu đầu tư. Sau khi tài khoản bạn được xác thực thành công, bạn không thể thực hiện xác thực lại.',
+        note: '<p><r>Chú ý:</r><s> Hãy xác thực chính xác thông tin của bạn để bắt đầu đầu tư. Sau khi tài khoản bạn được xác thực thành công, bạn không thể thực hiện xác thực lại.</s></p>',
         avatar: 'Chân dung khuôn mặt',
-        confirmKYC: 'Xác thực giấy tờ'
+        confirmKYC: 'Xác thực giấy tờ',
+        noteTopIdentify: '<p><r>Chú ý:</r><s> Tài khoản của bạn đã được xác thực thành công, bạn không thể thực hiện xác thực lại.</s>',
+        waitVerify: 'Chờ xác minh chứng từ',
+        waitVerifyContent: 'Chứng từ của bạn đang được xác minh, bạn có thể tiến hành đầu tư sau khi chứng từ đã được xác thực'
     },
     otp: {
         keyOtp: 'Xác nhận mã OTP ',
@@ -247,6 +250,27 @@ const Languages = {
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         sentOtp1: 'Gửi lại mã sau: ',
         sentOtp2: 'Gửi lại mã'
+    },
+    location: {
+        PermissionAlert: 'PermissionAlert',
+        AccessLocationServices: 'AccessLocationServices',
+        OpenSetting: 'OpenSetting',
+        Cancel: 'Cancel'
+    },
+    image: {
+        camera: 'Camera',
+        library: 'Thư viện ảnh',
+        permissionAlert: 'Yêu cầu truy cập',
+        accessPhotoMsg: 'Investor cần truy cập vào thư viện ảnh của bạn',
+        accessCameraMsg: 'Investor cần truy cập vào camera của bạn',
+        accessAddPhotoMsg: 'Investor cần thêm ảnh vào thư viện ảnh của bạn',
+        openSetting: 'Mở cài đặt',
+        deny: 'Từ chối',
+        uploading: 'Đang tải ảnh',
+        singleUploading: 'Đang tải ảnh lên',
+        selectedThumb: 'Đã chọn hình đại diện',
+        selectAsThumb: 'Đặt làm hình đại diện',
+        uploadFailed: 'Xảy ra lỗi trong quá trình tải ảnh lên'
     }
 
 };

@@ -90,4 +90,9 @@ export const noteAvatar = [
 export enum ErrorCodes {
     SUCCESS = 0,
     IMAGE_LIMIT_SIZE = 1,
-  }
+};
+
+export enum GET_TYPE_PHOTO {
+    CAMERA = 'Camera',
+    LIBRARY = 'Library',
+}

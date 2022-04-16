@@ -108,6 +108,8 @@ export const dataUser = {
     phone_number: '0353826750',
     gender: 'Nam',
     accuracy: 2,
+    front_card:'',
+    card_back:'',
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAznG13WJ4ayysR3Q07BNXsRTdDbP0PQ_Efw&usqp=CAU'
 } as unknown as UserInfoModal;
 
@@ -139,4 +141,9 @@ export const arrayData = [
         format: 'Lãi hàng tháng gốc hàng tháng'
 
     }
+];
+
+export const typePhoto = [
+    { id: '1', value: 'Camera' },
+    { id: '2', value: 'Library' }
 ];

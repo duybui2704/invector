@@ -28,6 +28,8 @@ export interface UserInfoModal {
     id_google?: string;
     user_apple?: string;
     gender?: string;
+    front_facing_card: string,
+    card_back: string,
     accuracy?:number;   // 1: da xac thuc, 2: chua xac thuc
 }
 interface OtpModal {
