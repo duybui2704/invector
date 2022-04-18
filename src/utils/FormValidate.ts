@@ -23,7 +23,13 @@ const validateEmail = (email: string) => {
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/
     );
 };
-function removeAscent (str: string ) {
+
+const validateBirthday = (birthday: string) => {
+    const regexVar = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
+    return regexVar.test(birthday);
+};
+
+function removeAscent(str: string) {
     if (str === null || str === undefined) return str;
     str = str.toLowerCase();
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
@@ -46,6 +52,14 @@ function userNameValidate(userName: string) {
         errMsg = Languages.errorMsg.userNameRegex;
     } else if (!validateSpecialCharacters(userName)) {
         errMsg = Languages.errorMsg.userNameRegex;
+    }
+    return errMsg;
+}
+
+function genderValidate(gender: string) {
+    let errMsg = '';
+    if (Validate.isStringEmpty(gender)) {
+        errMsg = Languages.errorMsg.genderRequired;
     }
     return errMsg;
 }
@@ -99,13 +113,50 @@ function passConFirmPhone(phone: string) {
     }
     return errMsg;
 }
-function inputNameEmpty (value: any, errEmpty: string) {
+function inputNameEmpty(value: any, errEmpty: string) {
     let errMsg = '';
     if (Validate.isStringEmpty(value)) {
         errMsg = errEmpty;
     }
     return errMsg;
 }
+
+function addressValidate(address: string) {
+    let errMsg = '';
+    if (Validate.isStringEmpty(address)) {
+        errMsg = Languages.errorMsg.addressNull;
+    } else if (!validateSpecialCharacters(address)) {
+        errMsg = Languages.errorMsg.addressRegex;
+    }
+    return errMsg;
+}
+
+function jobValidate(job: string) {
+    let errMsg = '';
+    if (Validate.isStringEmpty(job)) {
+        errMsg = Languages.errorMsg.jobNull;
+    } else if (!validateSpecialCharacters(job)) {
+        errMsg = Languages.errorMsg.jobRegex;
+    }
+    return errMsg;
+}
+
+function birthdayValidate(birthday: string) {
+    let errMsg = '';
+    const today = new Date();
+    const todayYear = today.getFullYear().toString();
+    const birthdayCurrent = birthday.toString().split('/',4)[2];
+
+    if (Validate.isStringEmpty(birthday.toString())) {
+        errMsg = Languages.errorMsg.birthdayNull;
+    } else if (!validateBirthday(birthday.toString())) {
+        errMsg = Languages.errorMsg.birthdayRegex;
+    } else if ( Number(todayYear) - Number(birthdayCurrent) < 18) {
+        errMsg = Languages.errorMsg.birthdayCompare18;
+    }
+    return errMsg;
+}
+
 export default {
     userNameValidate,
     emailValidate,
@@ -113,5 +164,9 @@ export default {
     passValidate,
     passConFirmValidate,
     passConFirmPhone,
-    inputNameEmpty
+    inputNameEmpty,
+    genderValidate,
+    addressValidate,
+    jobValidate,
+    birthdayValidate
 };

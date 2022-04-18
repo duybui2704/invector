@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
 import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';
@@ -16,8 +17,6 @@ import Images from '@/assets/Images';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import { loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
-import { ENUM_PROVIDER } from '@/common/constants';
-import { useIsFocused } from '@react-navigation/native';
 import ForgotPass from './forgotPass';
 
 const Auth = observer(() => {
@@ -64,12 +63,12 @@ const Auth = observer(() => {
 
     const onLoginFacebook = useCallback(async () => {
         const data = await loginWithFacebook();
-        console.log('data: ', data)
+        console.log('data: ', data);
     }, []);
 
     const onLoginGoogle = useCallback(async () => {
         const userInfo = await loginWithGoogle();
-        console.log('userInfo', userInfo)
+        console.log('userInfo', userInfo);
         // if (userInfo) initUser(ENUM_PROVIDER.GOOGLE, userInfo?.user?.id);
     }, []);
 
@@ -81,7 +80,7 @@ const Auth = observer(() => {
             </View>
             <View style={styles.wrapAll}>
                 {isNavigate === Languages.auth.txtLogin ? <Login/> : 
-                   isNavigate === Languages.auth.txtSignIn ? <SignUp/> : <ForgotPass/>
+                    isNavigate === Languages.auth.txtSignUp ? <SignUp/> : <ForgotPass/>
                 }
                 <View style={styles.viewBottom}>
                     <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>

@@ -77,20 +77,48 @@ export enum ERROR_BIOMETRIC {
     ErrorFaceId = 'ErrorFaceId',
     FINGERPRINT_ERROR_LOCKOUT = 'FINGERPRINT_ERROR_LOCKOUT',
 }
+export const noteKYC = [
+    '1. Mặt trước rõ, đủ 4 góc',
+    '2. Không chụp giấy tờ tuỳ thân photo, chụp thông qua màn hình thiết bị điện tử.'
+];
+
+export const noteAvatar = [
+    '1. Chụp cận mặt, rõ, thẳng góc, không bị che, không chụp quá xa.',
+    '2. Không chụp chân dung từ ảnh, màn hình thiết bị điện tử.'
+];
+
+export enum ErrorCodes {
+    SUCCESS = 0,
+    IMAGE_LIMIT_SIZE = 1,
+};
+
+export enum GET_TYPE_PHOTO {
+    CAMERA = 'Camera',
+    LIBRARY = 'Library',
+};
+
+export enum GET_LINK_INVESTOR {
+    LINK_IOS = 'https://apps.apple.com/ph/app/tienngay-vn-investor/id1563318851',
+    LINK_ANDROID = 'https://play.google.com/store/apps/details?id=vn.tienngay.investor&hl=en_US&gl=US'
+};
+
 export enum ENUM_PROVIDER {
     FACEBOOK = 'facebook',
     GOOGLE = 'google'
-  }
+  };
+
 export const configGoogleSignIn = {
     webClientId:
     '393388576958-sm1fbp2f3hk82bg654ku148hemhjpdhr.apps.googleusercontent.com'
 };
+
 export enum ENUM_INVEST_STATUS {
     INVEST_NOW = 'INVEST_NOW',
     INVESTING = 'INVESTING',
     HISTORY = 'HISTORY'
-}
+};
+
 export enum ENUM_METHOD_PAYMENT {
     VIMO = 'VIMO',
     NGAN_LUONG = 'NGAN_LUONG'
-}
+};

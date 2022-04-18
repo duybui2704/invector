@@ -1,13 +1,11 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import DeviceInfo from 'react-native-device-info';
 
-import { UserInfoModel } from '@/models/user-model';
-import StorageUtils from '@/utils/StorageUtils';
 import { StorageKeys } from '@/common/constants';
+import { UserInfoModal } from '@/models/user-modal';
 import RsaUtils from '@/utils/RsaUtils';
-import Navigator from '@/routers/Navigator';
-import ScreenNames from '@/common/screenNames';
-// import { PropertyValuationModel } from '@/models/property-valuation';
+import StorageUtils from '@/utils/StorageUtils';
+
 
 export const DeviceInfos = {
     DeviceName: '',
@@ -19,7 +17,7 @@ export const DeviceInfos = {
 };
 
 class SessionManager {
-    userInfo: UserInfoModel | undefined;
+    userInfo: UserInfoModal | undefined;
 
     accessToken: string | null | undefined;
 

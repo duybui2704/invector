@@ -65,15 +65,8 @@ const Profile = observer(() => {
     });
     const [errorText, setErrorText] = useState<string>('');
 
-    const onNavigate = useCallback((title: string) => {
-        switch (title) {
-            case Languages.account.accountLink:
-                return Navigator.pushScreen(ScreenName.transaction);
-            case Languages.account.changePwd:
-                return Navigator.pushScreen(ScreenName.transaction);
-            default:
-                return null;
-        }
+    const onNavigateAccInfo = useCallback(() => {
+        return Navigator.pushScreen(ScreenName.accountInfo);
     }, []);
 
     const onLogout = useCallback(() => {
@@ -83,6 +76,18 @@ const Profile = observer(() => {
     }, [userManager]);
 
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
+        const onNavigateScreen = () => {
+            switch (title) {
+                case Languages.account.shareFriends:
+                    Navigator.pushScreen(ScreenName.shareFriend);
+                    break;
+                case Languages.account.changePwd:
+                    
+                    break;
+                default:
+                    break;
+            }
+        };
         return (
             <KeyValue
                 title={title}
@@ -91,11 +96,11 @@ const Profile = observer(() => {
                 rightIcon={<ArrowIC />}
                 leftIcon={leftIcon}
                 styleTitle={styles.txtAuthnFinger}
-                onPress={onNavigate}
+                onPress={onNavigateScreen}
                 containerContent={styles.featureContainer}
             />
         );
-    }, [onNavigate]);
+    }, []);
 
     const onToggleBiometry = useCallback(
         (value) => {
@@ -276,20 +281,22 @@ const Profile = observer(() => {
             <HeaderBar title={Languages.account.title} isLight={false} />
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.accContainer}>
-                    {!dataUser.avatar ?
-                        <AvatarIC style={styles.circleWrap} />
-                        :
-                        <FastImage
-                            style={styles.circleWrap}
-                            source={{
-                                uri: dataUser?.avatar
-                            }}
-                            resizeMode={FastImage.resizeMode.cover}
-                        />
-                    }
+                    <Touchable onPress={onNavigateAccInfo}>
+                        {!dataUser.avatar ?
+                            <AvatarIC style={styles.circleWrap} />
+                            :
+                            <FastImage
+                                style={styles.circleWrap}
+                                source={{
+                                    uri: dataUser?.avatar
+                                }}
+                                resizeMode={FastImage.resizeMode.cover}
+                            />
+                        }
+                    </Touchable>
                     <View style={styles.headerAccRight}>
-                        <Text style={styles.headerAccName}>{dataUser.name || ''}</Text>
-                        <Text style={styles.headerAccPhone}>{dataUser.phone || ''}</Text>
+                        <Text style={styles.headerAccName}>{dataUser.full_name || ''}</Text>
+                        <Text style={styles.headerAccPhone}>{dataUser.phone_number || ''}</Text>
                         {renderAccuracy}
                     </View>
                     <ArrowIC />

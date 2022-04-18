@@ -11,7 +11,11 @@ export const ScreenName = {
     account: 'Account',
     introduce: 'Introduce',
     transaction: 'Transaction',
+    accountInfo: 'AccountInfo',
+    editAccountInfo: 'EditAccountInfo',
+    accountIdentify: 'AccountIdentify',
     success: 'Success',
+    shareFriend: 'ShareFriend',
     detailInvestment: 'DetailInvestment',
     invest: 'Invest'
 };

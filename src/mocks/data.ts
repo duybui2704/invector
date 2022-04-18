@@ -1,7 +1,7 @@
 import Languages from '@/common/Languages';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { TransactionModel } from '@/models/transaction-model';
-import { UserModel } from '@/models/user-model';
+import { UserInfoModal } from '@/models/user-modal';
 
 export const DATA = [
     {
@@ -104,13 +104,14 @@ export const dataYearReport =
     ];
 
 export const dataUser = {
-    name: 'Pham Minh Quý',
-    phone: '0353826750',
+    full_name: 'Pham Minh Quý',
+    phone_number: '0353826750',
     gender: 'Nam',
-    accuracy: 1, // 1: đã xác thực , 2: chưa xác thực, 3: chờ xác thực
+    accuracy: 2,
+    front_card:'',
+    card_back:'',
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAznG13WJ4ayysR3Q07BNXsRTdDbP0PQ_Efw&usqp=CAU'
-
-} as UserModel;
+} as unknown as UserInfoModal;
 
 export const arrayData = [
     {
@@ -140,4 +141,9 @@ export const arrayData = [
         format: 'Lãi hàng tháng gốc hàng tháng'
 
     }
+];
+
+export const typePhoto = [
+    { id: '1', value: 'Camera' },
+    { id: '2', value: 'Library' }
 ];

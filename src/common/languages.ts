@@ -99,9 +99,9 @@ const Languages = {
     auth: {
         txtPhone: 'Số điện thoại',
         txtPass: 'Mật khẩu',
-        txtTitle: 'Đăng nhập',
-        txtLogin: 'Đăng nhập với',
-        txtSignIn: 'Đăng ký',
+        txtLogin: 'Đăng nhập',
+        txtLoginWith: 'Đăng nhập với',
+        txtSignUp: 'Đăng ký',
         txtName: 'Họ và tên',
         txtEmail: 'Email',
         txtConfirmPass: 'Xác nhận mật khẩu',
@@ -110,7 +110,6 @@ const Languages = {
         txtConfirmOtp: 'Nhập mã OTP đã được gửi về điện thoại bạn đã xác nhận',
         conFirm: 'Xác nhận',
         saveAcc: 'Lưu tài khoản',
-        txtSignUp: 'Đăng ký',
         forgotPwd: 'Quên mật khẩu',
         txtD: 'Đăng',
         txtK: 'ký',
@@ -141,7 +140,15 @@ const Languages = {
         conFirmPwd: 'Xác nhận mật khẩu không trùng khớp với mật khẩu',
         phoneIsEmpty: 'Số điện thoại không được để trống',
         phoneRegex: 'Số điện thoại không đúng định dạng',
-        phoneCount: 'Số điện thoại chỉ được 10 số'
+        phoneCount: 'Số điện thoại chỉ được 10 số',
+        genderRequired: 'Giới tính không được để trống',
+        addressNull: 'Địa chỉ không được để trống',
+        addressRegex: 'Địa chỉ không được chứa kí tự đặc biệt',
+        jobNull: 'Nghề nghiệp không được để trống',
+        jobRegex: 'Nghề nghiệp không được chứa kí tự đặc biệt',
+        birthdayNull: 'Ngày sinh không được để trống',
+        birthdayRegex: 'Ngày sinh không đúng định dạng (vd: 05/11/1999)',
+        birthdayCompare18: 'Chưa đủ 18 tuổi'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
@@ -199,6 +206,34 @@ const Languages = {
         LAErrorTouchIDLockout:
             'Đã xảy ra lỗi do đăng nhập quá nhiều lần, vui lòng thử lại sau'
     },
+    accountInfo:{
+        accountInfo: 'Thông tin cá nhân',
+        content: 'Xác thực tài khoản để tăng độ an toàn khi đầu tư và sử dụng ứng dụng',
+        phoneNumber: 'Số điện thoại',
+        gender: 'Giới tính',
+        fullName: 'Họ và tên',
+        birthday: 'Ngày sinh',
+        email: 'Email',
+        job: 'Nghề nghiệp',
+        address: 'Địa chỉ',
+        edit: 'Chỉnh sửa',
+        save: 'Lưu lại',
+        editAcc: 'Chỉnh sửa thông tin'
+    },
+    accountIdentify:{
+        accountIdentify: 'Xác thực tài khoản',
+        KYC: 'Số CMND/CCCD',
+        imageIdentify: 'Ảnh giấy tờ tùy thân',
+        frontKYC: 'Mặt trước CMND',
+        behindKYC: 'Mặt sau CMND',
+        avatarPhoto: 'Ảnh chân dung chụp:',
+        note: '<p><r>Chú ý:</r><s> Hãy xác thực chính xác thông tin của bạn để bắt đầu đầu tư. Sau khi tài khoản bạn được xác thực thành công, bạn không thể thực hiện xác thực lại.</s></p>',
+        avatar: 'Chân dung khuôn mặt',
+        confirmKYC: 'Xác thực giấy tờ',
+        noteTopIdentify: '<p><r>Chú ý:</r><s> Tài khoản của bạn đã được xác thực thành công, bạn không thể thực hiện xác thực lại.</s>',
+        waitVerify: 'Chờ xác minh chứng từ',
+        waitVerifyContent: 'Chứng từ của bạn đang được xác minh, bạn có thể tiến hành đầu tư sau khi chứng từ đã được xác thực'
+    },
     otp: {
         keyOtp: 'Xác nhận mã OTP ',
         confirmOtp: 'Hãy nhập và xác nhận mã OTP',
@@ -217,6 +252,33 @@ const Languages = {
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         sentOtp1: 'Gửi lại mã sau: ',
         sentOtp2: 'Gửi lại mã'
+    },
+    location: {
+        PermissionAlert: 'PermissionAlert',
+        AccessLocationServices: 'AccessLocationServices',
+        OpenSetting: 'OpenSetting',
+        Cancel: 'Cancel'
+    },
+    image: {
+        camera: 'Camera',
+        library: 'Thư viện ảnh',
+        permissionAlert: 'Yêu cầu truy cập',
+        accessPhotoMsg: 'Investor cần truy cập vào thư viện ảnh của bạn',
+        accessCameraMsg: 'Investor cần truy cập vào camera của bạn',
+        accessAddPhotoMsg: 'Investor cần thêm ảnh vào thư viện ảnh của bạn',
+        openSetting: 'Mở cài đặt',
+        deny: 'Từ chối',
+        uploading: 'Đang tải ảnh',
+        singleUploading: 'Đang tải ảnh lên',
+        selectedThumb: 'Đã chọn hình đại diện',
+        selectAsThumb: 'Đặt làm hình đại diện',
+        uploadFailed: 'Xảy ra lỗi trong quá trình tải ảnh lên'
+    },
+    shareFriend:{
+        introduce: 'Giới thiệu',
+        introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà lên tới 40 triệu đồng tới từ</c> <g>TienNgay.vn</g><c> Đầu tư & Tích luỹ</c></t>',
+        introduceCode: 'Mã giới thiệu của bạn',
+        qrcode: 'Qr code tải app'
     },
     detailInvest: {
         title: 'Chi tiết khoản đầu tư',

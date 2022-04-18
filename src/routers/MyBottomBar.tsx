@@ -15,6 +15,10 @@ import Profile from '@/screen/profile';
 import Report from '@/screen/report';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
+import AccountInfo from '@/screen/profile/AccountInfo';
+import EditAccountInfo from '@/screen/profile/EditAccountInfo';
+import AccountIdentify from '@/screen/profile/AccountIdentify';
+import ShareFriend from '@/screen/profile/ShareFriend';
 import DetailInvestment from '@/screen/investment/detailInvestment';
 import Invest from '@/screen/investment/invest';
 
@@ -94,7 +98,10 @@ const AccountStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.account} component={Profile} />
-            <Stack.Screen name={ScreenName.transaction} component={Transaction} />
+            <Stack.Screen name={ScreenName.accountInfo} component={AccountInfo} /> 
+            <Stack.Screen name={ScreenName.editAccountInfo} component={EditAccountInfo} /> 
+            <Stack.Screen name={ScreenName.accountIdentify} component={AccountIdentify} /> 
+            <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} /> 
         </Stack.Navigator>
     );
 };
