@@ -9,7 +9,7 @@ import { IconTienngay } from '@/assets/icons/icon-tienngay';
 import ScreenName, { TabsName } from '../common/screenNames';
 import { COLORS, Styles } from '@/theme';
 import Home from '@/screen/home';
-import Invest from '@/screen/invest';
+import Investment from '@/screen/investment';
 import Transaction from '@/screen/payment/Transaction';
 import Profile from '@/screen/profile';
 import Report from '@/screen/report';
@@ -19,6 +19,8 @@ import AccountInfo from '@/screen/profile/AccountInfo';
 import EditAccountInfo from '@/screen/profile/EditAccountInfo';
 import AccountIdentify from '@/screen/profile/AccountIdentify';
 import ShareFriend from '@/screen/profile/ShareFriend';
+import DetailInvestment from '@/screen/investment/detailInvestment';
+import Invest from '@/screen/investment/invest';
 
 const TabsData = [
     {
@@ -69,6 +71,8 @@ const HomeStack = () => {
 const InvestStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen name={ScreenName.investment} component={Investment} />
+            <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
             <Stack.Screen name={ScreenName.invest} component={Invest} />
         </Stack.Navigator>
     );
@@ -143,7 +147,7 @@ const MyBottomTabs = observer(() => {
         if (
             routeName === undefined ||
             routeName === ScreenName.home ||
-            routeName === ScreenName.invest ||
+            routeName === ScreenName.investment ||
             routeName === ScreenName.report ||
             routeName === ScreenName.transaction ||
             routeName === ScreenName.account

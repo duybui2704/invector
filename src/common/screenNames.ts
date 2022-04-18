@@ -5,7 +5,7 @@ export const ScreenName = {
     auth: 'Auth',
     signIn: 'SignIn',
     home: 'Home',
-    invest: 'Invest',
+    investment: 'Investment',
     report: 'Report',
     payment: 'Payment',
     account: 'Account',
@@ -15,7 +15,9 @@ export const ScreenName = {
     editAccountInfo: 'EditAccountInfo',
     accountIdentify: 'AccountIdentify',
     success: 'Success',
-    shareFriend: 'ShareFriend'
+    shareFriend: 'ShareFriend',
+    detailInvestment: 'DetailInvestment',
+    invest: 'Invest'
 };
 
 export default ScreenName;

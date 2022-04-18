@@ -27,20 +27,20 @@ const ShareFriend = observer(() => {
 
     return (
         <View style={styles.container}>
-            <HeaderBar isLight={false} title={Languages.ShareFriend.introduce} hasBack />
+            <HeaderBar isLight={false} title={Languages.shareFriend.introduce} hasBack />
             <ScrollView showsVerticalScrollIndicator={false} style={styles.wrapAllContent}>
 
                 <HTMLView
-                    value={Languages.ShareFriend.introduceContent}
+                    value={Languages.shareFriend.introduceContent}
                     stylesheet={HtmlStyles || undefined}
                 />
-                <Text style={styles.txtMyQrCode}>{Languages.ShareFriend.introduceCode}</Text>
+                <Text style={styles.txtMyQrCode}>{Languages.shareFriend.introduceCode}</Text>
                 <View style={styles.wrapMyCode}>
                     <Text style={styles.textCode}>{code}</Text>
                     <ShareIC />
                 </View>
                 <View style={styles.wrapQR}>
-                    <Text style={styles.txtQR}>{Languages.ShareFriend.qrcode}</Text>
+                    <Text style={styles.txtQR}>{Languages.shareFriend.qrcode}</Text>
                     <QRCode
                         value={onLinkQR}
                         size={SCREEN_WIDTH * 0.7}

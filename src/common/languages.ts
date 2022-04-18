@@ -1,5 +1,3 @@
-import { ShareFriend } from '@/screen/profile/ShareFriend';
-
 const Languages = {
     transaction: {
         title: 'Lịch sử giao dịch',
@@ -41,8 +39,10 @@ const Languages = {
         time: 'Thời gian đầu tư',
         formalPayment: 'Hình thức trả lại',
         investNow: 'Đầu tư ngay',
-        interest: 'Lãi suất',
-        attractInvest: 'Đầu tư hấp dẫn'
+        interest: 'Lãi suất tháng',
+        attractInvest: 'Đầu tư hấp dẫn',
+        intent: 'Lãi dự kiến',
+        getMoney: 'Lãi đã nhận'
     },
     account: {
         title: 'Tài khoản',
@@ -274,11 +274,34 @@ const Languages = {
         selectAsThumb: 'Đặt làm hình đại diện',
         uploadFailed: 'Xảy ra lỗi trong quá trình tải ảnh lên'
     },
-    ShareFriend:{
+    shareFriend:{
         introduce: 'Giới thiệu',
         introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà lên tới 40 triệu đồng tới từ</c> <g>TienNgay.vn</g><c> Đầu tư & Tích luỹ</c></t>',
         introduceCode: 'Mã giới thiệu của bạn',
         qrcode: 'Qr code tải app'
+    },
+    detailInvest: {
+        title: 'Chi tiết khoản đầu tư',
+        information: 'Thông tin hợp đồng',
+        idContract: 'Mã số hợp đồng',
+        interest: 'Lãi suất hàng tháng',
+        amountInterest: 'Tổng lãi nhận được',
+        period: 'Kỳ hạn đầu tư',
+        day: 'Ngày đầu tư',
+        formality: 'Hình thức trả lãi',
+        investNow: 'Đầu tư ngay',
+        inforInterest: 'Thông tin trả lãi',
+        amountMoney: 'Tổng số tiền đầu tư',
+        moneyInvest: 'Số tiền đầu tư',
+        amountReceived: 'Tổng lãi đã nhận',
+        expectedDate: 'Ngày đáo hạn dự kiến',
+        reinvest: 'Đầu tư lại',
+        interestMonth: 'Lãi hàng tháng',
+        money: 'Số tiền cần đầu tư',
+        method: 'Phương thức đầu tư',
+        vimo: 'Tài khoản Vimo',
+        nganLuong: 'Tài khoản Ngân Lượng',
+        linked: 'Đã liên kết'
     }
 
 };
