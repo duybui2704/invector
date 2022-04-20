@@ -18,7 +18,7 @@ import { MyTextInput } from '@/components/elements/textfield';
 import { Touchable } from '@/components/elements/touchable';
 import { COLORS } from '@/theme';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
-import { myStylesSign } from './styles';
+import { MyStylesSign } from './styles';
 import OtpSignIn from '../otpSignIn';
 import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
 
@@ -33,7 +33,7 @@ const SignUp = observer(() => {
     const [dataChannel, setDataChannel] = useState<ItemProps[]>();
     const [data, setData] = useState<any>('');
     const [isNavigate, setNavigate] = useState<boolean>(false);
-    const styles = myStylesSign();
+    const styles = MyStylesSign();
     const refPhone = useRef<TextFieldActions>(null);
     const refName = useRef<TextFieldActions>(null);
     const refEmail = useRef<TextFieldActions>(null);

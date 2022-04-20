@@ -6,7 +6,6 @@ import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
-import SessionManager from '@/manager/SessionManager';
 import Loading from '@/components/loading';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import { MyStylesChangePass } from './styles';
@@ -32,6 +31,10 @@ const ChangePass = observer(() => {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [disTob, setDisTob] = useState<boolean>(true);
 
+    useEffect(() => {
+        isDis();
+    }, [newPass, confirmPass]);
+
     const onChangeText = (value: string, tag?: string) => {
         switch (tag) {
             case Languages.auth.txtConfirmNewPass:
@@ -47,21 +50,20 @@ const ChangePass = observer(() => {
 
     const onValidate = useCallback(() => {
         const errMsgPwd = FormValidate.passValidate(newPass);
-        const errMsgPwdNew = FormValidate.passConFirmPhone(confirmPass);
-
+        const errMsgPwdNew = FormValidate.passConFirmValidate(newPass, confirmPass);
         refPassNew.current?.setErrorMsg(errMsgPwd);
         refConfirmPass.current?.setErrorMsg(errMsgPwdNew);
 
     }, []);
 
     const isDis = useCallback(() => {
-        if (newPass !== '' && newPass === confirmPass) {
+        if (newPass !== '' && confirmPass !== '') {
             setDisTob(false);
         }
     }, [newPass, confirmPass])
 
     const onChange = async () => {
-
+        onValidate();
     };
 
     return (

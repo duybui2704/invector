@@ -19,6 +19,7 @@ import { loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
 import { ENUM_PROVIDER } from '@/common/constants';
 import { useIsFocused } from '@react-navigation/native';
 import ForgotPass from './forgotPass';
+import { Background } from 'victory-native';
 
 const Auth = observer(() => {
     const styles = myStylesAuth();
@@ -31,14 +32,8 @@ const Auth = observer(() => {
         appManager
     } = useAppStore();
 
-    useEffect(() => {
-        setTimeout(() => {
-            StatusBar.setBarStyle(isFocused ? 'light-content' : 'dark-content', true);
-        }, 10);
-    }, [isFocused]);
-
     const onNavigate = (key: string) => {
-        switch (key){
+        switch (key) {
             case Languages.auth.txtLogin:
                 setIsNavigate(key);
                 break;
@@ -75,19 +70,24 @@ const Auth = observer(() => {
 
     return (
         <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
-            {/* < StatusBar barStyle={'light-content'} backgroundColor={COLORS.GREEN_1}/> */}
+            <StatusBar
+                barStyle={'light-content'}
+                animated
+                translucent
+                backgroundColor={COLORS.TRANSPARENT}
+            />
             <View style={styles.viewSvg}>
-                <SvgComponent onNavigate={onNavigate}/>
+                <SvgComponent onNavigate={onNavigate} />
             </View>
             <View style={styles.wrapAll}>
-                {isNavigate === Languages.auth.txtLogin ? <Login/> : 
-                   isNavigate === Languages.auth.txtSignIn ? <SignUp/> : <ForgotPass/>
+                {isNavigate === Languages.auth.txtLogin ? <Login /> :
+                    isNavigate === Languages.auth.txtSignIn ? <SignUp /> : <ForgotPass />
                 }
                 <View style={styles.viewBottom}>
                     <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
                     <View style={styles.viewIcon}>
                         <Touchable style={styles.icon} onPress={onLoginFacebook}>
-                            <IcFaceAuth  />
+                            <IcFaceAuth />
                         </Touchable>
                         <Touchable style={styles.icon} onPress={onLoginGoogle}>
                             <IcGoogleAuth />
