@@ -1,18 +1,20 @@
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import HTMLView from 'react-native-htmlview';
+import Lightbox from 'react-native-lightbox';
 import QRCode from 'react-native-qrcode-svg';
 
 import ShareIC from '@/assets/image/ic_share_round.svg';
 import { Configs, isIOS } from '@/common/Configs';
 import { GET_LINK_INVESTOR } from '@/common/constants';
 import Languages from '@/common/Languages';
+import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import SessionManager from '@/manager/SessionManager';
 import { COLORS, HtmlStyles, Styles } from '@/theme';
+import Utils from '@/utils/Utils';
 
 
 const ShareFriend = observer(() => {
@@ -25,11 +27,22 @@ const ShareFriend = observer(() => {
         return GET_LINK_INVESTOR.LINK_ANDROID;
     }, []);
 
+    const renderContent = useCallback(() => {
+        return <QRCode
+            value={onLinkQR}
+            size={SCREEN_WIDTH}
+            quietZone={Configs.FontSize.size12}
+        />;
+    }, [onLinkQR]);
+
+    const share = useCallback(() => {
+        Utils.share(code);
+    }, [code]);
+
     return (
         <View style={styles.container}>
             <HeaderBar isLight={false} title={Languages.shareFriend.introduce} hasBack />
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.wrapAllContent}>
-
+            <View style={styles.wrapAllContent}>
                 <HTMLView
                     value={Languages.shareFriend.introduceContent}
                     stylesheet={HtmlStyles || undefined}
@@ -37,20 +50,24 @@ const ShareFriend = observer(() => {
                 <Text style={styles.txtMyQrCode}>{Languages.shareFriend.introduceCode}</Text>
                 <View style={styles.wrapMyCode}>
                     <Text style={styles.textCode}>{code}</Text>
-                    <ShareIC />
+                    <Touchable onPress={share}>
+                        <ShareIC />
+                    </Touchable>
                 </View>
                 <View style={styles.wrapQR}>
-                    <Text style={styles.txtQR}>{Languages.shareFriend.qrcode}</Text>
-                    <QRCode
-                        value={onLinkQR}
-                        size={SCREEN_WIDTH * 0.7}
-                        logoBackgroundColor='transparent'
-                        quietZone={Configs.FontSize.size10}
-                    />
+                    <Text style={styles.txtQR}>{Languages.shareFriend.qrCode}</Text>
+                    <Lightbox
+                        renderContent={renderContent}
+                        swipeToDismiss={true}>
+                        <QRCode
+                            value={onLinkQR}
+                            size={SCREEN_WIDTH * 0.7}
+                            quietZone={Configs.FontSize.size10}
+                        />
+                    </Lightbox>
                 </View>
-
-            </ScrollView>
-        </View>
+            </View>
+        </View >
     );
 });
 
@@ -91,10 +108,11 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         paddingLeft: 16
     },
-    wrapQR:{
-        alignItems: 'center'
+    wrapQR: {
+        alignItems: 'center',
+        marginTop: 10
     },
-    txtQR:{
+    txtQR: {
         ...Styles.typography.medium,
         color: COLORS.GRAY_12,
         fontSize: Configs.FontSize.size16,

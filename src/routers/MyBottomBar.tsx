@@ -21,6 +21,12 @@ import AccountIdentify from '@/screen/profile/AccountIdentify';
 import ShareFriend from '@/screen/profile/ShareFriend';
 import DetailInvestment from '@/screen/investment/detailInvestment';
 import Invest from '@/screen/investment/invest';
+import ChangePwd from '@/screen/profile/ChangePwd';
+import AccountLink from '@/screen/profile/AcountLink';
+import Manual from '@/screen/profile/Manual';
+import Help from '@/screen/profile/Help';
+import PaymentMethod from '@/screen/profile/PaymentMethod';
+import AccountBank from '@/screen/profile/AccountBank';
 
 const TabsData = [
     {
@@ -102,6 +108,12 @@ const AccountStack = () => {
             <Stack.Screen name={ScreenName.editAccountInfo} component={EditAccountInfo} /> 
             <Stack.Screen name={ScreenName.accountIdentify} component={AccountIdentify} /> 
             <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} /> 
+            <Stack.Screen name={ScreenName.changePwd} component={ChangePwd} /> 
+            <Stack.Screen name={ScreenName.accountLink} component={AccountLink} /> 
+            <Stack.Screen name={ScreenName.manual} component={Manual} /> 
+            <Stack.Screen name={ScreenName.help} component={Help} /> 
+            <Stack.Screen name={ScreenName.paymentMethod} component={PaymentMethod} /> 
+            <Stack.Screen name={ScreenName.accountBank} component={AccountBank} /> 
         </Stack.Navigator>
     );
 };

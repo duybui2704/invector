@@ -81,7 +81,7 @@ const PickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
                 <View style={[styles.wrapLabel, labelContainer]}>
                     {label && (
                         <Text style={[styles.label, labelStyle]}>
-                            {label || ''}
+                            {label}
                         </Text>
                     )}
                 </View>
@@ -89,7 +89,7 @@ const PickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
                     onPress={openPicker}
                     disabled={disable || data.length === 0}
                     ref={ref}
-                    style={btnContainer}
+                    style={[styles.wrapContent,btnContainer]}
                 >
                     {renderValue}
                     {rightIcon || null}
@@ -108,7 +108,8 @@ export default PickerBottomSheet;
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 5
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     wrapLabel: {
         flexDirection: 'row'
@@ -120,5 +121,9 @@ const styles = StyleSheet.create({
     placeholder: {
         ...Styles.typography.regular,
         color: COLORS.GRAY_4
+    },
+    wrapContent:{
+        alignItems:'center',
+        justifyContent: 'space-between'
     }
 });

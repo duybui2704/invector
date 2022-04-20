@@ -1,11 +1,13 @@
-import { configGoogleSignIn } from '@/common/constants';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
 import {
-    AccessToken, LoginManager,
+    AccessToken,
+    LoginManager,
     Profile
 } from 'react-native-fbsdk-next';
+
+import { configGoogleSignIn } from '@/common/constants';
 
 GoogleSignin.configure(configGoogleSignIn);
 
@@ -46,6 +48,31 @@ export const loginWithFacebook = async () => {
             return data;
         }
     } catch (error) {
+        return null;
+    }
+};
+
+export const loginWithApple = async () => {
+    try {
+        const appleAuthRequestResponse = await appleAuth.performRequest({
+            requestedOperation: appleAuth.Operation.LOGIN,
+            requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME]
+        });
+
+
+        const data = appleAuthRequestResponse;
+        console.log('dât',data);
+        if (data?.identityToken) {
+            console.log('token',data?.identityToken);
+            return data;
+        }
+        return null;
+    } catch (error: any) {
+        if (error?.code === appleAuth.Error.CANCELED) {
+            console.warn('User canceled Apple Sign in.');
+        } else {
+            console.error(error);
+        }
         return null;
     }
 };

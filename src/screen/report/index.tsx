@@ -38,23 +38,27 @@ const Report = observer(()=> {
                         `${Languages.report.month}${' '}${item?.month}`}
                 </Text>
                 <KeyValue
+                    styleTitle={styles.textLeftMonth}
                     title={Languages.report.contractNumber}
-                    styleTitle={styles.title}
+                    containerContent={styles.containerContentKeyValue}
                     content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.contractNumberQuarter) : Utils.formatMoney(item?.contractNumber)}
                     styleColor={styles.txtContractNumber} />
                 <KeyValue
                     title={Languages.report.investMoney}
-                    styleTitle={styles.title}
+                    styleTitle={styles.textLeftMonth}
+                    containerContent={styles.containerContentKeyValue}
                     content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.investMountQuarter) : Utils.formatMoney(item?.investMount)}
                     styleColor={styles.txtInvestNumber} />
                 <KeyValue
                     title={Languages.report.originMoneyCollected}
-                    styleTitle={styles.title}
+                    styleTitle={styles.textLeftMonth}
+                    containerContent={styles.containerContentKeyValue}
                     content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.originAmountEarningQuarter) : Utils.formatMoney(item?.originAmountEarning)}
                     styleColor={styles.txtEarning} />
                 <KeyValue
                     title={Languages.report.interest}
-                    styleTitle={styles.title}
+                    styleTitle={styles.textLeftMonth}
+                    containerContent={styles.containerContentKeyValue}
                     content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.interestQuarter) : Utils.formatMoney(item?.interest)}
                     styleColor={styles.txtInterest}
                 />
@@ -162,7 +166,7 @@ const Report = observer(()=> {
                     onPressItem={onPressQuarter}
                     btnContainer={styles.rowItemFilter}
                     valueText={[styles.txtInterest, styles.txtQuarter]}
-                    rightIcon={<ICUnderArrow style={styles.txtArrow} />}
+                    rightIcon={<ICUnderArrow  />}
                     containerStyle={styles.containerItemFilter}
                 />
                 <PickerBottomSheet
@@ -173,7 +177,7 @@ const Report = observer(()=> {
                     onPressItem={onPressYear}
                     btnContainer={styles.rowItemFilter}
                     valueText={[styles.txtInterest, styles.txtQuarter]}
-                    rightIcon={<ICUnderArrow style={styles.txtArrow} />}
+                    rightIcon={<ICUnderArrow  />}
                     containerStyle={styles.containerItemFilter}
                 />
             </View>
@@ -248,17 +252,21 @@ const styles = StyleSheet.create({
     },
     txtContractNumber: {
         color: COLORS.GREEN,
-        fontSize: Configs.FontSize.size16
+        fontSize: Configs.FontSize.size16,
+        paddingVertical: 8
     },
     txtInvestNumber: {
         color: COLORS.RED_2,
-        fontSize: Configs.FontSize.size16
+        fontSize: Configs.FontSize.size16,
+        paddingVertical: 8
     },
     txtEarning: {
-        color: COLORS.GRAY_7
+        color: COLORS.GRAY_7,
+        paddingVertical: 8
     },
     txtInterest: {
-        color: COLORS.GREEN_2
+        color: COLORS.GREEN_2,
+        paddingVertical: 4
     },
     overviewQuarterTxt: {
         ...Styles.typography.medium,
@@ -300,7 +308,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.GRAY_11,
         borderRadius: 20,
         marginVertical: 8,
-        paddingVertical: 8,
+        paddingVertical: 4,
         flexDirection: 'row',
         justifyContent: 'space-around',
         borderWidth: 1
@@ -317,7 +325,11 @@ const styles = StyleSheet.create({
     containerItemFilter: {
         marginBottom: -45
     },
-    title: {
-        marginRight: 5
+    containerContentKeyValue:{
+        width: '100%',
+        alignItems: 'center'
+    },
+    textLeftMonth:{
+        paddingVertical: 8
     }
 });
