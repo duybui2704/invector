@@ -4,7 +4,7 @@ import React, {
     useImperativeHandle,
     useState
 } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { COLORS, Styles } from '@/theme';
@@ -16,14 +16,30 @@ import { Touchable } from './elements/touchable';
 interface PopupNoActionProps extends PopupPropsTypes {
     renderIcon?: any,
     renderTitle?: string,
-    renderContent?:string,
-    hasButton?:boolean
+    renderContent?: string,
+    hasButton?: boolean,
+    containerAllBtn?: ViewStyle,
+    containerAgreeBtn?: ViewStyle,
+    textCancel?: TextStyle,
+    textAgree?: TextStyle,
+    containerCancelBtn?: ViewStyle
 }
 
 const PopupNotifyNoAction = forwardRef<
     PopupActionTypes,
     PopupNoActionProps
->(({ onClose, onConfirm, renderIcon, renderTitle, renderContent, hasButton }: PopupNoActionProps, ref) => {
+>(({ onClose,
+    onConfirm,
+    renderIcon,
+    renderTitle,
+    renderContent,
+    hasButton,
+    containerAllBtn,
+    containerAgreeBtn,
+    textCancel,
+    textAgree,
+    containerCancelBtn
+}: PopupNoActionProps, ref) => {
     const [visible, setVisible] = useState<boolean>(false);
     const show = useCallback(() => {
         setVisible(true);
@@ -57,14 +73,14 @@ const PopupNotifyNoAction = forwardRef<
                 <Text style={styles.txtTitle}>{renderTitle}</Text>
                 <Text style={styles.txtContent}>{renderContent}</Text>
                 {hasButton &&
-                        <View style={styles.row}>
-                            <Touchable style={styles.closeButton} onPress={_onClose}>
-                                <Text style={styles.txtBt}>{Languages.common.cancel}</Text>
-                            </Touchable>
-                            <Touchable style={styles.confirmButton} onPress={onConfirm}>
-                                <Text style={styles.txtBtConfirm}>{Languages.common.agree}</Text>
-                            </Touchable>
-                        </View>}
+                    <View style={[styles.row, containerAllBtn]}>
+                        <Touchable style={[styles.closeButton, containerCancelBtn]} onPress={_onClose}>
+                            <Text style={[styles.txtBt, textCancel]}>{Languages.common.cancel}</Text>
+                        </Touchable>
+                        <Touchable style={[styles.confirmButton, containerAgreeBtn]} onPress={onConfirm}>
+                            <Text style={[styles.txtBtConfirm, textAgree]}>{Languages.common.agree}</Text>
+                        </Touchable>
+                    </View>}
             </View>
         </Modal>
     );

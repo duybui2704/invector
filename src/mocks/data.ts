@@ -110,7 +110,10 @@ export const dataUser = {
     accuracy: 2,
     front_card:'',
     card_back:'',
-    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAznG13WJ4ayysR3Q07BNXsRTdDbP0PQ_Efw&usqp=CAU'
+    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAznG13WJ4ayysR3Q07BNXsRTdDbP0PQ_Efw&usqp=CAU',
+    id_fblogin:'1',
+    id_google: '1',
+    user_apple: '1'
 } as unknown as UserInfoModal;
 
 export const arrayData = [
@@ -147,3 +150,13 @@ export const typePhoto = [
     { id: '1', value: 'Camera' },
     { id: '2', value: 'Library' }
 ];
+
+export const dataBank = [
+    { id: '1', value: 'Vietcom Bank' },
+    { id: '2', value: 'TP Bank' },
+    { id: '3', value: 'BIDV' },
+    { id: '4', value: 'Viettin Bank' },
+    { id: '5', value: 'Sacom Bank' },
+    { id: '6', value: 'VP Bank' }
+];
+

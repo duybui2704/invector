@@ -17,7 +17,13 @@ export const ScreenName = {
     success: 'Success',
     shareFriend: 'ShareFriend',
     detailInvestment: 'DetailInvestment',
-    invest: 'Invest'
+    invest: 'Invest',
+    changePwd: 'ChangePwd',
+    accountLink: 'AccountLink',
+    manual: 'Manual',
+    help: 'Help',
+    paymentMethod: 'PaymentMethod',
+    accountBank: 'AccountBank'
 };
 
 export default ScreenName;

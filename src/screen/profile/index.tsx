@@ -9,7 +9,7 @@ import PasscodeAuth from '@el173/react-native-passcode-auth';
 
 import ChangePwdIC from '@/assets/image/ic_change_pwd.svg';
 import FaceIdIC from '@/assets/image/ic_faceid_big.svg';
-import StarIC from '@/assets/image/ic_arrow_right.svg';
+import StarIC from '@/assets/image/ic_star_rate.svg';
 import WebIC from '@/assets/image/ic_tienngay_web.svg';
 import FacebookIC from '@/assets/image/ic_tienngay_fb.svg';
 import PayMethodIC from '@/assets/image/ic_pay_method.svg';
@@ -82,7 +82,19 @@ const Profile = observer(() => {
                     Navigator.pushScreen(ScreenName.shareFriend);
                     break;
                 case Languages.account.changePwd:
-                    
+                    Navigator.pushScreen(ScreenName.changePwd);
+                    break;
+                case Languages.account.accountLink:
+                    Navigator.pushScreen(ScreenName.accountLink);
+                    break;
+                case Languages.account.useManual:
+                    Navigator.pushScreen(ScreenName.manual);
+                    break;
+                case Languages.account.answer:
+                    Navigator.pushScreen(ScreenName.help);
+                    break;
+                case Languages.account.payMethod:
+                    Navigator.pushScreen(ScreenName.paymentMethod);
                     break;
                 default:
                     break;

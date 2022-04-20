@@ -2,7 +2,6 @@ import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 import React from 'react';
 import Dash from 'react-native-dash';
 
-import { TouchableProps } from './elements/touchable/types';
 import { COLORS, Styles } from '@/theme';
 import { Touchable } from './elements/touchable';
 
@@ -30,7 +29,6 @@ const KeyValue = (
     return (
         <View style={[styles.container, styleContainer]}>
             {!noIndicator && <Dash
-                style={styles.dash}
                 dashThickness={1}
                 dashLength={10}
                 dashGap={5}
@@ -49,7 +47,8 @@ const KeyValue = (
                 dashThickness={1}
                 dashLength={10}
                 dashGap={5}
-                dashColor={COLORS.GRAY_13} />
+                dashColor={COLORS.GRAY_13} 
+            />
             }
         </View>
     );
@@ -83,9 +82,6 @@ const styles = StyleSheet.create({
         ...Styles.typography.medium,
         color: COLORS.GRAY_7,
         alignSelf: 'flex-end'
-    },
-    dash: {
-        paddingBottom: 10
     }
 
 });

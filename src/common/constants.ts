@@ -104,7 +104,8 @@ export enum GET_LINK_INVESTOR {
 
 export enum ENUM_PROVIDER {
     FACEBOOK = 'facebook',
-    GOOGLE = 'google'
+    GOOGLE = 'google',
+    APPLE = 'apple'
   };
 
 export const configGoogleSignIn = {

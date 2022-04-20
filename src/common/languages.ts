@@ -278,7 +278,7 @@ const Languages = {
         introduce: 'Giới thiệu',
         introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà lên tới 40 triệu đồng tới từ</c> <g>TienNgay.vn</g><c> Đầu tư & Tích luỹ</c></t>',
         introduceCode: 'Mã giới thiệu của bạn',
-        qrcode: 'Qr code tải app'
+        qrCode: 'Qr code tải app'
     },
     detailInvest: {
         title: 'Chi tiết khoản đầu tư',
@@ -302,6 +302,48 @@ const Languages = {
         vimo: 'Tài khoản Vimo',
         nganLuong: 'Tài khoản Ngân Lượng',
         linked: 'Đã liên kết'
+    },
+    changePwd: {
+        title: 'Đổi mật khẩu',
+        titleUpdatePwd: 'Cập nhật mật khẩu',
+        oldPass: 'Mật khẩu cũ',
+        newPass: 'Mật khẩu mới',
+        confirmPwd: 'Đổi mật khẩu',
+        currentNewPass: 'Xác nhận mật khẩu mới',
+        placeOldPass: 'Nhập mật khẩu cũ',
+        placeNewPass: 'Xác nhận mật khẩu mới',
+        button: 'Xác nhận đổi mật khẩu',
+        notifyContent: 'Xác nhận đổi mật khẩu',
+        notify: 'Thông báo',
+        successNotify: 'Xác nhận đổi mật khẩu thành công'
+    },
+    linkSocialAcc: {
+        linked: 'Đã liên kết',
+        notLinked: 'Chưa liên kết',
+        link: 'Liên kết ',
+        titleSocial: 'Liên kết tài khoản',
+        apple: 'Apple Store',
+        fb: 'Facebook',
+        google: 'Google',
+        notification: 'Thông báo',
+        desciption: 'Vui lòng liên kết tài khoản mạng xã hội'
+    },
+    paymentMethod:{
+        methodChoose: 'Chọn phương thức nhận lãi của bạn',
+        vimo: 'Tài khoản Vimo',
+        bank: 'Tài khoản Ngân hàng',
+        cancelLinkVimo: 'Huỷ liên kết ví Vimo',
+        contentCancelLinkVimo: 'Bạn có thật sự muốn huỷ liên kết với ví Vimo. Nếu bạn huỷ liên kết bạn sẽ không thể đầu tư bằng ví Vimo'
+    },
+    accountBank:{
+        bankChoose: 'Chọn ngân hàng',
+        accountNumber: 'Số tài khoản',
+        ATMNumber: 'Số thẻ ATM',
+        inputAccountNumber: 'Nhập số tài khoản',
+        accountProvider: 'Chủ tài khoản',
+        accountProviderName: 'Tên chủ tài khoản',
+        noteAccountBank: '<p><r>Chú ý:</r> <s>Đây là tài khoản ngân hàng để nhận lãi, bạn cần đảm bảo chính xác thông tin tài khoản ngân hàng bạn cung cấp là chính xác.</s> <g>TienNgay.vn</g><s> sẽ không chịu trách nghiệm khi bạn nhập sai thông tin.</s></p>',
+        addAccount: 'Thêm tài khoản'
     }
 
 };
