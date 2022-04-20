@@ -1,10 +1,10 @@
 import { action, makeObservable, observable } from 'mobx';
 
-import { UserInfoModel } from '@/models/user-model';
+import { UserInfoModal } from '@/models/user-modal';
 import SessionManager from './SessionManager';
 
 export class UserManager {
-    @observable userInfo?: UserInfoModel = SessionManager.userInfo;
+    @observable userInfo?: UserInfoModal = SessionManager.userInfo;
 
     @observable phoneNumber?: string = SessionManager.userInfo?.phone_number;
 
@@ -12,7 +12,7 @@ export class UserManager {
         makeObservable(this);
     }
 
-    @action updateUserInfo(userInfo: UserInfoModel) {
+    @action updateUserInfo(userInfo: UserInfoModal) {
         this.userInfo = userInfo;
         this.phoneNumber = userInfo?.phone_number;
 

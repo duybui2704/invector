@@ -9,7 +9,7 @@ import PasscodeAuth from '@el173/react-native-passcode-auth';
 
 import ChangePwdIC from '@/assets/image/ic_change_pwd.svg';
 import FaceIdIC from '@/assets/image/ic_faceid_big.svg';
-import StarIC from '@/assets/image/ic_arrow_right.svg';
+import StarIC from '@/assets/image/ic_star_rate.svg';
 import WebIC from '@/assets/image/ic_tienngay_web.svg';
 import FacebookIC from '@/assets/image/ic_tienngay_fb.svg';
 import PayMethodIC from '@/assets/image/ic_pay_method.svg';
@@ -65,15 +65,8 @@ const Profile = observer(() => {
     });
     const [errorText, setErrorText] = useState<string>('');
 
-    const onNavigate = useCallback((title: string) => {
-        switch (title) {
-            case Languages.account.accountLink:
-                return Navigator.pushScreen(ScreenName.transaction);
-            case Languages.account.changePwd:
-                return Navigator.pushScreen(ScreenName.transaction);
-            default:
-                return null;
-        }
+    const onNavigateAccInfo = useCallback(() => {
+        return Navigator.pushScreen(ScreenName.accountInfo);
     }, []);
 
     const onLogout = useCallback(() => {
@@ -83,6 +76,30 @@ const Profile = observer(() => {
     }, [userManager]);
 
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
+        const onNavigateScreen = () => {
+            switch (title) {
+                case Languages.account.shareFriends:
+                    Navigator.pushScreen(ScreenName.shareFriend);
+                    break;
+                case Languages.account.changePwd:
+                    Navigator.pushScreen(ScreenName.changePwd);
+                    break;
+                case Languages.account.accountLink:
+                    Navigator.pushScreen(ScreenName.accountLink);
+                    break;
+                case Languages.account.useManual:
+                    Navigator.pushScreen(ScreenName.manual);
+                    break;
+                case Languages.account.answer:
+                    Navigator.pushScreen(ScreenName.help);
+                    break;
+                case Languages.account.payMethod:
+                    Navigator.pushScreen(ScreenName.paymentMethod);
+                    break;
+                default:
+                    break;
+            }
+        };
         return (
             <KeyValue
                 title={title}
@@ -91,11 +108,11 @@ const Profile = observer(() => {
                 rightIcon={<ArrowIC />}
                 leftIcon={leftIcon}
                 styleTitle={styles.txtAuthnFinger}
-                onPress={onNavigate}
+                onPress={onNavigateScreen}
                 containerContent={styles.featureContainer}
             />
         );
-    }, [onNavigate]);
+    }, []);
 
     const onToggleBiometry = useCallback(
         (value) => {
@@ -276,20 +293,22 @@ const Profile = observer(() => {
             <HeaderBar title={Languages.account.title} isLight={false} />
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.accContainer}>
-                    {!dataUser.avatar ?
-                        <AvatarIC style={styles.circleWrap} />
-                        :
-                        <FastImage
-                            style={styles.circleWrap}
-                            source={{
-                                uri: dataUser?.avatar
-                            }}
-                            resizeMode={FastImage.resizeMode.cover}
-                        />
-                    }
+                    <Touchable onPress={onNavigateAccInfo}>
+                        {!dataUser.avatar ?
+                            <AvatarIC style={styles.circleWrap} />
+                            :
+                            <FastImage
+                                style={styles.circleWrap}
+                                source={{
+                                    uri: dataUser?.avatar
+                                }}
+                                resizeMode={FastImage.resizeMode.cover}
+                            />
+                        }
+                    </Touchable>
                     <View style={styles.headerAccRight}>
-                        <Text style={styles.headerAccName}>{dataUser.name || ''}</Text>
-                        <Text style={styles.headerAccPhone}>{dataUser.phone || ''}</Text>
+                        <Text style={styles.headerAccName}>{dataUser.full_name || ''}</Text>
+                        <Text style={styles.headerAccPhone}>{dataUser.phone_number || ''}</Text>
                         {renderAccuracy}
                     </View>
                     <ArrowIC />

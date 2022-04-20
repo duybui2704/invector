@@ -43,13 +43,13 @@ export const styles = StyleSheet.create({
     },
     titleCenter: {
         ...Styles.typography.medium,
-        fontSize: Configs.FontSize.size16,
+        fontSize: Configs.FontSize.size20,
         textAlign: 'center',
         color: COLORS.WHITE
     },
     titleCenter1: {
         ...Styles.typography.medium,
-        fontSize: Configs.FontSize.size16,
+        fontSize: Configs.FontSize.size20,
         textAlign: 'center',
         color: COLORS.GREEN
     },

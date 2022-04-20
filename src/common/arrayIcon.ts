@@ -5,7 +5,8 @@ const arrayIcon = {
         name: 'name',
         email: 'email',
         confirmPass: 'confirmPass',
-        channel: 'channel'
+        channel: 'channel',
+        search: 'search'
     }
 };
 export default arrayIcon;

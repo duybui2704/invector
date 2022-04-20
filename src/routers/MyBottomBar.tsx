@@ -9,12 +9,24 @@ import { IconTienngay } from '@/assets/icons/icon-tienngay';
 import ScreenName, { TabsName } from '../common/screenNames';
 import { COLORS, Styles } from '@/theme';
 import Home from '@/screen/home';
-import Invest from '@/screen/invest';
+import Investment from '@/screen/investment';
 import Transaction from '@/screen/payment/Transaction';
 import Profile from '@/screen/profile';
 import Report from '@/screen/report';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
+import AccountInfo from '@/screen/profile/AccountInfo';
+import EditAccountInfo from '@/screen/profile/EditAccountInfo';
+import AccountIdentify from '@/screen/profile/AccountIdentify';
+import ShareFriend from '@/screen/profile/ShareFriend';
+import DetailInvestment from '@/screen/investment/detailInvestment';
+import Invest from '@/screen/investment/invest';
+import ChangePwd from '@/screen/profile/ChangePwd';
+import AccountLink from '@/screen/profile/AcountLink';
+import Manual from '@/screen/profile/Manual';
+import Help from '@/screen/profile/Help';
+import PaymentMethod from '@/screen/profile/PaymentMethod';
+import AccountBank from '@/screen/profile/AccountBank';
 
 const TabsData = [
     {
@@ -65,6 +77,8 @@ const HomeStack = () => {
 const InvestStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen name={ScreenName.investment} component={Investment} />
+            <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
             <Stack.Screen name={ScreenName.invest} component={Invest} />
         </Stack.Navigator>
     );
@@ -90,7 +104,16 @@ const AccountStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.account} component={Profile} />
-            <Stack.Screen name={ScreenName.transaction} component={Transaction} />
+            <Stack.Screen name={ScreenName.accountInfo} component={AccountInfo} /> 
+            <Stack.Screen name={ScreenName.editAccountInfo} component={EditAccountInfo} /> 
+            <Stack.Screen name={ScreenName.accountIdentify} component={AccountIdentify} /> 
+            <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} /> 
+            <Stack.Screen name={ScreenName.changePwd} component={ChangePwd} /> 
+            <Stack.Screen name={ScreenName.accountLink} component={AccountLink} /> 
+            <Stack.Screen name={ScreenName.manual} component={Manual} /> 
+            <Stack.Screen name={ScreenName.help} component={Help} /> 
+            <Stack.Screen name={ScreenName.paymentMethod} component={PaymentMethod} /> 
+            <Stack.Screen name={ScreenName.accountBank} component={AccountBank} /> 
         </Stack.Navigator>
     );
 };
@@ -136,7 +159,7 @@ const MyBottomTabs = observer(() => {
         if (
             routeName === undefined ||
             routeName === ScreenName.home ||
-            routeName === ScreenName.invest ||
+            routeName === ScreenName.investment ||
             routeName === ScreenName.report ||
             routeName === ScreenName.transaction ||
             routeName === ScreenName.account

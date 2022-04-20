@@ -5,13 +5,25 @@ export const ScreenName = {
     auth: 'Auth',
     signIn: 'SignIn',
     home: 'Home',
-    invest: 'Invest',
+    investment: 'Investment',
     report: 'Report',
     payment: 'Payment',
     account: 'Account',
     onBoard: 'OnBoard',
     transaction: 'Transaction',
-    success: 'Success'
+    accountInfo: 'AccountInfo',
+    editAccountInfo: 'EditAccountInfo',
+    accountIdentify: 'AccountIdentify',
+    success: 'Success',
+    shareFriend: 'ShareFriend',
+    detailInvestment: 'DetailInvestment',
+    invest: 'Invest',
+    changePwd: 'ChangePwd',
+    accountLink: 'AccountLink',
+    manual: 'Manual',
+    help: 'Help',
+    paymentMethod: 'PaymentMethod',
+    accountBank: 'AccountBank'
 };
 
 export default ScreenName;
