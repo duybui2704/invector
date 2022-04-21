@@ -34,6 +34,7 @@ export enum COLORS {
   YELLOW_1 = '#F9DF8A',
   DARK_YELLOW = '#FFB800',
   YELLOW_2 = '#CC8400',
+  YELLOW_3 = '#FFF3CD',
   GREEN = '#0E9549',
   GREEN_1='#26A05B',
   GREEN_2='#1D9752',

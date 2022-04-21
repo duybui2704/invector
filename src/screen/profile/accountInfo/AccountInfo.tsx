@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { Text, View } from 'react-native';
+import { Text, TextStyle, View, ViewStyle } from 'react-native';
 
+import KYCVerifyIcon from '@/assets/image/ic_acc_verified.svg';
 import KYCIcon from '@/assets/image/ic_KYC_account.svg';
 import TickedIcon from '@/assets/image/ic_ticked_round.svg';
 import Languages from '@/common/Languages';
@@ -27,37 +28,39 @@ const AccountInfo = observer(() => {
         return Navigator.pushScreen(ScreenName.editAccountInfo);
     }, []);
 
+    const renderTopAcc = useCallback((image?: any, content?: string,titleAccuracyState?:string,  accuracyStateWrap?: ViewStyle, accuracyStateText?: TextStyle) => {
+        return (
+            <>
+                { image }
+                {content !== '' && <Text style={styles.txtContentKYC}>{content}</Text>}
+                <Touchable style={accuracyStateWrap} onPress={onNavigateKYC}>
+                    <Text style={accuracyStateText}>{titleAccuracyState}</Text>
+                </Touchable>
+            </>
+        );
+    }, [onNavigateKYC, styles.txtContentKYC]);
+
     const renderAccuracy = useMemo(() => {
         switch (dataUser?.accuracy) {
             case 1:
-                return (
-                    <Touchable style={styles.accuracyWrap} disabled={true}>
-                        <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
-                    </Touchable>
-                );
+                return <>{renderTopAcc( <KYCVerifyIcon />,'',Languages.account.accVerified, styles.accuracyWrap, styles.txtAccuracy)}</>;
             case 2:
-                return (
-                    <Touchable style={styles.notAccuracyWrap} onPress={onNavigateKYC}>
-                        <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
-                    </Touchable>
-                );
+                return <>{renderTopAcc( <KYCIcon />,Languages.accountInfo.content,Languages.account.accuracyNow, styles.notAccuracyWrap, styles.txtNotAccuracy)}</>;
+            case 3:
+                return <>{renderTopAcc( <KYCIcon />,Languages.accountInfo.noteWaitVerify,Languages.accountInfo.accWaitVerify, styles.waitAccuracyWrap, styles.txtWaitAccuracy)}</>;
             default:
-                return (
-                    <Touchable style={styles.notAccuracyWrap} onPress={onNavigateKYC}>
-                        <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
-                    </Touchable>
-                );
+                return <>{renderTopAcc( <KYCIcon />,Languages.accountInfo.content,Languages.account.accuracyNow, styles.notAccuracyWrap, styles.txtNotAccuracy)}</>;
         }
-    }, [onNavigateKYC, styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy]);
+    }, [renderTopAcc, styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy, styles.txtWaitAccuracy, styles.waitAccuracyWrap]);
 
     const renderKeyFeature = useCallback((title: string, content?: string) => {
         return (
             <KeyValue title={title}
                 content={content || undefined}
                 styleTouchable={styles.wrapAllItemInfo}
-                containerContent={content ? styles.wrapCheckedInfo: styles.wrapUnCheckedInfo}
+                containerContent={content ? styles.wrapCheckedInfo : styles.wrapUnCheckedInfo}
                 styleTitle={styles.styleTextInfo}
-                styleColor={content ? styles.styleValueCheckedInfo: styles.styleValueUnCheckedInfo}
+                styleColor={content ? styles.styleValueCheckedInfo : styles.styleValueUnCheckedInfo}
                 noIndicator
                 rightIcon={content ? <TickedIcon width={20} height={20} /> : null}
                 hasDashBottom
@@ -68,7 +71,7 @@ const AccountInfo = observer(() => {
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
-                {renderKeyFeature(Languages.accountInfo.phoneNumber,SessionManager.savePhone?.toString())}
+                {renderKeyFeature(Languages.accountInfo.phoneNumber, SessionManager.savePhone?.toString())}
                 {renderKeyFeature(Languages.accountInfo.email)}
                 {renderKeyFeature(Languages.accountInfo.fullName)}
                 {renderKeyFeature(Languages.accountInfo.gender)}
@@ -86,11 +89,9 @@ const AccountInfo = observer(() => {
 
     return (
         <View style={styles.container}>
-            <HeaderBar isLight={false} title={Languages.accountInfo.accountInfo} hasBack  />
+            <HeaderBar isLight={false} title={Languages.accountInfo.accountInfo} hasBack />
             <View style={styles.mainContainer}>
                 <View style={styles.topContainer}>
-                    <KYCIcon />
-                    <Text style={styles.txtContentKYC}>{Languages.accountInfo.content}</Text>
                     {renderAccuracy}
                 </View>
                 {renderInfoAcc}
