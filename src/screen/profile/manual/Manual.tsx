@@ -1,14 +1,13 @@
 import { observer } from 'mobx-react';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
-import Languages from '@/common/Languages';
 import HeaderBar from '@/components/header';
-import { COLORS } from '@/theme';
-
+import Languages from '@/common/Languages';
+import { MyStylesManual } from './styles';
 
 const Manual = observer(() => {
-
+    const styles = MyStylesManual();
 
     return (
         <View style={styles.container}>
@@ -21,14 +20,3 @@ const Manual = observer(() => {
 });
 
 export default Manual;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_5
-    },
-    wrapAllContent: {
-        paddingHorizontal: 16,
-        paddingTop: 10
-    }
-});

@@ -12,16 +12,16 @@ function formatMoney(number: string | number | undefined) {
     return `${hasMinus ? '-' : ''}${Math.ceil(Number(number))
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
-}
+};
 
 function formatTextToNumber(textNumber: string) {
     const num = (`${textNumber}`).replace(/[^0-9]/g, '');
     return num;
-}
+};
 
 function capitalizeFirstLetter(text: string) {
     return text.charAt(0).toUpperCase() + text.slice(1);
-}
+};
 
 function callNumber(phone: string) {
     const phoneNumber = `tel:${phone}`;
@@ -34,7 +34,7 @@ function callNumber(phone: string) {
             }
         })
         .catch((err) => console.error('An error occurred', err));
-}
+};
 
 function openSetting() {
     const app = 'app-settings:';
@@ -49,7 +49,7 @@ function openSetting() {
     } else {
         AndroidOpenSettings.generalSettings();
     }
-}
+};
 
 function share(text: string) {
     if (Validate.isStringEmpty(text)) {
@@ -62,7 +62,7 @@ function share(text: string) {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 function openURL(url: string) {
     Linking.canOpenURL(url)
@@ -76,7 +76,29 @@ function openURL(url: string) {
         .catch((err) => {
             console.error('An error occurred', err);
         });
-}
+};
+
+function encodePhone(phoneNumber: string) {
+    const number = phoneNumber.replace(' ', '').replace('.', '');
+    return number.length > 6
+        ? `${number.slice(0, 4)
+        }****${number.slice(number.length - 2, number.length)}`
+        : number;
+};
+
+function covertSecondAndGetMinute(second: number) {
+    if (Math.floor((second / 1000) / 60).toString().length === 1) {
+        return ('0'.concat(Math.floor((second / 1000) / 60).toString()));
+    }
+    return Math.floor((second / 1000) / 60);
+};
+
+function covertSecondAndGetSecond(second: number) {
+    if (((second / 1000) % 60).toString().length === 1) {
+        return ('0'.concat(((second / 1000) % 60).toString()));
+    }
+    return ((second / 1000) % 60);
+};
 
 export default {
     formatTextToNumber,
@@ -85,5 +107,8 @@ export default {
     share,
     openSetting,
     openURL,
-    callNumber
+    callNumber,
+    encodePhone,
+    covertSecondAndGetMinute,
+    covertSecondAndGetSecond
 };

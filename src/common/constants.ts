@@ -123,3 +123,8 @@ export enum ENUM_METHOD_PAYMENT {
     VIMO = 'VIMO',
     NGAN_LUONG = 'NGAN_LUONG'
 };
+
+export enum ENUM_TYPE_CARD_BANK {
+    ACCOUNT_NUMBER = 'Số tài khoản',
+    ATM_NUMBER = 'Số thẻ ATM'
+};

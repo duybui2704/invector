@@ -2,14 +2,29 @@ import { StyleSheet } from 'react-native';
 
 import { COLORS } from '@/theme';
 
-
 export const styles = StyleSheet.create({
-    main: {
+    container: {
         flex: 1,
-        backgroundColor: COLORS.WHITE
+        backgroundColor: COLORS.GRAY_5
     },
-    txt: {
-        fontSize: 15,
-        color: COLORS.BLACK
+    topBarContainer: {
+        backgroundColor: COLORS.GRAY_13,
+        borderRadius: 26,
+        marginHorizontal: 16,
+        flexDirection: 'row',
+        marginTop: 10
+    },
+    filterItem: {
+        paddingHorizontal: 2
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginHorizontal: 16,
+        marginTop: 10,
+        marginBottom: 20
+    },
+    arrow: {
+        marginTop: 6
     }
 });

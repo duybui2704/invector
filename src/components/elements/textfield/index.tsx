@@ -21,7 +21,7 @@ import IcPass from '@/assets/image/auth/ic_pass_auth.svg';
 import IcEmailAuth from '@/assets/image/auth/ic_email_auth.svg';
 import IcName from '@/assets/image/auth/ic_name_auth.svg';
 import IcHidePass from '@/assets/image/auth/ic_hide_pass.svg';
-import IcShowPass from '@/assets/image/auth/ic_show_pass.svg'
+import IcShowPass from '@/assets/image/auth/ic_show_pass.svg';
 import IcSearch from '@/assets/image/ic_search.svg';
 
 export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
@@ -131,7 +131,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         }, []);
 
         const eventTextChange = useCallback(
-            (text: string, tag? : string) => {
+            (text: string, tag?: string) => {
                 setValue(text);
             },
             [setValue]
@@ -168,7 +168,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             if (errMsg !== '') {
                 borderStyle.borderColor = COLORS.RED;
             }
-            return [styles.container,  borderStyle, backgroundStyle,style, containerInput, { transform: [{ translateX: animation }] }];
+            return [styles.container, borderStyle, backgroundStyle, style, containerInput, { transform: [{ translateX: animation }] }];
         }, [animation, containerInput, disabled, errMsg, isFocusing, styles.container]);
 
         const _inputStyle = useMemo(
@@ -206,40 +206,40 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
 
         const checkIconPass = useCallback(() => {
             setIconPass(!iconPass);
-        }, [iconPass])
+        }, [iconPass]);
 
         const checkIconRight = useMemo(() => {
-            switch (rightIcon){
+            switch (rightIcon) {
                 case arrayIcon.login.phone:
-                    return <IcPhone width={20} height={20}/>;
+                    return <IcPhone width={20} height={20} />;
                 case arrayIcon.login.pass:
                     if (value) {
                         return (
                             <Touchable onPress={checkIconPass}>
-                                {iconPass ? <IcHidePass width={20} height={20}/> : <IcShowPass width={20} height={20}/>}
+                                {iconPass ? <IcHidePass width={20} height={20} /> : <IcShowPass width={20} height={20} />}
                             </Touchable>
                         );
-                     }
-                        return <IcPass width={20} height={20}/>
+                    }
+                    return <IcPass width={20} height={20} />;
                 case arrayIcon.login.email:
-                    return <IcEmailAuth width={20} height={20}/>;
+                    return <IcEmailAuth width={20} height={20} />;
                 case arrayIcon.login.confirmPass:
                     if (value) {
                         return (
                             <Touchable onPress={checkIconPass}>
-                                {iconPass ? <IcHidePass width={20} height={20}/> : <IcShowPass width={20} height={20}/>}
+                                {iconPass ? <IcHidePass width={20} height={20} /> : <IcShowPass width={20} height={20} />}
                             </Touchable>
                         );
-                     }
-                        return <IcPass width={20} height={20}/>
+                    }
+                    return <IcPass width={20} height={20} />;
                 case arrayIcon.login.name:
-                    return <IcName width={20} height={20}/>;
+                    return <IcName width={20} height={20} />;
                 case arrayIcon.login.search:
                     return <IcSearch />;
                 default:
                     return null;
             }
-        }, [rightIcon, value, iconPass]);
+        }, [rightIcon, value, checkIconPass, iconPass]);
 
 
         return (
@@ -249,12 +249,13 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                     ref={ref}
                 >
                     <View style={styles.flexRow}>
+                        {leftIcon}
                         <TextInput
                             ref={orgTextInput}
                             {...defInputProps}
                             style={[styles.inputStyle, _inputStyle]}
                             placeholder={placeHolder}
-                            placeholderTextColor={placeHolderColor||COLORS.GRAY_4}
+                            placeholderTextColor={placeHolderColor || COLORS.GRAY_4}
                             selectionColor={COLORS.GRAY_4}
                             numberOfLines={1}
                             secureTextEntry={iconPass}

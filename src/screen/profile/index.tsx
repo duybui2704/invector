@@ -21,7 +21,7 @@ import PhoneIC from '@/assets/image/ic_phone.svg';
 import ShareIC from '@/assets/image/ic_share.svg';
 import AnswerIC from '@/assets/image/ic_answer.svg';
 import LinkAccIC from '@/assets/image/ic_acc_link.svg';
-import ArrowIC from '@/assets/image/ic_under_arrow.svg';
+import ArrowIC from '@/assets/image/ic_right_arrow.svg';
 import KeyValue from '@/components/KeyValue';
 import HeaderBar from '@/components/header';
 import { COLORS, Styles } from '@/theme';
@@ -292,27 +292,25 @@ const Profile = observer(() => {
         <View style={styles.container}>
             <HeaderBar title={Languages.account.title} isLight={false} />
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
-                <View style={styles.accContainer}>
-                    <Touchable onPress={onNavigateAccInfo}>
-                        {!dataUser.avatar ?
-                            <AvatarIC style={styles.circleWrap} />
-                            :
-                            <FastImage
-                                style={styles.circleWrap}
-                                source={{
-                                    uri: dataUser?.avatar
-                                }}
-                                resizeMode={FastImage.resizeMode.cover}
-                            />
-                        }
-                    </Touchable>
+                <Touchable style={styles.accContainer} onPress={onNavigateAccInfo}>
+                    {!dataUser.avatar ?
+                        <AvatarIC style={styles.circleWrap} />
+                        :
+                        <FastImage
+                            style={styles.circleWrap}
+                            source={{
+                                uri: dataUser?.avatar
+                            }}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                    }
                     <View style={styles.headerAccRight}>
                         <Text style={styles.headerAccName}>{dataUser.full_name || ''}</Text>
                         <Text style={styles.headerAccPhone}>{dataUser.phone_number || ''}</Text>
                         {renderAccuracy}
                     </View>
                     <ArrowIC />
-                </View>
+                </Touchable>
                 {renderKeyValue(Languages.account.payMethod, <PayMethodIC />, true)}
                 <View style={styles.containerFeature}>
                     {renderKeyValue(Languages.account.changePwd, <ChangePwdIC />)}

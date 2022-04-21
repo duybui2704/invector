@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {View, Text} from 'react-native';
+
 import Validate from '@/utils/Validate';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import {Touchable} from '@/components/elements/touchable';
@@ -189,70 +190,70 @@ const OtpSignIn = (props) => {
 
     return (
         <View style={styles.container}>
-                <View style={styles.viewTop}>
-                    <Text style={styles.txtTitle}>{Languages.auth.txtTitleOtp}</Text>
-                    <IcLine width={'35%'} height={'40%'}/>
-                </View>
-                <Text style={styles.confirmOtp}>{Languages.otp.confirmOtp}</Text>
-                <View style={styles.boxOtp}>
-                    {renderInput(
-                        otp1Ref,
-                        Languages.otp.otp1,
-                        otp1,
-                        onChangeInputOneKeyPress
-                    )}
-                    {renderInput(
-                        otp2Ref,
-                        Languages.otp.otp2,
-                        otp2,
-                        onChangeInputTwoKeyPress
-                    )}
-                    {renderInput(
-                        otp3Ref,
-                        Languages.otp.otp3,
-                        otp3,
-                        onChangeInputThreeKeyPress
-                    )}
-                    {renderInput(
-                        otp4Ref,
-                        Languages.otp.otp4,
-                        otp4,
-                        onChangeInputFourKeyPress
-                    )}
-                    {renderInput(
-                        otp5Ref,
-                        Languages.otp.otp5,
-                        otp5,
-                        onChangeInputFiveKeyPress
-                    )}
-                    {renderInput(
-                        otp6Ref,
-                        Languages.otp.otp6,
-                        otp6,
-                        onChangeInputSixKeyPress
-                    )}
-                </View>
-                {(otp1 !== '' && otp2 !== '' && otp3 && otp4 !== '' && otp5 !== '' && otp6 !== '') ?
+            <View style={styles.viewTop}>
+                <Text style={styles.txtTitle}>{Languages.auth.txtTitleOtp}</Text>
+                <IcLine width={'35%'} height={'40%'}/>
+            </View>
+            <Text style={styles.confirmOtp}>{Languages.otp.confirmOtp}</Text>
+            <View style={styles.boxOtp}>
+                {renderInput(
+                    otp1Ref,
+                    Languages.otp.otp1,
+                    otp1,
+                    onChangeInputOneKeyPress
+                )}
+                {renderInput(
+                    otp2Ref,
+                    Languages.otp.otp2,
+                    otp2,
+                    onChangeInputTwoKeyPress
+                )}
+                {renderInput(
+                    otp3Ref,
+                    Languages.otp.otp3,
+                    otp3,
+                    onChangeInputThreeKeyPress
+                )}
+                {renderInput(
+                    otp4Ref,
+                    Languages.otp.otp4,
+                    otp4,
+                    onChangeInputFourKeyPress
+                )}
+                {renderInput(
+                    otp5Ref,
+                    Languages.otp.otp5,
+                    otp5,
+                    onChangeInputFiveKeyPress
+                )}
+                {renderInput(
+                    otp6Ref,
+                    Languages.otp.otp6,
+                    otp6,
+                    onChangeInputSixKeyPress
+                )}
+            </View>
+            {(otp1 !== '' && otp2 !== '' && otp3 && otp4 !== '' && otp5 !== '' && otp6 !== '') ?
 
-                    <Touchable style={styles.tobConfirm}
-                        onPress={onPressOtp} disabled={false}>
-                        <Text
-                            style={styles.txtConfirm}>{Languages.auth.conFirm}</Text>
-                    </Touchable>
-                    :
-                    <Touchable style={[styles.tobConfirm, {backgroundColor: COLORS.GRAY}]}
-                        onPress={onPressOtp} disabled={true}>
-                        <Text
-                            style={[styles.txtConfirm, {color: COLORS.BLACK}]}>{Languages.auth.conFirm}</Text>
-                    </Touchable>
-                }
-
-                <Touchable style={styles.sentOtp} disabled={check}>
-                    {check ?
-                        <Text style={styles.txtOtp}>{Languages.otp.sentOtp1}{timerCount}</Text> :
-                        <Text style={styles.txtOtp}>{Languages.otp.sentOtp2}</Text>
-                    }
+                <Touchable style={styles.tobConfirm}
+                    onPress={onPressOtp} disabled={false}>
+                    <Text
+                        style={styles.txtConfirm}>{Languages.auth.conFirm}</Text>
                 </Touchable>
+                :
+                <Touchable style={[styles.tobConfirm, {backgroundColor: COLORS.GRAY}]}
+                    onPress={onPressOtp} disabled={true}>
+                    <Text
+                        style={[styles.txtConfirm, {color: COLORS.BLACK}]}>{Languages.auth.conFirm}</Text>
+                </Touchable>
+            }
+
+            <Touchable style={styles.sentOtp} disabled={check}>
+                {check ?
+                    <Text style={styles.txtOtp}>{Languages.otp.sentOtp1}{timerCount}</Text> :
+                    <Text style={styles.txtOtp}>{Languages.otp.sentOtp2}</Text>
+                }
+            </Touchable>
         </View>
     );
 };
