@@ -4,7 +4,6 @@ import {
     StyleSheet,
     Text,
     TextStyle,
-    TouchableOpacity,
     View,
     ViewStyle
 } from 'react-native';
@@ -17,6 +16,7 @@ import BottomSheetComponent from './BottomSheetComponent';
 import { PopupActions } from './popupStatus/types';
 import { Configs } from '@/common/Configs';
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
+import { Touchable } from './elements/touchable';
 
 type PickerProps = {
     leftIcon?: any,
@@ -83,7 +83,7 @@ const PickerBankValuation = forwardRef<PopupActions, PickerProps>(({
                 {placeholder}
             </Text>
         );
-    }, [placeholder, styleText, value]);
+    }, [placeholder, stylePlaceholder, styleText, value]);
 
     const _containerStyle = useMemo(() => {
         const style = {
@@ -147,7 +147,7 @@ const PickerBankValuation = forwardRef<PopupActions, PickerProps>(({
                 style={containerStyles}
                 ref={ref}
             >
-                <TouchableOpacity
+                <Touchable
                     onPress={openPopup}
                     style={[_containerStyle, btnContainer]}
                     disabled={disable}
@@ -157,7 +157,7 @@ const PickerBankValuation = forwardRef<PopupActions, PickerProps>(({
                     )}
                     {renderValue} 
                     <ICUnderArrow  />
-                </TouchableOpacity>
+                </Touchable>
                 <BottomSheetComponent
                     ref={bottomSheetRef}
                     data={data}

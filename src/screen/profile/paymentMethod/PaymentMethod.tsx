@@ -107,7 +107,7 @@ const PaymentMethod = observer(() => {
             <View style={styles.wrapAllContent}>
                 <Text style={styles.txtMethodChoose}>{Languages.paymentMethod.methodChoose}</Text>
                 {renderItemMethod(<VimoIC />, Languages.paymentMethod.vimo, false)}
-                {renderItemMethod(<BankIC />, Languages.paymentMethod.bank)}
+                {renderItemMethod(<BankIC />, Languages.paymentMethod.bank, true)}
             </View>
             {popupVimo(vimoRef,<WarnIC/>)}
         </View >
