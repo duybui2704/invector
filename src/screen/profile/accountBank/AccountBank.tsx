@@ -1,30 +1,32 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
 import React, { useCallback, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 
+import LinkIC from '@/assets/image/ic_ischecked_save_acc.svg';
 import ViettinIC from '@/assets/image/ic_logo_viettin_bank.svg';
 import ArrowIC from '@/assets/image/ic_right_arrow.svg';
-import LinkIC from '@/assets/image/ic_ischecked_save_acc.svg';
 import NotLinkIC from '@/assets/image/ic_unchecked_save_acc.svg';
-import { Configs } from '@/common/Configs';
-import Languages from '@/common/Languages';
-import { MyTextInput } from '@/components/elements/textfield';
-import { TextFieldActions } from '@/components/elements/textfield/types';
-import HeaderBar from '@/components/header';
-import { dataBank } from '@/mocks/data';
-import { COLORS, HtmlStyles, Styles } from '@/theme';
-import { Touchable } from '@/components/elements/touchable';
 import { ENUM_TYPE_CARD_BANK } from '@/common/constants';
+import Languages from '@/common/Languages';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
-import FormValidate from '@/utils/FormValidate';
-import PickerBankValuation from '@/components/PickerBankValuation';
-import { PopupActionTypes } from '@/models/typesPopup';
+import { MyTextInput } from '@/components/elements/textfield';
+import { TextFieldActions } from '@/components/elements/textfield/types';
+import { Touchable } from '@/components/elements/touchable';
+import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
+import PickerBankValuation from '@/components/PickerBankValuation';
+import { dataBank } from '@/mocks/data';
+import { PopupActionTypes } from '@/models/typesPopup';
+import { COLORS, HtmlStyles } from '@/theme';
+import FormValidate from '@/utils/FormValidate';
+import { MyStylesAccountBank } from './styles';
+
 
 const AccountBank = observer(() => {
+    const styles = MyStylesAccountBank();
     const [banks, setBanks] = useState<string>('');
     const [accountNumber, setAccountNumber] = useState<string>('');
     const [ATMNumber, setATMNumber] = useState<string>('');
@@ -69,7 +71,7 @@ const AccountBank = observer(() => {
                 placeHolderColor={COLORS.GRAY_16}
             />
         </View>;
-    }, [onChangeText]);
+    }, [onChangeText, styles.containerStyle, styles.groupInput, styles.inputStyle, styles.pwd, styles.title]);
 
     const renderAccBank = useCallback((title?: string, status?: boolean) => {
         const onType = () => {
@@ -84,7 +86,7 @@ const AccountBank = observer(() => {
                 <Text style={styles.textChooseToInput}>{title}</Text>
             </Touchable>
         );
-    }, []);
+    }, [styles.rowContainerItemInputChoose, styles.textChooseToInput]);
 
     const onBanksChoose = useCallback((item?: any) => {
         setBanks(item?.value);
@@ -163,81 +165,3 @@ const AccountBank = observer(() => {
 
 export default AccountBank;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_5
-    },
-    wrapAllContent: {
-        paddingHorizontal: 16,
-        paddingTop: 10
-    },
-    txtBankChoose: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_7,
-        fontSize: Configs.FontSize.size14
-    },
-    title: {
-        ...Styles.typography.regular,
-        marginBottom: 5
-    },
-    containerStyle: {
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 30,
-        alignItems: 'center'
-    },
-    containerDisableStyle: {
-        backgroundColor: COLORS.TRANSPARENT,
-        borderRadius: 30,
-        alignItems: 'center'
-    },
-    inputStyle: {
-        ...Styles.typography.regular,
-        paddingVertical: 20,
-        fontSize: Configs.FontSize.size14
-    },
-    groupInput: {
-        marginBottom: 20
-    },
-    pwd: {
-        top: 0
-    },
-    rowContainerAllInputChoose: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 12
-    },
-    rowContainerItemInputChoose: {
-        flexDirection: 'row',
-        marginRight: 20
-    },
-    textChooseToInput: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_7,
-        paddingLeft: 10
-    },
-    containerItemFilter: {
-        marginBottom: 10
-    },
-    rowItemFilter: {
-        backgroundColor: COLORS.WHITE,
-        width: '100%',
-        borderColor: COLORS.GRAY_11,
-        borderRadius: 20,
-        marginVertical: 8,
-        paddingVertical: 8,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderWidth: 1,
-        alignItems: 'center',
-        paddingHorizontal: 16
-    },
-    valuePicker: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_1
-    },
-    placeHolderPicker: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_16
-    }
-});

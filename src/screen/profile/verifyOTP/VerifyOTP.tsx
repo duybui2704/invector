@@ -1,24 +1,25 @@
+import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
-import { SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
 
-import WarnIC from '@/assets/image/ic_warn_round_yellow.svg';
 import VimoIC from '@/assets/image/ic_logo_vimo_large.svg';
-import { Configs } from '@/common/Configs';
+import WarnIC from '@/assets/image/ic_warn_round_yellow.svg';
 import Languages from '@/common/Languages';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
-import { COLORS, HtmlStyles, Styles } from '@/theme';
-import Utils from '@/utils/Utils';
-import { PopupActions } from '@/components/popupStatus/types';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
+import { PopupActions } from '@/components/popupStatus/types';
+import { HtmlStyles } from '@/theme';
+import Utils from '@/utils/Utils';
+import { MyStylesVerifyOTP } from './styles';
 
 const VerifyOTP = observer(({ route }: { route: any }) => {
+
+    const styles= MyStylesVerifyOTP();
 
     const [phone, setPhone] = useState<string>(route?.params?.phoneNumber);
     const [otp, setOTP] = useState<string>('');
@@ -116,50 +117,3 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
 });
 
 export default VerifyOTP;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_5,
-        justifyContent: 'center'
-    },
-    wrapAllContent: {
-        flex: 2,
-        paddingHorizontal: 16,
-        paddingTop: 10,
-        marginBottom: 140
-    },
-    logo: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    reSendCodeText: {
-        ...Styles.typography.regular,
-        paddingVertical: 20,
-        color: COLORS.RED_4,
-        textAlign: 'center'
-    },
-    underlineStyleBase: {
-        width: 50,
-        height: 50,
-        ...Styles.typography.regular,
-        borderWidth: 1,
-        borderColor: COLORS.GRAY_11,
-        borderRadius: 30,
-        color: COLORS.BLACK,
-        backgroundColor: COLORS.WHITE,
-        fontSize: Configs.FontSize.size16
-    },
-    underlineStyleHighLighted: {
-        borderColor: COLORS.GREEN,
-        ...Styles.typography.regular,
-        fontSize: Configs.FontSize.size16,
-        borderWidth: 1,
-        color: COLORS.GREEN
-    },
-    wrapOTp: {
-        height: SCREEN_HEIGHT * 0.1
-    }
-
-});

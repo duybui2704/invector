@@ -1,22 +1,21 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
-import TickedIcon from '@/assets/image/ic_ticked_round.svg';
 import KYCIcon from '@/assets/image/ic_KYC_account.svg';
+import TickedIcon from '@/assets/image/ic_ticked_round.svg';
 import Languages from '@/common/Languages';
+import ScreenName from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import KeyValue from '@/components/KeyValue';
+import SessionManager from '@/manager/SessionManager';
 import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
-import { COLORS, Styles } from '@/theme';
-import SessionManager from '@/manager/SessionManager';
-import ScreenName from '@/common/screenNames';
-
+import { MyStylesAccountInfo } from './styles';
 
 const AccountInfo = observer(() => {
-
+    const styles = MyStylesAccountInfo();
     useEffect(() => {
     }, []);
 
@@ -49,7 +48,7 @@ const AccountInfo = observer(() => {
                     </Touchable>
                 );
         }
-    }, [onNavigateKYC]);
+    }, [onNavigateKYC, styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy]);
 
     const renderKeyFeature = useCallback((title: string, content?: string) => {
         return (
@@ -64,7 +63,7 @@ const AccountInfo = observer(() => {
                 hasDashBottom
             />
         );
-    }, []);
+    }, [styles.styleTextInfo, styles.styleValueCheckedInfo, styles.styleValueUnCheckedInfo, styles.wrapAllItemInfo, styles.wrapCheckedInfo, styles.wrapUnCheckedInfo]);
 
     const renderInfoAcc = useMemo(() => {
         return (
@@ -83,7 +82,7 @@ const AccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [onNavigateEdit, renderKeyFeature]);
+    }, [onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit]);
 
     return (
         <View style={styles.container}>
@@ -101,97 +100,3 @@ const AccountInfo = observer(() => {
 });
 
 export default AccountInfo;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_5
-    },
-    mainContainer: {
-        paddingHorizontal: 16
-    },
-    wrapContent: {
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 12,
-        marginTop: 16,
-        alignItems: 'center'
-    },
-    wrapEdit: {
-        paddingHorizontal: 16,
-        width: '100%',
-        paddingTop: 25,
-        paddingBottom: 20
-    },
-    topContainer: {
-        width: '100%',
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 12,
-        marginTop: 10,
-        paddingHorizontal: 16,
-        paddingVertical: 10,
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-    styleTextInfo: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_12
-    },
-    styleValueCheckedInfo: {
-        ...Styles.typography.medium,
-        color: COLORS.GRAY_7,
-        textAlign: 'right',
-        width: '70%'
-    },
-    styleValueUnCheckedInfo: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_7
-    },
-    wrapAllItemInfo: {
-        width: '100%',
-        justifyContent: 'space-between'
-    },
-    wrapCheckedInfo: {
-        width: '90%',
-        paddingVertical: 10
-    },
-    wrapUnCheckedInfo: {
-        width: '100%',
-        paddingVertical: 10
-    },
-    txtContentKYC: {
-        width: '100%',
-        ...Styles.typography.medium,
-        color: COLORS.GRAY_7,
-        textAlign: 'center',
-        paddingVertical: 5
-    },
-    accuracyWrap: {
-        width: '100%',
-        backgroundColor: COLORS.WHITE_GREEN,
-        borderRadius: 70,
-        alignItems: 'center',
-        marginTop: 5,
-        paddingVertical: 8
-    },
-    txtAccuracy: {
-        ...Styles.typography.medium,
-        color: COLORS.GREEN,
-        paddingHorizontal: 40
-    },
-    txtNotAccuracy: {
-        ...Styles.typography.medium,
-        color: COLORS.RED_2,
-        paddingHorizontal: 60
-    },
-    notAccuracyWrap: {
-        width: '100%',
-        backgroundColor: COLORS.PINK,
-        borderRadius: 70,
-        alignItems: 'center',
-        marginTop: 5,
-        paddingVertical: 8
-    },
-    iconTicked: {
-
-    }
-});

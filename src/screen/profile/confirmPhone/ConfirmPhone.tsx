@@ -1,24 +1,26 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useRef, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 
-import Languages from '@/common/Languages';
-import HeaderBar from '@/components/header';
-import { COLORS, HtmlStyles, Styles } from '@/theme';
-import VimoIC from '@/assets/image/ic_logo_vimo_large.svg';
 import HumanIC from '@/assets/image/ic_human.svg';
-import { MyTextInput } from '@/components/elements/textfield';
-import { TextFieldActions } from '@/components/elements/textfield/types';
-import { Configs } from '@/common/Configs';
+import VimoIC from '@/assets/image/ic_logo_vimo_large.svg';
+import Languages from '@/common/Languages';
+import ScreenName from '@/common/screenNames';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
-import FormValidate from '@/utils/FormValidate';
+import { MyTextInput } from '@/components/elements/textfield';
+import { TextFieldActions } from '@/components/elements/textfield/types';
+import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
 import Navigator from '@/routers/Navigator';
-import ScreenName from '@/common/screenNames';
+import { HtmlStyles } from '@/theme';
+import FormValidate from '@/utils/FormValidate';
+import { MyStylesConfirmPhone } from './styles';
+
 
 const ConfirmPhone = observer(() => {
+    const styles =MyStylesConfirmPhone();
     const [phone, setPhone] = useState<string>('');
     const phoneRef = useRef<TextFieldActions>(null);
 
@@ -41,7 +43,7 @@ const ConfirmPhone = observer(() => {
                 leftIcon={leftIcon}
             />
         </View>;
-    }, []);
+    }, [styles.containerStyle, styles.groupInput, styles.inputStyle, styles.title]);
 
     const onValidation = useCallback(
         () => {
@@ -88,38 +90,3 @@ const ConfirmPhone = observer(() => {
 
 export default ConfirmPhone;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_5,
-        justifyContent: 'center'
-    },
-    wrapAllContent: {
-        flex: 2,
-        paddingHorizontal: 16,
-        paddingTop: 10,
-        marginBottom: 140
-    },
-    title: {
-        ...Styles.typography.regular,
-        marginBottom: 5
-    },
-    containerStyle: {
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 30,
-        alignItems: 'center'
-    },
-    inputStyle: {
-        ...Styles.typography.regular,
-        paddingVertical: 20,
-        fontSize: Configs.FontSize.size14
-    },
-    groupInput: {
-        marginBottom: 30
-    },
-    logo: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-});

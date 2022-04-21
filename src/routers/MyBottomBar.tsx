@@ -15,20 +15,20 @@ import Profile from '@/screen/profile';
 import Report from '@/screen/report';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import AccountInfo from '@/screen/profile/AccountInfo';
-import EditAccountInfo from '@/screen/profile/EditAccountInfo';
-import AccountIdentify from '@/screen/profile/AccountIdentify';
-import ShareFriend from '@/screen/profile/ShareFriend';
 import DetailInvestment from '@/screen/investment/detailInvestment';
 import Invest from '@/screen/investment/invest';
-import ChangePwd from '@/screen/profile/ChangePwd';
-import AccountLink from '@/screen/profile/AcountLink';
-import Manual from '@/screen/profile/Manual';
-import Help from '@/screen/profile/Help';
-import PaymentMethod from '@/screen/profile/PaymentMethod';
-import AccountBank from '@/screen/profile/AccountBank';
-import VerifyOTP from '@/screen/profile/VerifyOTP';
-import ConfirmPhone from '@/screen/profile/ConfirmPhone';
+import VerifyOTP from '@/screen/profile/verifyOTP/VerifyOTP';
+import ConfirmPhone from '@/screen/profile/confirmPhone/ConfirmPhone';
+import AccountBank from '@/screen/profile/accountBank/AccountBank';
+import ChangePwd from '@/screen/profile/changePwd/ChangePwd';
+import Help from '@/screen/profile/help/Help';
+import Manual from '@/screen/profile/manual/Manual';
+import ShareFriend from '@/screen/profile/shareFriend/ShareFriend';
+import AccountLink from '@/screen/profile/accountLink/AcountLink';
+import AccountIdentify from '@/screen/profile/accountIdentify/AccountIdentify';
+import AccountInfo from '@/screen/profile/accountInfo/AccountInfo';
+import EditAccountInfo from '@/screen/profile/editAccountInfo/EditAccountInfo';
+import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
 
 const TabsData = [
     {

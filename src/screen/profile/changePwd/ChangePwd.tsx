@@ -1,25 +1,26 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 
+import { Events } from '@/common/constants';
+import Languages from '@/common/Languages';
+import screenNames from '@/common/screenNames';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { Button } from '@/components/elements/button/index';
 import { MyTextInput } from '@/components/elements/textfield/index';
 import { TextFieldActions } from '@/components/elements/textfield/types';
+import HeaderBar from '@/components/header';
+import HideKeyboard from '@/components/HideKeyboard';
 import { useAppStore } from '@/hooks';
-import { COLORS, Styles } from '@/theme';
+import Navigator from '@/routers/Navigator';
+import { EventEmitter } from '@/utils/EventEmitter';
 import FormValidate from '@/utils/FormValidate';
 import ToastUtils from '@/utils/ToastUtils';
-import Navigator from '@/routers/Navigator';
-import Languages from '@/common/Languages';
-import screenNames from '@/common/screenNames';
-import HeaderBar from '@/components/header';
-import { Configs } from '@/common/Configs';
-import { EventEmitter } from '@/utils/EventEmitter';
-import { Events } from '@/common/constants';
-import HideKeyboard from '@/components/HideKeyboard';
+import { MyStylesChangePwd } from './styles';
+
 
 const ChangePwd = observer(() => {
+    const styles = MyStylesChangePwd();
     const { userManager } = useAppStore();
 
     const [oldPwd, setOldPwd] = useState<string>('');
@@ -69,7 +70,7 @@ const ChangePwd = observer(() => {
             </View>;
         }
         return null;
-    }, [onChangeText]);
+    }, [onChangeText, styles.containerDisableStyle, styles.containerStyle, styles.groupInput, styles.inputStyle, styles.pwd, styles.title]);
 
     const onChangeValidation = useCallback(
         () => {
@@ -129,46 +130,3 @@ const ChangePwd = observer(() => {
 });
 
 export default ChangePwd;
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_5
-    },
-    group: {
-        paddingTop: 20,
-        paddingRight: 15,
-        paddingLeft: 15
-    },
-    groupInput: {
-        marginBottom: 20
-    },
-    title: {
-        ...Styles.typography.regular,
-        marginBottom: 5
-    },
-    containerStyle: {
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 30,
-        alignItems: 'center'
-    },
-    containerDisableStyle: {
-        backgroundColor: COLORS.TRANSPARENT,
-        borderRadius: 30,
-        alignItems: 'center'
-    },
-    inputStyle: {
-        ...Styles.typography.regular,
-        paddingVertical: 20,
-        fontSize: Configs.FontSize.size14
-    },
-    button: {
-        paddingHorizontal: 15
-    },
-    pwd: {
-        top: 0
-    },
-    btnStyle: {
-        borderRadius: 30
-    }
-});
-

@@ -1,15 +1,15 @@
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import HTMLView from 'react-native-htmlview';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
-import WarnIC from '@/assets/image/ic_warn_round_yellow.svg';
 import AfterIC from '@/assets/image/ic_identify_after.svg';
 import BeforeIC from '@/assets/image/ic_identify_before.svg';
 import AvatarIC from '@/assets/image/ic_KYC_avatar.svg';
+import WarnIC from '@/assets/image/ic_warn_round_yellow.svg';
 import { noteAvatar, noteKYC } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { Button } from '@/components/elements/button';
@@ -17,17 +17,18 @@ import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { MyTextInput } from '@/components/elements/textfield';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import HeaderBar from '@/components/header';
-import { COLORS, HtmlStyles, Styles } from '@/theme';
-import FormValidate from '@/utils/FormValidate';
-import { Configs } from '@/common/Configs';
-import { dataUser, typePhoto } from '@/mocks/data';
-import ImageUtils from '@/utils/ImageUtils';
-import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
-import { PopupActionTypes } from '@/models/typesPopup';
-import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 import HideKeyboard from '@/components/HideKeyboard';
+import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
+import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
+import { dataUser, typePhoto } from '@/mocks/data';
+import { PopupActionTypes } from '@/models/typesPopup';
+import { HtmlStyles } from '@/theme';
+import FormValidate from '@/utils/FormValidate';
+import ImageUtils from '@/utils/ImageUtils';
+import { MyStylesAccountIdentify } from './styles';
 
 const AccountIdentify = observer(() => {
+    const styles = MyStylesAccountIdentify();
     const [identify, setIdentify] = useState<string>(dataUser.identify);
     const [avatar, setAvatar] = useState<ImageOrVideo>();
     const [frontIdentify, setFrontIdentify] = useState<ImageOrVideo>();
@@ -60,7 +61,7 @@ const AccountIdentify = observer(() => {
                 />
             </View>
         );
-    }, [onChangeText]);
+    }, [onChangeText, styles.inputStyle, styles.labelStyle, styles.wrapInput]);
 
     const onValidate = useCallback(() => {
         const errMsgIdentify = FormValidate.cardValidate(identify);
@@ -99,7 +100,7 @@ const AccountIdentify = observer(() => {
             hasDash
             disable={!!dataUser?.front_facing_card && !!dataUser.card_back && !!dataUser.avatar}
         />;
-    }, []);
+    }, [styles.pickerContainer]);
 
     const onPressItemFrontPhoto = useCallback((item: any) => {
         if (item?.value === 'Camera') {
@@ -150,7 +151,7 @@ const AccountIdentify = observer(() => {
                     isLowerCase />}
             </View>
         );
-    }, [afterIdentify, avatar, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhoto, onVerify, renderPhotoPicker]);
+    }, [afterIdentify, avatar, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhoto, onVerify, renderPhotoPicker, styles.accuracyWrap, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto, styles.wrapEdit]);
 
     return (
         <HideKeyboard style={styles.container}>
@@ -174,65 +175,3 @@ const AccountIdentify = observer(() => {
 });
 
 export default AccountIdentify;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_5
-    },
-    wrapEdit: {
-        paddingHorizontal: 16,
-        width: '100%',
-        paddingTop: 10,
-        paddingBottom: 16
-    },
-    contentContainer: {
-        paddingHorizontal: 16,
-        paddingBottom: 24,
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: COLORS.GRAY_13
-    },
-    pickerContainer: {
-        marginBottom: -40
-    },
-    wrapInput: {
-        justifyContent: 'space-between',
-        width: '100%',
-        paddingHorizontal: 16,
-        paddingBottom: 5
-    },
-    wrapTopHtml: {
-        alignSelf: 'center',
-        paddingHorizontal: 16
-    },
-    accuracyWrap: {
-        width: '100%',
-        borderRadius: 70,
-        alignItems: 'center',
-        marginTop: 5,
-        paddingVertical: 8
-    },
-    inputStyle: {
-        borderWidth: 1,
-        borderColor: COLORS.GRAY_11,
-        borderRadius: 30,
-        marginVertical: 5
-    },
-    labelStyle: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_7
-    },
-    titlePhoto: {
-        ...Styles.typography.medium,
-        color: COLORS.RED_2,
-        paddingTop: 16
-    },
-    txtNotePhoto: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_12,
-        fontSize: Configs.FontSize.size12,
-        paddingVertical: 4
-    }
-});
