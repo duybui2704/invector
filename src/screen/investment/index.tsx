@@ -13,11 +13,9 @@ import MyFlatList from '@/components/MyFlatList';
 import Navigator from '@/routers/Navigator';
 import { COLORS, Styles } from '@/theme';
 import { HeaderBar } from '../../components/header';
-import { investData } from '../mocks/mocks';
 import styles from './styles';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
-
-
+import { investData } from '@/mocks/data';
 
 
 
