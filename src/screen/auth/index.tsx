@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useState } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
 import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';

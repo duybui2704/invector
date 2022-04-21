@@ -1,6 +1,7 @@
-import { COLORS } from "@/theme";
-import { useMemo } from "react";
-import { StyleSheet } from "react-native";
+import { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+
+import { COLORS } from '@/theme';
 
 export const MyStylesBoar = () => {
     return useMemo(() => StyleSheet.create({
@@ -8,7 +9,10 @@ export const MyStylesBoar = () => {
             flex: 1,
             backgroundColor: COLORS.WHITE,
             alignItems: 'center'
-    }
+        },
+        main:{
+            flex: 1
+        }
     }), []);
-}
+};
 

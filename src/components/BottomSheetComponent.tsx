@@ -1,4 +1,4 @@
-import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal, SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal, SCREEN_HEIGHT, useBottomSheetModal } from '@gorhom/bottom-sheet';
 import React, {
     forwardRef,
     useCallback,
@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Dash from 'react-native-dash';
+import { Extrapolate, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import { Touchable } from './elements/touchable';
@@ -29,10 +30,6 @@ export type BottomSheetAction = {
     hide?: (content?: string) => any,
 };
 
-const CustomBackdrop = (props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props} pressBehavior="close" />;
-};
-
 const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
     (
         {
@@ -49,6 +46,9 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
     ) => {
 
         const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+        const { dismiss, dismissAll } = useBottomSheetModal();
+
         const snapPoints = useMemo(() => {
             const num = data?.length as number;
             const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
@@ -60,8 +60,8 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
         }, [data]);
 
         const hide = useCallback(() => {
+            bottomSheetRef?.current?.dismiss();
             onClose?.();
-            bottomSheetRef?.current?.close();
         }, [onClose]);
 
         const show = useCallback(() => {
@@ -105,14 +105,24 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             return `${index.id}`;
         }, []);
 
+        const StyledBackdrop = (props: BottomSheetBackdropProps) => {
+
+            return (
+                <BottomSheetBackdrop
+                    {...props}
+                    enableTouchThrough={false}
+                />
+            );
+        };
+
         return (
-            <View style={styles.container}>
+            <View style={styles.container} ref={ref}>
                 <BottomSheetModal
                     ref={bottomSheetRef}
                     index={1}
                     snapPoints={snapPoints}
-                    backdropComponent={CustomBackdrop}
-                    keyboardBehavior={'interactive'}
+                    backdropComponent={StyledBackdrop}
+                    keyboardBehavior={'extend'}
                     enablePanDownToClose={true}
                 >
                     <BottomSheetFlatList
@@ -132,7 +142,7 @@ const MIN_SIZE_HAS_INPUT = 10;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24
+        padding: 20
     },
     valueContainer: {
         width: '100%',
@@ -154,7 +164,7 @@ const styles = StyleSheet.create({
         marginTop: 0,
         paddingHorizontal: 16
     },
-    noLeftIconvalue:{
+    noLeftIconvalue: {
         flex: 1,
         ...Styles.typography.regular,
         fontSize: Configs.FontSize.size16,

@@ -1,9 +1,9 @@
-import Images from '@/assets/Images';
-import Languages from '@/common/Languages';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, PanResponder, StatusBar, View } from 'react-native';
-import { ACTION_OFFSET, CARD } from '@/utils/DimensionUtils';
 
+import Images from '@/assets/Images';
+import Languages from '@/common/Languages';
+import { ACTION_OFFSET, CARD } from '@/utils/DimensionUtils';
 import Card from './card';
 import { MyStylesBoar } from './styles';
 import { COLORS } from '@/theme';
@@ -53,21 +53,21 @@ export default function Onboarding() {
                         duration: 200,
                         toValue: {
                             x: direction * CARD.CARD_OUT_WIDTH,
-                            y: dy,
+                            y: dy
                         },
-                        useNativeDriver: true,
+                        useNativeDriver: true
                     }).start(transitionNext);
                 } else {
                     Animated.spring(swipe, {
                         friction: 5,
                         toValue: {
                             x: 0,
-                            y: 0,
+                            y: 0
                         },
-                        useNativeDriver: true,
+                        useNativeDriver: true
                     }).start();
                 }
-            },
+            }
         })
     ).current;
 
@@ -77,7 +77,7 @@ export default function Onboarding() {
             setData((prevState) => prevState.slice(1));
             swipe.setValue({ x: 0, y: 0 });
         } 
-    }, [swipe]);
+    }, [dem, swipe]);
 
     const handleChoise = useCallback(
         (name, isFirst, sign) => {
@@ -86,17 +86,17 @@ export default function Onboarding() {
                 Animated.timing(swipe.x, {
                     duration: 500,
                     toValue: sign * CARD.CARD_OUT_WIDTH,
-                    useNativeDriver: true,
+                    useNativeDriver: true
                 }).start(transitionNext);
             } else {
-                Navigator.replaceScreen(ScreenName.auth)
+                Navigator.replaceScreen(ScreenName.auth);
             }
         },
         [swipe.x, transitionNext]
     );
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.main}>
             <StatusBar
                 barStyle={'dark-content'}
                 animated
@@ -117,7 +117,7 @@ export default function Onboarding() {
                                 swipe={swipe}
                                 tiltSign={tiltSign}
                                 txt={txt}
-                                handleChoise={() => { handleChoise(title, isFirst, -1) }}
+                                handleChoise={() => { handleChoise(title, isFirst, -1); }}
                                 {...panHandlers}
                             />
                         );
