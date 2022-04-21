@@ -87,9 +87,22 @@ export const MyStylesAccountInfo = () => {
                 color: COLORS.RED_2,
                 paddingHorizontal: 60
             },
+            txtWaitAccuracy: {
+                ...Styles.typography.medium,
+                color: COLORS.YELLOW_2,
+                textAlign: 'center'
+            },
             notAccuracyWrap: {
                 width: '100%',
                 backgroundColor: COLORS.PINK,
+                borderRadius: 70,
+                alignItems: 'center',
+                marginTop: 5,
+                paddingVertical: 8
+            },
+            waitAccuracyWrap: {
+                width: '100%',
+                backgroundColor: COLORS.YELLOW_3,
                 borderRadius: 70,
                 alignItems: 'center',
                 marginTop: 5,

@@ -1,7 +1,7 @@
 import Languages from '@/common/Languages';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { TransactionModel } from '@/models/transaction-model';
-import { UserInfoModal } from '@/models/user-modal';
+import { UserInfoModal } from '@/models/user-models';
 
 export const DATA = [
     {
@@ -107,7 +107,7 @@ export const dataUser = {
     full_name: 'Pham Minh Quý',
     phone_number: '0353826750',
     gender: 'Nam',
-    accuracy: 2,
+    accuracy: 3,
     front_card:'',
     card_back:'',
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAznG13WJ4ayysR3Q07BNXsRTdDbP0PQ_Efw&usqp=CAU',

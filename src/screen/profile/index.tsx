@@ -234,21 +234,27 @@ const Profile = observer(() => {
         switch (dataUser?.accuracy) {
             case 1:
                 return (
-                    <Touchable style={styles.accuracyWrap}>
+                    <View style={styles.accuracyWrap}>
                         <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
-                    </Touchable>
+                    </View>
                 );
             case 2:
                 return (
-                    <Touchable style={styles.notAccuracyWrap} disabled={true}>
+                    <View style={styles.notAccuracyWrap}>
                         <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
-                    </Touchable>
+                    </View>
+                );
+            case 3:
+                return (
+                    <View style={styles.waitAccuracyWrap}>
+                        <Text style={styles.txtWaitAccuracy}>{Languages.account.waitVerify}</Text>
+                    </View>
                 );
             default:
                 return (
-                    <Touchable style={styles.notAccuracyWrap} disabled={true}>
+                    <View style={styles.notAccuracyWrap}>
                         <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
-                    </Touchable>
+                    </View>
                 );
         }
     }, []);
@@ -406,6 +412,13 @@ const styles = StyleSheet.create({
         marginTop: 5,
         paddingVertical: 4
     },
+    waitAccuracyWrap: {
+        backgroundColor: COLORS.YELLOW_3,
+        borderRadius: 70,
+        alignItems: 'center',
+        marginTop: 5,
+        paddingVertical: 4
+    },
     accuracyWrap: {
         backgroundColor: COLORS.WHITE_GREEN,
         borderRadius: 70,
@@ -437,6 +450,13 @@ const styles = StyleSheet.create({
         color: COLORS.RED_2,
         fontSize: Configs.FontSize.size12,
         paddingHorizontal: 60
+    },
+    txtWaitAccuracy: {
+        ...Styles.typography.medium,
+        color: COLORS.YELLOW_2,
+        fontSize: Configs.FontSize.size12,
+        textAlign: 'center',
+        paddingHorizontal: 16
     },
     txtAccuracy: {
         ...Styles.typography.medium,
