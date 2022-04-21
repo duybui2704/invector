@@ -1,8 +1,8 @@
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
 import React, { useCallback, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import LinkIC from '@/assets/image/ic_ischecked_save_acc.svg';
 import ViettinIC from '@/assets/image/ic_logo_viettin_bank.svg';
@@ -23,6 +23,7 @@ import { PopupActionTypes } from '@/models/typesPopup';
 import { COLORS, HtmlStyles } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
 import { MyStylesAccountBank } from './styles';
+import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
 
 
 const AccountBank = observer(() => {
@@ -64,6 +65,7 @@ const AccountBank = observer(() => {
                 containerInput={styles.containerStyle}
                 inputStyle={styles.inputStyle}
                 inputStylePwDIcon={styles.pwd}
+                isPassword={false}
                 maxLength={length}
                 value={_text}
                 onChangeText={onChange}
@@ -122,41 +124,43 @@ const AccountBank = observer(() => {
             <HideKeyboard style={styles.container}>
                 <View style={styles.container}>
                     <HeaderBar isLight={false} title={Languages.paymentMethod.bank} hasBack />
-                    <View style={styles.wrapAllContent}>
-                        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-                            <Text style={styles.txtBankChoose}>{Languages.accountBank.bankChoose}</Text>
-                            <PickerBankValuation
-                                ref={bankRef}
-                                data={dataBank}
-                                value={banks}
-                                placeholder={Languages.accountBank.bankChoose}
-                                onPressItem={onBanksChoose}
-                                btnContainer={styles.rowItemFilter}
-                                containerStyle={styles.containerItemFilter}
-                                hasDash
-                                styleText={styles.valuePicker}
-                                stylePlaceholder={styles.placeHolderPicker}
-                                leftIcon={<ViettinIC/>}
-                                rightIcon= {<ArrowIC/>}
-                            />
-                            <View style={styles.rowContainerAllInputChoose}>
-                                {renderAccBank(Languages.accountBank.accountNumber, true)}
-                                {renderAccBank(Languages.accountBank.ATMNumber, true)}
-                            </View>
-                            {active ? renderInput(Languages.accountBank.accountNumber, Languages.accountBank.accountNumber, accountNumber, accountNumberRef, 'NUMBER') :
-                                renderInput(Languages.accountBank.ATMNumber, Languages.accountBank.ATMNumber, ATMNumber, ATMNumberRef, 'NUMBER')}
-                            {renderInput(Languages.accountBank.accountProvider, Languages.accountBank.accountProviderName, accountProvider, accountProviderRef)}
-                        </KeyboardAvoidingView>
-                        <HTMLView
-                            value={Languages.accountBank.noteAccountBank}
-                            stylesheet={HtmlStyles || undefined} />
+                    <ScrollViewWithKeyboard showsVerticalScrollIndicator={false}>
+                        <View style={styles.wrapAllContent}>
+                            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                                <Text style={styles.txtBankChoose}>{Languages.accountBank.bankChoose}</Text>
+                                <PickerBankValuation
+                                    ref={bankRef}
+                                    data={dataBank}
+                                    value={banks}
+                                    placeholder={Languages.accountBank.bankChoose}
+                                    onPressItem={onBanksChoose}
+                                    btnContainer={styles.rowItemFilter}
+                                    containerStyle={styles.containerItemFilter}
+                                    hasDash
+                                    styleText={styles.valuePicker}
+                                    stylePlaceholder={styles.placeHolderPicker}
+                                    leftIcon={<ViettinIC />}
+                                    rightIcon={<ArrowIC />}
+                                />
+                                <View style={styles.rowContainerAllInputChoose}>
+                                    {renderAccBank(Languages.accountBank.accountNumber, true)}
+                                    {renderAccBank(Languages.accountBank.ATMNumber, true)}
+                                </View>
+                                {active ? renderInput(Languages.accountBank.accountNumber, Languages.accountBank.accountNumber, accountNumber, accountNumberRef, 'NUMBER',15) :
+                                    renderInput(Languages.accountBank.ATMNumber, Languages.accountBank.ATMNumber, ATMNumber, ATMNumberRef, 'NUMBER', 15)}
+                                {renderInput(Languages.accountBank.accountProvider, Languages.accountBank.accountProviderName, accountProvider, accountProviderRef)}
+                            </KeyboardAvoidingView>
+                            <HTMLView
+                                value={Languages.accountBank.noteAccountBank}
+                                stylesheet={HtmlStyles || undefined} />
 
-                        <Button label={Languages.accountBank.addAccount}
-                            buttonStyle={banks && accountNumber && accountProvider && ATMNumber ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
-                            isLowerCase
-                            onPress={onAddAccount}
-                        />
-                    </View>
+                            <Button label={Languages.accountBank.addAccount}
+                                buttonStyle={banks && accountNumber && accountProvider && ATMNumber ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
+                                isLowerCase
+                                onPress={onAddAccount}
+                            />
+                        </View>
+                    </ScrollViewWithKeyboard>
                 </View >
             </HideKeyboard>
         </BottomSheetModalProvider>

@@ -6,14 +6,13 @@ import React, {
     useMemo,
     useRef
 } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableHighlightBase, TouchableWithoutFeedback, View } from 'react-native';
 import Dash from 'react-native-dash';
-import { Extrapolate, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
-import { Touchable } from './elements/touchable';
 import { COLORS, Styles } from '@/theme';
 import { ItemProps } from '@/models/common-model';
+import { Touchable } from './elements/touchable';
 
 type BottomSheetProps = {
     data?: ItemProps[],
@@ -46,8 +45,6 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
     ) => {
 
         const bottomSheetRef = useRef<BottomSheetModal>(null);
-
-        const { dismiss, dismissAll } = useBottomSheetModal();
 
         const snapPoints = useMemo(() => {
             const num = data?.length as number;
@@ -105,25 +102,32 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             return `${index.id}`;
         }, []);
 
-        const StyledBackdrop = (props: BottomSheetBackdropProps) => {
-
+        const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
             return (
                 <BottomSheetBackdrop
                     {...props}
-                    enableTouchThrough={false}
-                />
+                >
+                    <Touchable style={styles.backdropStyle}
+                        onPress={hide}>
+                    </Touchable>
+                </BottomSheetBackdrop>
             );
-        };
+        }, [hide]);
+
+        const handleSheetChanges = useCallback(() => {
+            // bottomSheetRef.current?.snapToIndex(0);
+        }, []);
 
         return (
-            <View style={styles.container} ref={ref}>
+            <View style={styles.container}>
                 <BottomSheetModal
                     ref={bottomSheetRef}
                     index={1}
                     snapPoints={snapPoints}
-                    backdropComponent={StyledBackdrop}
-                    keyboardBehavior={'extend'}
+                    backdropComponent={renderBackdrop}
+                    keyboardBehavior={'fillParent'}
                     enablePanDownToClose={true}
+                    onChange={handleSheetChanges}
                 >
                     <BottomSheetFlatList
                         data={data}
@@ -141,7 +145,6 @@ const HEADER_HEIGHT = Configs.FontSize.size40 + 30;
 const MIN_SIZE_HAS_INPUT = 10;
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         padding: 20
     },
     valueContainer: {
@@ -169,6 +172,9 @@ const styles = StyleSheet.create({
         ...Styles.typography.regular,
         fontSize: Configs.FontSize.size16,
         paddingLeft: 25
+    },
+    backdropStyle:{
+        flex: 1,
+        height: SCREEN_HEIGHT
     }
-
 });
