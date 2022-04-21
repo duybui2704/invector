@@ -66,6 +66,8 @@ const PaymentMethod = observer(() => {
     const onVimo = useCallback((status?: boolean) => {
         if (status) {
             vimoRef.current?.show();
+        }else {
+            Navigator.pushScreen(ScreenName.confirmPhone);
         }
     }, []);
 
@@ -105,7 +107,7 @@ const PaymentMethod = observer(() => {
             <HeaderBar isLight={false} title={Languages.account.payMethod} hasBack />
             <View style={styles.wrapAllContent}>
                 <Text style={styles.txtMethodChoose}>{Languages.paymentMethod.methodChoose}</Text>
-                {renderItemMethod(<VimoIC />, Languages.paymentMethod.vimo, true)}
+                {renderItemMethod(<VimoIC />, Languages.paymentMethod.vimo, false)}
                 {renderItemMethod(<BankIC />, Languages.paymentMethod.bank)}
             </View>
             {popupVimo(vimoRef,<WarnIC/>)}

@@ -23,7 +23,9 @@ export const ScreenName = {
     manual: 'Manual',
     help: 'Help',
     paymentMethod: 'PaymentMethod',
-    accountBank: 'AccountBank'
+    accountBank: 'AccountBank',
+    confirmPhone: 'ConfirmPhone',
+    verifyOTP: 'VerifyOTP'
 };
 
 export default ScreenName;

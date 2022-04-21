@@ -25,6 +25,7 @@ import ImageUtils from '@/utils/ImageUtils';
 import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
 import { PopupActionTypes } from '@/models/typesPopup';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
+import HideKeyboard from '@/components/HideKeyboard';
 
 const AccountIdentify = observer(() => {
     const [identify, setIdentify] = useState<string>(dataUser.identify);
@@ -152,21 +153,23 @@ const AccountIdentify = observer(() => {
     }, [afterIdentify, avatar, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhoto, onVerify, renderPhotoPicker]);
 
     return (
-        <View style={styles.container}>
-            <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                {dataUser.accuracy === 1 &&
+        <HideKeyboard style={styles.container}>
+            <View style={styles.container}>
+                <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack />
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    {dataUser.accuracy === 1 &&
                     <View style={styles.wrapTopHtml}>
                         <HTMLView
                             value={Languages.accountIdentify.noteTopIdentify}
                             stylesheet={HtmlStyles || undefined}
                         />
                     </View>}
-                {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, identify, 'NUMBER', !!dataUser.identify)}
-                {renderPhoto}
-                {renderPopupConfirm(popupConfirmRef)}
-            </ScrollView>
-        </View>
+                    {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, identify, 'NUMBER', !!dataUser.identify)}
+                    {renderPhoto}
+                    {renderPopupConfirm(popupConfirmRef)}
+                </ScrollView>
+            </View>
+        </HideKeyboard>
     );
 });
 

@@ -17,6 +17,7 @@ import HeaderBar from '@/components/header';
 import { Configs } from '@/common/Configs';
 import { EventEmitter } from '@/utils/EventEmitter';
 import { Events } from '@/common/constants';
+import HideKeyboard from '@/components/HideKeyboard';
 
 const ChangePwd = observer(() => {
     const { userManager } = useAppStore();
@@ -100,28 +101,30 @@ const ChangePwd = observer(() => {
     }, [logout, onChangeValidation]);
 
     return (
-        <View style={styles.container}>
-            <HeaderBar
-                title={hasPass ? Languages.changePwd.title : Languages.changePwd.title} hasBack />
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-                <ScrollView>
-                    <View style={styles.group}>
-                        {renderInput(Languages.changePwd.oldPass, Languages.changePwd.placeOldPass, oldPwd, oldRef, !hasPass, true)}
-                        {renderInput(Languages.changePwd.newPass, Languages.changePwd.placeNewPass, newPwd, newRef, true, true)}
-                        {renderInput(Languages.changePwd.currentNewPass, Languages.changePwd.currentNewPass, currentNewPwd, currentRef, true, !!newPwd)}
-                    </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
-            <View style={styles.button}>
-                <Button
-                    label={`${Languages.changePwd.confirmPwd}`}
-                    buttonStyle={!!oldPwd && newPwd && currentNewPwd ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
-                    onPress={onPressChange}
-                    isLowerCase
-                    style={styles.btnStyle}
-                />
+        <HideKeyboard style={styles.container}>
+            <View style={styles.container}>
+                <HeaderBar
+                    title={hasPass ? Languages.changePwd.title : Languages.changePwd.title} hasBack />
+                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                    <ScrollView>
+                        <View style={styles.group}>
+                            {renderInput(Languages.changePwd.oldPass, Languages.changePwd.placeOldPass, oldPwd, oldRef, !hasPass, true)}
+                            {renderInput(Languages.changePwd.newPass, Languages.changePwd.placeNewPass, newPwd, newRef, true, true)}
+                            {renderInput(Languages.changePwd.currentNewPass, Languages.changePwd.currentNewPass, currentNewPwd, currentRef, true, !!newPwd)}
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+                <View style={styles.button}>
+                    <Button
+                        label={`${Languages.changePwd.confirmPwd}`}
+                        buttonStyle={!!oldPwd && newPwd && currentNewPwd ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
+                        onPress={onPressChange}
+                        isLowerCase
+                        style={styles.btnStyle}
+                    />
+                </View>
             </View>
-        </View>
+        </HideKeyboard>
     );
 });
 

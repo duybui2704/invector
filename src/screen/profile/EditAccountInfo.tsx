@@ -16,6 +16,7 @@ import SessionManager from '@/manager/SessionManager';
 import { dataUser } from '@/mocks/data';
 import { COLORS, Styles } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
+import HideKeyboard from '@/components/HideKeyboard';
 
 
 const EditAccountInfo = observer(() => {
@@ -132,25 +133,27 @@ const EditAccountInfo = observer(() => {
     }, [address, birthday, email, gender, job, name, onSaveInfo, renderKeyFeature]);
 
     return (
-        <View style={styles.container}>
-            <HeaderBar isLight={false} title={Languages.accountInfo.editAcc} hasBack />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.topContainer}>
-                    {!dataUser.avatar ?
-                        <AvatarIC style={styles.circleWrap} />
-                        :
-                        <FastImage
-                            style={styles.circleWrap}
-                            source={{
-                                uri: dataUser?.avatar
-                            }}
-                            resizeMode={FastImage.resizeMode.cover}
-                        />
-                    }
-                </View>
-                {renderInfoAcc}
-            </ScrollView>
-        </View>
+        <HideKeyboard style={styles.container}>
+            <View style={styles.container}>
+                <HeaderBar isLight={false} title={Languages.accountInfo.editAcc} hasBack />
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={styles.topContainer}>
+                        {!dataUser.avatar ?
+                            <AvatarIC style={styles.circleWrap} />
+                            :
+                            <FastImage
+                                style={styles.circleWrap}
+                                source={{
+                                    uri: dataUser?.avatar
+                                }}
+                                resizeMode={FastImage.resizeMode.cover}
+                            />
+                        }
+                    </View>
+                    {renderInfoAcc}
+                </ScrollView>
+            </View>
+        </HideKeyboard>
     );
 });
 

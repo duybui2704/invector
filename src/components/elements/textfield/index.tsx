@@ -126,7 +126,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         }, []);
 
         const eventTextChange = useCallback(
-            (text: string, tag? : string) => {
+            (text: string, tag?: string) => {
                 setValue(text);
             },
             [setValue]
@@ -163,7 +163,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             if (errMsg !== '') {
                 borderStyle.borderColor = COLORS.RED;
             }
-            return [styles.container,  borderStyle, backgroundStyle,style, containerInput, { transform: [{ translateX: animation }] }];
+            return [styles.container, borderStyle, backgroundStyle, style, containerInput, { transform: [{ translateX: animation }] }];
         }, [animation, containerInput, disabled, errMsg, isFocusing, styles.container]);
 
         const _inputStyle = useMemo(
@@ -200,17 +200,17 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         }, [startShake]);
 
         const checkIconRight = useMemo(() => {
-            switch (rightIcon){
+            switch (rightIcon) {
                 case arrayIcon.login.phone:
-                    return <IcPhone width={20} height={20}/>;
+                    return <IcPhone width={20} height={20} />;
                 case arrayIcon.login.pass:
-                    return <IcPass width={20} height={20}/>;
+                    return <IcPass width={20} height={20} />;
                 case arrayIcon.login.email:
-                    return <IcEmailAuth width={20} height={20}/>;
+                    return <IcEmailAuth width={20} height={20} />;
                 case arrayIcon.login.confirmPass:
-                    return <IcPass width={20} height={20}/>;
+                    return <IcPass width={20} height={20} />;
                 case arrayIcon.login.name:
-                    return <IcName width={20} height={20}/>;
+                    return <IcName width={20} height={20} />;
                 case arrayIcon.login.search:
                     return <IcSearch />;
                 default:
@@ -225,12 +225,13 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                     ref={ref}
                 >
                     <View style={styles.flexRow}>
+                        { leftIcon }
                         <TextInput
                             ref={orgTextInput}
                             {...defInputProps}
                             style={[styles.inputStyle, _inputStyle]}
                             placeholder={placeHolder}
-                            placeholderTextColor={placeHolderColor||COLORS.GRAY_4}
+                            placeholderTextColor={placeHolderColor || COLORS.GRAY_4}
                             selectionColor={COLORS.GRAY_4}
                             numberOfLines={1}
                             secureTextEntry={isPassword}

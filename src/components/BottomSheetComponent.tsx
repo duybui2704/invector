@@ -7,10 +7,11 @@ import React, {
     useRef
 } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Dash from 'react-native-dash';
 
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import { Touchable } from './elements/touchable';
-import { Styles } from '@/theme';
+import { COLORS, Styles } from '@/theme';
 import { ItemProps } from '@/models/common-model';
 
 type BottomSheetProps = {
@@ -18,6 +19,9 @@ type BottomSheetProps = {
     onPressItem?: (item?: any) => any,
     onClose?: () => void,
     onOpen?: () => void,
+    hasDash?: boolean,
+    leftIcon?: any,
+    rightIcon?: any,
 };
 
 export type BottomSheetAction = {
@@ -35,7 +39,10 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             data,
             onPressItem,
             onClose,
-            onOpen
+            onOpen,
+            hasDash,
+            leftIcon,
+            rightIcon
         }: BottomSheetProps,
 
         ref: any
@@ -74,14 +81,24 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                     hide?.();
                 };
                 return (
-                    <Touchable onPress={onPress} style={styles.valueContainer}>
-                        <View style={styles.row}>
-                            <Text style={styles.value}>{item.value}</Text>
-                        </View>
-                    </Touchable>
+                    <>
+                        <Touchable onPress={onPress} style={styles.valueContainer}>
+                            <View style={styles.row}>
+                                {leftIcon}
+                                <Text style={!leftIcon ? styles.value : styles.noLeftIconvalue}>{item.value}</Text>
+                                {rightIcon}
+                            </View>
+                        </Touchable>
+                        {hasDash && <Dash
+                            dashThickness={1}
+                            dashLength={10}
+                            dashGap={5}
+                            dashColor={COLORS.GRAY_13}
+                        />}
+                    </>
                 );
             },
-            [hide, onPressItem]
+            [hasDash, hide, leftIcon, onPressItem, rightIcon]
         );
 
         const keyExtractor = useCallback((index) => {
@@ -104,7 +121,6 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                         style={styles.flatList}
                         keyExtractor={keyExtractor}
                     />
-
                 </BottomSheetModal>
             </View>
         );
@@ -119,7 +135,8 @@ const styles = StyleSheet.create({
         padding: 24
     },
     valueContainer: {
-        marginBottom: 12
+        width: '100%',
+        paddingVertical: 10
     },
     value: {
         flex: 1,
@@ -128,11 +145,20 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        marginHorizontal: 16
+        marginHorizontal: 16,
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     flatList: {
         flex: 1,
         marginTop: 0,
         paddingHorizontal: 16
+    },
+    noLeftIconvalue:{
+        flex: 1,
+        ...Styles.typography.regular,
+        fontSize: Configs.FontSize.size16,
+        paddingLeft: 25
     }
+
 });

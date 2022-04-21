@@ -27,6 +27,8 @@ import Manual from '@/screen/profile/Manual';
 import Help from '@/screen/profile/Help';
 import PaymentMethod from '@/screen/profile/PaymentMethod';
 import AccountBank from '@/screen/profile/AccountBank';
+import VerifyOTP from '@/screen/profile/VerifyOTP';
+import ConfirmPhone from '@/screen/profile/ConfirmPhone';
 
 const TabsData = [
     {
@@ -114,6 +116,8 @@ const AccountStack = () => {
             <Stack.Screen name={ScreenName.help} component={Help} /> 
             <Stack.Screen name={ScreenName.paymentMethod} component={PaymentMethod} /> 
             <Stack.Screen name={ScreenName.accountBank} component={AccountBank} /> 
+            <Stack.Screen name={ScreenName.confirmPhone} component={ConfirmPhone} />
+            <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} /> 
         </Stack.Navigator>
     );
 };
