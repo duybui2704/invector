@@ -19,7 +19,6 @@ import Onboarding from '@/screen/onBoarding';
 const screenOptions = { headerShown: false };
 const Stack = createNativeStackNavigator();
 
-
 export const isIOS = Platform.OS === 'ios';
 
 const RootStack = observer(() => {
@@ -76,8 +75,8 @@ const RootStack = observer(() => {
     const AppStack = useCallback(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
-                 <Stack.Screen name={ScreenName.onBoard} component={Onboarding}/>
-                 <Stack.Screen name={ScreenName.auth} component={AuthStack} />
+                 {/*<Stack.Screen name={ScreenName.onBoard} component={Onboarding}/>*/}
+                 {/*<Stack.Screen name={ScreenName.auth} component={AuthStack} />*/}
                  <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
             </Stack.Navigator>
         );

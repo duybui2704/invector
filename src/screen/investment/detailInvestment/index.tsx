@@ -15,14 +15,11 @@ import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
 import ItemInfoContract from '@/components/ItemInfoContract';
 
-
-
-const DetailInvestment = observer(({ route }: any) => {
+export const DetailInvestment = observer(({ route }: any) => {
 
     const { status } = route?.params as any;
 
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string, visible?: boolean) => {
-
         return (
             <ItemInfoContract label={label} value={value} colorText={colorText} />
         );
@@ -50,7 +47,7 @@ const DetailInvestment = observer(({ route }: any) => {
                     <Text style={[styles.txtValue, txtMoney]}>{Utils.formatMoney(1245000)}</Text>
                     <View style={styles.wrapItemInfo}>
                         <Text style={styles.txtDate}>16/4/2022</Text>
-                        <Text style={[styles.txtDue, txtDue]}>Đã thanh toán</Text>
+                        <Text style={[styles.txtDue, txtDue]}>{due ? Languages.detailInvest.paid : Languages.detailInvest.unpaid}</Text>
                     </View>
                 </View>
             </>
@@ -78,12 +75,23 @@ const DetailInvestment = observer(({ route }: any) => {
                         {renderItem()}
                     </View>
                 );
-            default:
+            case ENUM_INVEST_STATUS.HISTORY:
                 return (
-                    <Touchable style={styles.button}>
-                        <Text style={styles.txtBt}>{Languages.detailInvest.reinvest}</Text>
-                    </Touchable>
+                   <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                       <View style={styles.wrapInfo}>
+                           <Text style={styles.title}>{Languages.detailInvest.information}</Text>
+                           {renderItem(true)}
+                           {renderItem(true)}
+                           {renderItem(true)}
+                           {renderItem(true)}
+                       </View>
+                       <Touchable style={styles.button} onPress={navigateToInvest}>
+                           <Text style={styles.txtBt}>{Languages.detailInvest.reinvest}</Text>
+                       </Touchable>
+                   </View>
                 );
+            default:
+               break;
         }
     }, [navigateToInvest, renderItem, status]);
 
@@ -112,8 +120,6 @@ const DetailInvestment = observer(({ route }: any) => {
         </View>
     );
 });
-
-export default DetailInvestment;
 
 
 

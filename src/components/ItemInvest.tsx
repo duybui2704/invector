@@ -8,13 +8,15 @@ import Languages from '@/common/Languages';
 import IcBtnInvest from '@/assets/image/ic_button_invest.svg';
 import { Configs } from '@/common/Configs';
 import Utils from '@/utils/Utils';
+import {ENUM_INVEST_STATUS} from "@/common/constants";
 
 type ItemProps = {
     data?: any;
     onPress?: () => void
     hasButton?: boolean | true
+    title?: string
 };
-const ItemInvest = ({ data, onPress, hasButton }: ItemProps
+const ItemInvest = ({ data, onPress, hasButton, title }: ItemProps
 ) => {
     const styleText = {
         color: hasButton ? COLORS.GREEN : COLORS.GRAY_7
@@ -38,10 +40,16 @@ const ItemInvest = ({ data, onPress, hasButton }: ItemProps
                     <Text style={styles.txtInterest}>{Languages.invest.time}</Text>
                     <Text style={styles.txtFormality}>{data?.time}</Text>
                 </View>
-                <View style={styles.wrapText}>
-                    <Text style={styles.txtInterest}>{Languages.invest.intent}</Text>
-                    <Text style={styles.greenText}>{Utils.formatMoney(data?.amountMoney)}</Text>
-                </View>
+                {title === ENUM_INVEST_STATUS.HISTORY ?
+                    <View style={styles.wrapText}>
+                        <Text style={styles.txtInterest}>{Languages.invest.sumMoney}</Text>
+                        <Text style={styles.greenText}>{Utils.formatMoney(data?.sumMoney)}</Text>
+                    </View> :
+                    <View style={styles.wrapText}>
+                        <Text style={styles.txtInterest}>{Languages.invest.intent}</Text>
+                        <Text style={styles.greenText}>{Utils.formatMoney(data?.amountMoney)}</Text>
+                    </View>
+                }
             </View>
             <Dash
                 dashThickness={1}
@@ -53,7 +61,7 @@ const ItemInvest = ({ data, onPress, hasButton }: ItemProps
                     <Text style={styles.txtInterest} >{Languages.invest.formalPayment}</Text>
                     <Text style={styles.txtFormality}>{data?.formality}</Text>
                 </View>
-                {hasButton ? <Touchable onPress={onPress} style={styles.btInvestNow}>
+                {title === ENUM_INVEST_STATUS.INVEST_NOW ? <Touchable onPress={onPress} style={styles.btInvestNow}>
                     <Text style={styles.txtInvestNow}>{Languages.invest.investNow}</Text>
                     <IcBtnInvest />
                 </Touchable> :

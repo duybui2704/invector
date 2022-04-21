@@ -5,7 +5,7 @@ import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
 import DimensionUtils from '@/utils/DimensionUtils';
 
-export const MyStylePupUpSignIn = () => {
+export const MyStylePupUp = () => {
     return useMemo(() =>
         StyleSheet.create({
             popup: {
@@ -18,24 +18,21 @@ export const MyStylePupUpSignIn = () => {
             tobModal: {
                 flexDirection: 'column',
                 width: '85%',
-                height: '50%',
+                height: '40%',
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 10,
                 justifyContent: 'center',
                 alignItems: 'center'
             },
             tobView: {
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                width: '80%',
-                alignItems: 'center'
+                height: 50,
+                marginBottom: 30
             },
             textModel: {
                 fontSize: 20,
-                fontFamily: 'Roboto-Medium',
+                fontFamily: Configs.FontFamily.bold,
                 textAlign: 'center',
-                color: COLORS.GRAY
+                color: COLORS.BLACK
             },
             smallButton: {
                 borderWidth: 1,
@@ -59,9 +56,37 @@ export const MyStylePupUpSignIn = () => {
             },
             viewFL: {
                 width: '100%',
-                height: '80%',
+                height: '40%',
                 justifyContent: 'center',
                 alignItems: 'center'
+            },
+            inputPhone: {
+                marginTop: 15,
+                borderRadius: 30,
+                height: Configs.FontSize.size40,
+                width: '90%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row'
+            },
+            textConfirm: {
+                fontSize: Configs.FontSize.size14,
+                fontFamily: Configs.FontFamily.regular,
+                color: COLORS.WHITE
+            },
+            tobConfirm: {
+                width: '40%',
+                height: 40,
+                borderRadius: 20,
+                backgroundColor: COLORS.GREEN,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginHorizontal: 12
+            },
+            viewBottom: {
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginVertical: 20
             }
         })
         , []);

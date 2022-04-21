@@ -9,7 +9,9 @@ import DimensionUtils from '@/utils/DimensionUtils';
 
 const styles = StyleSheet.create({
     main: {
-        flex: 1
+        flex: 1,
+        width: DimensionUtils.SCREEN_WIDTH,
+        height: DimensionUtils.SCREEN_HEIGHT
     },
     wrapContent: {
         marginHorizontal: 16

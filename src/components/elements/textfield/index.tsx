@@ -23,6 +23,8 @@ import IcName from '@/assets/image/auth/ic_name_auth.svg';
 import IcHidePass from '@/assets/image/auth/ic_hide_pass.svg';
 import IcShowPass from '@/assets/image/auth/ic_show_pass.svg'
 import IcSearch from '@/assets/image/ic_search.svg';
+import ICUnderArrow from "@/assets/image/ic_under_arrow.svg";
+import Languages from "@/common/Languages";
 
 export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
     (
@@ -206,7 +208,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
 
         const checkIconPass = useCallback(() => {
             setIconPass(!iconPass);
-        }, [iconPass])
+        }, [iconPass, value])
 
         const checkIconRight = useMemo(() => {
             switch (rightIcon){
@@ -236,11 +238,12 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                     return <IcName width={20} height={20}/>;
                 case arrayIcon.login.search:
                     return <IcSearch />;
+                case arrayIcon.login.channel:
+                    return <ICUnderArrow/>;
                 default:
                     return null;
             }
         }, [rightIcon, value, iconPass]);
-
 
         return (
             <>
@@ -257,7 +260,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                             placeholderTextColor={placeHolderColor||COLORS.GRAY_4}
                             selectionColor={COLORS.GRAY_4}
                             numberOfLines={1}
-                            secureTextEntry={iconPass}
+                            secureTextEntry={isPassword ? iconPass : false}
                             autoCorrect={false}
                             autoCapitalize="none"
                             value={`${textfieldVal}`}

@@ -1,0 +1,19 @@
+export type PopupProps = {
+    onClose?: () => any;
+    onConfirm?: () => any;
+    onChange?: () => any;
+    onBackdropPress?: () => any;
+    content?: string;
+    btnText?: string;
+    description?:string;
+    title?:string,
+    data?: []
+};
+
+export type PopupActions = {
+    show: (content?: string) => any;
+    hide: (content?: string) => any;
+    setContent?: (message: string) => void
+};
+
+
