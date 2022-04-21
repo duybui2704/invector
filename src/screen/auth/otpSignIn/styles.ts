@@ -57,22 +57,9 @@ export const MyStylesOtp = () => {
                 color: COLORS.GRAY_9,
                 marginBottom: 20
             },
-            resentCode: {
-                ...Styles.typography.medium,
-                color: COLORS.GREEN
-            },
-            color: {
-                color: COLORS.RED_1
-            },
-            buttonResend: {
-                alignItems: 'center'
-            },
-            resendCode: {
-                width: DimensionUtils.SCREEN_WIDTH / 3
-            },
             txtTitle: {
+                ...Styles.typography.bold,
                 fontSize: Configs.FontSize.size20,
-                fontFamily: 'bold',
                 color: COLORS.BLACK
             },
             tobConfirm: {
@@ -85,8 +72,8 @@ export const MyStylesOtp = () => {
                 alignItems: 'center'
             },
             txtConfirm: {
-                color: COLORS.WHITE,
-                fontSize: Configs.FontSize.size14
+                ...Styles.typography.regular,
+                color: COLORS.WHITE
             },
             sentOtp: {
                 width: DimensionUtils.SCREEN_WIDTH * 0.3,
@@ -95,8 +82,8 @@ export const MyStylesOtp = () => {
                 marginHorizontal: 5
             },
             txtOtp: {
-                color: COLORS.RED,
-                fontSize: Configs.FontSize.size14
+                ...Styles.typography.regular,
+                color: COLORS.RED
             }
         })
         , []);

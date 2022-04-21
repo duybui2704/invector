@@ -13,12 +13,15 @@ import { isIOS } from '../../../common/Configs';
 import { COLORS } from '../../../theme';
 import Validate from '@/utils/Validate';
 import { myTextFieldStyle } from './styles';
+import { Touchable } from '../touchable';
 import { TextFieldActions, TextFieldProps, TypeKeyBoard } from './types';
 import arrayIcon from '@/common/arrayIcon';
 import IcPhone from '@/assets/image/auth/ic_phone_auth.svg';
 import IcPass from '@/assets/image/auth/ic_pass_auth.svg';
 import IcEmailAuth from '@/assets/image/auth/ic_email_auth.svg';
 import IcName from '@/assets/image/auth/ic_name_auth.svg';
+import IcHidePass from '@/assets/image/auth/ic_hide_pass.svg';
+import IcShowPass from '@/assets/image/auth/ic_show_pass.svg';
 import IcSearch from '@/assets/image/ic_search.svg';
 
 export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
@@ -62,8 +65,10 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         const [isFocusing, setFocus] = useState<boolean>(false);
         const [textfieldVal, setTextfieldVal] = useState<string>(`${value || ''}`);
         const [errMsg, setErrMsg] = useState<string>('');
+        const [iconPass, setIconPass] = useState<boolean>(true);
         const [animation] = useState(new Animated.Value(0));
         const styles = myTextFieldStyle();
+
 
         const orgTextInput = useRef<TextInput>(null);
 
@@ -199,15 +204,33 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             startShake();
         }, [startShake]);
 
+        const checkIconPass = useCallback(() => {
+            setIconPass(!iconPass);
+        }, [iconPass]);
+
         const checkIconRight = useMemo(() => {
             switch (rightIcon) {
                 case arrayIcon.login.phone:
                     return <IcPhone width={20} height={20} />;
                 case arrayIcon.login.pass:
+                    if (value) {
+                        return (
+                            <Touchable onPress={checkIconPass}>
+                                {iconPass ? <IcHidePass width={20} height={20} /> : <IcShowPass width={20} height={20} />}
+                            </Touchable>
+                        );
+                    }
                     return <IcPass width={20} height={20} />;
                 case arrayIcon.login.email:
                     return <IcEmailAuth width={20} height={20} />;
                 case arrayIcon.login.confirmPass:
+                    if (value) {
+                        return (
+                            <Touchable onPress={checkIconPass}>
+                                {iconPass ? <IcHidePass width={20} height={20} /> : <IcShowPass width={20} height={20} />}
+                            </Touchable>
+                        );
+                    }
                     return <IcPass width={20} height={20} />;
                 case arrayIcon.login.name:
                     return <IcName width={20} height={20} />;
@@ -216,7 +239,8 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                 default:
                     return null;
             }
-        }, [rightIcon]);
+        }, [rightIcon, value, checkIconPass, iconPass]);
+
 
         return (
             <>
@@ -225,7 +249,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                     ref={ref}
                 >
                     <View style={styles.flexRow}>
-                        { leftIcon }
+                        {leftIcon}
                         <TextInput
                             ref={orgTextInput}
                             {...defInputProps}
@@ -234,7 +258,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                             placeholderTextColor={placeHolderColor || COLORS.GRAY_4}
                             selectionColor={COLORS.GRAY_4}
                             numberOfLines={1}
-                            secureTextEntry={isPassword}
+                            secureTextEntry={iconPass}
                             autoCorrect={false}
                             autoCapitalize="none"
                             value={`${textfieldVal}`}

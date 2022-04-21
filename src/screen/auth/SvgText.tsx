@@ -14,15 +14,14 @@ const SvgComponent = observer((props: any) => {
     const [login, setLogin] = useState<boolean>(true);
     const [signUp, setSignUp] = useState<boolean>(false);
     const [forgotPwd, setForgotPwd] = useState<boolean>(false);
-    const [key, setKey] = useState<string>();
+    const [key, setKey] = useState<string>('');
 
     useEffect(() => {
         if (props.onNavigate) {
             props.onNavigate(key);
         }
     }, [props.onNavigate, key, props]);
-
-
+    
     const onNavigateLogin = useCallback(() => {
         setSignUp(false);
         setLogin(true);
@@ -80,7 +79,7 @@ const SvgComponent = observer((props: any) => {
                     stroke={COLORS.NO_BACKDROP}
                 >
                     <TextPath href="#circle" >
-                        <TSpan dx={DimensionUtils.SCREEN_WIDTH * 1.2 * 3} dy={-15}>
+                        <TSpan dx={DimensionUtils.SCREEN_WIDTH * 1.2 * 3.005} dy={-15}>
                             {Languages.auth.txtD}
                         </TSpan>
                     </TextPath>

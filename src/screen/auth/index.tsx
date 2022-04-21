@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 
 import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
 import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';
@@ -30,14 +29,8 @@ const Auth = observer(() => {
         appManager
     } = useAppStore();
 
-    useEffect(() => {
-        setTimeout(() => {
-            StatusBar.setBarStyle(isFocused ? 'light-content' : 'dark-content', true);
-        }, 10);
-    }, [isFocused]);
-
     const onNavigate = (key: string) => {
-        switch (key){
+        switch (key) {
             case Languages.auth.txtLogin:
                 setIsNavigate(key);
                 break;
@@ -63,30 +56,33 @@ const Auth = observer(() => {
 
     const onLoginFacebook = useCallback(async () => {
         const data = await loginWithFacebook();
-        console.log('data: ', data);
     }, []);
 
     const onLoginGoogle = useCallback(async () => {
         const userInfo = await loginWithGoogle();
-        console.log('userInfo', userInfo);
         // if (userInfo) initUser(ENUM_PROVIDER.GOOGLE, userInfo?.user?.id);
     }, []);
 
     return (
         <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
-            {/* < StatusBar barStyle={'light-content'} backgroundColor={COLORS.GREEN_1}/> */}
+            <StatusBar
+                barStyle={'light-content'}
+                animated
+                translucent
+                backgroundColor={COLORS.TRANSPARENT}
+            />
             <View style={styles.viewSvg}>
-                <SvgComponent onNavigate={onNavigate}/>
+                <SvgComponent onNavigate={onNavigate} />
             </View>
             <View style={styles.wrapAll}>
-                {isNavigate === Languages.auth.txtLogin ? <Login/> : 
+                {isNavigate === Languages.auth.txtLogin ? <Login/> :
                     isNavigate === Languages.auth.txtSignUp ? <SignUp/> : <ForgotPass/>
                 }
                 <View style={styles.viewBottom}>
                     <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
                     <View style={styles.viewIcon}>
                         <Touchable style={styles.icon} onPress={onLoginFacebook}>
-                            <IcFaceAuth  />
+                            <IcFaceAuth />
                         </Touchable>
                         <Touchable style={styles.icon} onPress={onLoginGoogle}>
                             <IcGoogleAuth />

@@ -5,7 +5,7 @@ import { Configs, PADDING_TOP } from '@/common/Configs';
 import { COLORS, Styles } from '@/theme';
 import DimensionUtils from '@/utils/DimensionUtils';
 
-export const myStylesSign = () => {
+export const MyStylesSign = () => {
     return useMemo(() => {
         return StyleSheet.create({
             container: {
@@ -24,14 +24,9 @@ export const myStylesSign = () => {
                 alignItems: 'center',
                 paddingBottom: 15
             },
-            txt: {
-                color: COLORS.WHITE,
-                fontSize: Configs.FontSize.size20,
-                borderRadius: 20
-            },
             txtTitleModal: {
+                ...Styles.typography.regular,
                 color: COLORS.GRAY,
-                fontSize: 14,
                 marginHorizontal: 20
             },
             inputPass: {
@@ -45,12 +40,13 @@ export const myStylesSign = () => {
             },
             containerOverViewPicker:{
                 marginTop: 12,
-                borderRadius: 30,
+                borderRadius: 20,
                 borderWidth: 1 ,
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 flexDirection: 'row',
                 width: '100%',
+                height: Configs.FontSize.size40,
                 borderColor: COLORS.GRAY_11
             },
             valuePicker:{
@@ -150,46 +146,9 @@ export const myStylesSign = () => {
                 alignItems: 'center'
             },
             txtLogin: {
-                fontSize: 16,
-                fontWeight: '600',
+                ...Styles.typography.regular,
+                fontSize: Configs.FontSize.size16,
                 color: COLORS.WHITE
-            },
-            image: {
-                position: 'absolute',
-                zIndex: -1
-            },
-            form: {
-                // height: SCREEN_HEIGHT - (HEADER_PADDING + STATUSBAR_HEIGHT)
-            },
-            swapInput: {
-                paddingHorizontal: 15,
-                paddingTop: 15
-            },
-            formInput: {
-                marginBottom: 15,
-                borderRadius: 20,
-                height: 40
-            },
-            startVal: {
-                ...Styles.typography.regular,
-                color: COLORS.RED
-            },
-            label: {
-                ...Styles.typography.regular,
-                marginBottom: 5
-            },
-            buttonContainer: {
-                marginVertical: 20
-            },
-            channelContainer: {
-                marginTop: 0,
-                marginBottom: 15
-            },
-            viewIcon: {
-                position: 'absolute',
-                right: 15,
-                justifyContent: 'center',
-                alignItems: 'center'
             }
         });
     }, []);

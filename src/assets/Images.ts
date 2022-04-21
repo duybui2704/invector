@@ -17,6 +17,11 @@ const ic_payment_on = require('./image/bottomTabs/ic_payment_on.png');
 const bg_header_home = require('./image/header/bg_header_home.jpg');
 const logo_header_home = require('./image/header/logo_header_home.png');
 
+// boarding
+const bg_board1 = require('./image/boarding/bg_board1.jpg');
+const bg_board2 = require('./image/boarding/bg_board2.jpg');
+const bg_board3 = require('./image/boarding/bg_board3.jpg');
+
 export default {
     // Tabs
     ic_home,
@@ -32,5 +37,8 @@ export default {
     bg_header_home,
     logo_header_home,
     bg_login,
-    bg_successSignUp
+    bg_successSignUp,
+    bg_board1,
+    bg_board2,
+    bg_board3
 };

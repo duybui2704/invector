@@ -1,4 +1,12 @@
 const Languages = {
+    board: {
+        title1: 'Đầu tư an toàn cùng Tienngay.vn',
+        txt1: 'TienNgay.vn có giấy phép kinh doanh và hoạt động theo quy định của pháp luật và đồng nhất trên toàn hệ thống. Số tiền lãi được trả đúng hạn theo cam kết, giải quyết thắc mắc (nếu có) tận tình, nhanh chóng',
+        title2: 'Lãi suất hấp dẫn cùng Tienngay ',
+        txt2: 'Tham gia gửi tiền có kỳ hạn Online tại Tienngay để có thêm thời gian tận hưởng cuộc sống và luôn an tâm rằng tiền của bạn đang sinh lời với lãi suất hấp dẫn.',
+        title3: 'Rõ ràng - Minh bạch',
+        txt3: 'Tất cả các thao tác của Nhà đầu tư được ghi lại bằng hệ thống của TienNgay.vn, đảm bảo số tiền lãi nhận về rõ ràng, minh bạch.'
+    },
     transaction: {
         title: 'Lịch sử giao dịch',
         debtNow: 'Số dư hiện có',
@@ -28,7 +36,11 @@ const Languages = {
         todoInvest: 'Làm thế nào để đầu tư vào Tienngay.vn?',
         todoWithDrawMoney: 'Làm thế nào để rút tiền từ Tienngay.vn?',
         percentCalculated: 'Phần trăm lãi đầu tư được tính như thế nào?',
-        paymentMethod: 'Hình thức trả tiền như thế nao?'
+        paymentMethod: 'Hình thức trả tiền như thế nào?',
+        interestRateMonth: 'Lãi xuất tháng',
+        timeInvest: 'Thời gian đầu tư',
+        interestExpected: 'Lãi dự kiến',
+        formInterestPay: 'Hình thức trả lãi'
 
     },
     invest: {

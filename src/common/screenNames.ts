@@ -9,7 +9,7 @@ export const ScreenName = {
     report: 'Report',
     payment: 'Payment',
     account: 'Account',
-    introduce: 'Introduce',
+    onBoard: 'OnBoard',
     transaction: 'Transaction',
     accountInfo: 'AccountInfo',
     editAccountInfo: 'EditAccountInfo',
