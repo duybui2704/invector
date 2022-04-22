@@ -30,7 +30,7 @@ export type TextFieldProps = {
     placeHolderColor?:string;
     // true:  unit  vndong: 'VNĐ', false: unit dong: 'đ',
     backgroundColor?: any;
-    leftIcon?: string;
+    leftIcon?: any;
     iconSize?: number;
     inputStyle?: any;
     inputStylePwDIcon?:ViewStyle,

@@ -124,6 +124,16 @@ export enum ENUM_METHOD_PAYMENT {
     NGAN_LUONG = 'NGAN_LUONG'
 };
 
+export enum ENUM_TYPE_CARD_BANK {
+    ACCOUNT_NUMBER = 'Số tài khoản',
+    ATM_NUMBER = 'Số thẻ ATM'
+};
+
+export enum LINK_TIENNGAY {
+    LINK_TIENNGAY_WEB = 'https://tienngay.vn/',
+    LINK_TIENNGAY_FACEBOOK = 'https://www.facebook.com/tienngay.vn/'
+};
+
 
 export enum LINKS {
     WEB = 'https://tienngay.vn/',

@@ -1,21 +1,22 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useCallback } from 'react';
+import { Text, View } from 'react-native';
 
 import LinkIC from '@/assets/image/ic_linked_acc_social.svg';
-import NotLinkIC from '@/assets/image/ic_not_linked_acc_social.svg';
+import AppleIC from '@/assets/image/ic_link_apple_store.svg';
 import FaceBookIC from '@/assets/image/ic_link_fb.svg';
 import GoogleIC from '@/assets/image/ic_link_gg.svg';
-import AppleIC from '@/assets/image/ic_link_apple_store.svg';
+import NotLinkIC from '@/assets/image/ic_not_linked_acc_social.svg';
 import { isIOS } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
-import { COLORS, Styles } from '@/theme';
 import { dataUser } from '@/mocks/data';
 import { loginWithApple, loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
+import { MyStylesAccountLink } from './styles';
 
 const AccountLink = observer(() => {
+    const styles = MyStylesAccountLink();
     const renderStateLink = useCallback((status?:boolean) => {
         return (
             <>
@@ -25,7 +26,7 @@ const AccountLink = observer(() => {
                 }
             </>
         );
-    }, []);
+    }, [styles.redText, styles.stateItemLink]);
 
     const renderRightIcon = useCallback((status?:boolean) => {
         return (
@@ -82,7 +83,7 @@ const AccountLink = observer(() => {
                 </View>
             </Touchable>
         );
-    }, [onLoginApple, onLoginFacebook, onLoginGoogle, renderRightIcon, renderStateLink]);
+    }, [onLoginApple, onLoginFacebook, onLoginGoogle, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemSocial, styles.wrapRightItemSocial]);
 
     return (
         <View style={styles.container}>
@@ -98,54 +99,3 @@ const AccountLink = observer(() => {
 });
 
 export default AccountLink;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_15
-    },
-    wrapAllContent: {
-        paddingHorizontal: 16,
-        paddingTop: 10
-    },
-    wrapItemSocial: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        paddingVertical: 10,
-        borderWidth: 1,
-        borderColor: COLORS.GRAY_2,
-        borderRadius: 18,
-        paddingHorizontal: 16,
-        marginTop: 16
-    },
-    wrapRightItemSocial: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        width: '80%'
-    },
-    titleItemLink: {
-        ...Styles.typography.medium,
-        color: COLORS.GRAY_7
-    },
-    stateItemLink: {
-        ...Styles.typography.regular,
-        color: COLORS.GREEN
-    },
-    wrapRightIcon: {
-        width: 32,
-        height: 32,
-        borderWidth: 1,
-        borderRadius: 30,
-        borderColor: COLORS.GRAY_12,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    redText:{
-        color:COLORS.RED
-    },
-    greenBorder:{
-        borderColor:COLORS.GREEN
-    }
-});

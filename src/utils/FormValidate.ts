@@ -113,10 +113,13 @@ function passConFirmPhone(phone: string) {
     }
     return errMsg;
 }
-function inputNameEmpty(value: any, errEmpty: string) {
+
+function inputNameEmpty (value: any, errEmpty: string, errCharacters?: any) {
     let errMsg = '';
     if (Validate.isStringEmpty(value)) {
         errMsg = errEmpty;
+    } else if (!validateSpecialCharacters(value)) {
+        errMsg = errCharacters;
     }
     return errMsg;
 }
@@ -157,6 +160,23 @@ function birthdayValidate(birthday: string) {
     return errMsg;
 }
 
+function inputValidate (
+    value: any,
+    errEmpty: string,
+    errSyntax?: any,
+    numOperator?: number
+) {
+    let errMsg = '';
+    const number = numOperator || 16;
+
+    if (Validate.isStringEmpty(value)) {
+        errMsg = errEmpty;
+    } else if (value.length > number) {
+        errMsg = errSyntax;
+    }
+    return errMsg;
+}
+
 export default {
     userNameValidate,
     emailValidate,
@@ -168,5 +188,6 @@ export default {
     genderValidate,
     addressValidate,
     jobValidate,
-    birthdayValidate
+    birthdayValidate,
+    inputValidate
 };

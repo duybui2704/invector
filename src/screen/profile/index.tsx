@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useState, useRef } from 'react';
-import { View, StyleSheet, Text, Platform } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { observer } from 'mobx-react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
@@ -21,14 +21,14 @@ import PhoneIC from '@/assets/image/ic_phone.svg';
 import ShareIC from '@/assets/image/ic_share.svg';
 import AnswerIC from '@/assets/image/ic_answer.svg';
 import LinkAccIC from '@/assets/image/ic_acc_link.svg';
-import ArrowIC from '@/assets/image/ic_under_arrow.svg';
+import ArrowIC from '@/assets/image/ic_right_arrow.svg';
 import KeyValue from '@/components/KeyValue';
 import HeaderBar from '@/components/header';
 import { COLORS, Styles } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';
 import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
-import { Configs } from '@/common/Configs';
+import { Configs, isIOS } from '@/common/Configs';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { ScreenName } from '@/common/screenNames';
@@ -36,7 +36,7 @@ import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 import KeyToggleValue from '@/components/KeyToggleSwitch';
-import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC, messageError, StorageKeys } from '@/common/constants';
+import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC, GET_LINK_INVESTOR, LINK_TIENNGAY, messageError, StorageKeys } from '@/common/constants';
 import PopupConfirmBiometry from '@/components/PopupConfirmBiometry';
 import { PopupActionTypes } from '@/models/typesPopup';
 import PopupErrorBiometry from '@/components/PopupErrorBiometry';
@@ -44,6 +44,7 @@ import { PinCode, PinCodeT } from '@/components/pinCode';
 import { CustomBackdropBottomSheet } from '@/components/CustomBottomSheet';
 import StorageUtils from '@/utils/StorageUtils';
 import ToastUtils from '@/utils/ToastUtils';
+import Utils from '@/utils/Utils';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -64,6 +65,17 @@ const Profile = observer(() => {
         duration: 800
     });
     const [errorText, setErrorText] = useState<string>('');
+
+    const callPhone = useCallback(() => {
+        Utils.callNumber(Languages.common.hotline);
+    }, []);
+
+    const onLinkRate = useCallback(() => {
+        if (isIOS) {
+            return  Utils.openURL(GET_LINK_INVESTOR.LINK_IOS);
+        }
+        return  Utils.openURL(GET_LINK_INVESTOR.LINK_ANDROID);
+    }, []);
 
     const onNavigateAccInfo = useCallback(() => {
         return Navigator.pushScreen(ScreenName.accountInfo);
@@ -96,6 +108,21 @@ const Profile = observer(() => {
                 case Languages.account.payMethod:
                     Navigator.pushScreen(ScreenName.paymentMethod);
                     break;
+                case Languages.account.hotline:
+                    callPhone();
+                    break;
+                case Languages.account.policy:
+                    Navigator.pushScreen(ScreenName.policy);
+                    break;
+                case Languages.account.web:
+                    Utils.openURL(LINK_TIENNGAY.LINK_TIENNGAY_WEB);
+                    break;
+                case Languages.account.facebook:
+                    Utils.openURL(LINK_TIENNGAY.LINK_TIENNGAY_FACEBOOK);
+                    break;
+                case Languages.account.rate:
+                    onLinkRate();
+                    break;
                 default:
                     break;
             }
@@ -112,7 +139,7 @@ const Profile = observer(() => {
                 containerContent={styles.featureContainer}
             />
         );
-    }, []);
+    }, [callPhone, onLinkRate]);
 
     const onToggleBiometry = useCallback(
         (value) => {
@@ -125,7 +152,7 @@ const Profile = observer(() => {
                     .catch((error) => {
                         console.log(error);
                         let message;
-                        if (Platform.OS === 'ios') {
+                        if (isIOS) {
                             if (supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
                                 message = messageError(ERROR_BIOMETRIC.ErrorFaceId);
                             }
@@ -152,7 +179,7 @@ const Profile = observer(() => {
     );
 
     const onConfirm = useCallback(() => {
-        if (Platform.OS === 'ios') {
+        if (isIOS) {
             popupConfirm?.current?.hide?.();
             PasscodeAuth.authenticate(
                 supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID
@@ -234,21 +261,27 @@ const Profile = observer(() => {
         switch (dataUser?.accuracy) {
             case 1:
                 return (
-                    <Touchable style={styles.accuracyWrap}>
+                    <View style={styles.accuracyWrap}>
                         <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
-                    </Touchable>
+                    </View>
                 );
             case 2:
                 return (
-                    <Touchable style={styles.notAccuracyWrap} disabled={true}>
+                    <View style={styles.notAccuracyWrap}>
                         <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
-                    </Touchable>
+                    </View>
+                );
+            case 3:
+                return (
+                    <View style={styles.waitAccuracyWrap}>
+                        <Text style={styles.txtWaitAccuracy}>{Languages.account.waitVerify}</Text>
+                    </View>
                 );
             default:
                 return (
-                    <Touchable style={styles.notAccuracyWrap} disabled={true}>
+                    <View style={styles.notAccuracyWrap}>
                         <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
-                    </Touchable>
+                    </View>
                 );
         }
     }, []);
@@ -292,27 +325,25 @@ const Profile = observer(() => {
         <View style={styles.container}>
             <HeaderBar title={Languages.account.title} isLight={false} />
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
-                <View style={styles.accContainer}>
-                    <Touchable onPress={onNavigateAccInfo}>
-                        {!dataUser.avatar ?
-                            <AvatarIC style={styles.circleWrap} />
-                            :
-                            <FastImage
-                                style={styles.circleWrap}
-                                source={{
-                                    uri: dataUser?.avatar
-                                }}
-                                resizeMode={FastImage.resizeMode.cover}
-                            />
-                        }
-                    </Touchable>
+                <Touchable style={styles.accContainer} onPress={onNavigateAccInfo}>
+                    {!dataUser.avatar ?
+                        <AvatarIC style={styles.circleWrap} />
+                        :
+                        <FastImage
+                            style={styles.circleWrap}
+                            source={{
+                                uri: dataUser?.avatar
+                            }}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                    }
                     <View style={styles.headerAccRight}>
                         <Text style={styles.headerAccName}>{dataUser.full_name || ''}</Text>
                         <Text style={styles.headerAccPhone}>{dataUser.phone_number || ''}</Text>
                         {renderAccuracy}
                     </View>
                     <ArrowIC />
-                </View>
+                </Touchable>
                 {renderKeyValue(Languages.account.payMethod, <PayMethodIC />, true)}
                 <View style={styles.containerFeature}>
                     {renderKeyValue(Languages.account.changePwd, <ChangePwdIC />)}
@@ -408,6 +439,13 @@ const styles = StyleSheet.create({
         marginTop: 5,
         paddingVertical: 4
     },
+    waitAccuracyWrap: {
+        backgroundColor: COLORS.YELLOW_3,
+        borderRadius: 70,
+        alignItems: 'center',
+        marginTop: 5,
+        paddingVertical: 4
+    },
     accuracyWrap: {
         backgroundColor: COLORS.WHITE_GREEN,
         borderRadius: 70,
@@ -439,6 +477,13 @@ const styles = StyleSheet.create({
         color: COLORS.RED_2,
         fontSize: Configs.FontSize.size12,
         paddingHorizontal: 60
+    },
+    txtWaitAccuracy: {
+        ...Styles.typography.medium,
+        color: COLORS.YELLOW_2,
+        fontSize: Configs.FontSize.size12,
+        textAlign: 'center',
+        paddingHorizontal: 16
     },
     txtAccuracy: {
         ...Styles.typography.medium,

@@ -79,7 +79,8 @@ const Languages = {
         rate: 'Đánh giá cho TienNgay.vn',
         accVerified: 'Tài khoản đã xác thực',
         accuracyNow: 'Xác thực ngay',
-        logout: 'Đăng xuất'
+        logout: 'Đăng xuất',
+        waitVerify: 'Tài khoản đang chờ xác thực'
     },
     report: {
         title: 'Báo cáo',
@@ -103,7 +104,7 @@ const Languages = {
         cancel: 'Hủy',
         continue: 'Tiếp tục',
         VND: 'VNĐ',
-        hotline: '1900690'
+        hotline: '18006907'
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng Tienngay',
@@ -166,7 +167,11 @@ const Languages = {
         jobRegex: 'Nghề nghiệp không được chứa kí tự đặc biệt',
         birthdayNull: 'Ngày sinh không được để trống',
         birthdayRegex: 'Ngày sinh không đúng định dạng (vd: 05/11/1999)',
-        birthdayCompare18: 'Chưa đủ 18 tuổi'
+        birthdayCompare18: 'Chưa đủ 18 tuổi',
+        errStk: 'Số tài khoản hoặc số thẻ vượt quá giới hạn cho phép',
+        errStkEmpty: 'Số tài khoản hoặc số thẻ trống',
+        errNameEmpty: 'Tên chủ tài khoản ngân hàng trống',
+        errBankEmpty: 'Ngân hàng chưa được chọn'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
@@ -227,6 +232,8 @@ const Languages = {
     accountInfo:{
         accountInfo: 'Thông tin cá nhân',
         content: 'Xác thực tài khoản để tăng độ an toàn khi đầu tư và sử dụng ứng dụng',
+        noteWaitVerify: 'Tài khoản của bạn đang được xác thực, bạn có thể đầu tư ngay sau khi chứng từ được xác thực',
+        accWaitVerify: 'Tài khoản đang được xác thực',
         phoneNumber: 'Số điện thoại',
         gender: 'Giới tính',
         fullName: 'Họ và tên',
@@ -369,6 +376,21 @@ const Languages = {
         accountProviderName: 'Tên chủ tài khoản',
         noteAccountBank: '<p><r>Chú ý:</r> <s>Đây là tài khoản ngân hàng để nhận lãi, bạn cần đảm bảo chính xác thông tin tài khoản ngân hàng bạn cung cấp là chính xác.</s> <g>TienNgay.vn</g><s> sẽ không chịu trách nghiệm khi bạn nhập sai thông tin.</s></p>',
         addAccount: 'Thêm tài khoản'
+    },
+    confirmPhone: {
+        confirmPhone: 'Xác nhận số điện thoại',
+        noteConfirmPhone: '<p><r>Chú ý:</r> <s>Hãy sử dụng số điện thoại đã đăng ký tài khoản Vimo của bạn để nhận mã OTP</s></p>',
+        phone: 'Số điện thoại',
+        inputPhone: 'Nhập số điện thoại',
+        sendOTP: 'Gửi OTP',
+        verifyOTP: 'Xác nhận OTP',
+        noteVerifyOTP: '<p><r>Chú ý:</r> <s> Mã OTP đã được gửi về số điện thoại %phone, nhập mã OTP và xác nhận để liên kết tài khoản</s></p>',
+        reSendCode: 'Gửi lại mã sau ',
+        sendAgain: 'Gửi lại mã',
+        sendAgainTime: 'sau',
+        popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
+        popupOtpErrorTitle: 'Thông báo OTP',
+        popupOtpErrorDescription: 'OTP không chính xác'
     }
 
 };

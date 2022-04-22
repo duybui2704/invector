@@ -1,21 +1,21 @@
+import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { FlatList, View } from 'react-native';
 
 import ICCalender from '@/assets/image/ic_arrow_date_picker.svg';
+import Languages from '@/common/Languages';
+import DatePickerTransaction from '@/components/DatePicker';
+import { Touchable } from '@/components/elements/touchable';
+import Filter from '@/components/Filter';
+import HeaderBar from '@/components/header';
+import KeyValueTransaction from '@/components/KeyValueTransaction';
+import { useAppStore } from '@/hooks';
+import { DATA, TransactionTypes } from '@/mocks/data';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { PagingConditionTypes } from '@/models/paging';
 import { TransactionModel } from '@/models/transaction-model';
-import Languages from '@/common/Languages';
-import { useAppStore } from '@/hooks';
-import { Touchable } from '@/components/elements/touchable';
-import { DATA, TransactionTypes } from '@/mocks/data';
-import Filter from '@/components/Filter';
-import KeyValueTransaction from '@/components/KeyValueTransaction';
-import HeaderBar from '@/components/header';
-import DatePickerTransaction from '@/components/DatePicker';
-import { COLORS } from '@/theme';
+import { styles } from './styles';
 
 const Transaction = observer(() => {
     const isFocused = useIsFocused();
@@ -166,30 +166,3 @@ const Transaction = observer(() => {
 });
 
 export default Transaction;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_5
-    },
-    topBarContainer: {
-        backgroundColor: COLORS.GRAY_13,
-        borderRadius: 26,
-        marginHorizontal: 16,
-        flexDirection: 'row',
-        marginTop: 10
-    },
-    filterItem: {
-        paddingHorizontal: 2
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginHorizontal: 16,
-        marginTop: 10,
-        marginBottom: 20
-    },
-    arrow: {
-        marginTop: 6
-    }
-});

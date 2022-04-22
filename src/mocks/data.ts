@@ -1,7 +1,7 @@
 import Languages from '@/common/Languages';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { TransactionModel } from '@/models/transaction-model';
-import { UserInfoModal } from '@/models/user-modal';
+import { UserInfoModal } from '@/models/user-models';
 
 export const DATA = [
     {
@@ -107,7 +107,7 @@ export const dataUser = {
     full_name: 'Pham Minh Quý',
     phone_number: '0353826750',
     gender: 'Nam',
-    accuracy: 2,
+    accuracy: 3,
     front_card:'',
     card_back:'',
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAznG13WJ4ayysR3Q07BNXsRTdDbP0PQ_Efw&usqp=CAU',
@@ -160,3 +160,41 @@ export const dataBank = [
     { id: '6', value: 'VP Bank' }
 ];
 
+export const investData = [
+    {
+        amountMoney: 80000000,
+        percent: '0.5%',
+        intent: 100000000,
+        time: '3 tháng',
+        formality: 'Lãi gốc hàng tháng',
+        id: 1,
+        interest: 1000000
+    },
+    {
+        amountMoney: 80000000,
+        percent: '0.5%',
+        intent: 100000000,
+        time: '3 tháng',
+        formality: 'Lãi gốc hàng tháng',
+        id: 2,
+        interest: 1000000
+    },
+    {
+        amountMoney: 80000000,
+        percent: '0.5%',
+        intent: 100000000,
+        time: '3 tháng',
+        formality: 'Lãi gốc hàng tháng',
+        id: 3,
+        interest: 1000000
+    },
+    {
+        amountMoney: 80000000,
+        percent: '0.5%',
+        intent: 100000000,
+        time: '3 tháng',
+        formality: 'Lãi gốc hàng tháng',
+        id: 4,
+        interest: 1000000
+    }
+];

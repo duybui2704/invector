@@ -1,24 +1,23 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useMemo, useRef } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import { Text, View } from 'react-native';
 
+import BankIC from '@/assets/image/ic_bank.svg';
 import LinkIC from '@/assets/image/ic_ischecked_save_acc.svg';
 import NotLinkIC from '@/assets/image/ic_unchecked_save_acc.svg';
 import VimoIC from '@/assets/image/ic_vimo.svg';
-import BankIC from '@/assets/image/ic_bank.svg';
 import WarnIC from '@/assets/image/ic_warn_vimo_red_round.svg';
 import Languages from '@/common/Languages';
-import HeaderBar from '@/components/header';
-import { COLORS, Styles } from '@/theme';
-import { Configs } from '@/common/Configs';
-import { Touchable } from '@/components/elements/touchable';
-import { PopupActionTypes } from '@/models/typesPopup';
-import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
-import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
+import { Touchable } from '@/components/elements/touchable';
+import HeaderBar from '@/components/header';
+import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
+import { PopupActionTypes } from '@/models/typesPopup';
+import Navigator from '@/routers/Navigator';
+import { MyStylesPaymentMethod } from './styles';
 
 const PaymentMethod = observer(() => {
-
+    const styles = MyStylesPaymentMethod();
     const vimoRef = useRef<PopupActionTypes>();
 
     const onPopupVimoAgree = useCallback(() => {
@@ -39,7 +38,7 @@ const PaymentMethod = observer(() => {
                 onConfirm={onPopupVimoAgree}
             />
         );
-    }, [onPopupVimoAgree]);
+    }, [onPopupVimoAgree, styles.containerAllBtnPopup, styles.containerCancelBtnPopup, styles.containerItemBtnPopup, styles.textCancel]);
 
     const renderStateLink = useCallback((status?: boolean) => {
         return (
@@ -50,7 +49,7 @@ const PaymentMethod = observer(() => {
                 }
             </>
         );
-    }, []);
+    }, [styles.redText, styles.stateItemLink]);
 
     const renderRightIcon = useCallback((status?: boolean) => {
         return (
@@ -66,6 +65,8 @@ const PaymentMethod = observer(() => {
     const onVimo = useCallback((status?: boolean) => {
         if (status) {
             vimoRef.current?.show();
+        }else {
+            Navigator.pushScreen(ScreenName.confirmPhone);
         }
     }, []);
 
@@ -98,15 +99,15 @@ const PaymentMethod = observer(() => {
                 </View>
             </Touchable>
         );
-    }, [onBank, onVimo, renderRightIcon, renderStateLink]);
+    }, [onBank, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapRightItemPayment]);
 
     return (
         <View style={styles.container}>
             <HeaderBar isLight={false} title={Languages.account.payMethod} hasBack />
             <View style={styles.wrapAllContent}>
                 <Text style={styles.txtMethodChoose}>{Languages.paymentMethod.methodChoose}</Text>
-                {renderItemMethod(<VimoIC />, Languages.paymentMethod.vimo, true)}
-                {renderItemMethod(<BankIC />, Languages.paymentMethod.bank)}
+                {renderItemMethod(<VimoIC />, Languages.paymentMethod.vimo, false)}
+                {renderItemMethod(<BankIC />, Languages.paymentMethod.bank, true)}
             </View>
             {popupVimo(vimoRef,<WarnIC/>)}
         </View >
@@ -114,78 +115,3 @@ const PaymentMethod = observer(() => {
 });
 
 export default PaymentMethod;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_5
-    },
-    wrapAllContent: {
-        paddingHorizontal: 16,
-        paddingTop: 10
-    },
-    txtMethodChoose: {
-        ...Styles.typography.medium,
-        color: COLORS.GRAY_7,
-        fontSize: Configs.FontSize.size16
-    },
-    txtMethodName: {
-        ...Styles.typography.medium,
-        color: COLORS.GRAY_7
-    },
-    wrapItemPayment: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        paddingVertical: 10,
-        borderWidth: 1,
-        borderColor: COLORS.GRAY_2,
-        borderRadius: 18,
-        paddingHorizontal: 16,
-        marginTop: 16
-    },
-    wrapRightItemPayment: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        width: '80%'
-    },
-    titleItemLink: {
-        ...Styles.typography.medium,
-        color: COLORS.GRAY_7
-    },
-    stateItemLink: {
-        ...Styles.typography.regular,
-        color: COLORS.GREEN
-    },
-    wrapRightIcon: {
-        width: 32,
-        height: 32,
-        borderWidth: 1,
-        borderRadius: 30,
-        borderColor: COLORS.GRAY_12,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    redText: {
-        color: COLORS.RED
-    },
-    greenBorder: {
-        borderColor: COLORS.GREEN
-    },
-    containerAllBtnPopup:{
-        flexDirection: 'row-reverse'
-    },
-    containerItemBtnPopup:{
-        backgroundColor: COLORS.RED_2,
-        borderColor : COLORS.RED_2,
-        borderRadius: 20
-    },
-    containerCancelBtnPopup:{
-        borderColor : COLORS.GRAY_13,
-        borderRadius: 20
-    },
-    textCancel:{
-        color: COLORS.GRAY_12
-    }
-});
