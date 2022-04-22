@@ -29,6 +29,7 @@ import AccountIdentify from '@/screen/profile/accountIdentify/AccountIdentify';
 import AccountInfo from '@/screen/profile/accountInfo/AccountInfo';
 import EditAccountInfo from '@/screen/profile/editAccountInfo/EditAccountInfo';
 import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
+import Policy from '@/screen/profile/policy/Policy';
 
 const TabsData = [
     {
@@ -118,6 +119,7 @@ const AccountStack = () => {
             <Stack.Screen name={ScreenName.accountBank} component={AccountBank} /> 
             <Stack.Screen name={ScreenName.confirmPhone} component={ConfirmPhone} />
             <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} /> 
+            <Stack.Screen name={ScreenName.policy} component={Policy} /> 
         </Stack.Navigator>
     );
 };

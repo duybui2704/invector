@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useState, useRef } from 'react';
-import { View, StyleSheet, Text, Platform } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { observer } from 'mobx-react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
@@ -28,7 +28,7 @@ import { COLORS, Styles } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';
 import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
-import { Configs } from '@/common/Configs';
+import { Configs, isIOS } from '@/common/Configs';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { ScreenName } from '@/common/screenNames';
@@ -36,7 +36,7 @@ import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 import KeyToggleValue from '@/components/KeyToggleSwitch';
-import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC, messageError, StorageKeys } from '@/common/constants';
+import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC, GET_LINK_INVESTOR, LINK_TIENNGAY, messageError, StorageKeys } from '@/common/constants';
 import PopupConfirmBiometry from '@/components/PopupConfirmBiometry';
 import { PopupActionTypes } from '@/models/typesPopup';
 import PopupErrorBiometry from '@/components/PopupErrorBiometry';
@@ -44,6 +44,7 @@ import { PinCode, PinCodeT } from '@/components/pinCode';
 import { CustomBackdropBottomSheet } from '@/components/CustomBottomSheet';
 import StorageUtils from '@/utils/StorageUtils';
 import ToastUtils from '@/utils/ToastUtils';
+import Utils from '@/utils/Utils';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -64,6 +65,17 @@ const Profile = observer(() => {
         duration: 800
     });
     const [errorText, setErrorText] = useState<string>('');
+
+    const callPhone = useCallback(() => {
+        Utils.callNumber(Languages.common.hotline);
+    }, []);
+
+    const onLinkRate = useCallback(() => {
+        if (isIOS) {
+            return  Utils.openURL(GET_LINK_INVESTOR.LINK_IOS);
+        }
+        return  Utils.openURL(GET_LINK_INVESTOR.LINK_ANDROID);
+    }, []);
 
     const onNavigateAccInfo = useCallback(() => {
         return Navigator.pushScreen(ScreenName.accountInfo);
@@ -96,6 +108,21 @@ const Profile = observer(() => {
                 case Languages.account.payMethod:
                     Navigator.pushScreen(ScreenName.paymentMethod);
                     break;
+                case Languages.account.hotline:
+                    callPhone();
+                    break;
+                case Languages.account.policy:
+                    Navigator.pushScreen(ScreenName.policy);
+                    break;
+                case Languages.account.web:
+                    Utils.openURL(LINK_TIENNGAY.LINK_TIENNGAY_WEB);
+                    break;
+                case Languages.account.facebook:
+                    Utils.openURL(LINK_TIENNGAY.LINK_TIENNGAY_FACEBOOK);
+                    break;
+                case Languages.account.rate:
+                    onLinkRate();
+                    break;
                 default:
                     break;
             }
@@ -112,7 +139,7 @@ const Profile = observer(() => {
                 containerContent={styles.featureContainer}
             />
         );
-    }, []);
+    }, [callPhone, onLinkRate]);
 
     const onToggleBiometry = useCallback(
         (value) => {
@@ -125,7 +152,7 @@ const Profile = observer(() => {
                     .catch((error) => {
                         console.log(error);
                         let message;
-                        if (Platform.OS === 'ios') {
+                        if (isIOS) {
                             if (supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
                                 message = messageError(ERROR_BIOMETRIC.ErrorFaceId);
                             }
@@ -152,7 +179,7 @@ const Profile = observer(() => {
     );
 
     const onConfirm = useCallback(() => {
-        if (Platform.OS === 'ios') {
+        if (isIOS) {
             popupConfirm?.current?.hide?.();
             PasscodeAuth.authenticate(
                 supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID
