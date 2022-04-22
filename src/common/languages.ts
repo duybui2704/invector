@@ -73,7 +73,8 @@ const Languages = {
         rate: 'Đánh giá cho TienNgay.vn',
         accVerified: 'Tài khoản đã xác thực',
         accuracyNow: 'Xác thực ngay',
-        logout: 'Đăng xuất'
+        logout: 'Đăng xuất',
+        waitVerify: 'Tài khoản đang chờ xác thực'
     },
     report: {
         title: 'Báo cáo',
@@ -97,7 +98,7 @@ const Languages = {
         cancel: 'Hủy',
         continue: 'Tiếp tục',
         VND: 'VNĐ',
-        hotline: '1900690'
+        hotline: '18006907'
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng Tienngay',
@@ -225,6 +226,8 @@ const Languages = {
     accountInfo:{
         accountInfo: 'Thông tin cá nhân',
         content: 'Xác thực tài khoản để tăng độ an toàn khi đầu tư và sử dụng ứng dụng',
+        noteWaitVerify: 'Tài khoản của bạn đang được xác thực, bạn có thể đầu tư ngay sau khi chứng từ được xác thực',
+        accWaitVerify: 'Tài khoản đang được xác thực',
         phoneNumber: 'Số điện thoại',
         gender: 'Giới tính',
         fullName: 'Họ và tên',
