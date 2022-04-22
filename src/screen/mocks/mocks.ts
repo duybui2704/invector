@@ -23,7 +23,7 @@ export const investData = [
         amountMoney: '800000',
         percent: '0.5%',
         intent: 100000000,
-        time: '3 tháng',
+        time: '6 tháng',
         formality: 'Lãi gốc hàng tháng',
         id: 3,
         interest: 1000000,

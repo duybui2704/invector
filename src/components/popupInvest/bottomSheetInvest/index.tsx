@@ -1,4 +1,10 @@
-import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal, SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
+import {
+    BottomSheetBackdrop,
+    BottomSheetBackdropProps,
+    BottomSheetFlatList,
+    BottomSheetModal,
+    SCREEN_HEIGHT
+} from '@gorhom/bottom-sheet';
 import React, {
     forwardRef,
     useCallback, useEffect,
@@ -6,18 +12,21 @@ import React, {
     useMemo,
     useRef
 } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
-import { Configs, PADDING_BOTTOM } from '@/common/Configs';
-import { Touchable } from './elements/touchable';
-import { Styles } from '@/theme';
-import { ItemProps } from '@/models/common-model';
+import {Configs, PADDING_BOTTOM} from '@/common/Configs';
+import {Touchable} from "@/components/elements/touchable";
+import {COLORS, Styles} from '@/theme';
+import {ItemProps} from '@/models/common-model';
+import Languages from "@/common/Languages";
+import Utils from "@/utils/Utils";
 
 type BottomSheetProps = {
     data?: ItemProps[],
-    onPressItem?: (item?: any) => any,
+    onPressItem?: (item?: string, titlePicker?: string) => any,
     onClose?: () => void,
     onOpen?: () => void,
+    title?: string
 };
 
 export type BottomSheetAction = {
@@ -26,22 +35,23 @@ export type BottomSheetAction = {
 };
 
 const CustomBackdrop = (props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props} pressBehavior="close" />;
+    return <BottomSheetBackdrop {...props} pressBehavior="close"/>;
 };
 
-const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
+const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProps>(
     (
         {
             data,
             onPressItem,
             onClose,
-            onOpen
+            onOpen,
+            title
         }: BottomSheetProps,
-
         ref: any
     ) => {
 
         const bottomSheetRef = useRef<BottomSheetModal>(null);
+        const refModal = useRef();
         const snapPoints = useMemo(() => {
             const num = data?.length as number;
             const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
@@ -52,14 +62,14 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             return [`${ratio}%`, `${ratio}%`];
         }, [data]);
 
-        useEffect(() => {
-            console.log('data', data);
-        }, [])
-
         const hide = useCallback(() => {
-            onClose?.();
             bottomSheetRef?.current?.close();
-        }, [onClose]);
+        }, []);
+
+        const close = useCallback(() => {
+
+            onClose?.();
+        }, [])
 
         const show = useCallback(() => {
             onOpen?.();
@@ -72,15 +82,17 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
         }));
 
         const renderItem = useCallback(
-            ({ item }) => {
+            ({item}) => {
                 const onPress = () => {
-                    onPressItem?.(item);
-                    hide?.();
+                    onPressItem?.(item.value, title);
+                    close();
                 };
                 return (
                     <Touchable onPress={onPress} style={styles.valueContainer}>
                         <View style={styles.row}>
-                            <Text style={styles.value}>{item.value}</Text>
+                            <Text style={styles.value}>
+                                {title === Languages.invest.monthInvest ? item.value : Utils.formatMoney(item.value)}
+                            </Text>
                         </View>
                     </Touchable>
                 );
@@ -102,9 +114,11 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                     keyboardBehavior={'interactive'}
                     enablePanDownToClose={true}
                 >
+                    <Text style={styles.txtTitle}>{title}</Text>
                     <BottomSheetFlatList
                         data={data}
-                        renderItem={renderItem}
+                        testID={title}
+                        renderItem={(item) => renderItem(item)}
                         style={styles.flatList}
                         keyExtractor={keyExtractor}
                     />
@@ -113,22 +127,32 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             </View>
         );
     });
-export default BottomSheetComponent;
+export default BottomSheetComponentInvest;
 const ITEM_HEIGHT = Configs.FontSize.size40;
 const HEADER_HEIGHT = Configs.FontSize.size40 + 30;
 const MIN_SIZE_HAS_INPUT = 10;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     valueContainer: {
-        marginBottom: 12
+        marginBottom: 12,
+        marginLeft: '5%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '90%',
+        height: 40,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: COLORS.GREEN
     },
     value: {
         flex: 1,
         ...Styles.typography.regular,
-        fontSize: Configs.FontSize.size16
+        fontSize: Configs.FontSize.size16,
+        textAlign: 'center'
     },
     row: {
         flexDirection: 'row',
@@ -138,5 +162,12 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 0,
         paddingHorizontal: 16
+    },
+    txtTitle: {
+        color: COLORS.BLACK,
+        textAlign: 'center',
+        marginVertical: 20,
+        fontSize: Configs.FontSize.size16,
+        fontFamily: Configs.FontFamily.bold
     }
 });
