@@ -63,7 +63,7 @@ const EditAccountInfo = observer(() => {
         }
     }, []);
 
-    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?:boolean) => {
+    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean) => {
         return (
             <View style={styles.wrapInput}>
                 <Text style={styles.labelStyle}>{label}</Text>
@@ -74,7 +74,7 @@ const EditAccountInfo = observer(() => {
                     keyboardType={keyboardType}
                     value={value}
                     onChangeText={onChangeText}
-                    containerInput={ styles.inputStyle}
+                    containerInput={styles.inputStyle}
                     disabled={disabled}
                 />
             </View>
@@ -132,27 +132,29 @@ const EditAccountInfo = observer(() => {
     }, [address, birthday, email, gender, job, name, onSaveInfo, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit]);
 
     return (
-        <HideKeyboard style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.container}>
                 <HeaderBar isLight={false} title={Languages.accountInfo.editAcc} hasBack />
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={styles.topContainer}>
-                        {!dataUser.avatar ?
-                            <AvatarIC style={styles.circleWrap} />
-                            :
-                            <FastImage
-                                style={styles.circleWrap}
-                                source={{
-                                    uri: dataUser?.avatar
-                                }}
-                                resizeMode={FastImage.resizeMode.cover}
-                            />
-                        }
-                    </View>
-                    {renderInfoAcc}
-                </ScrollView>
+                <HideKeyboard>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={styles.topContainer}>
+                            {!dataUser.avatar ?
+                                <AvatarIC style={styles.circleWrap} />
+                                :
+                                <FastImage
+                                    style={styles.circleWrap}
+                                    source={{
+                                        uri: dataUser?.avatar
+                                    }}
+                                    resizeMode={FastImage.resizeMode.cover}
+                                />
+                            }
+                        </View>
+                        {renderInfoAcc}
+                    </ScrollView>
+                </HideKeyboard>
             </View>
-        </HideKeyboard>
+        </View>
     );
 });
 
