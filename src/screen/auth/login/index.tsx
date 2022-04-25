@@ -17,6 +17,8 @@ import SessionManager from '@/manager/SessionManager';
 import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import { MyStylesLogin } from './styles';
+import { UserInfoModal } from '@/models/user-models';
+import { dataUser } from '@/mocks/data';
 
 
 const Login = observer(() => {
@@ -28,6 +30,7 @@ const Login = observer(() => {
     } = useAppStore();
     const [phone, setPhone] = useState<string>('');
     const [pass, setPass] = useState<string>('');
+    const [userData, setUserData] = useState<UserInfoModal>();
     const styles = MyStylesLogin();
     const refPhone = useRef<TextFieldActions>(null);
     const refPass = useRef<TextFieldActions>(null);
@@ -47,8 +50,8 @@ const Login = observer(() => {
 
     useEffect(() => {
         setLoading(isLoading);
-        setPhone('0353826750');
-        setPass('12345678');
+        setPhone('0359908532');
+        setPass('123456789');
     }, [isLoading]);
 
     const onChangeText = (value: string, tag?: string) => {
@@ -101,11 +104,21 @@ const Login = observer(() => {
             SessionManager.setAccessToken(res?.data?.token);
             const resInfoAcc = await apiServices.auth.getUserInfo(3);
             if (resInfoAcc.success) {
-                SessionManager.setUserInfo({
-                    ...SessionManager.userInfo,
-                    phone_number: phone,
-                    password: pass
-                });
+                setUserData(resInfoAcc?.data as UserInfoModal);
+                userManager.updateUserInfo(userData);
+                //     {
+                //     ...userManager?.userInfo,
+                //     full_name: userData?.full_name,
+                //     phone_number: phone, 
+                //     email: userData?.email,
+                //     avatar: userData?.avatar,
+                //     card_back: userData?.card_back,
+                //     front_facing_card: userData?.front_facing_card,
+                //     identity: userData?.identity,
+                //     avatar_user: userData?.avatar_user
+                // }
+
+
             }
             Navigator.navigateToDeepScreen(
                 [ScreenName.tabs],
@@ -114,7 +127,11 @@ const Login = observer(() => {
         }
         setLoading(false);
 
-    }, [apiServices.auth, pass, phone]);
+    }, [apiServices.auth, pass, phone, userData, userManager]);
+
+    useEffect(() => {
+        console.log('userData=', userData);
+    }, [isLoading, userData]);
 
     return (
         <View style={styles.content}>

@@ -326,20 +326,20 @@ const Profile = observer(() => {
             <HeaderBar title={Languages.account.title} isLight={false} />
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
                 <Touchable style={styles.accContainer} onPress={onNavigateAccInfo}>
-                    {!dataUser.avatar ?
+                    {!userManager.userInfo?.avatar ?
                         <AvatarIC style={styles.circleWrap} />
                         :
                         <FastImage
                             style={styles.circleWrap}
                             source={{
-                                uri: dataUser?.avatar
+                                uri: userManager.userInfo?.avatar
                             }}
                             resizeMode={FastImage.resizeMode.cover}
                         />
                     }
                     <View style={styles.headerAccRight}>
-                        <Text style={styles.headerAccName}>{dataUser.full_name || ''}</Text>
-                        <Text style={styles.headerAccPhone}>{dataUser.phone_number || ''}</Text>
+                        <Text style={styles.headerAccName}>{userManager.userInfo?.full_name || ''}</Text>
+                        <Text style={styles.headerAccPhone}>{userManager.userInfo?.phone_number || ''}</Text>
                         {renderAccuracy}
                     </View>
                     <ArrowIC />
