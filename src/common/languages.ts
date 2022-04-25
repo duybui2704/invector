@@ -54,7 +54,13 @@ const Languages = {
         interest: 'Lãi suất tháng',
         attractInvest: 'Đầu tư hấp dẫn',
         intent: 'Lãi dự kiến',
-        getMoney: 'Lãi đã nhận'
+        getMoney: 'Lãi đã nhận',
+        sumMoney: 'Tổng tiền đã nhận',
+        monthInvest: 'Chọn thời gian đầu tư',
+        chooseMoney: 'Chọn số tiền đầu tư',
+        packageInvest: 'Chọn gói đầu tư',
+        search: 'Tìm kiếm',
+        cancel: 'Hủy'
     },
     account: {
         title: 'Tài khoản',
@@ -272,7 +278,9 @@ const Languages = {
         popupOtpSuccessDescription: 'Đăng ký thành công',
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         sentOtp1: 'Gửi lại mã sau: ',
-        sentOtp2: 'Gửi lại mã'
+        sentOtp2: 'Gửi lại mã',
+        title: 'Xác thực OTP',
+        completionOtp: 'Hãy xác nhận mã OTP của chúng tôi đã gửi cho bạn để hoàn thành đầu tư'
     },
     location: {
         PermissionAlert: 'PermissionAlert',
@@ -322,7 +330,12 @@ const Languages = {
         method: 'Phương thức đầu tư',
         vimo: 'Tài khoản Vimo',
         nganLuong: 'Tài khoản Ngân Lượng',
-        linked: 'Đã liên kết'
+        linked: 'Đã liên kết',
+        paid: 'Đã thanh toán',
+        unpaid: 'Chưa thanh toán',
+        agreeTermsWith: 'Tôi đã đọc và đồng ý với ',
+        rules: 'Điều khoản sử dụng và chính sách ',
+        tienngay: 'của Tienngay.vn'
     },
     changePwd: {
         title: 'Đổi mật khẩu',

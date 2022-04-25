@@ -10,6 +10,18 @@ import { Touchable } from '@/components/elements/touchable';
 import Languages from '@/common/Languages';
 import { Configs } from '@/common/Configs';
 
+type ItemProps = {
+    name: string
+    source?: any
+    isFirst?: boolean
+    swipe?: any
+    tiltSign?: any
+    txt: string
+    handleChoise?: () => any,
+    rest?: any
+
+};
+
 export default function Card({
     name,
     source,
@@ -19,7 +31,7 @@ export default function Card({
     txt,
     handleChoise,
     ...rest
-}) {
+}: ItemProps) {
 
     const styles = MyStylesCard();
 

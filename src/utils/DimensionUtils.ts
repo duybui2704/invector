@@ -2,6 +2,10 @@ import { Dimensions, Platform } from 'react-native';
 
 const {width, height} = Dimensions.get('window');
 const screenScale = Dimensions.get('window').scale;
+
+export const SCREEN_HEIGHT = Dimensions.get('window').height;
+export const SCREEN_WIDTH = Dimensions.get('window').width;
+
 function deviceHasNotch() {
     const _height = height * screenScale;
     if (Platform.OS === 'ios') {
@@ -33,9 +37,9 @@ export const CARD = {
     CARD_HEIGHT: height * 0.78,
     CARD_OUT_WIDTH: width + width * 0.9
   };
-  
+
   export const VERTICAL_MARGIN = height * 0.022;
-  
+
   export const ACTION_OFFSET = 100;
 export default {
     SCREEN_WIDTH: width,

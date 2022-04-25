@@ -12,16 +12,16 @@ function formatMoney(number: string | number | undefined) {
     return `${hasMinus ? '-' : ''}${Math.ceil(Number(number))
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
-};
+}
 
 function formatTextToNumber(textNumber: string) {
     const num = (`${textNumber}`).replace(/[^0-9]/g, '');
     return num;
-};
+}
 
 function capitalizeFirstLetter(text: string) {
     return text.charAt(0).toUpperCase() + text.slice(1);
-};
+}
 
 function callNumber(phone: string) {
     const phoneNumber = `tel://${phone}`;
@@ -62,7 +62,7 @@ function share(text: string) {
     } catch (error) {
         console.log(error);
     }
-};
+}
 
 function openURL(url: string) {
     Linking.canOpenURL(url)

@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
         borderColor: COLORS.GRAY_11,
         paddingTop: 16,
         paddingBottom: 4,
-        marginBottom: 30
+        marginBottom: 30,
+        width: '100%'
     },
     wrapItem: {
         flexDirection: 'row',
@@ -66,7 +67,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 20,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 20
     },
     txtBt: {
         ...Styles.typography.medium,

@@ -133,3 +133,15 @@ export enum LINK_TIENNGAY {
     LINK_TIENNGAY_WEB = 'https://tienngay.vn/',
     LINK_TIENNGAY_FACEBOOK = 'https://www.facebook.com/tienngay.vn/'
 };
+
+
+export enum LINKS {
+    WEB = 'https://tienngay.vn/',
+    VPS = 'https://openaccount.vps.com.vn/?MKTID=H787',
+    ABOUT_US = 'https://tienngay.vn/home/aboutus',
+    POLICY = 'https://tienngay.vn/app-privacy-policy',
+    FAQ = 'https://tienngay.vn/home/faqs',
+    FB_FAN_PAGE = 'https://www.facebook.com/groups/425567338856999',
+    STORE_ANDROID = 'https://play.google.com/store/apps/details?id=vn.tienngay.customer',
+    STORE_IOS = 'https://apps.apple.com/id/app/tienngay-customer/id1560920806'
+}

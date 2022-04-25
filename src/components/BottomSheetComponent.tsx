@@ -1,7 +1,7 @@
 import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal, SCREEN_HEIGHT, useBottomSheetModal } from '@gorhom/bottom-sheet';
 import React, {
     forwardRef,
-    useCallback,
+    useCallback, useEffect,
     useImperativeHandle,
     useMemo,
     useRef
@@ -55,6 +55,10 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
 
             return [`${ratio}%`, `${ratio}%`];
         }, [data]);
+
+        useEffect(() => {
+            console.log('data', data);
+        }, [])
 
         const hide = useCallback(() => {
             bottomSheetRef?.current?.dismiss();

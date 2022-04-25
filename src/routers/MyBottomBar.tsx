@@ -15,7 +15,7 @@ import Profile from '@/screen/profile';
 import Report from '@/screen/report';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import DetailInvestment from '@/screen/investment/detailInvestment';
+import {DetailInvestment} from "@/screen/investment/detailInvestment";
 import Invest from '@/screen/investment/invest';
 import VerifyOTP from '@/screen/profile/verifyOTP/VerifyOTP';
 import ConfirmPhone from '@/screen/profile/confirmPhone/ConfirmPhone';
@@ -107,19 +107,19 @@ const AccountStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.account} component={Profile} />
-            <Stack.Screen name={ScreenName.accountInfo} component={AccountInfo} /> 
-            <Stack.Screen name={ScreenName.editAccountInfo} component={EditAccountInfo} /> 
-            <Stack.Screen name={ScreenName.accountIdentify} component={AccountIdentify} /> 
-            <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} /> 
-            <Stack.Screen name={ScreenName.changePwd} component={ChangePwd} /> 
-            <Stack.Screen name={ScreenName.accountLink} component={AccountLink} /> 
-            <Stack.Screen name={ScreenName.manual} component={Manual} /> 
-            <Stack.Screen name={ScreenName.help} component={Help} /> 
-            <Stack.Screen name={ScreenName.paymentMethod} component={PaymentMethod} /> 
-            <Stack.Screen name={ScreenName.accountBank} component={AccountBank} /> 
+            <Stack.Screen name={ScreenName.accountInfo} component={AccountInfo} />
+            <Stack.Screen name={ScreenName.editAccountInfo} component={EditAccountInfo} />
+            <Stack.Screen name={ScreenName.accountIdentify} component={AccountIdentify} />
+            <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} />
+            <Stack.Screen name={ScreenName.changePwd} component={ChangePwd} />
+            <Stack.Screen name={ScreenName.accountLink} component={AccountLink} />
+            <Stack.Screen name={ScreenName.manual} component={Manual} />
+            <Stack.Screen name={ScreenName.help} component={Help} />
+            <Stack.Screen name={ScreenName.paymentMethod} component={PaymentMethod} />
+            <Stack.Screen name={ScreenName.accountBank} component={AccountBank} />
             <Stack.Screen name={ScreenName.confirmPhone} component={ConfirmPhone} />
-            <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} /> 
-            <Stack.Screen name={ScreenName.policy} component={Policy} /> 
+            <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} />
+            <Stack.Screen name={ScreenName.policy} component={Policy} />
         </Stack.Navigator>
     );
 };

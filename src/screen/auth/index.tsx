@@ -21,7 +21,6 @@ import ForgotPass from './forgotPass';
 
 const Auth = observer(() => {
     const styles = myStylesAuth();
-    const isFocused = useIsFocused();
     const [isNavigate, setIsNavigate] = useState<string>(Languages.auth.txtLogin);
     const {
         apiServices,
