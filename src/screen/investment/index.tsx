@@ -1,25 +1,25 @@
-import {observer} from 'mobx-react';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Text, TextStyle, View, ViewStyle} from 'react-native';
-import {debounce} from 'lodash';
+import { useIsFocused } from '@react-navigation/native';
+import { debounce } from 'lodash';
+import { observer } from 'mobx-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
 import arrayIcon from '@/common/arrayIcon';
+import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
-import {MyTextInput} from '@/components/elements/textfield';
-import {Touchable} from '@/components/elements/touchable';
+import { MyTextInput } from '@/components/elements/textfield';
+import { Touchable } from '@/components/elements/touchable';
 import ItemInvest from '@/components/ItemInvest';
 import MyFlatList from '@/components/MyFlatList';
+import PopupInvest from '@/components/popupInvest';
+import { investData } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
-import {COLORS, Styles} from '@/theme';
-import {HeaderBar} from '../../components/header';
-import {investData} from '../mocks/mocks';
+import { COLORS, Styles } from '@/theme';
+import { HeaderBar } from '../../components/header';
 import styles from './styles';
-import {ENUM_INVEST_STATUS} from '@/common/constants';
-import {useIsFocused} from "@react-navigation/native";
-import PopupInvest from "@/components/popupInvest";
-import Utils from "@/utils/Utils";
+
 
 
 const Investment = observer(({route}: any) => {
@@ -53,9 +53,9 @@ const Investment = observer(({route}: any) => {
                     dataFilter?.filter((item: any) =>
                         item?.amountMoney?.includes(text)
                     )
-                )
+                );
             } else {
-                setDataFilter(dataFilter)
+                setDataFilter(dataFilter);
             }
         },
         [dataFilter]
@@ -152,7 +152,7 @@ const Investment = observer(({route}: any) => {
 
     const onPopupInvest = useCallback(() => {
         popupInvestRef.current.show();
-    }, [])
+    }, []);
 
     const renderSearchBar = useMemo(() => {
         return (
