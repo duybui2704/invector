@@ -76,7 +76,7 @@ const Home = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
-        fetchData();
+        // fetchData();
     }, []);
 
     const fetchData = useCallback(async () => {

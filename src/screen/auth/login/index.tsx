@@ -98,13 +98,15 @@ const Login = observer(() => {
 
         if (res.success) {
             setLoading(false);
-            const resInfoAcc = apiServices.auth.getUserInfo();
-            userManager.updateUserInfo({
-                ...SessionManager.setUserInfo,
-                phone_number: phone,
-                password: pass
-            });
-
+            SessionManager.setAccessToken(res?.data?.token);
+            const resInfoAcc = await apiServices.auth.getUserInfo(3);
+            if (resInfoAcc.success) {
+                SessionManager.setUserInfo({
+                    ...SessionManager.userInfo,
+                    phone_number: phone,
+                    password: pass
+                });
+            }
             Navigator.navigateToDeepScreen(
                 [ScreenName.tabs],
                 TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
@@ -112,7 +114,7 @@ const Login = observer(() => {
         }
         setLoading(false);
 
-    }, [apiServices.auth, pass, phone, userManager]);
+    }, [apiServices.auth, pass, phone]);
 
     return (
         <View style={styles.content}>
