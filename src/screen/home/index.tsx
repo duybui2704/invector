@@ -21,6 +21,7 @@ import Loading from '@/components/loading';
 import { Configs } from '@/common/Configs';
 import Navigator from '@/routers/Navigator';
 import ScreenName, { TabsName } from '@/common/screenNames';
+import SessionManager from '@/manager/SessionManager';
 
 const Home = observer(() => {
 
@@ -194,6 +195,7 @@ const Home = observer(() => {
                         </Touchable>
                     </Touchable>
                 </View>
+                <Text>{SessionManager}</Text>
             </ScrollView>
             {isLoading && <Loading isOverview />}
         </View>
