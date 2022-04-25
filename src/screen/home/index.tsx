@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StatusBar, Text, View } from 'react-native';
 
+import { LINKS } from '@/api/constants';
 import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
 import IcChevronRight from '@/assets/image/home/ic_chevron_right.svg';
 import IcDollar from '@/assets/image/home/ic_dollar.svg';
@@ -11,7 +12,7 @@ import IcSmartPhone from '@/assets/image/home/ic_smartphone.svg';
 import IcWallet from '@/assets/image/home/ic_wallet.svg';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
 import { Configs } from '@/common/Configs';
-import { ENUM_INVEST_STATUS, LINKS } from '@/common/constants';
+import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import Banner from '@/components/banner';
@@ -20,7 +21,6 @@ import HeaderBar from '@/components/header';
 import ItemInvest from '@/components/ItemInvest';
 import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
-import SessionManager from '@/manager/SessionManager';
 import { BannerModel } from '@/models/banner';
 import { NewsModel } from '@/models/news';
 import Navigator from '@/routers/Navigator';
@@ -28,6 +28,36 @@ import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
 import { MyStylesHome } from './styles';
 
+
+const data = [
+    {
+        amountMoney: 80000000,
+        percent: '0.5%',
+        intent: 100000000,
+        time: '3 tháng',
+        formality: 'Lãi gốc hàng tháng',
+        id: 1,
+        interest: 1000000
+    },
+    {
+        amountMoney: 80000000,
+        percent: '0.5%',
+        intent: 100000000,
+        time: '3 tháng',
+        formality: 'Lãi gốc hàng tháng',
+        id: 2,
+        interest: 1000000
+    },
+    {
+        amountMoney: 80000000,
+        percent: '0.5%',
+        intent: 100000000,
+        time: '3 tháng',
+        formality: 'Lãi gốc hàng tháng',
+        id: 3,
+        interest: 1000000
+    }
+];
 
 const Home = observer(() => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -101,7 +131,7 @@ const Home = observer(() => {
                 title={ENUM_INVEST_STATUS.INVEST_NOW}
             />
         );
-    }, [navigateToDetail]);
+    }, [btnInvest, navigateToDetail]);
 
     const iconTob = useCallback((title) => {
         switch (title) {
@@ -114,7 +144,7 @@ const Home = observer(() => {
             case Languages.home.payment:
                 return <IcSmartPhone width={20} height={20} />;
             default:
-                return null;
+                break;
         }
     }, []);
 
@@ -125,7 +155,7 @@ const Home = observer(() => {
                 <Text style={styles.txtTob}>{title}</Text>
             </Touchable>
         );
-    }, [iconTob, styles.tob, styles.txtTob]);
+    }, []);
 
     const renderTobBottom = useCallback((text) => {
         return (
@@ -138,7 +168,7 @@ const Home = observer(() => {
                 </Touchable>
             </Touchable>
         );
-    }, [styles.icon, styles.txt5, styles.txtQuestion, styles.viewTxtBottom]);
+    }, []);
 
     return (
         <View style={styles.main}>
@@ -229,7 +259,6 @@ const Home = observer(() => {
                     <IcLine width={'100%'} />
                     {renderTobBottom(Languages.home.paymentMethod)}
                 </View>
-                <Text>{SessionManager}</Text>
             </ScrollView>
             {isLoading && <Loading isOverview />}
         </View>

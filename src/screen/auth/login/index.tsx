@@ -102,8 +102,7 @@ const Login = observer(() => {
             userManager.updateUserInfo({
                 ...SessionManager.setUserInfo,
                 phone_number: phone,
-                password: pass,
-                token_app: res.data.res.token
+                password: pass
             });
 
             Navigator.navigateToDeepScreen(
