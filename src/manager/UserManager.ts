@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 
-import { UserInfoModal } from '@/models/user-modal';
+import { UserInfoModal } from '@/models/user-models';
 import SessionManager from './SessionManager';
 
 export class UserManager {

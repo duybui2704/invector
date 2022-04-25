@@ -2,9 +2,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import DeviceInfo from 'react-native-device-info';
 
 import { StorageKeys } from '@/common/constants';
-import { UserInfoModal } from '@/models/user-modal';
 import RsaUtils from '@/utils/RsaUtils';
 import StorageUtils from '@/utils/StorageUtils';
+import { UserInfoModal } from '@/models/user-models';
 
 
 export const DeviceInfos = {
@@ -108,7 +108,7 @@ class SessionManager {
 
     }
 
-    setUserInfo(userInfo?: UserInfoModel) {
+    setUserInfo(userInfo?: UserInfoModal) {
         this.userInfo = userInfo;
         if (userInfo) {
             StorageUtils.saveDataToKey(StorageKeys.KEY_USER_INFO, JSON.stringify(this.userInfo));

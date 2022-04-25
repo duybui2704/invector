@@ -171,7 +171,9 @@ const Languages = {
         errStk: 'Số tài khoản hoặc số thẻ vượt quá giới hạn cho phép',
         errStkEmpty: 'Số tài khoản hoặc số thẻ trống',
         errNameEmpty: 'Tên chủ tài khoản ngân hàng trống',
-        errBankEmpty: 'Ngân hàng chưa được chọn'
+        errBankEmpty: 'Ngân hàng chưa được chọn',
+        noInternet: 'Kết nối bị gián đoạn, vui lòng thử lại!',
+        sessionExpired: 'Kết nối bị gián đoạn, vui lòng thử lại!'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
