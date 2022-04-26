@@ -1,8 +1,9 @@
-import React, {useMemo} from "react";
-import {StyleSheet} from "react-native";
-import {COLORS, Styles} from "@/theme";
-import {Configs} from "@/common/Configs";
-import DimensionUtils from "@/utils/DimensionUtils";
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+
+import { COLORS, Styles } from '@/theme';
+import { Configs } from '@/common/Configs';
+import DimensionUtils from '@/utils/DimensionUtils';
 
 export const MyStylesOtp = () => {
     return useMemo(() =>
@@ -22,7 +23,7 @@ export const MyStylesOtp = () => {
             confirmOtp: {
                 ...Styles.typography.medium,
                 marginTop: 10,
-                color: COLORS.GRAY,
+                color: COLORS.GRAY
         
             },
             boxOtp: {
@@ -85,6 +86,5 @@ export const MyStylesOtp = () => {
                 ...Styles.typography.regular,
                 color: COLORS.RED
             }
-        })
-        , []);
+        }), []);
 };

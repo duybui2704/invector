@@ -8,6 +8,9 @@ import DimensionUtils from '../../../utils/DimensionUtils';
 export const MyStylesForgotPass = () => {
     return useMemo(() => {
         return StyleSheet.create({
+            container: {
+                flex: 1
+            },
             inputPhone: {
                 marginTop: 10,
                 borderRadius: 30,
@@ -35,10 +38,10 @@ export const MyStylesForgotPass = () => {
                 paddingVertical: 16
             },
             content: {
-               flex: 1,
-               marginTop: DimensionUtils.SCREEN_HEIGHT * 0.13,
-               marginLeft: 10,
-               width: '90%'
+                flex: 1,
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.13,
+                marginLeft: 10,
+                width: '90%'
             },
             txtSave: {
                 ...Styles.typography.regular,
@@ -58,6 +61,10 @@ export const MyStylesForgotPass = () => {
                 color: COLORS.GRAY_7,
                 alignItems: 'center'
             },
+            viewTitle: {
+                flexDirection: 'row',
+                alignItems: 'center'
+            },
             tobLogin: {
                 marginTop: 10,
                 width: DimensionUtils.SCREEN_WIDTH * 0.4,
@@ -71,6 +78,9 @@ export const MyStylesForgotPass = () => {
                 color: COLORS.GRAY, 
                 fontSize: Configs.FontSize.size12, 
                 fontFamily: 'normal'
+            },
+            txtLeft: {
+                marginVertical: 10
             }
         
         });

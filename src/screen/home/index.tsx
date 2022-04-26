@@ -24,9 +24,9 @@ import { useAppStore } from '@/hooks';
 import { BannerModel } from '@/models/banner';
 import { NewsModel } from '@/models/news';
 import Navigator from '@/routers/Navigator';
-import Utils from "@/utils/Utils";
 import { COLORS } from '@/theme';
 import { MyStylesHome } from './styles';
+import Utils from '@/utils/Utils';
 
 const data = [
     {
@@ -119,7 +119,7 @@ const Home = observer(() => {
     }, []);
 
     const navigateToDetail = useCallback(() => {
-        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.detailInvestment, { status: btnInvest });
+        // Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.detailInvestment, { status: btnInvest });
     }, []);
 
     const renderItem = useCallback((item: any) => {
@@ -143,7 +143,7 @@ const Home = observer(() => {
             case Languages.home.payment:
                 return <IcSmartPhone width={20} height={20} />;
             default:
-                break;
+                return null;
         }
     }, []);
 
@@ -178,12 +178,7 @@ const Home = observer(() => {
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
             />
-            <View style={styles.viewTob}>
-                {renderIconTob(gotoProfile, Languages.home.have)}
-                {renderIconTob(gotoInvest, Languages.home.invest)}
-                {renderIconTob(gotoReport, Languages.home.report)}
-                {renderIconTob(gotoPayment, Languages.home.payment)}
-            </View>
+
             <View style={styles.viewTop}>
                 <Text style={styles.txt1}>{Languages.home.sumInvest}</Text>
                 <View style={styles.viewTop2}>
@@ -196,9 +191,7 @@ const Home = observer(() => {
                     <View style={styles.viewTop3}>
                         <View style={styles.txtLeft}>
                             <Text style={styles.txt3}>{Languages.home.sumpProfit}</Text>
-                            <Text style={
-                                [styles.txt4, { marginRight: 5 }]}
-                            numberOfLines={1}
+                            <Text style={styles.txt7} numberOfLines={1}
                             >
                                 {Utils.formatMoney(180000000000000000000)}
                                 <Text style={
@@ -210,9 +203,7 @@ const Home = observer(() => {
                     <View style={styles.viewTop3}>
                         <View style={styles.txtRight}>
                             <Text style={styles.txt3}>{Languages.home.sumResidualProfit}</Text>
-                            <Text style={
-                                [styles.txt4, { marginLeft: 5 }]}
-                            numberOfLines={1}>
+                            <Text style={styles.txt6} numberOfLines={1}>
                                 {Utils.formatMoney(12000000000000000)}
                                 <Text style={
                                     [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
@@ -225,12 +216,15 @@ const Home = observer(() => {
                 </View>
 
             </View>
+            <View style={styles.viewTob}>
+                {renderIconTob(gotoProfile, Languages.home.have)}
+                {renderIconTob(gotoInvest, Languages.home.invest)}
+                {renderIconTob(gotoReport, Languages.home.report)}
+                {renderIconTob(gotoPayment, Languages.home.payment)}
+            </View>
 
             <ScrollView style={styles.viewCenter}>
-                <Text style={[styles.txt, {
-                    color: COLORS.BLACK,
-                    marginVertical: 5
-                }]}>{Languages.home.investPackages}</Text>
+                <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
                 {data.map((item) => {
                     return <>{renderItem(item)}</>;
                 })}
@@ -239,8 +233,8 @@ const Home = observer(() => {
                 </Touchable>
 
                 <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
-                    <View style={{ padding: 20, position: 'absolute', left: 10 }}>
-                        <LogoVfs width={100} height={100} />
+                    <View style={styles.logoVfs}>
+                        <LogoVfs width={90} height={90} />
                     </View>
                     <View style={styles.txtVfs}>
                         <Text style={[styles.txt4, { color: COLORS.RED_2 }]}>{Languages.home.stockVfs}</Text>
@@ -249,7 +243,7 @@ const Home = observer(() => {
                 </Touchable>
                 <Banner banners={banners} />
                 <View style={styles.viewBottom}>
-                    <View style={[styles.txtQuestion, { flex: 1.2 }]}><Text
+                    <View style={styles.txtQuestionTop}><Text
                         style={styles.txt}>{Languages.home.question}</Text></View>
                     {renderTobBottom(Languages.home.todoInvest)}
                     <IcLine width={'100%'} />

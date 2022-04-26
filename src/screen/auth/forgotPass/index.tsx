@@ -16,7 +16,7 @@ import ScreenName, { TabNamesArray } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
 import { COLORS } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
-import ChangePass from '@/screen/auth/changePass'
+import ChangePass from '@/screen/auth/changePass';
 
 const ForgotPass = observer(() => {
     const {
@@ -45,7 +45,7 @@ const ForgotPass = observer(() => {
     const onValidate = useCallback(() => {
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
 
-        refPhone.current?.setErrorMsg(errMsgPhone)
+        refPhone.current?.setErrorMsg(errMsgPhone);
     }, []);
 
     const onSentOtp = async () => {
@@ -53,14 +53,14 @@ const ForgotPass = observer(() => {
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             {!isNavigate ? <ChangePass /> :
                 <View style={styles.content}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.viewTitle}>
                         <Text style={styles.txtTitle}>{Languages.auth.titleForgotPass}</Text>
                         {/* <IcLine width={'20%'}/> */}
                     </View>
-                    <View style={{ marginVertical: 10 }}>
+                    <View style={styles.txtLeft}>
                         <Text style={styles.txt}>{Languages.auth.txtForgotPass}</Text>
                     </View>
                     <MyTextInput
@@ -75,7 +75,7 @@ const ForgotPass = observer(() => {
                         keyboardType={'NUMBER'}
                     />
                     <View style={styles.rowInfo}>
-                        <Touchable onPress={onSentOtp} disabled={phone !== '' ? false : true}
+                        <Touchable onPress={onSentOtp} disabled={phone === ''}
                             style={phone !== '' ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
                             <Text style={phone !== '' ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
                                 {Languages.auth.sentOTP}

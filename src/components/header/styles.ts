@@ -70,5 +70,9 @@ export const styles = StyleSheet.create({
         top: DimensionUtils.SCREEN_HEIGHT * 0.09,
         width: DimensionUtils.SCREEN_WIDTH * 0.08,
         height: DimensionUtils.SCREEN_WIDTH * 0.08
+    },
+    viewRight: {
+        position: 'absolute',
+        right: 10
     }
 });

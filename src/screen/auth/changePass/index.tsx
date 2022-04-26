@@ -60,7 +60,7 @@ const ChangePass = observer(() => {
         if (newPass !== '' && confirmPass !== '') {
             setDisTob(false);
         }
-    }, [newPass, confirmPass])
+    }, [newPass, confirmPass]);
 
     const onChange = async () => {
         onValidate();
@@ -68,11 +68,10 @@ const ChangePass = observer(() => {
 
     return (
         <View style={styles.content}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={styles.viewTitle}>
                 <Text style={styles.txtTitle}>{Languages.auth.titleChangePass}</Text>
-                {/* <IcLine width={'20%'}/> */}
             </View>
-            <View style={{ marginVertical: 10 }}>
+            <View style={styles.viewTxt}>
                 <Text style={styles.txt}>{Languages.auth.txtChange}</Text>
             </View>
             <MyTextInput

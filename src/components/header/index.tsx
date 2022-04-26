@@ -11,20 +11,20 @@ import {Touchable} from '../elements/touchable';
 import {HeaderProps} from './types';
 import {styles} from './styles';
 import {COLORS} from '../../theme';
-import Languages from "@/common/Languages";
+import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
 
 export const HeaderBar = ({
-                              onBackPressed,
-                              onGoBack,
-                              title,
-                              hasBack,
-                              noHeader,
-                              noStatusBar,
-                              isLight,
-                              imageBackground,
-                              exitApp
-                          }: HeaderProps) => {
+    onBackPressed,
+    onGoBack,
+    title,
+    hasBack,
+    noHeader,
+    noStatusBar,
+    isLight,
+    imageBackground,
+    exitApp
+}: HeaderProps) => {
 
     const _onBackPressed = useCallback(() => {
         if (!exitApp) {
@@ -41,7 +41,7 @@ export const HeaderBar = ({
     }, [exitApp, hasBack, onBackPressed, onGoBack]);
 
     const onNotifyInvest = useCallback(() => {
-        Navigator.pushScreen(ScreenName.notifyInvest)
+        Navigator.pushScreen(ScreenName.notifyInvest);
     }, []);
 
     const renderBack = useMemo(() => (
@@ -82,9 +82,9 @@ export const HeaderBar = ({
                 {renderTitle}
                 {(!exitApp) && (hasBack ? renderBack : null)}
                 {title === Languages.invest.title &&
-                    <Touchable style={{ position: 'absolute', right: 10 }} onPress={onNotifyInvest}>
-                    <IcNotifyInvest width={22} height={22}/>
-                  </Touchable>}
+                    <Touchable style={styles.viewRight} onPress={onNotifyInvest}>
+                        <IcNotifyInvest width={22} height={22} />
+                    </Touchable>}
             </View>}
         </View>
     );

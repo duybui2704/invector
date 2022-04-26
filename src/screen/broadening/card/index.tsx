@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Animated, Image, ImageBackground, StatusBar, Text, View } from 'react-native';
 
 import DimensionUtils, { ACTION_OFFSET } from '@/utils/DimensionUtils';
-
 import { MyStylesCard } from './styles';
-import { useEffect } from 'react';
 import { COLORS } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';
 import Languages from '@/common/Languages';
@@ -40,16 +38,16 @@ export default function Card({
     const styles = MyStylesCard();
 
     useEffect(() => {
-        console.log(DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH, DimensionUtils.SCREEN_WIDTH)
-    }, [])
+        console.log(DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH, DimensionUtils.SCREEN_WIDTH);
+    }, []);
 
     const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
         inputRange: [-ACTION_OFFSET, 0, ACTION_OFFSET],
-        outputRange: ['8deg', '0deg', '-8deg'],
+        outputRange: ['8deg', '0deg', '-8deg']
     });
 
     const animatedCardStyle = {
-        transform: [...swipe.getTranslateTransform(), { rotate: rotate }],
+        transform: [...swipe.getTranslateTransform(), { rotate }]
     };
 
     return (

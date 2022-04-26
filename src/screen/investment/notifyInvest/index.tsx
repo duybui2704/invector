@@ -1,14 +1,15 @@
-import { ENUM_INVEST_NOTIFY } from "@/common/constants";
-import Languages from "@/common/Languages";
-import { Touchable } from "@/components/elements/touchable";
-import HeaderBar from "@/components/header";
-import MyFlatList from "@/components/MyFlatList";
-import { COLORS, Styles } from "@/theme";
-import { useIsFocused } from "@react-navigation/core";
-import React, { useCallback, useEffect, useState } from "react";
-import { ScrollView, Text, TextStyle, View, ViewStyle } from "react-native";
-import Dash from "react-native-dash";
-import { MyStylesNotifyInvest } from "./styles";
+import React, { useCallback, useEffect, useState } from 'react';
+import { ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
+import Dash from 'react-native-dash';
+import { useIsFocused } from '@react-navigation/core';
+
+import { ENUM_INVEST_NOTIFY } from '@/common/constants';
+import Languages from '@/common/Languages';
+import { Touchable } from '@/components/elements/touchable';
+import HeaderBar from '@/components/header';
+import MyFlatList from '@/components/MyFlatList';
+import { COLORS, Styles } from '@/theme';
+import { MyStylesNotifyInvest } from './styles';
 
 const dataArr = [
     {
@@ -44,7 +45,7 @@ const dataArr = [
         time: '12:00:00',
         note: 'Thông báo đổi phần trăm tích luỹ gói đầu tư 80.000.000 VNĐ lãi hàng tháng gốc cuối kỳ ',
         isRead: false
-    },
+    }
 ];
 
 export const NotifyInvest = () => {
@@ -90,7 +91,7 @@ export const NotifyInvest = () => {
                 case ENUM_INVEST_NOTIFY.UNREAD:
                     return Languages.invest.notifyUnRead;
                 default:
-                    break;
+                    return null;
             }
         };
         return (
@@ -114,7 +115,7 @@ export const NotifyInvest = () => {
                     </View>
                     <View style={styles.txtRight}>
                         <Text style={styles.txtTimeDate}>{item.date}</Text>
-                        <Text style={styles.txtTimeDate}>{` ` + item.time}</Text>
+                        <Text style={styles.txtTimeDate}>{` ${item.time}`}</Text>
                     </View>
 
                 </View>
@@ -134,8 +135,8 @@ export const NotifyInvest = () => {
     }, []);
 
     const onNotifyDetail = () => {
-        console.log('detail')
-    }
+        console.log('detail');
+    };
 
     const renderItem = useCallback(({ item }: any) => {
         switch (btnInvest) {
@@ -143,6 +144,8 @@ export const NotifyInvest = () => {
                 return ItemNotify(onNotifyDetail, item, ENUM_INVEST_NOTIFY.NOTIFY_ALL);
             case ENUM_INVEST_NOTIFY.UNREAD:
                 return ItemNotify(onNotifyDetail, item, ENUM_INVEST_NOTIFY.UNREAD);
+            default:
+                return null;
         }
     }, [btnInvest]);
 
@@ -166,5 +169,5 @@ export const NotifyInvest = () => {
             </View>
         </View>
     );
-}
+};
 

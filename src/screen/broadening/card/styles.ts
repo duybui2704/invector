@@ -1,7 +1,8 @@
 
-import DimensionUtils, { CARD, VERTICAL_MARGIN } from '@/utils/DimensionUtils';
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
+
+import DimensionUtils, { CARD, VERTICAL_MARGIN } from '@/utils/DimensionUtils';
 import { COLORS } from '@/theme';
 import { Configs } from '@/common/Configs';
 
@@ -72,6 +73,5 @@ export const MyStylesCard = () => {
                 top: -DimensionUtils.SCREEN_HEIGHT * 0.08,
                 left: -DimensionUtils.SCREEN_WIDTH * 0.2
             }
-        })
-        , [])
-}
+        }), []);
+};

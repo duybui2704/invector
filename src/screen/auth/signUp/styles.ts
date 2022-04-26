@@ -19,6 +19,9 @@ export const MyStylesSign = () => {
                 width: DimensionUtils.SCREEN_WIDTH,
                 height: DimensionUtils.SCREEN_HEIGHT
             },
+            scrollView: {
+                marginVertical: 20
+            },
             wrapLoginTxt: {
                 flexDirection: 'row',
                 alignItems: 'center',

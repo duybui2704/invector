@@ -14,7 +14,7 @@ import Languages from '@/common/Languages';
 import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
 
-const OtpSignIn = (props) => {
+const OtpSignIn = (props: any) => {
     let timer = 0;
     const [check, setCheck] = useState<boolean>(false);
     const [isActive, setIsActive] = useState<boolean>(false);

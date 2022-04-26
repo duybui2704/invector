@@ -77,21 +77,21 @@ export const DetailInvestment = observer(({ route }: any) => {
                 );
             case ENUM_INVEST_STATUS.HISTORY:
                 return (
-                   <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                       <View style={styles.wrapInfo}>
-                           <Text style={styles.title}>{Languages.detailInvest.information}</Text>
-                           {renderItem(true)}
-                           {renderItem(true)}
-                           {renderItem(true)}
-                           {renderItem(true)}
-                       </View>
-                       <Touchable style={styles.button} onPress={navigateToInvest}>
-                           <Text style={styles.txtBt}>{Languages.detailInvest.reinvest}</Text>
-                       </Touchable>
-                   </View>
+                    <View style={styles.center}>
+                        <View style={styles.wrapInfo}>
+                            <Text style={styles.title}>{Languages.detailInvest.information}</Text>
+                            {renderItem(true)}
+                            {renderItem(true)}
+                            {renderItem(true)}
+                            {renderItem(true)}
+                        </View>
+                        <Touchable style={styles.button} onPress={navigateToInvest}>
+                            <Text style={styles.txtBt}>{Languages.detailInvest.reinvest}</Text>
+                        </Touchable>
+                    </View>
                 );
             default:
-               break;
+                return null;
         }
     }, [navigateToInvest, renderItem, status]);
 

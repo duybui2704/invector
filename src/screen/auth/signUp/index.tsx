@@ -144,40 +144,40 @@ const SignUp = observer(() => {
                     <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
                     <IcLine width={'50%'} height={'10%'} />
                 </View>
-                <ScrollViewWithKeyboard style={{marginVertical: 20}}>
-                {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName)}
-                {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, false, 'NUMBER')}
-                {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail)}
-                {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, true)}
-                {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, true)}
-                <View style={styles.inputPass}>
-                    <PickerBottomSheet
-                        ref={refChannel}
-                        containerStyle={styles.containerOverViewPicker}
-                        rightIcon={<ICUnderArrow />}
-                        placeholder={Languages.auth.knowChannel}
-                        onPressItem={onChangeChanel}
-                        value={channel?.value}
-                        data={dataChannel}
-                        valueText={styles.valuePicker}
-                        btnContainer={styles.containerPicker}
-                        placeholderStyle={styles.containerPlaceholderPicker}
-                    />
-                </View>
-                <View style={styles.rowInfo}>
-                    <View style={styles.row}>
-                        <Touchable style={styles.checkbox} onPress={onChangeChecked}>
-                            {checkbox}
-                        </Touchable>
-                        <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
+                <ScrollViewWithKeyboard style={styles.scrollView}>
+                    {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName)}
+                    {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, false, 'NUMBER')}
+                    {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail)}
+                    {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, true)}
+                    {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, true)}
+                    <View style={styles.inputPass}>
+                        <PickerBottomSheet
+                            ref={refChannel}
+                            containerStyle={styles.containerOverViewPicker}
+                            rightIcon={<ICUnderArrow />}
+                            placeholder={Languages.auth.knowChannel}
+                            onPressItem={onChangeChanel}
+                            value={channel?.value}
+                            data={dataChannel}
+                            valueText={styles.valuePicker}
+                            btnContainer={styles.containerPicker}
+                            placeholderStyle={styles.containerPlaceholderPicker}
+                        />
                     </View>
-                    <Touchable onPress={onSignIn} disabled={!checked}
-                        style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
-                        <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                            {Languages.auth.txtSignUp}
-                        </Text>
-                    </Touchable>
-                </View>
+                    <View style={styles.rowInfo}>
+                        <View style={styles.row}>
+                            <Touchable style={styles.checkbox} onPress={onChangeChecked}>
+                                {checkbox}
+                            </Touchable>
+                            <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
+                        </View>
+                        <Touchable onPress={onSignIn} disabled={!checked}
+                            style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                            <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                                {Languages.auth.txtSignUp}
+                            </Text>
+                        </Touchable>
+                    </View>
                 </ScrollViewWithKeyboard>
             </View>
         );

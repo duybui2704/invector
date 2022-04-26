@@ -8,7 +8,7 @@ import Languages from '@/common/Languages';
 import HeaderBar from '@/components/header';
 import {COLORS, HtmlStyles} from '@/theme';
 import Utils from '@/utils/Utils';
-import {MyStylesInvest} from "@/screen/investment/invest/styles";
+import { MyStylesInvest } from '@/screen/investment/invest/styles';
 import ItemInfoContract from '@/components/ItemInfoContract';
 import IcVimo from '@/assets/image/ic_vimo.svg';
 import IcNganLuong from '@/assets/image/ic_ngan_luong.svg';
@@ -16,14 +16,15 @@ import {Touchable} from '@/components/elements/touchable';
 import {ENUM_METHOD_PAYMENT} from '@/common/constants';
 import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
-import {Configs} from "@/common/Configs";
-import {PopupInvest} from "@/components/popupOTP";
+import { Configs } from '@/common/Configs';
+import { PopupInvest } from '@/components/popupOTP';
+
 
 const Invest = observer(({route}: any) => {
     const styles = MyStylesInvest();
     const [methodPayment, setMethodPayment] = useState<string>();
     const [isCheckBox, setIsCheckBox] = useState<boolean>(false);
-    const refModal = useRef();
+    const refModal = useRef<any>();
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string) => {
         return (
             <ItemInfoContract label={label} value={value} colorText={colorText}/>
@@ -56,17 +57,17 @@ const Invest = observer(({route}: any) => {
 
     const checkBox = useCallback(() => {
         setIsCheckBox(!isCheckBox);
-    }, [isCheckBox])
+    }, [isCheckBox]);
 
     const onModal= useCallback(() =>{
-            refModal.current.show();
-        }, []);
+        refModal.current.show();
+    }, []);
 
     return (
         <View>
             <HeaderBar title={Languages.invest.title} hasBack/>
             <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}
-                        style={styles.wrapContent}>
+                style={styles.wrapContent}>
                 <View style={styles.wrapIcon}>
                     <IcBag/>
                 </View>
@@ -102,7 +103,7 @@ const Invest = observer(({route}: any) => {
 
                 <Touchable
                     onPress={onModal}
-                    disabled={isCheckBox && methodPayment ? false : true}
+                    disabled={!(isCheckBox && methodPayment)}
                     style={isCheckBox && methodPayment ? styles.tobBottom :
                         [styles.tobBottom, {backgroundColor: COLORS.GRAY}]}>
                     <Text

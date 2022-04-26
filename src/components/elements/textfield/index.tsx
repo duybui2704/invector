@@ -23,8 +23,8 @@ import IcName from '@/assets/image/auth/ic_name_auth.svg';
 import IcHidePass from '@/assets/image/auth/ic_hide_pass.svg';
 import IcShowPass from '@/assets/image/auth/ic_show_pass.svg';
 import IcSearch from '@/assets/image/ic_search.svg';
-import ICUnderArrow from "@/assets/image/ic_under_arrow.svg";
-import Languages from "@/common/Languages";
+import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
+import Languages from '@/common/Languages';
 
 export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
     (
@@ -208,7 +208,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
 
         const checkIconPass = useCallback(() => {
             setIconPass(!iconPass);
-        }, [iconPass])
+        }, [iconPass]);
 
         const checkIconRight = useMemo(() => {
             switch (rightIcon) {

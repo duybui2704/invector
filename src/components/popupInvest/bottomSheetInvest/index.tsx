@@ -13,14 +13,15 @@ import React, {
     useRef
 } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Dash from 'react-native-dash';
 
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
-import { Touchable } from "@/components/elements/touchable";
+import { Touchable } from '@/components/elements/touchable';
 import { COLORS, Styles } from '@/theme';
 import { ItemProps } from '@/models/common-model';
-import Languages from "@/common/Languages";
-import Utils from "@/utils/Utils";
-import Dash from 'react-native-dash';
+import Languages from '@/common/Languages';
+import Utils from '@/utils/Utils';
+import { MyStylesBottomSheetInvest } from './styles';
 
 type BottomSheetProps = {
     data?: ItemProps[],
@@ -52,7 +53,7 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
     ) => {
 
         const bottomSheetRef = useRef<BottomSheetModal>(null);
-        const refModal = useRef();
+        const styles = MyStylesBottomSheetInvest();
         const snapPoints = useMemo(() => {
             const num = data?.length as number;
             const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
@@ -70,7 +71,7 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
         const close = useCallback(() => {
 
             onClose?.();
-        }, [])
+        }, []);
 
         const show = useCallback(() => {
             onOpen?.();
@@ -90,14 +91,14 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
                 };
                 return (
                     <>
-                    <Touchable onPress={onPress} style={styles.valueContainer}>
-                        <View style={styles.row}>
-                            <Text style={styles.value}>
+                        <Touchable onPress={onPress} style={styles.valueContainer}>
+                            <View style={styles.row}>
+                                <Text style={styles.value}>
                                     {item.value}
-                            </Text>
-                        </View>
-                    </Touchable>
-                        <View style={{ marginHorizontal: '5%' }}>
+                                </Text>
+                            </View>
+                        </Touchable>
+                        <View style={styles.dash}>
                             <Dash
                                 dashThickness={1}
                                 dashLength={10}
@@ -125,7 +126,7 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
                     enablePanDownToClose={true}
                 >
                     <Text style={styles.txtTitle}>{title}</Text>
-                    <View style={{ marginHorizontal: '8%' }}>
+                    <View style={styles.topDash}>
                         <Dash
                             dashThickness={1}
                             dashLength={10}
@@ -148,37 +149,3 @@ export default BottomSheetComponentInvest;
 const ITEM_HEIGHT = Configs.FontSize.size40;
 const HEADER_HEIGHT = Configs.FontSize.size40 + 30;
 const MIN_SIZE_HAS_INPUT = 10;
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    valueContainer: {
-        marginBottom: 5,
-        justifyContent: 'flex-end',
-        alignItems: 'flex-start',
-        height: 40,
-    },
-    value: {
-        flex: 1,
-        ...Styles.typography.regular,
-        fontSize: Configs.FontSize.size16
-    },
-    row: {
-        flexDirection: 'row',
-        marginHorizontal: 16
-    },
-    flatList: {
-        flex: 1,
-        marginTop: 0,
-        paddingHorizontal: 16
-    },
-    txtTitle: {
-        color: COLORS.BLACK,
-        textAlign: 'center',
-        marginVertical: 20,
-        fontSize: Configs.FontSize.size16,
-        fontFamily: Configs.FontFamily.bold
-    }
-});
