@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
         right: 0,
         left: 0,
         width: DimensionUtils.SCREEN_WIDTH,
-        height: DimensionUtils.SCREEN_WIDTH / 1.8
+        height: DimensionUtils.SCREEN_HEIGHT / 3
     },
     imageBg1: {
         position: 'absolute',

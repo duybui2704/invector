@@ -159,7 +159,7 @@ export const dataBank = [
 
 export const investData = [
     {
-        amountMoney: 80000000,
+        amountMoney: 5e5,
         percent: '0.5%',
         intent: 100000000,
         time: '3 tháng',
@@ -168,16 +168,16 @@ export const investData = [
         interest: 1000000
     },
     {
-        amountMoney: 80000000,
+        amountMoney: 8e6,
         percent: '0.5%',
         intent: 100000000,
-        time: '3 tháng',
+        time: '6 tháng',
         formality: 'Lãi gốc hàng tháng',
         id: 2,
         interest: 1000000
     },
     {
-        amountMoney: 80000000,
+        amountMoney: 8e7,
         percent: '0.5%',
         intent: 100000000,
         time: '3 tháng',
@@ -186,7 +186,7 @@ export const investData = [
         interest: 1000000
     },
     {
-        amountMoney: 80000000,
+        amountMoney: 8e8,
         percent: '0.5%',
         intent: 100000000,
         time: '3 tháng',

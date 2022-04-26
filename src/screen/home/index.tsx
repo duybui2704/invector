@@ -24,11 +24,7 @@ import { useAppStore } from '@/hooks';
 import { BannerModel } from '@/models/banner';
 import { NewsModel } from '@/models/news';
 import Navigator from '@/routers/Navigator';
-import MyFlatList from "@/components/MyFlatList";
-import styles from "@/screen/investment/styles";
-import Card from "@/screen/broadening/card";
 import Utils from "@/utils/Utils";
-import Investment from "@/screen/investment";
 import { COLORS } from '@/theme';
 import { MyStylesHome } from './styles';
 
@@ -182,6 +178,12 @@ const Home = observer(() => {
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
             />
+            <View style={styles.viewTob}>
+                {renderIconTob(gotoProfile, Languages.home.have)}
+                {renderIconTob(gotoInvest, Languages.home.invest)}
+                {renderIconTob(gotoReport, Languages.home.report)}
+                {renderIconTob(gotoPayment, Languages.home.payment)}
+            </View>
             <View style={styles.viewTop}>
                 <Text style={styles.txt1}>{Languages.home.sumInvest}</Text>
                 <View style={styles.viewTop2}>
@@ -223,12 +225,7 @@ const Home = observer(() => {
                 </View>
 
             </View>
-            <View style={styles.viewTob}>
-                    {renderIconTob(gotoProfile, Languages.home.have )}
-                    {renderIconTob(gotoInvest, Languages.home.invest )}
-                    {renderIconTob(gotoReport, Languages.home.report )}
-                {renderIconTob(gotoPayment, Languages.home.payment)}
-            </View>
+
             <ScrollView style={styles.viewCenter}>
                 <Text style={[styles.txt, {
                     color: COLORS.BLACK,
