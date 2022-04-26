@@ -199,7 +199,7 @@ export const arrMoney = [
     { id: '1', value: ENUM_INVEST_MONEY.BELOW_10 },
     { id: '2', value: ENUM_INVEST_MONEY.ABOUT_10_50 },
     { id: '3', value: ENUM_INVEST_MONEY.ABOUT_50_100 },
-    { id: '4', value: ENUM_INVEST_MONEY.ABOVE_100 },
+    { id: '4', value: ENUM_INVEST_MONEY.ABOVE_100 }
 ];
 
 export const arrMonth = [

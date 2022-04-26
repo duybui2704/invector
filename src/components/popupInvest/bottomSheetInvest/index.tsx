@@ -7,20 +7,18 @@ import {
 } from '@gorhom/bottom-sheet';
 import React, {
     forwardRef,
-    useCallback, useEffect,
-    useImperativeHandle,
+    useCallback, useImperativeHandle,
     useMemo,
     useRef
 } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Dash from 'react-native-dash';
 
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
-import { Touchable } from "@/components/elements/touchable";
-import { COLORS, Styles } from '@/theme';
+import { Touchable } from '@/components/elements/touchable';
 import { ItemProps } from '@/models/common-model';
-import Languages from "@/common/Languages";
-import Utils from "@/utils/Utils";
-import Dash from 'react-native-dash';
+import { COLORS, Styles } from '@/theme';
+
 
 type BottomSheetProps = {
     data?: ItemProps[],
@@ -70,7 +68,7 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
         const close = useCallback(() => {
 
             onClose?.();
-        }, [])
+        }, []);
 
         const show = useCallback(() => {
             onOpen?.();
@@ -90,13 +88,13 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
                 };
                 return (
                     <>
-                    <Touchable onPress={onPress} style={styles.valueContainer}>
-                        <View style={styles.row}>
-                            <Text style={styles.value}>
+                        <Touchable onPress={onPress} style={styles.valueContainer}>
+                            <View style={styles.row}>
+                                <Text style={styles.value}>
                                     {item.value}
-                            </Text>
-                        </View>
-                    </Touchable>
+                                </Text>
+                            </View>
+                        </Touchable>
                         <View style={{ marginHorizontal: '5%' }}>
                             <Dash
                                 dashThickness={1}
@@ -107,7 +105,7 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
                     </>
                 );
             },
-            [hide, onPressItem]
+            [close, onPressItem, title]
         );
 
         const keyExtractor = useCallback((index: any) => {
@@ -158,7 +156,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
-        height: 40,
+        height: 40
     },
     value: {
         flex: 1,

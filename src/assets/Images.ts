@@ -1,6 +1,6 @@
 // login
 const bg_login = require('./image/auth/bg_auth.jpg');
-const bg_successSignUp = require('./image/auth/bg_success.jpg')
+const bg_successSignUp = require('./image/auth/bg_success.jpg');
 
 // Tabs
 const ic_home = require('./image/bottomTabs/ic_home.png');
@@ -18,7 +18,7 @@ const bg_header_home = require('./image/header/bg_header_home.jpg');
 const logo_header_home = require('./image/header/logo_header_home.png');
 
 // boarding
-const bg_board = require('./image/broadening/back.jpg');
+// const bg_board = require('./image/broadening/back.jpg');
 
 export default {
     // Tabs
@@ -35,6 +35,6 @@ export default {
     bg_header_home,
     logo_header_home,
     bg_login,
-    bg_successSignUp,
-    bg_board
+    bg_successSignUp
+    // bg_board
 };
