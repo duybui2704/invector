@@ -15,7 +15,8 @@ const Languages = {
         outMoney: 'Tiền ra',
         transaction: 'Giao dịch',
         fromDate: 'Từ ngày',
-        toDate: 'Tới ngày'
+        toDate: 'Tới ngày',
+        allInvestNow: 'Tổng đầu tư hiện tại'
     },
     home: {
         title: 'Trang chủ',
