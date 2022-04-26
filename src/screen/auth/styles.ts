@@ -110,8 +110,12 @@ export const myStylesAuth = () => {
             wrapAll: {
                 flex: 1,
                 marginTop: DimensionUtils.SCREEN_HEIGHT * 0.23,
-                width: '85%',
                 position: 'absolute'
+            },
+            logoTN: {
+                position: 'absolute',
+                top: -10,
+                left: DimensionUtils.SCREEN_WIDTH * 0.2
             },
             checkbox: {
                 justifyContent: 'flex-end',

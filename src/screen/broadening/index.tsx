@@ -1,38 +1,58 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, PanResponder, StatusBar, View } from 'react-native';
+import { Animated, ImageBackground, PanResponder, StatusBar, View } from 'react-native';
 
 import Images from '@/assets/Images';
 import Languages from '@/common/Languages';
-import { ACTION_OFFSET, CARD } from '@/utils/DimensionUtils';
+import DimensionUtils, { ACTION_OFFSET, CARD } from '@/utils/DimensionUtils';
 import Card from './card';
 import { MyStylesBoar } from './styles';
-import { COLORS } from '@/theme';
+import { COLORS, Styles } from '@/theme';
 import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
+import IcBroad1 from '@/assets/image/broadening/ic_broad1.svg';
+import IcBroad2 from '@/assets/image/broadening/ic_broad2.svg';
+import IcBroad3 from '@/assets/image/broadening/ic_broad3.svg';
+import IcIndex1 from '@/assets/image/broadening/ic_index1.svg';
+import IcIndex2 from '@/assets/image/broadening/ic_index2.svg';
+import IcIndex3 from '@/assets/image/broadening/ic_index3.svg';
 
-const arr = [
-    {
-        title: Languages.board.title1,
-        images: Images.bg_board1,
-        txt: Languages.board.txt1
-    },
-    {
-        title: Languages.board.title2,
-        images: Images.bg_board2,
-        txt: Languages.board.txt2
-    },
-    {
-        title: Languages.board.title3,
-        images: Images.bg_board3,
-        txt: Languages.board.txt3
-    }
-];
 
-export default function Onboarding() {
+export default function Broadening() {
+    const styles = MyStylesBoar();
+    const arr = [
+        {
+            title: Languages.board.title1,
+            images: <IcBroad1
+                style={styles.iconBig}
+                width={DimensionUtils.SCREEN_WIDTH * 0.44}
+                height={DimensionUtils.SCREEN_WIDTH * 0.44}
+            />,
+            icon: <IcIndex1 style={styles.iconSmall} />,
+            txt: Languages.board.txt1
+        },
+        {
+            title: Languages.board.title2,
+            images: <IcBroad2
+                style={styles.iconBig}
+                width={DimensionUtils.SCREEN_WIDTH * 0.44}
+                height={DimensionUtils.SCREEN_WIDTH * 0.44} />,
+            icon: <IcIndex2 style={styles.iconSmall} />,
+            txt: Languages.board.txt2
+        },
+        {
+            title: Languages.board.title3,
+            images: <IcBroad3
+                style={styles.iconBig}
+                width={DimensionUtils.SCREEN_WIDTH * 0.44}
+                height={DimensionUtils.SCREEN_WIDTH * 0.44} />,
+            icon: <IcIndex3 style={styles.iconSmall} />,
+            txt: Languages.board.txt3
+        }
+    ];
+
     const swipe = useRef(new Animated.ValueXY()).current;
     const tiltSign = useRef(new Animated.Value(1)).current;
     const [data, setData] = useState(arr);
-    const styles = MyStylesBoar();
     let dem = 0;
 
     useEffect(() => {
@@ -76,11 +96,11 @@ export default function Onboarding() {
         if (dem < 2) {
             setData((prevState) => prevState.slice(1));
             swipe.setValue({ x: 0, y: 0 });
-        } 
+        }
     }, [dem, swipe]);
 
     const handleChoise = useCallback(
-        (name, isFirst, sign) => {
+        (name: string, isFirst: boolean, sign: number) => {
             console.log(name, isFirst);
             if ((name !== Languages.board.title3 && isFirst)) {
                 Animated.timing(swipe.x, {
@@ -96,7 +116,7 @@ export default function Onboarding() {
     );
 
     return (
-        <View style={styles.main}>
+        <ImageBackground style={styles.main} source={Images.bg_board} resizeMode='stretch'>
             <StatusBar
                 barStyle={'dark-content'}
                 animated
@@ -105,7 +125,7 @@ export default function Onboarding() {
             />
             <Animated.View style={styles.container}>
                 {data
-                    .map(({ title, images, txt }, index) => {
+                    .map(({ title, images, txt, icon }, index) => {
                         const isFirst = index === 0;
                         const panHandlers = isFirst ? panResponder.panHandlers : {};
                         return (
@@ -113,6 +133,7 @@ export default function Onboarding() {
                                 key={title}
                                 name={title}
                                 source={images}
+                                icons={icon}
                                 isFirst={isFirst}
                                 swipe={swipe}
                                 tiltSign={tiltSign}
@@ -124,6 +145,6 @@ export default function Onboarding() {
                     })
                     .reverse()}
             </Animated.View>
-        </View>
+        </ImageBackground>
     );
 }

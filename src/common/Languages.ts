@@ -56,11 +56,19 @@ const Languages = {
         intent: 'Lãi dự kiến',
         getMoney: 'Lãi đã nhận',
         sumMoney: 'Tổng tiền đã nhận',
-        monthInvest: 'Chọn thời gian đầu tư',
-        chooseMoney: 'Chọn số tiền đầu tư',
+        monthInvest: 'Thời gian đầu tư',
+        chooseMoney: 'Số tiền đầu tư',
         packageInvest: 'Chọn gói đầu tư',
         search: 'Tìm kiếm',
-        cancel: 'Hủy'
+        cancel: 'Hủy',
+        notify: 'Thông báo',
+        notifyAll: 'Tất cả',
+        notifyUnRead: 'Chưa đọc',
+        customerGratitude: 'Tri ân khách hàng cùng tienngay.vn',
+        investPay: 'Trả lãi đầu tư',
+        investSuccess: 'Đầu tư thành công',
+        changePercent: 'Thay đổi tích luỹ phần trăm',
+        availableBalance: 'Số dư hiện có'
     },
     account: {
         title: 'Tài khoản',
@@ -80,7 +88,8 @@ const Languages = {
         accVerified: 'Tài khoản đã xác thực',
         accuracyNow: 'Xác thực ngay',
         logout: 'Đăng xuất',
-        waitVerify: 'Tài khoản đang chờ xác thực'
+        waitVerify: 'Tài khoản đang chờ xác thực',
+
     },
     report: {
         title: 'Báo cáo',
@@ -231,7 +240,7 @@ const Languages = {
         LAErrorTouchIDLockout:
             'Đã xảy ra lỗi do đăng nhập quá nhiều lần, vui lòng thử lại sau'
     },
-    accountInfo:{
+    accountInfo: {
         accountInfo: 'Thông tin cá nhân',
         content: 'Xác thực tài khoản để tăng độ an toàn khi đầu tư và sử dụng ứng dụng',
         noteWaitVerify: 'Tài khoản của bạn đang được xác thực, bạn có thể đầu tư ngay sau khi chứng từ được xác thực',
@@ -247,7 +256,7 @@ const Languages = {
         save: 'Lưu lại',
         editAcc: 'Chỉnh sửa thông tin'
     },
-    accountIdentify:{
+    accountIdentify: {
         accountIdentify: 'Xác thực tài khoản',
         KYC: 'Số CMND/CCCD',
         imageIdentify: 'Ảnh giấy tờ tùy thân',
@@ -303,7 +312,7 @@ const Languages = {
         selectAsThumb: 'Đặt làm hình đại diện',
         uploadFailed: 'Xảy ra lỗi trong quá trình tải ảnh lên'
     },
-    shareFriend:{
+    shareFriend: {
         introduce: 'Giới thiệu',
         introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà lên tới 40 triệu đồng tới từ</c> <g>TienNgay.vn</g><c> Đầu tư & Tích luỹ</c></t>',
         introduceCode: 'Mã giới thiệu của bạn',
@@ -362,14 +371,14 @@ const Languages = {
         notification: 'Thông báo',
         desciption: 'Vui lòng liên kết tài khoản mạng xã hội'
     },
-    paymentMethod:{
+    paymentMethod: {
         methodChoose: 'Chọn phương thức nhận lãi của bạn',
         vimo: 'Tài khoản Vimo',
         bank: 'Tài khoản Ngân hàng',
         cancelLinkVimo: 'Huỷ liên kết ví Vimo',
         contentCancelLinkVimo: 'Bạn có thật sự muốn huỷ liên kết với ví Vimo. Nếu bạn huỷ liên kết bạn sẽ không thể đầu tư bằng ví Vimo'
     },
-    accountBank:{
+    accountBank: {
         bankChoose: 'Chọn ngân hàng',
         accountNumber: 'Số tài khoản',
         ATMNumber: 'Số thẻ ATM',

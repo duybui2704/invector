@@ -13,7 +13,7 @@ import SessionManager, { DeviceInfos } from '@/manager/SessionManager';
 import { useAppStore } from '@/hooks';
 import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC } from '@/common/constants';
 import { SuccessSignUp } from '@/screen/auth/signUp/successSignUp';
-import Onboarding from '@/screen/onBoarding';
+import Broadening from '@/screen/broadening';
 
 
 const screenOptions = { headerShown: false };
@@ -75,9 +75,9 @@ const RootStack = observer(() => {
     const AppStack = useCallback(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
-                 <Stack.Screen name={ScreenName.onBoard} component={Onboarding}/>
-                 <Stack.Screen name={ScreenName.auth} component={AuthStack} />
-                 <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
+                {/* <Stack.Screen name={ScreenName.onBoard} component={Broadening} /> */}
+                <Stack.Screen name={ScreenName.auth} component={AuthStack} />
+                <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
             </Stack.Navigator>
         );
     }, [AuthStack]);

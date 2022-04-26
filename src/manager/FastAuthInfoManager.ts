@@ -4,6 +4,7 @@ export class FastAuthInfo {
 
     @observable supportedBiometry = '';
 
+
     constructor() {
         makeObservable(this);
     }
