@@ -12,14 +12,15 @@ import React, {
     useMemo,
     useRef
 } from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import {Configs, PADDING_BOTTOM} from '@/common/Configs';
-import {Touchable} from "@/components/elements/touchable";
-import {COLORS, Styles} from '@/theme';
-import {ItemProps} from '@/models/common-model';
+import { Configs, PADDING_BOTTOM } from '@/common/Configs';
+import { Touchable } from "@/components/elements/touchable";
+import { COLORS, Styles } from '@/theme';
+import { ItemProps } from '@/models/common-model';
 import Languages from "@/common/Languages";
 import Utils from "@/utils/Utils";
+import Dash from 'react-native-dash';
 
 type BottomSheetProps = {
     data?: ItemProps[],
@@ -35,7 +36,7 @@ export type BottomSheetAction = {
 };
 
 const CustomBackdrop = (props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props} pressBehavior="close"/>;
+    return <BottomSheetBackdrop {...props} pressBehavior="close" />;
 };
 
 const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProps>(
@@ -56,7 +57,7 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
             const num = data?.length as number;
             const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
             let ratio = contentHeight * 100 / SCREEN_HEIGHT;
-            ratio = Math.max(ratio, 15);
+            ratio = Math.max(ratio, 35);
             ratio = Math.min(ratio, 70);
 
             return [`${ratio}%`, `${ratio}%`];
@@ -82,25 +83,34 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
         }));
 
         const renderItem = useCallback(
-            ({item}) => {
+            ({ item }: any) => {
                 const onPress = () => {
                     onPressItem?.(item.value, title);
                     close();
                 };
                 return (
+                    <>
                     <Touchable onPress={onPress} style={styles.valueContainer}>
                         <View style={styles.row}>
                             <Text style={styles.value}>
-                                {title === Languages.invest.monthInvest ? item.value : Utils.formatMoney(item.value)}
+                                    {item.value}
                             </Text>
                         </View>
                     </Touchable>
+                        <View style={{ marginHorizontal: '5%' }}>
+                            <Dash
+                                dashThickness={1}
+                                dashLength={10}
+                                dashGap={5}
+                                dashColor={COLORS.GRAY} />
+                        </View>
+                    </>
                 );
             },
             [hide, onPressItem]
         );
 
-        const keyExtractor = useCallback((index) => {
+        const keyExtractor = useCallback((index: any) => {
             return `${index.id}`;
         }, []);
 
@@ -115,6 +125,13 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
                     enablePanDownToClose={true}
                 >
                     <Text style={styles.txtTitle}>{title}</Text>
+                    <View style={{ marginHorizontal: '8%' }}>
+                        <Dash
+                            dashThickness={1}
+                            dashLength={10}
+                            dashGap={5}
+                            dashColor={COLORS.GRAY} />
+                    </View>
                     <BottomSheetFlatList
                         data={data}
                         testID={title}
@@ -138,21 +155,15 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     valueContainer: {
-        marginBottom: 12,
-        marginLeft: '5%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '90%',
+        marginBottom: 5,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
         height: 40,
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor: COLORS.GREEN
     },
     value: {
         flex: 1,
         ...Styles.typography.regular,
-        fontSize: Configs.FontSize.size16,
-        textAlign: 'center'
+        fontSize: Configs.FontSize.size16
     },
     row: {
         flexDirection: 'row',

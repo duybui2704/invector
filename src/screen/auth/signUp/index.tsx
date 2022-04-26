@@ -142,7 +142,7 @@ const SignUp = observer(() => {
             <View style={styles.content}>
                 <View style={styles.wrapLoginTxt}>
                     <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
-                    <IcLine width={'40%'}/>
+                    <IcLine width={'50%'} height={'10%'} />
                 </View>
                 <ScrollViewWithKeyboard style={{marginVertical: 20}}>
                 {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName)}

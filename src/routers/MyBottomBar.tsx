@@ -30,6 +30,7 @@ import AccountInfo from '@/screen/profile/accountInfo/AccountInfo';
 import EditAccountInfo from '@/screen/profile/editAccountInfo/EditAccountInfo';
 import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
 import Policy from '@/screen/profile/policy/Policy';
+import { NotifyInvest } from '@/screen/investment/notifyInvest';
 
 const TabsData = [
     {
@@ -83,6 +84,7 @@ const InvestStack = () => {
             <Stack.Screen name={ScreenName.investment} component={Investment} />
             <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
             <Stack.Screen name={ScreenName.invest} component={Invest} />
+            <Stack.Screen name={ScreenName.notifyInvest} component={NotifyInvest} />
         </Stack.Navigator>
     );
 };
