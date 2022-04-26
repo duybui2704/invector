@@ -1,4 +1,3 @@
-import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
@@ -24,15 +23,17 @@ const Transaction = observer(() => {
     const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
     const [isFreshing, setIsFreshing] = useState<boolean>(true);
     const [dataHistory, setDataHistory] = useState<TransactionModel[]>();
-
+    
     const condition = useRef<PagingConditionTypes>({
         isLoading: true,
         canLoadMore: true,
         offset: 0,
         startDate: undefined,
         endDate: undefined,
-        option: undefined
+        option: TransactionTypes[0].type
     });
+
+    const [options, setOption] = useState<string>(condition.current.option);
 
     const fetchHistory = useCallback(async () => {
         setIsFreshing(true);
@@ -40,8 +41,7 @@ const Transaction = observer(() => {
             3,
             condition.current?.startDate,
             condition.current?.endDate,
-            'all'
-            // condition.current?.option
+            options
         );
         if (res.success) {
             const data = res.data as TransactionModel[];
@@ -49,18 +49,19 @@ const Transaction = observer(() => {
             setIsFreshing(false);
         }
         setIsFreshing(false);
-    }, [apiServices.history]);
+    }, [apiServices.history, options]);
 
     useEffect(() => {
         fetchHistory();
-    }, [fetchHistory]);
+    }, []);
 
     const onRefresh = useCallback((startDate?: Date, endDate?: Date) => {
         condition.current.canLoadMore = true;
         condition.current.offset = 0;
-        condition.current.startDate = startDate;
-        condition.current.endDate = endDate;
+        condition.current.startDate = startDate || undefined;
+        condition.current.endDate = endDate || undefined;
         condition.current.option = TransactionTypes[0].type;
+        setOption(condition.current.option);
         fetchHistory();
     }, [fetchHistory]);
 
@@ -74,7 +75,8 @@ const Transaction = observer(() => {
             const _onPress = () => {
                 setSelectedFilter(item.value);
                 condition.current.option = item.type;
-                console.log('condition.current.option = ', condition.current.option);
+                setOption(condition.current.option);
+                console.log('option = ', options);
             };
 
             return (
@@ -87,7 +89,7 @@ const Transaction = observer(() => {
                 />
             );
         },
-        [selectedFilter]
+        [options, selectedFilter]
     );
     const renderFilter = useMemo(() => {
         return (
@@ -105,7 +107,7 @@ const Transaction = observer(() => {
 
     const onEndReached = useCallback(() => {
         if (!condition.current.isLoading && condition.current.canLoadMore) {
-            // fetchHistory();
+            fetchHistory();
         }
     }, [fetchHistory]);
 

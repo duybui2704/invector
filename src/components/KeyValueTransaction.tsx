@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import Dash from 'react-native-dash';
 import { observer } from 'mobx-react';
 
