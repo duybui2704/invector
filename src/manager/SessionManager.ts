@@ -94,12 +94,12 @@ class SessionManager {
     }
 
     async setAccessToken(token?: string, pwd?: string) {
-        let rsaPwd = pwd ? await RsaUtils.encryptData(pwd) : null;
-        if (rsaPwd) {
-            rsaPwd = rsaPwd.split('\n').join('').split('\r').join('').split(' ').join('');
-        }
+        // let rsaPwd = pwd ? await RsaUtils.encryptData(pwd) : null;
+        // if (rsaPwd) {
+        //     rsaPwd = rsaPwd.split('\n').join('').split('\r').join('').split(' ').join('');
+        // }
         if (token) {
-            this.accessToken = `${token}:${rsaPwd}`;
+            this.accessToken = `${token}`;
             StorageUtils.saveDataToKey(StorageKeys.KEY_ACCESS_TOKEN, this.accessToken);
         } else {
             this.accessToken = undefined;

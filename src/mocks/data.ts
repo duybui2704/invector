@@ -5,35 +5,31 @@ import { UserInfoModal } from '@/models/user-models';
 
 export const DATA = [
     {
-        id: 1,
-        growth: '800000',
-        date: '14/02/2022 12:00:00',
-        content: 'Trả lãi đầu tư',
-        debt: '4000000',
+        so_tien: '800000',
+        created_at: '14/02/2022 12:00:00',
+        hinh_thuc: 'Trả lãi đầu tư',
+        so_du: '4000000',
         color: 'green'
     },
     {
-        id: 2,
-        growth: '800000',
-        date: '14/02/2022 12:00:00',
-        content: 'Đầu tư',
-        debt: '4000000',
+        so_tien: '800000',
+        created_at: '14/02/2022 12:00:00',
+        hinh_thuc: 'Đầu tư',
+        so_du: '4000000',
         color: 'red'
     },
     {
-        id: 3,
-        growth: '800000',
-        date: '14/02/2022 12:00:00',
-        content: 'Trả lãi đầu tư',
-        debt: '4000000',
+        so_tien: '800000',
+        created_at: '14/02/2022 12:00:00',
+        hinh_thuc: 'Trả lãi đầu tư',
+        so_du: '4000000',
         color: 'green'
     },
     {
-        id: 4,
-        growth: '800000',
-        date: '14/02/2022 12:00:00',
-        content: 'Đầu tư',
-        debt: '4000000',
+        so_tien: '800000',
+        created_at: '14/02/2022 12:00:00',
+        hinh_thuc: 'Đầu tư',
+        so_du: '4000000',
         color: 'red'
     }
 ] as TransactionModel[];
@@ -108,10 +104,10 @@ export const dataUser = {
     phone_number: '0353826750',
     gender: 'Nam',
     accuracy: 3,
-    front_card:'',
-    card_back:'',
+    front_card: '',
+    card_back: '',
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAznG13WJ4ayysR3Q07BNXsRTdDbP0PQ_Efw&usqp=CAU',
-    id_fblogin:'1',
+    id_fblogin: '1',
     id_google: '1',
     user_apple: '1'
 } as unknown as UserInfoModal;

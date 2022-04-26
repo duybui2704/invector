@@ -1,36 +1,40 @@
 import { Id } from './id';
 
 export interface UserInfoModal {
-    type: string;
-    phone_number: string;
-    password: string;
-    full_name: string;
-    email: string;
-    loan_purpose: string;
-    channels: string;
-    created_at: number;
-    status: string;
-    status_login: boolean;
-    token_active: number;
-    timeExpried_active: number;
-    created_by: string;
-    token_app: string;
-    _id: Id;
-    indentify: string;
-    identify: string;
-    role_user: string;
-    updated_at: string;
-    updated_by: string;
-    username: string;
-    birth_date: string;
-    avatar: string,
+    avatar_user?: string;
+    identity?: string;
+    type?: string;
+    tinh_trang?: StateUserInfo;
+    tra_lai?: RePay;
+    phone_number?: string;
+    password?: string;
+    full_name?: string;
+    email?: string;
+    loan_purpose?: string;
+    channels?: string;
+    created_at?: number;
+    status?: string;
+    status_login?: boolean;
+    token_active?: number;
+    timeExpried_active?: number;
+    created_by?: string;
+    token_app?: string;
+    _id?: Id;
+    role_user?: string;
+    updated_at?: string;
+    updated_by?: string;
+    username?: string;
+    birth_date?: string;
+    avatar?: string,
     id_fblogin?: string;
     id_google?: string;
     user_apple?: string;
     gender?: string;
-    front_facing_card: string,
-    card_back: string,
+    front_facing_card?: string,
+    card_back?: string,
     accuracy?:number;   // 1: da xac thuc, 2: chua xac thuc
+    address?:string;
+    job?:string
 }
 interface OtpModal {
     otp1: any;
@@ -40,3 +44,18 @@ interface OtpModal {
     otp5: any;
     otp6: any
 }
+
+interface StateUserInfo {
+    auth?: number;
+   status?: string;
+   color?: string;
+}
+
+interface RePay {
+    bank_name?: string;
+    interest_receiving_account?: string;
+    name_bank_account?: string;
+    type_card?: string;
+    type_interest_receiving_account?: string;
+ }
+

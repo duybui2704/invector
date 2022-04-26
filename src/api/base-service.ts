@@ -50,21 +50,16 @@ const getHeader = (tokenNotRequired?: boolean) => {
 export class BaseService {
     latestParamBeforeEncrypted = null; // use for case resume current request
 
-    api = (baseURL?: string, tokenNotRequired?: boolean) => {
-        const defHeader = getHeader(tokenNotRequired);
+    api = (baseURL = API_CONFIG.BASE_URL) => {
+        const defHeader = getHeader();
         const _api = apiSauce.create({
-            baseURL: baseURL || API_CONFIG.BASE_URL,
+            baseURL,
             headers: defHeader,
             timeout: TIMEOUT_API
         });
 
         _api.addAsyncResponseTransform(async (response: any) => {
-            const { data, message, code, success } =
-                await this.checkResponseAPI(response);
-
-            if (data?.token_app) {
-                await SessionManager.setAccessToken(data.token_app, data?._id?.$oid);
-            }
+            const { data, message, code, success } = await this.checkResponseAPI(response);
 
             if (typeof data !== 'undefined') {
                 try {

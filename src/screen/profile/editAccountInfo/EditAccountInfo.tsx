@@ -13,19 +13,21 @@ import { TextFieldActions } from '@/components/elements/textfield/types';
 import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
 import SessionManager from '@/manager/SessionManager';
-import { dataUser } from '@/mocks/data';
 import FormValidate from '@/utils/FormValidate';
 import { MyStylesEditAccountInfo } from './styles';
+import { useAppStore } from '@/hooks';
+import ToastUtils from '@/utils/ToastUtils';
 
 const EditAccountInfo = observer(() => {
+    const {apiServices, userManager} = useAppStore();
     const styles = MyStylesEditAccountInfo();
-    const [name, setName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
+    const [name, setName] = useState<string>(SessionManager.userInfo?.full_name || '');
+    const [emailUser, setEmail] = useState<string>(SessionManager.userInfo?.email || '');
     const [phone, setPhone] = useState<string>('');
-    const [gender, setGender] = useState<string>('');
-    const [address, setAddress] = useState<string>('');
-    const [job, setJob] = useState<string>('');
-    const [birthday, setBirthday] = useState<string>('');
+    const [genderUser, setGender] = useState<string>(SessionManager.userInfo?.gender || '');
+    const [addressUser, setAddress] = useState<string>(SessionManager.userInfo?.address || '');
+    const [jobUser, setJob] = useState<string>(SessionManager.userInfo?.job || '');
+    const [birthday, setBirthday] = useState<string>(SessionManager.userInfo?.birth_date || '');
 
     const nameRef = useRef<TextFieldActions>();
     const emailRef = useRef<TextFieldActions>();
@@ -63,7 +65,7 @@ const EditAccountInfo = observer(() => {
         }
     }, []);
 
-    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean) => {
+    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, maxLength?: number) => {
         return (
             <View style={styles.wrapInput}>
                 <Text style={styles.labelStyle}>{label}</Text>
@@ -73,6 +75,7 @@ const EditAccountInfo = observer(() => {
                     placeHolder={label}
                     keyboardType={keyboardType}
                     value={value}
+                    maxLength={maxLength}
                     onChangeText={onChangeText}
                     containerInput={styles.inputStyle}
                     disabled={disabled}
@@ -83,12 +86,12 @@ const EditAccountInfo = observer(() => {
 
     const onValidate = useCallback(() => {
         const errMsgName = FormValidate.userNameValidate(name);
-        const errMsgGender = FormValidate.genderValidate(gender);
+        const errMsgGender = FormValidate.genderValidate(genderUser);
         const errMsgBirthday = FormValidate.birthdayValidate(birthday);
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
-        const errMsgPwdEmail = FormValidate.emailValidate(email);
-        const errMsgAddress = FormValidate.addressValidate(address);
-        const errMsgJob = FormValidate.jobValidate(job);
+        const errMsgPwdEmail = FormValidate.emailValidate(emailUser);
+        const errMsgAddress = FormValidate.addressValidate(addressUser);
+        const errMsgJob = FormValidate.jobValidate(jobUser);
 
         nameRef.current?.setErrorMsg(errMsgName);
         genderRef.current?.setErrorMsg(errMsgGender);
@@ -100,25 +103,39 @@ const EditAccountInfo = observer(() => {
         if (`${errMsgName}${errMsgGender}${errMsgBirthday}${errMsgPhone}${errMsgPwdEmail}${errMsgAddress}${errMsgJob}`.length === 0) {
             return true;
         } return false;
-    }, [address, birthday, email, gender, job, name, phone]);
+    }, [addressUser, birthday, emailUser, genderUser, jobUser, name, phone]);
 
-    const onSaveInfo = useCallback(() => {
+    const onSaveInfo = useCallback(async() => {
         if (onValidate()) {
-            console.log('name = ', name);
+            const res = await apiServices.auth.updateUserInf(name, genderUser,birthday, phone, emailUser, addressUser, jobUser);
+            if(res.success){
+                userManager.updateUserInfo({
+                    ...userManager.userInfo,
+                    full_name: name,
+                    gender: genderUser,
+                    birth_date: birthday,
+                    phone_number: phone,
+                    email: emailUser,
+                    address: addressUser,
+                    job: jobUser
+                });
+                ToastUtils.showSuccessToast(Languages.accountInfo.editAcc);
+            }
+            
         }
-    }, [name, onValidate]);
+    }, [addressUser, apiServices.auth, birthday, emailUser, genderUser, jobUser, name, onValidate, phone, userManager]);
 
 
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
                 {renderKeyFeature(nameRef, Languages.accountInfo.fullName, name)}
-                {renderKeyFeature(genderRef, Languages.accountInfo.gender, gender)}
+                {renderKeyFeature(genderRef, Languages.accountInfo.gender, genderUser, 'DEFAULT', false, 3)}
                 {renderKeyFeature(birthdayRef, Languages.accountInfo.birthday, birthday)}
                 {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, SessionManager.savePhone?.toString(), 'PHONE', true)}
-                {renderKeyFeature(emailRef, Languages.accountInfo.email, email, 'EMAIL')}
-                {renderKeyFeature(addressRef, Languages.accountInfo.address, address)}
-                {renderKeyFeature(jobRef, Languages.accountInfo.job, job)}
+                {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL')}
+                {renderKeyFeature(addressRef, Languages.accountInfo.address, addressUser)}
+                {renderKeyFeature(jobRef, Languages.accountInfo.job, jobUser)}
                 <View style={styles.wrapEdit}>
                     <Button
                         style={styles.accuracyWrap}
@@ -129,7 +146,7 @@ const EditAccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [address, birthday, email, gender, job, name, onSaveInfo, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit]);
+    }, [addressUser, birthday, emailUser, genderUser, jobUser, name, onSaveInfo, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit]);
 
     return (
         <View style={styles.container}>
@@ -138,13 +155,13 @@ const EditAccountInfo = observer(() => {
                 <HideKeyboard>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.topContainer}>
-                            {!dataUser.avatar ?
+                            {!SessionManager?.userInfo?.avatar ?
                                 <AvatarIC style={styles.circleWrap} />
                                 :
                                 <FastImage
                                     style={styles.circleWrap}
                                     source={{
-                                        uri: dataUser?.avatar
+                                        uri: SessionManager?.userInfo?.avatar
                                     }}
                                     resizeMode={FastImage.resizeMode.cover}
                                 />

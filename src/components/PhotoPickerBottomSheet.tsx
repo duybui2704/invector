@@ -26,7 +26,9 @@ type PickerProps = {
     disable?: boolean;
     image?: any;
     icon?: any;
-    hasDash?: boolean
+    hasDash?: boolean;
+    hasImage?: boolean;
+    imageSource?:string;
 };
 type BottomSheetAction = {
     show: (content?: string) => any;
@@ -42,7 +44,9 @@ const PhotoPickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
             image,
             label,
             hasDash,
-            icon
+            icon,
+            hasImage,
+            imageSource
         }: PickerProps,
         ref: any
     ) => {
@@ -68,9 +72,9 @@ const PhotoPickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
                     style={styles.wrapItemPhoto}
                 >
                     <Text style={styles.identifyTextStyle}>{label}</Text>
-                    {image?.images[0].path ? (
+                    {image?.images[0].path || hasImage ? (
                         <FastImage style={styles.image}
-                            source={{ uri: image?.images[0].path }}
+                            source={ { uri: !hasImage ? image?.images[0].path : imageSource }}
                             resizeMode={FastImage.resizeMode.cover} />
                     ) : (
                         icon

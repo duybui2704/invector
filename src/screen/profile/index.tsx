@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, useRef } from 'react';
+import React, { useMemo, useCallback, useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { observer } from 'mobx-react';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -66,6 +66,12 @@ const Profile = observer(() => {
     });
     const [errorText, setErrorText] = useState<string>('');
 
+    useEffect(()=>{
+        if(!supportedBiometry || !SessionManager.getPhoneLogin.toString()){
+            Navigator.pushScreen(ScreenName.auth);
+        }
+    },[supportedBiometry]);
+
     const callPhone = useCallback(() => {
         Utils.callNumber(Languages.common.hotline);
     }, []);
@@ -83,7 +89,7 @@ const Profile = observer(() => {
 
     const onLogout = useCallback(() => {
         SessionManager.logout();
-        userManager.updateUserInfo(null);
+        userManager.updateUserInfo({});
         Navigator.navigateScreen(ScreenName.home);
     }, [userManager]);
 
@@ -258,20 +264,20 @@ const Profile = observer(() => {
     }, [isEnabledSwitch, onToggleBiometry, supportedBiometry]);
 
     const renderAccuracy = useMemo(() => {
-        switch (dataUser?.accuracy) {
-            case 1:
+        switch (SessionManager.userInfo?.tinh_trang?.auth) {
+            case 0:
                 return (
                     <View style={styles.accuracyWrap}>
                         <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
                     </View>
                 );
-            case 2:
+            case 1:
                 return (
                     <View style={styles.notAccuracyWrap}>
                         <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
                     </View>
                 );
-            case 3:
+            case 2:
                 return (
                     <View style={styles.waitAccuracyWrap}>
                         <Text style={styles.txtWaitAccuracy}>{Languages.account.waitVerify}</Text>
