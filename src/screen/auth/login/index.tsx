@@ -18,8 +18,6 @@ import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import { MyStylesLogin } from './styles';
 import { UserInfoModal } from '@/models/user-models';
-import { dataUser } from '@/mocks/data';
-
 
 const Login = observer(() => {
     const {
@@ -50,7 +48,7 @@ const Login = observer(() => {
 
     useEffect(() => {
         setLoading(isLoading);
-        setPhone('0988251903');
+        setPhone('0961182794');
         setPass('12345678');
     }, [isLoading]);
 
@@ -117,10 +115,6 @@ const Login = observer(() => {
         setLoading(false);
 
     }, [apiServices.auth, pass, phone, userManager]);
-
-    useEffect(() => {
-        console.log('userData=', userData);
-    }, [isLoading, userData]);
 
     return (
         <View style={styles.content}>

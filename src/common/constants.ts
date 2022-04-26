@@ -144,4 +144,10 @@ export enum LINKS {
     FB_FAN_PAGE = 'https://www.facebook.com/groups/425567338856999',
     STORE_ANDROID = 'https://play.google.com/store/apps/details?id=vn.tienngay.customer',
     STORE_IOS = 'https://apps.apple.com/id/app/tienngay-customer/id1560920806'
-}
+};
+
+export enum COLOR_TRANSACTION {
+    RED = 'red',
+    YELLOW = 'yellow',
+    GREEN = 'green',
+};

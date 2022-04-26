@@ -11,7 +11,6 @@ import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import KeyValue from '@/components/KeyValue';
 import SessionManager from '@/manager/SessionManager';
-import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
 import { MyStylesAccountInfo } from './styles';
 import { useAppStore } from '@/hooks';
@@ -30,7 +29,8 @@ const AccountInfo = observer(() => {
     const fetchUserInfo = useCallback(async () => {
         const res = await apiServices.auth.getUserInfo(3);
         if(res.success){
-            setDataUser(res.data as UserInfoModal);
+            const data = res.data as UserInfoModal;
+            setDataUser(data);
         }
     }, [apiServices.auth]);
 

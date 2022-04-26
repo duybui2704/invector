@@ -24,8 +24,8 @@ export enum API_CONFIG {
     // BASE_URL = 'https://appkh.tienngay.vn/V2',
     // BASE_URL_OLD = 'https://sandboxappkh.tienngay.vn',
     // BASE_URL = 'https://sandboxappkh.tienngay.vn/V2',
-    // HOST: 'https://sandboxappndt.tienngay.vn/',
-     BASE_URL = 'https://appndt.tienngay.vn/',
+    BASE_URL = 'https://sandboxappndt.tienngay.vn/',
+    //  BASE_URL = 'https://appndt.tienngay.vn/',
     DOMAIN_SHARE = 'https://',
 
     IMAGES_HOST = 'https://',
@@ -101,7 +101,11 @@ export enum API_CONFIG {
 
     // Get all store
     GET_ALL_STORE = '/store/get_all', // List danh sách phòng giao dịch
-    GET_RATE = '/rating_app/rate_of_satisfaction' // đánh giá ứng dụng
+    GET_RATE = '/rating_app/rate_of_satisfaction', // đánh giá ứng dụng
+
+    // link account with payment method
+    REQUEST_SEND_VIMO_LINK = 'vimo_link/send_link_vimo',
+    REQUEST_ACTIVE_VIMO_LINK = 'vimo_link/active_link_vimo'
 }
 
 export const PAYMENT_URL = {

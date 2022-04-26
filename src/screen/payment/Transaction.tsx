@@ -11,14 +11,15 @@ import Filter from '@/components/Filter';
 import HeaderBar from '@/components/header';
 import KeyValueTransaction from '@/components/KeyValueTransaction';
 import { useAppStore } from '@/hooks';
-import { DATA, TransactionTypes } from '@/mocks/data';
+import { TransactionTypes } from '@/mocks/data';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { PagingConditionTypes } from '@/models/paging';
 import { TransactionModel } from '@/models/transaction-model';
 import { styles } from './styles';
+import NoData from '@/components/NoData';
 
 const Transaction = observer(() => {
-    const isFocused = useIsFocused();
+    const { apiServices } = useAppStore();
 
     const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
     const [isFreshing, setIsFreshing] = useState<boolean>(true);
@@ -30,41 +31,37 @@ const Transaction = observer(() => {
         offset: 0,
         startDate: undefined,
         endDate: undefined,
-        option: TransactionTypes[0].type
+        option: undefined
     });
-    const { apiServices } = useAppStore();
 
     const fetchHistory = useCallback(async () => {
         setIsFreshing(true);
         const res = await apiServices.history.getHistory(
             3,
             condition.current?.startDate,
-            condition.current?.endDate, 
-            condition.current?.option
+            condition.current?.endDate,
+            'all'
+            // condition.current?.option
         );
-        if(res.success){
+        if (res.success) {
+            const data = res.data as TransactionModel[];
+            setDataHistory(data);
             setIsFreshing(false);
-            setDataHistory(res?.data?.data as TransactionModel[]);
         }
         setIsFreshing(false);
     }, [apiServices.history]);
 
     useEffect(() => {
-        if (isFocused) {
-            setIsFreshing(false);
-            fetchHistory();
-        }
-    }, [dataHistory, fetchHistory, isFocused]);
+        fetchHistory();
+    }, [fetchHistory]);
 
-    const onRefresh = useCallback((startDate?: Date, endDate?: Date) => { 
-        setIsFreshing(true);
-        // condition.current.canLoadMore = true;
-        // condition.current.offset = 0;
+    const onRefresh = useCallback((startDate?: Date, endDate?: Date) => {
+        condition.current.canLoadMore = true;
+        condition.current.offset = 0;
         condition.current.startDate = startDate;
         condition.current.endDate = endDate;
-        condition.current.option = TransactionTypes[0].type ;
+        condition.current.option = TransactionTypes[0].type;
         fetchHistory();
-        setIsFreshing(false);
     }, [fetchHistory]);
 
     const renderFilterTemplate = useCallback(
@@ -102,9 +99,15 @@ const Transaction = observer(() => {
         );
     }, [renderFilterTemplate]);
 
-    const keyExtractor = useCallback((item: TransactionModel, index?:number) => {
+    const keyExtractor = useCallback((item: TransactionModel, index?: number) => {
         return `${index}`;
     }, []);
+
+    const onEndReached = useCallback(() => {
+        if (!condition.current.isLoading && condition.current.canLoadMore) {
+            // fetchHistory();
+        }
+    }, [fetchHistory]);
 
     const renderItem = useCallback(({ item }: { item: TransactionModel }) => {
         const _onPress = () => {
@@ -112,11 +115,11 @@ const Transaction = observer(() => {
         };
         return (<Touchable onPress={_onPress}>
             <KeyValueTransaction
-                title={item.so_tien}
-                content={item.hinh_thuc}
-                dateTime={item.created_at}
-                debtNow={item.so_du}
-                styleColor={item.color}
+                title={item?.so_tien}
+                content={item?.hinh_thuc}
+                dateTime={item?.created_at}
+                debtNow={item?.so_du}
+                styleColor={item?.color}
             />
         </Touchable>);
     }, []);
@@ -124,14 +127,16 @@ const Transaction = observer(() => {
     const renderTransaction = useMemo(() => {
         return (
             <FlatList
-                data={DATA}
+                data={dataHistory}
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
                 refreshing={isFreshing}
                 onRefresh={onRefresh}
+                onEndReached={onEndReached}
+                onEndReachedThreshold={0.01}
             />
         );
-    }, [isFreshing, keyExtractor, onRefresh, renderItem]);
+    }, [dataHistory, isFreshing, keyExtractor, onEndReached, onRefresh, renderItem]);
 
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
@@ -174,7 +179,7 @@ const Transaction = observer(() => {
                     maximumDate={new Date()}
                 />
             </View>
-            {renderTransaction}
+            {dataHistory ? renderTransaction : <NoData description='NoData' />}
         </View>
     );
 });

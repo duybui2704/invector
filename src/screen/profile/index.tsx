@@ -31,7 +31,7 @@ import Navigator from '@/routers/Navigator';
 import { Configs, isIOS } from '@/common/Configs';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
-import { ScreenName } from '@/common/screenNames';
+import { ScreenName, TabNamesArray } from '@/common/screenNames';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
@@ -67,7 +67,7 @@ const Profile = observer(() => {
     const [errorText, setErrorText] = useState<string>('');
 
     useEffect(()=>{
-        if(!supportedBiometry || !SessionManager.getPhoneLogin.toString()){
+        if(!supportedBiometry || !SessionManager.accessToken){
             Navigator.pushScreen(ScreenName.auth);
         }
     },[supportedBiometry]);
@@ -89,8 +89,11 @@ const Profile = observer(() => {
 
     const onLogout = useCallback(() => {
         SessionManager.logout();
-        userManager.updateUserInfo({});
-        Navigator.navigateScreen(ScreenName.home);
+        userManager.updateUserInfo(null);
+        Navigator.navigateToDeepScreen(
+            [ScreenName.tabs],
+            TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+        );
     }, [userManager]);
 
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
@@ -264,7 +267,7 @@ const Profile = observer(() => {
     }, [isEnabledSwitch, onToggleBiometry, supportedBiometry]);
 
     const renderAccuracy = useMemo(() => {
-        switch (SessionManager.userInfo?.tinh_trang?.auth) {
+        switch (userManager.userInfo?.tinh_trang?.auth) {
             case 0:
                 return (
                     <View style={styles.accuracyWrap}>
@@ -290,7 +293,7 @@ const Profile = observer(() => {
                     </View>
                 );
         }
-    }, []);
+    }, [userManager.userInfo?.tinh_trang?.auth]);
     const renderPinCode = useMemo(() => {
         return (
             <BottomSheetModal
