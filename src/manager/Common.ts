@@ -1,7 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 
-export class AppManager {
-    @observable isAppInReview = false;
+export class Common {
     @observable isFocused = false;
 
     constructor() {
@@ -10,9 +9,5 @@ export class AppManager {
 
     @action setIsFocus(isFocus: boolean) {
         this.isFocused = isFocus;
-    }
-
-    @action setAppInReview(isAppInReview: boolean) {
-        this.isAppInReview = isAppInReview;
     }
 }

@@ -119,6 +119,18 @@ export enum ENUM_INVEST_STATUS {
     HISTORY = 'HISTORY'
 };
 
+export enum ENUM_INVEST_MONEY {
+    BELOW_10 = 'Dưới 10.000.000 VNĐ',
+    ABOUT_10_50 = '10.000.000 - Dưới 50.000.000 VNĐ',
+    ABOUT_50_100 = '50.000.000 - Dưới 100.000.000 VNĐ',
+    ABOVE_100 = 'Trên 100.000.000 VNĐ'
+};
+
+export enum ENUM_INVEST_NOTIFY {
+    NOTIFY_ALL = 'NOTIFY_ALL',
+    UNREAD = 'UNREAD'
+};
+
 export enum ENUM_METHOD_PAYMENT {
     VIMO = 'VIMO',
     NGAN_LUONG = 'NGAN_LUONG'

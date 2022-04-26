@@ -120,7 +120,7 @@ const Login = observer(() => {
         <View style={styles.content}>
             <View style={styles.wrapLoginTxt}>
                 <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
-                <IcLine />
+                <IcLine width={'40%'} height={'20%'} />
             </View>
             {renderInput(refPhone, phone, true, Languages.auth.txtPhone, arrayIcon.login.phone, 'PHONE', 11)}
             {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 20, true)}

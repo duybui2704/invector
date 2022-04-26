@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -18,9 +18,13 @@ import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import { loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
 import ForgotPass from './forgotPass';
+import DimensionUtils from '@/utils/DimensionUtils';
+import LogoAuth from '@/assets/image/auth/logo_auth.svg';
 
 const Auth = observer(() => {
     const styles = myStylesAuth();
+    const ratio = DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH;
+    const [wid, setWid] = useState<number>(0);
     const [isNavigate, setIsNavigate] = useState<string>(Languages.auth.txtLogin);
     const {
         apiServices,
@@ -28,6 +32,18 @@ const Auth = observer(() => {
         fastAuthInfoManager: fastAuthInfo,
         appManager
     } = useAppStore();
+
+    useEffect(() => {
+        screenRatio();
+    }, []);
+
+    const screenRatio = useCallback(() => {
+        if (ratio < 1.662) {
+            setWid(DimensionUtils.SCREEN_WIDTH * 0.75);
+        } else {
+            setWid(DimensionUtils.SCREEN_WIDTH * 0.85);
+        }
+    }, []);
 
     const onNavigate = (key: string) => {
         switch (key) {
@@ -64,17 +80,22 @@ const Auth = observer(() => {
     }, []);
 
     return (
-        <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
+        <ImageBackground style={styles.main} source={Images.bg_board} resizeMode={'stretch'}>
             <StatusBar
                 barStyle={'light-content'}
                 animated
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
             />
+            <LogoAuth
+                width={170}
+                height={170}
+                style={styles.logoTN}
+            />
             <View style={styles.viewSvg}>
                 <SvgComponent onNavigate={onNavigate} />
             </View>
-            <View style={styles.wrapAll}>
+            <View style={[styles.wrapAll, { width: wid }]}>
                 {isNavigate === Languages.auth.txtLogin ? <Login/> :
                     isNavigate === Languages.auth.txtSignUp ? <SignUp/> : <ForgotPass/>
                 }

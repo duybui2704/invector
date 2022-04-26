@@ -1,3 +1,4 @@
+import { ENUM_INVEST_MONEY } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { TransactionModel } from '@/models/transaction-model';
@@ -193,4 +194,20 @@ export const investData = [
         id: 4,
         interest: 1000000
     }
+];
+export const arrMoney = [
+    { id: '1', value: ENUM_INVEST_MONEY.BELOW_10 },
+    { id: '2', value: ENUM_INVEST_MONEY.ABOUT_10_50 },
+    { id: '3', value: ENUM_INVEST_MONEY.ABOUT_50_100 },
+    { id: '4', value: ENUM_INVEST_MONEY.ABOVE_100 },
+];
+
+export const arrMonth = [
+    { id: '1', value: '1 tháng' },
+    { id: '2', value: '3 tháng' },
+    { id: '3', value: '6 tháng' },
+    { id: '4', value: '9 tháng' },
+    { id: '5', value: '12 tháng' },
+    { id: '6', value: '18 tháng' },
+    { id: '7', value: '24 tháng' }
 ];

@@ -24,10 +24,13 @@ import { useAppStore } from '@/hooks';
 import { BannerModel } from '@/models/banner';
 import { NewsModel } from '@/models/news';
 import Navigator from '@/routers/Navigator';
+import MyFlatList from "@/components/MyFlatList";
+import styles from "@/screen/investment/styles";
+import Card from "@/screen/broadening/card";
+import Utils from "@/utils/Utils";
+import Investment from "@/screen/investment";
 import { COLORS } from '@/theme';
-import Utils from '@/utils/Utils';
 import { MyStylesHome } from './styles';
-
 
 const data = [
     {
@@ -133,7 +136,7 @@ const Home = observer(() => {
         );
     }, [btnInvest, navigateToDetail]);
 
-    const iconTob = useCallback((title) => {
+    const iconTob = useCallback((title: string) => {
         switch (title) {
             case Languages.home.have:
                 return <IcWallet width={20} height={20} />;
@@ -148,8 +151,8 @@ const Home = observer(() => {
         }
     }, []);
 
-    const renderIconTob = useCallback((gotoScreen, title) => {
-        return (
+    const renderIconTob = useCallback((gotoScreen: any, title: string) => {
+        return(
             <Touchable style={styles.tob} onPress={gotoScreen}>
                 {iconTob(title)}
                 <Text style={styles.txtTob}>{title}</Text>
@@ -157,8 +160,8 @@ const Home = observer(() => {
         );
     }, []);
 
-    const renderTobBottom = useCallback((text) => {
-        return (
+    const renderTobBottom = useCallback((text: string) => {
+        return(
             <Touchable style={styles.txtQuestion}>
                 <View style={styles.viewTxtBottom}>
                     <Text style={styles.txt5}>{text}</Text>
@@ -218,14 +221,14 @@ const Home = observer(() => {
                     </View>
 
                 </View>
-                <View style={styles.viewTob}>
-                    {renderIconTob(gotoProfile, Languages.home.have)}
-                    {renderIconTob(gotoInvest, Languages.home.invest)}
-                    {renderIconTob(gotoReport, Languages.home.report)}
-                    {renderIconTob(gotoPayment, Languages.home.payment)}
-                </View>
-            </View>
 
+            </View>
+            <View style={styles.viewTob}>
+                    {renderIconTob(gotoProfile, Languages.home.have )}
+                    {renderIconTob(gotoInvest, Languages.home.invest )}
+                    {renderIconTob(gotoReport, Languages.home.report )}
+                {renderIconTob(gotoPayment, Languages.home.payment)}
+            </View>
             <ScrollView style={styles.viewCenter}>
                 <Text style={[styles.txt, {
                     color: COLORS.BLACK,

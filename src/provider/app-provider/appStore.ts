@@ -1,9 +1,10 @@
-import { makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
 import { ApiServices } from '../../api/index';
 import { AppManager } from '@/manager/AppManager';
 import { FastAuthInfo as FastAuthInfoManager } from '@/manager/FastAuthInfoManager';
 import { UserManager } from '@/manager/UserManager';
+import { Common } from '@/manager/Common';
 
 class AppStore {
     @observable fastAuthInfoManager = new FastAuthInfoManager();
@@ -13,6 +14,9 @@ class AppStore {
     apiServices = new ApiServices();
 
     @observable userManager = new UserManager();
+
+    @observable common = new Common();
+
 
     constructor() {
         makeObservable(this);

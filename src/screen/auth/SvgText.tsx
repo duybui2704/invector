@@ -10,16 +10,19 @@ import { Configs } from '@/common/Configs';
 import DimensionUtils from '@/utils/DimensionUtils';
 
 const SvgComponent = observer((props: any) => {
-
+    const ratio = DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH;
     const [login, setLogin] = useState<boolean>(true);
     const [signUp, setSignUp] = useState<boolean>(false);
     const [forgotPwd, setForgotPwd] = useState<boolean>(false);
     const [key, setKey] = useState<string>('');
+    const [r, setR] = useState<number>(0);
+    const [x, setX] = useState<number>(0);
 
     useEffect(() => {
         if (props.onNavigate) {
             props.onNavigate(key);
         }
+        screenRatio();
     }, [props.onNavigate, key, props]);
     
     const onNavigateLogin = useCallback(() => {
@@ -43,13 +46,23 @@ const SvgComponent = observer((props: any) => {
         setKey(Languages.auth.forgotPwd);
     }, []);
 
+    const screenRatio = useCallback(() => {
+        if (ratio < 1.662) {
+            setR(DimensionUtils.SCREEN_WIDTH * 0.54);
+            setX(DimensionUtils.SCREEN_WIDTH * 0.2);
+        } else {
+            setR(DimensionUtils.SCREEN_WIDTH * 0.6);
+            setX(DimensionUtils.SCREEN_WIDTH * 0.22);
+        }
+    }, []);
+
     return (
         <View style={styles.container}>
             <Svg height="100%" width="100%" {...props} >
                 <G id="circle">
                     <Circle
-                        r={DimensionUtils.SCREEN_WIDTH * 0.6}
-                        x={DimensionUtils.SCREEN_WIDTH * 0.22}
+                        r={r}
+                        x={x}
                         y={DimensionUtils.SCREEN_HEIGHT / 2}
                         fill={COLORS.WHITE}
                     />
@@ -64,7 +77,7 @@ const SvgComponent = observer((props: any) => {
                     stroke={COLORS.NO_BACKDROP}
                 >
                     <TextPath href="#circle" >
-                        <TSpan dx={DimensionUtils.SCREEN_WIDTH * 3.1} dy={-15}>
+                        <TSpan dx={5.17 * r} dy={-15}>
                             {Languages.auth.txtLogin}
                         </TSpan>
                     </TextPath>
@@ -79,7 +92,7 @@ const SvgComponent = observer((props: any) => {
                     stroke={COLORS.NO_BACKDROP}
                 >
                     <TextPath href="#circle" >
-                        <TSpan dx={DimensionUtils.SCREEN_WIDTH * 1.2 * 3.005} dy={-15}>
+                        <TSpan dx={6.01 * r} dy={-15}>
                             {Languages.auth.txtD}
                         </TSpan>
                     </TextPath>
@@ -95,7 +108,7 @@ const SvgComponent = observer((props: any) => {
                     stroke={COLORS.NO_BACKDROP}
                 >
                     <TextPath href="#circle" >
-                        <TSpan dx={0} dy={-15} >
+                        <TSpan dx={r * 0.04} dy={-15} >
                             {Languages.auth.txtK}
                         </TSpan>
                     </TextPath>
@@ -111,7 +124,7 @@ const SvgComponent = observer((props: any) => {
                     stroke={COLORS.NO_BACKDROP}
                 >
                     <TextPath href="#circle" >
-                        <TSpan dx={DimensionUtils.SCREEN_WIDTH * 0.33} dy={-15} >
+                        <TSpan dx={r * 0.55} dy={-15} >
                             {Languages.auth.forgotPwd}
                         </TSpan>
                     </TextPath>
