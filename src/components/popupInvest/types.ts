@@ -14,7 +14,6 @@ export type PopupProps = {
 export type PopupActions = {
     show: (content?: string) => any;
     hide: (content?: string) => any;
-    focusedInvest: (content?: string) => any;
     setContent?: (message: string) => void
 };
 
