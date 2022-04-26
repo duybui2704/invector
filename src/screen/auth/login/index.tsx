@@ -50,8 +50,8 @@ const Login = observer(() => {
 
     useEffect(() => {
         setLoading(isLoading);
-        setPhone('0359908532');
-        setPass('123456789');
+        setPhone('0988251903');
+        setPass('12345678');
     }, [isLoading]);
 
     const onChangeText = (value: string, tag?: string) => {
@@ -95,6 +95,7 @@ const Login = observer(() => {
         );
     }, [styles.inputPhone]);
 
+
     const onLoginPhone = useCallback(async () => {
         setLoading(true);
         const res = await apiServices.auth.loginPhoneOld(phone, pass, 3);
@@ -104,21 +105,9 @@ const Login = observer(() => {
             SessionManager.setAccessToken(res?.data?.token);
             const resInfoAcc = await apiServices.auth.getUserInfo(3);
             if (resInfoAcc.success) {
-                setUserData(resInfoAcc?.data as UserInfoModal);
-                userManager.updateUserInfo(userData);
-                //     {
-                //     ...userManager?.userInfo,
-                //     full_name: userData?.full_name,
-                //     phone_number: phone, 
-                //     email: userData?.email,
-                //     avatar: userData?.avatar,
-                //     card_back: userData?.card_back,
-                //     front_facing_card: userData?.front_facing_card,
-                //     identity: userData?.identity,
-                //     avatar_user: userData?.avatar_user
-                // }
-
-
+                const data = resInfoAcc?.data as UserInfoModal;
+                setUserData(data);
+                userManager.updateUserInfo(data);
             }
             Navigator.navigateToDeepScreen(
                 [ScreenName.tabs],
@@ -127,7 +116,7 @@ const Login = observer(() => {
         }
         setLoading(false);
 
-    }, [apiServices.auth, pass, phone, userData, userManager]);
+    }, [apiServices.auth, pass, phone, userManager]);
 
     useEffect(() => {
         console.log('userData=', userData);

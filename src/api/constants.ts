@@ -42,7 +42,7 @@ export enum API_CONFIG {
     CHECK_APP_REVIEW = '/app/review',
 
     // authentication
-    LOGIN = '/auth/signin',  // Dang nhap investor
+    LOGIN = 'auth/signin',  // Dang nhap investor
     TOKEN = '/token',
     REFRESH_TOKEN = '/token',
     USER_INFO = '/user/info_investor', // thông tin tài khoản investor
@@ -50,7 +50,7 @@ export enum API_CONFIG {
     ACTIVE_AUTH = '/auth/auth_register', // kích hoạt tài khoản: OTP
     RESEND_OTP = '/auth/resend_token', // gửi lại otp
     CHANEL = '/configuration_formality/get_utm_source', // list danh sách kênh đăng kí
-    UPDATE_USER_INFO = '/user/process_update_profile', // update user account
+    UPDATE_USER_INFO = 'user/update_profile_investor', // update user account
     CHANGE_NEW_PWD = '/user/change_password_user', // change mật khẩu mới
     LOGOUT = '/api/Logout', // logout
     LOGIN_THIRD_PARTY = 'auth/login', // login bên thứ 3  facebook, google, apple,

@@ -1,10 +1,9 @@
 export interface TransactionModel {
-    id: number,
-    growth: string,
-    date: string,
-    content: string,
-    debt: string, 
-    color:string 
+    hinh_thuc: string;
+    so_tien: string;
+    so_du: number;
+    created_at: string;
+    color: string;
 }
 
 export interface TransactionTypeModel {

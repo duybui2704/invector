@@ -7,7 +7,7 @@ import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
 
 const KeyValueTransaction = ({ title, dateTime, content, noIndicator ,styleColor, debtNow}: 
-    { noIndicator?: boolean, title?: string, dateTime?: string, content?: string , styleColor?:string, debtNow?:string}) => {
+    { noIndicator?: boolean, title?: string, dateTime?: string, content?: string , styleColor?:string, debtNow?:number}) => {
 
     return (
         <View style={styles.container}>

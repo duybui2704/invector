@@ -26,10 +26,11 @@ import { HtmlStyles } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
 import ImageUtils from '@/utils/ImageUtils';
 import { MyStylesAccountIdentify } from './styles';
+import SessionManager from '@/manager/SessionManager';
 
 const AccountIdentify = observer(() => {
     const styles = MyStylesAccountIdentify();
-    const [identify, setIdentify] = useState<string>(dataUser.identify);
+    const [identity, setIdentity] = useState<string>('');
     const [avatar, setAvatar] = useState<ImageOrVideo>();
     const [frontIdentify, setFrontIdentify] = useState<ImageOrVideo>();
     const [afterIdentify, setBehindIdentify] = useState<ImageOrVideo>();
@@ -42,7 +43,7 @@ const AccountIdentify = observer(() => {
     const popupConfirmRef = useRef<PopupActionTypes>();
 
     const onChangeText = useCallback((value?: any) => {
-        setIdentify(value);
+        setIdentity(value);
     }, []);
 
     const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean) => {
@@ -64,14 +65,14 @@ const AccountIdentify = observer(() => {
     }, [onChangeText, styles.inputStyle, styles.labelStyle, styles.wrapInput]);
 
     const onValidate = useCallback(() => {
-        const errMsgIdentify = FormValidate.cardValidate(identify);
+        const errMsgIdentify = FormValidate.cardValidate(identity);
 
         identifyRef.current?.setErrorMsg(errMsgIdentify);
 
         if (`${errMsgIdentify}`.length === 0) {
             return true;
         } return false;
-    }, [identify]);
+    }, [identity]);
 
     const renderPopupConfirm = useCallback((ref?: any) => {
         return <PopupNotifyNoAction
@@ -88,7 +89,7 @@ const AccountIdentify = observer(() => {
         }
     }, [onValidate]);
 
-    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any) => {
+    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, hasImage?: boolean, imageSource?: string, disable?:boolean) => {
         return <PhotoPickerBottomSheet
             ref={ref}
             label={label}
@@ -98,7 +99,9 @@ const AccountIdentify = observer(() => {
             onPressItem={onPressItem}
             containerStyle={styles.pickerContainer}
             hasDash
-            disable={!!dataUser?.front_facing_card && !!dataUser.card_back && !!dataUser.avatar}
+            hasImage={hasImage}
+            imageSource={imageSource}
+            disable={hasImage}
         />;
     }, [styles.pickerContainer]);
 
@@ -132,12 +135,12 @@ const AccountIdentify = observer(() => {
                     <Text style={styles.titlePhoto}>{Languages.accountIdentify.imageIdentify}</Text>
                     <Text style={styles.txtNotePhoto}>{noteKYC[0]}</Text>
                     <Text style={styles.txtNotePhoto}>{noteKYC[1]}</Text>
-                    {renderPhotoPicker(frontIdentifyRef, Languages.accountIdentify.frontKYC, frontIdentify, <BeforeIC />, onPressItemFrontPhoto)}
-                    {renderPhotoPicker(afterIdentifyRef, Languages.accountIdentify.behindKYC, afterIdentify, <AfterIC />, onPressItemBehindPhoto)}
+                    {renderPhotoPicker(frontIdentifyRef, Languages.accountIdentify.frontKYC, frontIdentify, <BeforeIC />, onPressItemFrontPhoto, !!SessionManager.userInfo?.front_facing_card, SessionManager.userInfo?.front_facing_card)}
+                    {renderPhotoPicker(afterIdentifyRef, Languages.accountIdentify.behindKYC, afterIdentify, <AfterIC />, onPressItemBehindPhoto, !!SessionManager.userInfo?.card_back, SessionManager.userInfo?.card_back)}
                     <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[1]}</Text>
-                    {renderPhotoPicker(avatarRef, Languages.accountIdentify.avatar, avatar, <AvatarIC />, onPressItemAvatar)}
+                    {renderPhotoPicker(avatarRef, Languages.accountIdentify.avatar, avatar, <AvatarIC />, onPressItemAvatar, !!SessionManager.userInfo?.avatar_user, SessionManager.userInfo?.avatar_user)}
                 </View>
                 <HTMLView
                     value={Languages.accountIdentify.note}
@@ -157,18 +160,20 @@ const AccountIdentify = observer(() => {
         <HideKeyboard style={styles.container}>
             <View style={styles.container}>
                 <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack />
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    {dataUser.accuracy === 1 &&
-                    <View style={styles.wrapTopHtml}>
-                        <HTMLView
-                            value={Languages.accountIdentify.noteTopIdentify}
-                            stylesheet={HtmlStyles || undefined}
-                        />
-                    </View>}
-                    {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, identify, 'NUMBER', !!dataUser.identify)}
-                    {renderPhoto}
-                    {renderPopupConfirm(popupConfirmRef)}
-                </ScrollView>
+                <HideKeyboard>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        {SessionManager.userInfo?.tinh_trang?.auth === 0 &&
+                            <View style={styles.wrapTopHtml}>
+                                <HTMLView
+                                    value={Languages.accountIdentify.noteTopIdentify}
+                                    stylesheet={HtmlStyles || undefined}
+                                />
+                            </View>}
+                        {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, SessionManager.userInfo?.identity, 'NUMBER', !SessionManager.userInfo?.identity)}
+                        {renderPhoto}
+                        {renderPopupConfirm(popupConfirmRef)}
+                    </ScrollView>
+                </HideKeyboard>
             </View>
         </HideKeyboard>
     );

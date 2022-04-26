@@ -8,7 +8,7 @@ import Languages from '@/common/Languages';
 import IcBtnInvest from '@/assets/image/ic_button_invest.svg';
 import { Configs } from '@/common/Configs';
 import Utils from '@/utils/Utils';
-import {ENUM_INVEST_STATUS} from "@/common/constants";
+import { ENUM_INVEST_STATUS } from '@/common/constants';
 
 type ItemProps = {
     data?: any;

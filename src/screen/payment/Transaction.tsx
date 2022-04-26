@@ -21,6 +21,8 @@ const Transaction = observer(() => {
     const isFocused = useIsFocused();
 
     const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
+    const [isFreshing, setIsFreshing] = useState<boolean>(true);
+    const [dataHistory, setDataHistory] = useState<TransactionModel[]>();
 
     const condition = useRef<PagingConditionTypes>({
         isLoading: true,
@@ -28,30 +30,41 @@ const Transaction = observer(() => {
         offset: 0,
         startDate: undefined,
         endDate: undefined,
-        option: undefined
+        option: TransactionTypes[0].type
     });
     const { apiServices } = useAppStore();
 
-    const fetchHistory = useCallback(() => { 
-        const res = apiServices.history.getHistory(
-            condition.current.startDate,
-            condition.current.endDate,
-            condition.current.option);
-       
+    const fetchHistory = useCallback(async () => {
+        setIsFreshing(true);
+        const res = await apiServices.history.getHistory(
+            3,
+            condition.current?.startDate,
+            condition.current?.endDate, 
+            condition.current?.option
+        );
+        if(res.success){
+            setIsFreshing(false);
+            setDataHistory(res?.data?.data as TransactionModel[]);
+        }
+        setIsFreshing(false);
     }, [apiServices.history]);
 
     useEffect(() => {
         if (isFocused) {
+            setIsFreshing(false);
             fetchHistory();
         }
-    }, [fetchHistory, isFocused]);
+    }, [dataHistory, fetchHistory, isFocused]);
 
-    const onRefresh = useCallback((startDate?: Date, endDate?: Date) => {
-        condition.current.canLoadMore = true;
-        condition.current.offset = 0;
+    const onRefresh = useCallback((startDate?: Date, endDate?: Date) => { 
+        setIsFreshing(true);
+        // condition.current.canLoadMore = true;
+        // condition.current.offset = 0;
         condition.current.startDate = startDate;
         condition.current.endDate = endDate;
+        condition.current.option = TransactionTypes[0].type ;
         fetchHistory();
+        setIsFreshing(false);
     }, [fetchHistory]);
 
     const renderFilterTemplate = useCallback(
@@ -64,7 +77,7 @@ const Transaction = observer(() => {
             const _onPress = () => {
                 setSelectedFilter(item.value);
                 condition.current.option = item.type;
-                console.log('.option = ', condition.current.option);
+                console.log('condition.current.option = ', condition.current.option);
             };
 
             return (
@@ -89,8 +102,8 @@ const Transaction = observer(() => {
         );
     }, [renderFilterTemplate]);
 
-    const keyExtractor = useCallback((item: TransactionModel) => {
-        return `${item.id}`;
+    const keyExtractor = useCallback((item: TransactionModel, index?:number) => {
+        return `${index}`;
     }, []);
 
     const renderItem = useCallback(({ item }: { item: TransactionModel }) => {
@@ -99,10 +112,10 @@ const Transaction = observer(() => {
         };
         return (<Touchable onPress={_onPress}>
             <KeyValueTransaction
-                title={item.growth}
-                content={item.content}
-                dateTime={item.date}
-                debtNow={item.debt}
+                title={item.so_tien}
+                content={item.hinh_thuc}
+                dateTime={item.created_at}
+                debtNow={item.so_du}
                 styleColor={item.color}
             />
         </Touchable>);
@@ -114,9 +127,11 @@ const Transaction = observer(() => {
                 data={DATA}
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
+                refreshing={isFreshing}
+                onRefresh={onRefresh}
             />
         );
-    }, [keyExtractor, renderItem]);
+    }, [isFreshing, keyExtractor, onRefresh, renderItem]);
 
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
@@ -155,11 +170,10 @@ const Transaction = observer(() => {
                     onConfirmDatePicker={onConfirmValue}
                     onDateChangeDatePicker={onChange}
                     date={condition.current.endDate || new Date()}
-                    minimumDate={condition.current.startDate }
+                    minimumDate={condition.current.startDate}
                     maximumDate={new Date()}
                 />
             </View>
-
             {renderTransaction}
         </View>
     );

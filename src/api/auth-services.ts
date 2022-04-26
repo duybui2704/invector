@@ -23,20 +23,24 @@ export class AuthServices extends BaseService {
         );
 
     updateUserInf = async (
-        identify: string,
         full_name: string,
+        gender:string,
         birth_date: string,
+        phone: string,
         email: string,
-        avatar: string
+        address: string,
+        job: string
     ) =>
         this.api().post(
             API_CONFIG.UPDATE_USER_INFO,
             this.buildFormData({
-                identify,
                 full_name,
+                gender,
                 birth_date,
+                phone,
                 email,
-                avatar
+                address,
+                job
             })
         );
 
@@ -144,8 +148,8 @@ export class AuthServices extends BaseService {
             })
         );
 
-    getUserInfo = async () =>
-        this.api().post(API_CONFIG.USER_INFO, this.buildFormData({}));
+    getUserInfo = async (type: number) =>
+        this.api().post(API_CONFIG.USER_INFO, this.buildFormData({type}));
 
     linkSocialAccount = async (type_login: string, provider_id: string) =>
         this.api().post(

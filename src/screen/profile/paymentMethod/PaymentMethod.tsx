@@ -15,6 +15,7 @@ import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 import { PopupActionTypes } from '@/models/typesPopup';
 import Navigator from '@/routers/Navigator';
 import { MyStylesPaymentMethod } from './styles';
+import SessionManager from '@/manager/SessionManager';
 
 const PaymentMethod = observer(() => {
     const styles = MyStylesPaymentMethod();
@@ -106,8 +107,8 @@ const PaymentMethod = observer(() => {
             <HeaderBar isLight={false} title={Languages.account.payMethod} hasBack />
             <View style={styles.wrapAllContent}>
                 <Text style={styles.txtMethodChoose}>{Languages.paymentMethod.methodChoose}</Text>
-                {renderItemMethod(<VimoIC />, Languages.paymentMethod.vimo, false)}
-                {renderItemMethod(<BankIC />, Languages.paymentMethod.bank, true)}
+                {renderItemMethod(<VimoIC />, Languages.paymentMethod.vimo, !!SessionManager.userInfo?.tra_lai?.type_interest_receiving_account)}
+                {renderItemMethod(<BankIC />, Languages.paymentMethod.bank, !!SessionManager.userInfo?.tra_lai?.name_bank_account)}
             </View>
             {popupVimo(vimoRef,<WarnIC/>)}
         </View >
