@@ -402,7 +402,19 @@ const Languages = {
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         popupOtpErrorTitle: 'Thông báo OTP',
         popupOtpErrorDescription: 'OTP không chính xác'
-    }
+    },
+    loginWithBiometry: {
+        hello: '<e>Xin chào,</e>',
+        description: '<n><i>Chào mừng bạn quay trở lại với</i><g1> TienNgay.vn Đầu tư & Tích luỹ </g1><i> hãy đăng nhập nào</i></n>',
+        loginWithOther: 'Đăng nhập với tài khoản khác'
+    },
+    biometry: {
+        useFingerprint: 'Đăng nhập bằng vân tay của bạn',
+        useFingerPrintError: 'Vân tay không khớp, vui lòng thử lại.',
+        useFingerPrintManyTimesError:
+            'Bạn đã nhập sai quá nhiều lần, vui lòng nhập mã pin.'
+    },
+
 
 };
 export default Languages;

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -20,6 +20,8 @@ import { loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
 import ForgotPass from './forgotPass';
 import DimensionUtils from '@/utils/DimensionUtils';
 import LogoAuth from '@/assets/image/auth/logo_auth.svg';
+import LoginWithBiometry from './loginWithBiometrty';
+import HeaderBar from '@/components/header';
 
 const Auth = observer(() => {
     const styles = myStylesAuth();
@@ -79,6 +81,19 @@ const Auth = observer(() => {
         // if (userInfo) initUser(ENUM_PROVIDER.GOOGLE, userInfo?.user?.id);
     }, []);
 
+    const renderContent = useMemo(() => {
+        switch (isNavigate) {
+            case Languages.auth.txtLogin:
+                if (fastAuthInfo?.isEnableFastAuth && !fastAuthInfo.isFocusLogin) return <LoginWithBiometry />
+                return <Login />
+            case Languages.auth.txtSignUp:
+                return <SignUp />
+            case Languages.auth.forgotPwd:
+                return <ForgotPass />
+
+
+        }
+    }, [isNavigate, fastAuthInfo?.isEnableFastAuth, fastAuthInfo.isFocusLogin])
     return (
         <ImageBackground style={styles.main} source={Images.bg_board} resizeMode={'stretch'}>
             <StatusBar
@@ -95,10 +110,8 @@ const Auth = observer(() => {
             <View style={styles.viewSvg}>
                 <SvgComponent onNavigate={onNavigate} />
             </View>
-            <View style={[styles.wrapAll, { width: wid }]}>
-                {isNavigate === Languages.auth.txtLogin ? <Login/> :
-                    isNavigate === Languages.auth.txtSignUp ? <SignUp/> : <ForgotPass/>
-                }
+            <View style={styles.wrapAll}>
+                {renderContent}
                 <View style={styles.viewBottom}>
                     <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
                     <View style={styles.viewIcon}>

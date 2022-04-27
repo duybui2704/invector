@@ -1,6 +1,6 @@
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
-import {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 
 import DimensionUtils from '@/utils/DimensionUtils';
 import { COLORS, Styles } from '@/theme';
@@ -9,8 +9,8 @@ import { Configs } from '../../common/Configs';
 export const myStylesAuth = () => {
     return useMemo(() => {
         return StyleSheet.create({
-            container:{
-                flex:1
+            container: {
+                flex: 1
             },
             main: {
                 flex: 1,
@@ -27,9 +27,9 @@ export const myStylesAuth = () => {
                 width: DimensionUtils.SCREEN_WIDTH * 0.3,
                 height: DimensionUtils.SCREEN_HEIGHT * 0.1,
                 transform: [
-                    {rotateX: '-30deg'},
-                    {rotateY: '0deg'},
-                    {rotateZ: '40deg'}
+                    { rotateX: '-30deg' },
+                    { rotateY: '0deg' },
+                    { rotateZ: '40deg' }
                 ]
             },
             tob1: {
@@ -41,9 +41,9 @@ export const myStylesAuth = () => {
                 height: 30,
                 right: -50,
                 transform: [
-                    {rotateX: '-30deg'},
-                    {rotateY: '-20deg'},
-                    {rotateZ: '90deg'}
+                    { rotateX: '-30deg' },
+                    { rotateY: '-20deg' },
+                    { rotateZ: '90deg' }
                 ]
             },
             tob2: {
@@ -55,9 +55,9 @@ export const myStylesAuth = () => {
                 width: 200,
                 height: 30,
                 transform: [
-                    {rotateX: '-30deg'},
-                    {rotateY: '0deg'},
-                    {rotateZ: '140deg'}
+                    { rotateX: '-30deg' },
+                    { rotateY: '0deg' },
+                    { rotateZ: '140deg' }
                 ]
             },
             txt: {
@@ -194,13 +194,13 @@ export const myStylesAuth = () => {
                 alignItems: 'center'
             },
             viewBottom: {
-                flex:1,
+                flex: 1,
                 width: SCREEN_WIDTH,
                 flexDirection: 'row',
                 position: 'absolute',
                 alignItems: 'center',
                 paddingHorizontal: 16,
-                marginTop: SCREEN_HEIGHT*0.62,
+                marginTop: SCREEN_HEIGHT * 0.62,
                 justifyContent: 'space-between'
             },
             txtLogin: {

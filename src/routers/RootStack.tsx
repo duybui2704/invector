@@ -76,8 +76,8 @@ const RootStack = observer(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
                 {/* <Stack.Screen name={ScreenName.onBoard} component={Broadening} /> */}
-                <Stack.Screen name={ScreenName.auth} component={AuthStack} />
                 <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
+                <Stack.Screen name={ScreenName.auth} component={AuthStack} />
             </Stack.Navigator>
         );
     }, [AuthStack]);

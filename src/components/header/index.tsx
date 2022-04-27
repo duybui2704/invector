@@ -1,16 +1,16 @@
-import React, {useCallback, useMemo} from 'react';
-import {Image, ImageBackground, StatusBar, Text, View} from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { Image, ImageBackground, StatusBar, Text, View, BackHandler } from 'react-native';
 
 import IcBack from '../../assets/image/header/ic_back_header.svg';
 import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import IcNotifyInvest from '../../assets/image/header/ic_header_invest.svg';
 import Images from '../../assets/Images';
-import {isIOS} from '../../common/Configs';
+import { isIOS } from '../../common/Configs';
 import Navigator from '../../routers/Navigator';
-import {Touchable} from '../elements/touchable';
-import {HeaderProps} from './types';
-import {styles} from './styles';
-import {COLORS} from '../../theme';
+import { Touchable } from '../elements/touchable';
+import { HeaderProps } from './types';
+import { styles } from './styles';
+import { COLORS } from '../../theme';
 import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
 
@@ -46,7 +46,7 @@ export const HeaderBar = ({
 
     const renderBack = useMemo(() => (
         <Touchable style={styles.goBack} onPress={_onBackPressed} size={40}>
-            <IcBack width={27} height={27}/>
+            <IcBack width={27} height={27} />
         </Touchable>
     ), [_onBackPressed]);
 
@@ -68,8 +68,8 @@ export const HeaderBar = ({
                     style={styles.imageBg}
                     resizeMode='stretch'
                 >
-                    <Image source={Images.logo_header_home} resizeMode='contain' style={styles.logo}/>
-                    <IcNotify style={styles.imgNotify}/>
+                    <Image source={Images.logo_header_home} resizeMode='contain' style={styles.logo} />
+                    <IcNotify style={styles.imgNotify} />
                 </ImageBackground>
             )}
             {noStatusBar && isIOS ? null : <StatusBar

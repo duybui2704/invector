@@ -3,6 +3,7 @@ export class FastAuthInfo {
     @observable isEnableFastAuth = false;
 
     @observable supportedBiometry = '';
+    @observable isFocusLogin = false
 
 
     constructor() {
@@ -11,6 +12,9 @@ export class FastAuthInfo {
 
     @action setEnableFastAuthentication(fastAuth: boolean) {
         this.isEnableFastAuth = fastAuth;
+    }
+    @action setFocusLogin(focus: boolean) {
+        this.isFocusLogin = focus;
     }
 
     @action setSupportedBiometry(isSupported: string) {

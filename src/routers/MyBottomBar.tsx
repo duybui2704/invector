@@ -15,7 +15,7 @@ import Profile from '@/screen/profile';
 import Report from '@/screen/report';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import {DetailInvestment} from "@/screen/investment/detailInvestment";
+import { DetailInvestment } from "@/screen/investment/detailInvestment";
 import Invest from '@/screen/investment/invest';
 import VerifyOTP from '@/screen/profile/verifyOTP/VerifyOTP';
 import ConfirmPhone from '@/screen/profile/confirmPhone/ConfirmPhone';
@@ -147,12 +147,12 @@ const TabBar = ({ props }: any) => {
 
 
 const MyBottomTabs = observer(() => {
-    const { userManager } = useAppStore();
+    const { userManager, fastAuthInfoManager } = useAppStore();
 
     const onTabPress = useCallback((e: any, navigation: any, route: any) => {
         e?.preventDefault();
         const tab = TabsData.filter((item) => item.name === route?.name)[0];
-        if (route?.name !== TabsName.homeTabs && !userManager?.userInfo) {
+        if ((route?.name !== TabsName.homeTabs && !userManager?.userInfo) || fastAuthInfoManager.isEnableFastAuth) {
             navigation.navigate(ScreenName.auth);
             SessionManager.lastTabIndexBeforeOpenAuthTab = tab?.index;
         }
@@ -199,6 +199,7 @@ const MyBottomTabs = observer(() => {
             appearance={{
                 horizontalPadding: 10
             }}
+
         >
             <Tab.Screen
                 name={TabsName.homeTabs}
