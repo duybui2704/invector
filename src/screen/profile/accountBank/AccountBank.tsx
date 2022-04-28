@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -18,26 +18,49 @@ import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
 import PickerBankValuation from '@/components/PickerBankValuation';
-import { dataBank } from '@/mocks/data';
 import { PopupActionTypes } from '@/models/typesPopup';
 import { COLORS, HtmlStyles } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
 import { MyStylesAccountBank } from './styles';
 import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
-
+import { useAppStore } from '@/hooks';
+import { DataBanksModal } from '@/models/payment-link-models';
+import SessionManager from '@/manager/SessionManager';
+import { ItemProps } from '@/models/common-model';
+import ToastUtils from '@/utils/ToastUtils';
+import Loading from '@/components/loading';
 
 const AccountBank = observer(() => {
+    const { apiServices } = useAppStore();
     const styles = MyStylesAccountBank();
-    const [banks, setBanks] = useState<string>('');
-    const [accountNumber, setAccountNumber] = useState<string>('');
-    const [ATMNumber, setATMNumber] = useState<string>('');
-    const [accountProvider, setAccountProvider] = useState<string>('');
-    const [active, setActive] = useState<boolean>();
+    const [dataBanks, setDataBanks] = useState<ItemProps[]>([]);
+    const [banks, setBanks] = useState<string>(SessionManager.userInfo?.tra_lai?.bank_name || '');
+    const [accountNumber, setAccountNumber] = useState<string>(SessionManager.userInfo?.tra_lai?.interest_receiving_account || '');
+    const [ATMNumber, setATMNumber] = useState<string>(SessionManager.userInfo?.tra_lai?.interest_receiving_account || '');
+    const [accountProvider, setAccountProvider] = useState<string>(SessionManager.userInfo?.tra_lai?.name_bank_account || '');
+    const [active, setActive] = useState<boolean>(true);
+    const [type, setType] = useState<string>( ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER || '');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const accountNumberRef = useRef<TextFieldActions>(null);
     const ATMNumberRef = useRef<TextFieldActions>(null);
     const accountProviderRef = useRef<TextFieldActions>(null);
     const bankRef = useRef<PopupActionTypes>(null);
+
+    const fetchBankList = useCallback(async () => {
+        const res = await apiServices.paymentMethod.getBank();
+        if (res.success) {
+            const data = res.data as DataBanksModal[];
+            const temp = data?.map((item) => {
+                return { id: item?.bank_code, value: item?.short_name };
+            }) as ItemProps[];
+            setDataBanks(temp);
+        }
+    }, [apiServices.paymentMethod]);
+
+    useEffect(() => {
+        fetchBankList();
+    }, []);
 
     const onChangeText = useCallback((value?: any, tag?: any) => {
         switch (tag) {
@@ -76,12 +99,23 @@ const AccountBank = observer(() => {
     }, [onChangeText, styles.containerStyle, styles.groupInput, styles.inputStyle, styles.pwd, styles.title]);
 
     const renderAccBank = useCallback((title?: string, status?: boolean) => {
+
         const onType = () => {
-            setActive(title === ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER);
+            setActive( title === ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER);
+            switch (title) {
+                case ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER:
+                    setType(ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER);
+                    break;
+                case ENUM_TYPE_CARD_BANK.ATM_NUMBER:
+                    setType(ENUM_TYPE_CARD_BANK.ATM_NUMBER);
+                    break;
+                default:
+                    break;
+            }
         };
         return (
-            <Touchable style={styles.rowContainerItemInputChoose} onPress={onType}>
-                {status ?
+            <Touchable style={styles.rowContainerItemInputChoose} onPress={onType} >
+                {status?
                     <LinkIC width={24} height={24} /> :
                     <NotLinkIC width={24} height={24} />
                 }
@@ -91,7 +125,7 @@ const AccountBank = observer(() => {
     }, [styles.rowContainerItemInputChoose, styles.textChooseToInput]);
 
     const onBanksChoose = useCallback((item?: any) => {
-        setBanks(item?.value);
+        setBanks(item?.id);
     }, []);
 
     const onValidate = useCallback(() => {
@@ -113,11 +147,20 @@ const AccountBank = observer(() => {
         return false;
     }, [ATMNumber, accountNumber, accountProvider, banks]);
 
-    const onAddAccount = useCallback(() => {
+    const onAddAccount = useCallback(async() => {
+        setIsLoading(true);
         if (onValidate()) {
-            // console.log();
+            const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest('bank', banks ,accountNumber, accountProvider, 2);
+            if(res.success){
+                ToastUtils.showSuccessToast(Languages.msgNotify.successAccountLinkBank);
+                setIsLoading(false);
+            }
+            else {
+                ToastUtils.showErrorToast(Languages.msgNotify.failAccountLinkBank);
+            }
         }
-    }, [onValidate]);
+        setIsLoading(false);
+    }, [accountNumber, accountProvider, apiServices.paymentMethod, banks, onValidate]);
 
     return (
         <BottomSheetModalProvider>
@@ -130,7 +173,7 @@ const AccountBank = observer(() => {
                                 <Text style={styles.txtBankChoose}>{Languages.accountBank.bankChoose}</Text>
                                 <PickerBankValuation
                                     ref={bankRef}
-                                    data={dataBank}
+                                    data={dataBanks}
                                     value={banks}
                                     placeholder={Languages.accountBank.bankChoose}
                                     onPressItem={onBanksChoose}
@@ -143,10 +186,10 @@ const AccountBank = observer(() => {
                                     rightIcon={<ArrowIC />}
                                 />
                                 <View style={styles.rowContainerAllInputChoose}>
-                                    {renderAccBank(Languages.accountBank.accountNumber, true)}
-                                    {renderAccBank(Languages.accountBank.ATMNumber, true)}
+                                    {renderAccBank(Languages.accountBank.accountNumber, type === ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER)}
+                                    {renderAccBank(Languages.accountBank.ATMNumber, type === ENUM_TYPE_CARD_BANK.ATM_NUMBER)}
                                 </View>
-                                {active ? renderInput(Languages.accountBank.accountNumber, Languages.accountBank.accountNumber, accountNumber, accountNumberRef, 'NUMBER',15) :
+                                {active ? renderInput(Languages.accountBank.accountNumber, Languages.accountBank.accountNumber, accountNumber, accountNumberRef, 'NUMBER', 15) :
                                     renderInput(Languages.accountBank.ATMNumber, Languages.accountBank.ATMNumber, ATMNumber, ATMNumberRef, 'NUMBER', 15)}
                                 {renderInput(Languages.accountBank.accountProvider, Languages.accountBank.accountProviderName, accountProvider, accountProviderRef)}
                             </KeyboardAvoidingView>
@@ -161,6 +204,7 @@ const AccountBank = observer(() => {
                             />
                         </View>
                     </ScrollViewWithKeyboard>
+                    {isLoading && <Loading isOverview/>}
                 </View >
             </HideKeyboard>
         </BottomSheetModalProvider>

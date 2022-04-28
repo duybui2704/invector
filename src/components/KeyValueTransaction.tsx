@@ -28,7 +28,7 @@ const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, s
         <View style={styles.container}>
             <View style={styles.row}>
                 <View style={styles.row}>
-                    <Text> {renderColor(styleColor, title)}</Text>
+                    {renderColor(styleColor, title)}
                 </View>
                 <View>
                     <Text style={styles.dateText}>{dateTime}</Text>
@@ -62,10 +62,12 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     rowDebt: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        paddingVertical:2
     },
     leftText: {
         ...Styles.typography.medium,
@@ -77,12 +79,14 @@ const styles = StyleSheet.create({
         ...Styles.typography.regular,
         color: COLORS.GRAY_12,
         fontSize: Configs.FontSize.size10,
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
+        paddingVertical: 2
     },
     contentText: {
         ...Styles.typography.medium,
         color: COLORS.GRAY_7,
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
+        paddingVertical: 2
     },
     dash: {
         marginVertical: 4

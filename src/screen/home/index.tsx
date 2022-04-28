@@ -24,13 +24,10 @@ import { useAppStore } from '@/hooks';
 import { BannerModel } from '@/models/banner';
 import { NewsModel } from '@/models/news';
 import Navigator from '@/routers/Navigator';
-import MyFlatList from "@/components/MyFlatList";
-import styles from "@/screen/investment/styles";
-import Card from "@/screen/broadening/card";
-import Utils from "@/utils/Utils";
-import Investment from "@/screen/investment";
 import { COLORS } from '@/theme';
+import Utils from '@/utils/Utils';
 import { MyStylesHome } from './styles';
+
 
 const data = [
     {
@@ -124,7 +121,7 @@ const Home = observer(() => {
 
     const navigateToDetail = useCallback(() => {
         Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.detailInvestment, { status: btnInvest });
-    }, []);
+    }, [btnInvest]);
 
     const renderItem = useCallback((item: any) => {
         return (
@@ -134,7 +131,7 @@ const Home = observer(() => {
                 title={ENUM_INVEST_STATUS.INVEST_NOW}
             />
         );
-    }, [btnInvest, navigateToDetail]);
+    }, [navigateToDetail]);
 
     const iconTob = useCallback((title: string) => {
         switch (title) {
@@ -147,12 +144,12 @@ const Home = observer(() => {
             case Languages.home.payment:
                 return <IcSmartPhone width={20} height={20} />;
             default:
-                break;
+                return null;
         }
     }, []);
 
     const renderIconTob = useCallback((gotoScreen: any, title: string) => {
-        return(
+        return (
             <Touchable style={styles.tob} onPress={gotoScreen}>
                 {iconTob(title)}
                 <Text style={styles.txtTob}>{title}</Text>
@@ -161,7 +158,7 @@ const Home = observer(() => {
     }, []);
 
     const renderTobBottom = useCallback((text: string) => {
-        return(
+        return (
             <Touchable style={styles.txtQuestion}>
                 <View style={styles.viewTxtBottom}>
                     <Text style={styles.txt5}>{text}</Text>
@@ -224,9 +221,9 @@ const Home = observer(() => {
 
             </View>
             <View style={styles.viewTob}>
-                    {renderIconTob(gotoProfile, Languages.home.have )}
-                    {renderIconTob(gotoInvest, Languages.home.invest )}
-                    {renderIconTob(gotoReport, Languages.home.report )}
+                {renderIconTob(gotoProfile, Languages.home.have)}
+                {renderIconTob(gotoInvest, Languages.home.invest)}
+                {renderIconTob(gotoReport, Languages.home.report)}
                 {renderIconTob(gotoPayment, Languages.home.payment)}
             </View>
             <ScrollView style={styles.viewCenter}>

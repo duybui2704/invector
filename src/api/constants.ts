@@ -44,7 +44,9 @@ export enum API_CONFIG {
     // authentication
     LOGIN = 'auth/signin',  // Dang nhap investor
     TOKEN = '/token',
-    REFRESH_TOKEN = '/token',
+    VALIDATE_TOKEN = 'auth/validate_token',  // validate token
+    REFRESH_TOKEN = 'auth/resend_token',     // gui lai token
+    ACTIVE_USER = '/auth/active_account',  // kich hoat tai khoan
     USER_INFO = '/user/info_investor', // thông tin tài khoản investor
     REGISTER = '/auth/app_register', // đăng kí tài khoản
     ACTIVE_AUTH = '/auth/auth_register', // kích hoạt tài khoản: OTP
@@ -104,8 +106,12 @@ export enum API_CONFIG {
     GET_RATE = '/rating_app/rate_of_satisfaction', // đánh giá ứng dụng
 
     // link account with payment method
-    REQUEST_SEND_VIMO_LINK = 'vimo_link/send_link_vimo',
-    REQUEST_ACTIVE_VIMO_LINK = 'vimo_link/active_link_vimo'
+    REQUEST_SEND_VIMO_LINK = 'vimo_link/send_link_vimo',    // gui lien ket vimo
+    REQUEST_ACTIVE_VIMO_LINK = 'vimo_link/active_link_vimo',  // active lien ket vimo
+    REQUEST_CANCEL_VIMO_LINK = 'vimo_link/unLink_vimo' ,       // huy lien ket vimo
+    REQUEST_INFO_VIMO_LINK = 'vimo_link/info_vimo_investor',  // xem thong tin lien ket vimo
+    GET_BANK = 'bankNganLuong/get_all',  // lay danh sach tai khoan ngan hang 
+    CHOOSE_METHOD_RECEIVE_INTEREST = '/investor/confirm_account_payment'  // chon tai khoan nhan lai (vimo, bank)
 }
 
 export const PAYMENT_URL = {

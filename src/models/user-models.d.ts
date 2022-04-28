@@ -32,9 +32,9 @@ export interface UserInfoModal {
     gender?: string;
     front_facing_card?: string,
     card_back?: string,
-    accuracy?:number;   // 1: da xac thuc, 2: chua xac thuc
-    address?:string;
-    job?:string
+    accuracy?: number;   // 1: da xac thuc, 2: chua xac thuc
+    address?: string;
+    job?: string
 }
 interface OtpModal {
     otp1: any;
@@ -45,17 +45,22 @@ interface OtpModal {
     otp6: any
 }
 
-interface StateUserInfo {
+export interface StateUserInfo {
     auth?: number;
-   status?: string;
-   color?: string;
+    status?: string;
+    color?: string;
 }
 
-interface RePay {
+export interface RePay {
     bank_name?: string;
     interest_receiving_account?: string;
     name_bank_account?: string;
     type_card?: string;
     type_interest_receiving_account?: string;
- }
+}
 
+
+export interface InfoLinkVimoModal {
+    phone?: string;
+    trang_thai?: string;
+}

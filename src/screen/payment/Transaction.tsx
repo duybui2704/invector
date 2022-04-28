@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import ICCalender from '@/assets/image/ic_arrow_date_picker.svg';
 import Languages from '@/common/Languages';
@@ -16,67 +17,93 @@ import { PagingConditionTypes } from '@/models/paging';
 import { TransactionModel } from '@/models/transaction-model';
 import { styles } from './styles';
 import NoData from '@/components/NoData';
+import DateUtils from '@/utils/DateUtils';
 
 const Transaction = observer(() => {
     const { apiServices } = useAppStore();
-
-    const [selectedFilter, setSelectedFilter] = useState<number>(TransactionTypes[0].value);
+    const isFocused = useIsFocused();
     const [isFreshing, setIsFreshing] = useState<boolean>(true);
-    const [dataHistory, setDataHistory] = useState<TransactionModel[]>();
-    
+    const [dataHistory, setDataHistory] = useState<TransactionModel[]>([]);
+
     const condition = useRef<PagingConditionTypes>({
         isLoading: true,
         canLoadMore: true,
         offset: 0,
-        startDate: undefined,
-        endDate: undefined,
+        startDate: '',
+        endDate: '',
         option: TransactionTypes[0].type
     });
+    const [selectedFilter, setSelectedFilter] = useState<string>(condition.current.option || '');
 
-    const [options, setOption] = useState<string>(condition.current.option);
 
-    const fetchHistory = useCallback(async () => {
-        setIsFreshing(true);
+    const fetchHistory = useCallback(async (fDate?: string, tDate?: string, option?: string) => {
+        console.log('start', DateUtils.formatMMDDYYYYPicker(condition.current.startDate));
+        console.log('end', DateUtils.formatMMDDYYYYPicker(condition.current.endDate));
+        console.log('option', condition.current.option);
+        console.log('select', selectedFilter);
         const res = await apiServices.history.getHistory(
             3,
-            condition.current?.startDate,
-            condition.current?.endDate,
-            options
+            fDate || '',
+            tDate || '',
+            condition.current.option || option
         );
+
         if (res.success) {
             const data = res.data as TransactionModel[];
             setDataHistory(data);
             setIsFreshing(false);
         }
         setIsFreshing(false);
-    }, [apiServices.history, options]);
+
+    }, [apiServices.history, selectedFilter]);
 
     useEffect(() => {
-        fetchHistory();
+        if (isFocused) {
+            fetchHistory();
+        }
     }, []);
 
-    const onRefresh = useCallback((startDate?: Date, endDate?: Date) => {
+    const onRefresh = useCallback((startDate?: Date, endDate?: Date, isRefreshDate?: boolean, option?: string) => {
+        setIsFreshing(true);
         condition.current.canLoadMore = true;
         condition.current.offset = 0;
-        condition.current.startDate = startDate || undefined;
-        condition.current.endDate = endDate || undefined;
-        condition.current.option = TransactionTypes[0].type;
-        setOption(condition.current.option);
-        fetchHistory();
-    }, [fetchHistory]);
+        condition.current.startDate = startDate || '';
+        condition.current.endDate = endDate || '';
+        condition.current.option = option || TransactionTypes[0].type;
+        setSelectedFilter(condition.current.option || '');
+        if (isRefreshDate) {
+            return fetchHistory(
+                '',
+                '',
+                selectedFilter
+            );
+
+        }
+        return fetchHistory(
+            `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}`,
+            `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}`,
+            selectedFilter
+        );
+
+    }, [fetchHistory, selectedFilter]);
+
+
 
     const renderFilterTemplate = useCallback(
         (item: KeyValueModel) => {
             let selected = false;
-            if (item.value === selectedFilter) {
+            if (item.type === selectedFilter) {
                 selected = true;
             }
 
             const _onPress = () => {
-                setSelectedFilter(item.value);
                 condition.current.option = item.type;
-                setOption(condition.current.option);
-                console.log('option = ', options);
+                setSelectedFilter(item.type || TransactionTypes[0].type);
+                fetchHistory(
+                    !condition.current.isLoading ? `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}` : '',
+                    !condition.current.isLoading ? `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}` : '',
+                    condition.current.option
+                );
             };
 
             return (
@@ -89,7 +116,7 @@ const Transaction = observer(() => {
                 />
             );
         },
-        [options, selectedFilter]
+        [fetchHistory, selectedFilter]
     );
     const renderFilter = useMemo(() => {
         return (
@@ -107,7 +134,7 @@ const Transaction = observer(() => {
 
     const onEndReached = useCallback(() => {
         if (!condition.current.isLoading && condition.current.canLoadMore) {
-            fetchHistory();
+            // fetchHistory();
         }
     }, [fetchHistory]);
 
@@ -143,10 +170,10 @@ const Transaction = observer(() => {
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
             case Languages?.transaction?.fromDate:
-                onRefresh(date, condition.current.endDate);
+                onRefresh(date, condition.current.endDate, false, condition.current.option);
                 break;
             case Languages?.transaction?.toDate:
-                onRefresh(condition.current.startDate, date);
+                onRefresh(condition.current.startDate, date, false, condition.current.option);
                 break;
             default:
                 break;
@@ -155,8 +182,6 @@ const Transaction = observer(() => {
 
     const onConfirmValue = (date: Date, tag?: string) => {
         onChange(date, tag);
-        console.log('start', condition.current.startDate);
-        console.log('end', condition.current.endDate);
     };
 
     return (

@@ -163,3 +163,14 @@ export enum COLOR_TRANSACTION {
     YELLOW = 'yellow',
     GREEN = 'green',
 };
+
+export enum STATE_LINK{
+    LINKING = 'Đang liên kết',
+};
+
+export enum TYPE_INTEREST_RECEIVE_ACC{
+    VIMO = 'vimo',
+    BANK = 'bank',
+    NGAN_LUONG = 'ngan_luong',
+    MOMO = 'momo'
+};

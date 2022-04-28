@@ -42,7 +42,7 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
         ref
     ) => {
         const [visible, setVisible] = useState<boolean>(false);
-        const [dateValue,setDateValue] = useState<Date | string| undefined >();
+        const [dateValue,setDateValue] = useState<Date | string| undefined| number | any >();
         const show = useCallback(() => {
             setVisible(true);
         }, []);
@@ -59,26 +59,25 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
 
         const onChange = useCallback(
             (value: Date) => {
-                onDateChangeDatePicker?.(date, title || '');
+                onDateChangeDatePicker?.(date || '', title || '');
             },
             [date, onDateChangeDatePicker, title]
         );
 
         const onConfirm = useCallback(
             (value: Date) => {
-                setDateValue?.(value);
-                onConfirmDatePicker?.(value, title || '');
+                setDateValue?.(value || title);
+                onConfirmDatePicker?.(value || '', title || '');
                 hide?.();
-                console.log('date',dateValue?.toLocaleString());
             },
-            [dateValue, hide, onConfirmDatePicker, title]
+            [hide, onConfirmDatePicker, title]
         );
 
         return (
             <>
                 <Touchable style={styles.itemPicker} onPress={show}>
                     <Text style={styles.placeholderDate}>
-                        {dateValue ? DateUtils.formatDateSecondPicker(dateValue.toLocaleString()) : title}
+                        {dateValue ? DateUtils.formatMMDDYYYYPicker(dateValue) : title}
                     </Text>
                     <ICCalender/>
                     <DatePicker
@@ -87,7 +86,7 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
                         open={visible}
                         locale={'vi'}
                         androidVariant={'iosClone'}
-                        date={date || new Date()}
+                        date={date}
                         title={title}
                         onDateChange={onChange}
                         onCancel={hide}

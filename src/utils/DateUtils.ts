@@ -1,6 +1,7 @@
 import Moment from 'moment';
 
 const DEFAULT_DATE_FORMAT = 'DD/MM/YYYY';
+const FULL_DATE_FORMAT_MM_BEFORE = 'MM/DD/YYYY';
 const FULL_DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 const FULL_DATE_FORMAT_SS = 'DD/MM/YYYY HH:mm:ss';
 
@@ -21,6 +22,8 @@ function getLongFromDate(date: number, format = DEFAULT_DATE_FORMAT) {
 function formatDatePicker(date: number) { return Moment(date * 1000).utc(true).format(FULL_DATE_FORMAT); }
 
 function formatDateSecondPicker(date: number) { return Moment(date).utc(true).format(DEFAULT_DATE_FORMAT); }
+
+function formatMMDDYYYYPicker(date: number) { return Moment(date).utc(true).format(FULL_DATE_FORMAT_MM_BEFORE); }
 
 function getCurrentDateTime() { return Moment(Moment().valueOf()).utc(true).format(FULL_DATE_FORMAT); }
 
@@ -71,5 +74,6 @@ export default {
     getLongFromDate,
     getDateDetails,
     getDateFromString,
-    formatDateSecondPicker
+    formatDateSecondPicker,
+    formatMMDDYYYYPicker
 };

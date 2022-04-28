@@ -10,13 +10,13 @@ import {
 
 import { COLORS, Styles } from '@/theme';
 import Utils from '@/utils/Utils';
-import  { ItemProps } from './BottomSheet';
 import Validate from '@/utils/Validate';
 import BottomSheetComponent from './BottomSheetComponent';
 import { PopupActions } from './popupStatus/types';
 import { Configs } from '@/common/Configs';
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
 import { Touchable } from './elements/touchable';
+import { ItemProps } from '@/models/common-model';
 
 type PickerProps = {
     leftIcon?: any,

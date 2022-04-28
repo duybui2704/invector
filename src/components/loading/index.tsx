@@ -5,24 +5,25 @@ import {
 } from 'react-native';
 
 import { COLORS } from '@/theme';
-import MyStyleLoading from "@/components/loading/styles";
+import MyStyleLoading from './styles';
 
 const Loading = ({ isOverview }: { isOverview?: boolean }) => {
+
     const styles = MyStyleLoading();
-  return(
-      <View style={{flex:1}}>
-          {  isOverview ?
-              <View style={styles.overlay}>
-                  <ActivityIndicator
-                      size="large"
-                      color={COLORS.WHITE}
-                      style={styles.activityIndicator} />
-              </View> :
-              <View style={styles.inline} >
-                  <ActivityIndicator size="small" color={COLORS.GREEN} />
-              </View >}
-      </View>
-  );
-}
+    return (
+        isOverview ?
+            <View style={styles.overlay}>
+                <ActivityIndicator
+                    size="large"
+                    color={COLORS.WHITE}
+                    style={styles.activityIndicator} />
+            </View> :
+            <View style={styles.inline} >
+                <ActivityIndicator size="small" color={COLORS.RED} />
+            </View >
+    );
+
+};
+
 
 export default Loading;

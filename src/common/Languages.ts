@@ -89,7 +89,7 @@ const Languages = {
         accVerified: 'Tài khoản đã xác thực',
         accuracyNow: 'Xác thực ngay',
         logout: 'Đăng xuất',
-        waitVerify: 'Tài khoản đang chờ xác thực',
+        waitVerify: 'Tài khoản đang chờ xác thực'
 
     },
     report: {
@@ -403,6 +403,14 @@ const Languages = {
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         popupOtpErrorTitle: 'Thông báo OTP',
         popupOtpErrorDescription: 'OTP không chính xác'
+    },
+    msgNotify:{
+        successCancelLinkVimo: 'Bạn đã hủy liên kết với Vimo',
+        failCancelLinkVimo: 'Hủy liên kết với Vimo thất bại',
+        successSendLinkVimo: 'Investor đang gửi mã OTP',
+        failSendLinkVimo: 'Số điện thoại này không phải là số liên kết với Vimo',
+        successAccountLinkBank: 'Liên kết thành công tài khoản ngân hàng',
+        failAccountLinkBank: 'Liên kết thất bại tài khoản ngân hàng'
     }
 
 };
