@@ -32,7 +32,7 @@ export interface UserInfoModal {
     gender?: string;
     front_facing_card?: string,
     card_back?: string,
-    accuracy?: number;   // 1: da xac thuc, 2: chua xac thuc
+    accuracy?: number;   /// 0: da xac thuc/// 1: chua xac thuc//// 2: cho xac thuc
     address?: string;
     job?: string
 }

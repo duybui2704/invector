@@ -19,7 +19,7 @@ import { MyStylesShareFriend } from './styles';
 
 const ShareFriend = observer(() => {
     const styles = MyStylesShareFriend();
-    const [code, setCode] = useState<string>(SessionManager.savePhone?.toString() || '');
+    const [code, setCode] = useState<string>(SessionManager.userInfo?.phone_number || '');
 
     const onLinkQR = useMemo(() => {
         if (isIOS) {
@@ -49,8 +49,11 @@ const ShareFriend = observer(() => {
                     stylesheet={HtmlStyles || undefined}
                 />
                 <Text style={styles.txtMyQrCode}>{Languages.shareFriend.introduceCode}</Text>
-                <View style={styles.wrapMyCode}>
-                    <Text style={styles.textCode}>{code}</Text>
+                <View style={styles.row}>
+                    <View style={styles.wrapMyCode}>
+                        <Text style={styles.textCode}>{code}</Text>
+
+                    </View>
                     <Touchable onPress={share}>
                         <ShareIC />
                     </Touchable>

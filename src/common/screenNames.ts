@@ -27,7 +27,8 @@ export const ScreenName = {
     confirmPhone: 'ConfirmPhone',
     verifyOTP: 'VerifyOTP',
     policy: 'Policy',
-    notifyInvest: ' NotifyInvest'
+    notifyInvest: ' NotifyInvest',
+    myWedView: 'MyWedView'
 };
 
 export default ScreenName;

@@ -10,7 +10,10 @@ export enum LINKS {
     FAQ = 'https://tienngay.vn/home/faqs',
     FB_FAN_PAGE = 'https://www.facebook.com/groups/425567338856999',
     STORE_ANDROID = 'https://play.google.com/store/apps/details?id=vn.tienngay.customer',
-    STORE_IOS = 'https://apps.apple.com/id/app/tienngay-customer/id1560920806'
+    STORE_IOS = 'https://apps.apple.com/id/app/tienngay-customer/id1560920806',
+    AQ_INVESTOR= 'https://tienngay.vn/template/hoidap',
+    POLICY_INVESTOR = 'https://tienngay.vn/template/dieukhoansudung',
+    MANUAL_INVESTOR = 'https://tienngay.vn/template/thongtinapp'
 }
 
 export enum CONTACT {
@@ -51,6 +54,8 @@ export enum API_CONFIG {
     REGISTER = '/auth/app_register', // đăng kí tài khoản
     ACTIVE_AUTH = '/auth/auth_register', // kích hoạt tài khoản: OTP
     RESEND_OTP = '/auth/resend_token', // gửi lại otp
+    SAVE_TOKEN_DEVICE = 'user/save_device_token_user', // luu token device
+    CLEAR_TOKEN_DEVICE = 'user/delete_device_token_user', // xoa token thiet bi
     CHANEL = '/configuration_formality/get_utm_source', // list danh sách kênh đăng kí
     UPDATE_USER_INFO = 'user/update_profile_investor', // update user account
     CHANGE_NEW_PWD = '/user/change_password_user', // change mật khẩu mới
@@ -61,6 +66,7 @@ export enum API_CONFIG {
     OTP_RESET_PWD = '/auth/reset_password', // otp reset pwd
     UPDATE_PWD = 'auth/new_password',
     LINK_SOCIAL = '/user/link_social',
+    IDENTITY_VERIFY = '/user/identity_verification', //  xac thuc CCCD/CMT
 
     // upload ảnh
 

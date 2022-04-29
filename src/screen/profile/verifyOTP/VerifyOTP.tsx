@@ -79,8 +79,9 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
         popupResendCode.current?.hide();
         const res = await apiServices.paymentMethod.requestSendLinkVimo(3, phone);
         if(res.success){
-            ToastUtils.showSuccessToast(Languages.msgNotify.successSendLinkVimo);
-        }else  ToastUtils.showErrorToast(Languages.msgNotify.failSendLinkVimo);
+            ToastUtils.showSuccessToast(Languages.msgNotify.successLinkWithVimo);
+        }
+        else  ToastUtils.showErrorToast(Languages.msgNotify.failVerifyOTP);
     }, [apiServices.paymentMethod, phone, time]);
 
     const renderPopup = useCallback((ref: any, content: string) => {

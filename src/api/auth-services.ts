@@ -1,3 +1,5 @@
+import { ImageOrVideo } from 'react-native-image-crop-picker';
+
 import RsaUtils from '@/utils/RsaUtils';
 import { BaseService } from './base-service';
 import { API_CONFIG } from './constants';
@@ -24,7 +26,7 @@ export class AuthServices extends BaseService {
 
     updateUserInf = async (
         full_name: string,
-        gender:string,
+        gender: string,
         birth_date: string,
         phone: string,
         email: string,
@@ -149,7 +151,7 @@ export class AuthServices extends BaseService {
         );
 
     getUserInfo = async (type: number) =>
-        this.api().post(API_CONFIG.USER_INFO, this.buildFormData({type}));
+        this.api().post(API_CONFIG.USER_INFO, this.buildFormData({ type }));
 
     linkSocialAccount = async (type_login: string, provider_id: string) =>
         this.api().post(
@@ -165,6 +167,23 @@ export class AuthServices extends BaseService {
             API_CONFIG.UPLOAD_HTTP_IMAGE,
             this.buildFormData({
                 file
+            })
+        );
+
+    identityVerify = async (type: number,
+        identity: string,
+        front_facing_card: any,
+        card_back: any,
+        avatar: any
+    ) =>
+        this.api().post(
+            API_CONFIG.IDENTITY_VERIFY,
+            this.buildFormData({
+                type,
+                identity,
+                front_facing_card,
+                card_back,
+                avatar
             })
         );
 }

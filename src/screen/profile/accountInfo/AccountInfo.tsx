@@ -85,7 +85,7 @@ const AccountInfo = observer(() => {
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
-                {renderKeyFeature(Languages.accountInfo.phoneNumber, SessionManager.savePhone?.toString())}
+                {renderKeyFeature(Languages.accountInfo.phoneNumber, dataUsers?.phone_number)}
                 {renderKeyFeature(Languages.accountInfo.email, dataUsers?.email)}
                 {renderKeyFeature(Languages.accountInfo.fullName, dataUsers?.full_name)}
                 {renderKeyFeature(Languages.accountInfo.gender, dataUsers?.gender)}
@@ -99,7 +99,7 @@ const AccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [dataUsers?.address, dataUsers?.birth_date, dataUsers?.email, dataUsers?.full_name, dataUsers?.gender, dataUsers?.job, onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit]);
+    }, [dataUsers?.address, dataUsers?.birth_date, dataUsers?.email, dataUsers?.full_name, dataUsers?.gender, dataUsers?.job, dataUsers?.phone_number, onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit]);
 
     return (
         <View style={styles.container}>

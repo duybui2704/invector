@@ -410,7 +410,10 @@ const Languages = {
         successSendLinkVimo: 'Investor đang gửi mã OTP',
         failSendLinkVimo: 'Số điện thoại này không phải là số liên kết với Vimo',
         successAccountLinkBank: 'Liên kết thành công tài khoản ngân hàng',
-        failAccountLinkBank: 'Liên kết thất bại tài khoản ngân hàng'
+        failAccountLinkBank: 'Liên kết thất bại tài khoản ngân hàng',
+        failVerifyOTP: 'Mã xác thực OTP không đúng',
+        successLinkWithVimo: 'Liên kết thành công với Vimo',
+        failPostIdentity: 'Lỗi gửi ảnh'
     }
 
 };

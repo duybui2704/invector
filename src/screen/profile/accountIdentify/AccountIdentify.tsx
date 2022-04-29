@@ -27,10 +27,13 @@ import FormValidate from '@/utils/FormValidate';
 import ImageUtils from '@/utils/ImageUtils';
 import { MyStylesAccountIdentify } from './styles';
 import SessionManager from '@/manager/SessionManager';
+import { useAppStore } from '@/hooks';
+import ToastUtils from '@/utils/ToastUtils';
 
 const AccountIdentify = observer(() => {
+    const { apiServices } = useAppStore();
     const styles = MyStylesAccountIdentify();
-    const [identity, setIdentity] = useState<string>('');
+    const [identity, setIdentity] = useState<string>(SessionManager.userInfo?.identity || '');
     const [avatar, setAvatar] = useState<ImageOrVideo>();
     const [frontIdentify, setFrontIdentify] = useState<ImageOrVideo>();
     const [afterIdentify, setBehindIdentify] = useState<ImageOrVideo>();
@@ -45,6 +48,15 @@ const AccountIdentify = observer(() => {
     const onChangeText = useCallback((value?: any) => {
         setIdentity(value);
     }, []);
+
+    const fetchIdentitiVerify = useCallback(async () => {
+        const res = await apiServices.auth.identityVerify(3, identity, frontIdentify, afterIdentify, avatar);
+        if (res.success) {
+            popupConfirmRef.current?.show();
+        }else {
+            ToastUtils.showErrorToast(Languages.msgNotify.failPostIdentity);
+        }
+    }, [afterIdentify, apiServices.auth, avatar, frontIdentify, identity]);
 
     const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean) => {
         return (
@@ -85,11 +97,11 @@ const AccountIdentify = observer(() => {
 
     const onVerify = useCallback(() => {
         if (onValidate()) {
-            popupConfirmRef.current?.show();
+            fetchIdentitiVerify();
         }
-    }, [onValidate]);
+    }, [fetchIdentitiVerify, onValidate]);
 
-    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, hasImage?: boolean, imageSource?: string, disable?:boolean) => {
+    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, hasImage?: boolean, imageSource?: string, disable?: boolean) => {
         return <PhotoPickerBottomSheet
             ref={ref}
             label={label}
@@ -142,38 +154,47 @@ const AccountIdentify = observer(() => {
                     <Text style={styles.txtNotePhoto}>{noteAvatar[1]}</Text>
                     {renderPhotoPicker(avatarRef, Languages.accountIdentify.avatar, avatar, <AvatarIC />, onPressItemAvatar, !!SessionManager.userInfo?.avatar_user, SessionManager.userInfo?.avatar_user)}
                 </View>
-                <HTMLView
-                    value={Languages.accountIdentify.note}
-                    stylesheet={HtmlStyles || undefined}
-                />
-                {dataUser.accuracy !== 1 && <Button
-                    style={styles.accuracyWrap}
-                    onPress={onVerify}
-                    label={Languages.accountIdentify.confirmKYC}
-                    buttonStyle={BUTTON_STYLES.GREEN_1}
-                    isLowerCase />}
             </View>
         );
-    }, [afterIdentify, avatar, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhoto, onVerify, renderPhotoPicker, styles.accuracyWrap, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto, styles.wrapEdit]);
+    }, [afterIdentify, avatar, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhoto, renderPhotoPicker, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto, styles.wrapEdit]);
+
+    const renderBottom = useMemo(() => {
+        return (
+            <View  style={styles.wrapBottom}>
+                {dataUser.tinh_trang?.auth === 0 &&
+                    <>
+                        <HTMLView
+                            value={Languages.accountIdentify.note}
+                            stylesheet={HtmlStyles || undefined}
+                        />
+                        <Button
+                            style={styles.accuracyWrap}
+                            onPress={onVerify}
+                            label={Languages.accountIdentify.confirmKYC}
+                            buttonStyle={BUTTON_STYLES.GREEN_1}
+                            isLowerCase />
+                    </>}
+            </View>
+        );
+    }, [onVerify, styles.accuracyWrap, styles.wrapBottom]);
 
     return (
         <HideKeyboard style={styles.container}>
             <View style={styles.container}>
                 <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack />
-                <HideKeyboard>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        {SessionManager.userInfo?.tinh_trang?.auth === 0 &&
-                            <View style={styles.wrapTopHtml}>
-                                <HTMLView
-                                    value={Languages.accountIdentify.noteTopIdentify}
-                                    stylesheet={HtmlStyles || undefined}
-                                />
-                            </View>}
-                        {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, SessionManager.userInfo?.identity, 'NUMBER', !SessionManager.userInfo?.identity)}
-                        {renderPhoto}
-                        {renderPopupConfirm(popupConfirmRef)}
-                    </ScrollView>
-                </HideKeyboard>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    {SessionManager.userInfo?.tinh_trang?.auth === 0 &&
+                        <View style={styles.wrapTopHtml}>
+                            <HTMLView
+                                value={Languages.accountIdentify.noteTopIdentify}
+                                stylesheet={HtmlStyles || undefined}
+                            />
+                        </View>}
+                    {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, SessionManager.userInfo?.identity, 'NUMBER', !!SessionManager.userInfo?.identity)}
+                    {renderPhoto}
+                    {renderBottom}
+                    {renderPopupConfirm(popupConfirmRef)}
+                </ScrollView>
             </View>
         </HideKeyboard>
     );

@@ -45,6 +45,7 @@ import { CustomBackdropBottomSheet } from '@/components/CustomBottomSheet';
 import StorageUtils from '@/utils/StorageUtils';
 import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
+import { LINKS } from '@/api/constants';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -109,10 +110,18 @@ const Profile = observer(() => {
                     Navigator.pushScreen(ScreenName.accountLink);
                     break;
                 case Languages.account.useManual:
-                    Navigator.pushScreen(ScreenName.manual);
+                    Navigator.pushScreen(ScreenName.myWedView, 
+                        {
+                            title: Languages.account.useManual,
+                            url: LINKS.MANUAL_INVESTOR
+                        });
                     break;
                 case Languages.account.answer:
-                    Navigator.pushScreen(ScreenName.help);
+                    Navigator.pushScreen(ScreenName.myWedView, 
+                        {
+                            title: Languages.account.answer,
+                            url: LINKS.AQ_INVESTOR
+                        });
                     break;
                 case Languages.account.payMethod:
                     Navigator.pushScreen(ScreenName.paymentMethod);
@@ -121,7 +130,11 @@ const Profile = observer(() => {
                     callPhone();
                     break;
                 case Languages.account.policy:
-                    Navigator.pushScreen(ScreenName.policy);
+                    Navigator.pushScreen(ScreenName.myWedView, 
+                        {
+                            title: Languages.account.policy,
+                            url: LINKS.POLICY_INVESTOR
+                        });
                     break;
                 case Languages.account.web:
                     Utils.openURL(LINK_TIENNGAY.LINK_TIENNGAY_WEB);
