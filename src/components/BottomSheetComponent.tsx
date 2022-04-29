@@ -102,8 +102,8 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             [hasDash, hide, leftIcon, onPressItem, rightIcon]
         );
 
-        const keyExtractor = useCallback((index) => {
-            return `${index.id}`;
+        const keyExtractor = useCallback((item, index) => {
+            return `${item.id}${index}`;
         }, []);
 
         const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {

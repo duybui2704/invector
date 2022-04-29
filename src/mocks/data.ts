@@ -86,18 +86,18 @@ export const DataChart = {
 
 export const dataQuarterReport =
     [
-        { id: '1', value: 'Qúy 1' },
-        { id: '2', value: 'Qúy 2' },
-        { id: '3', value: 'Qúy 3' },
-        { id: '4', value: 'Qúy 4' }
+        // { id: '1', value: 'Qúy 1' },
+        // { id: '2', value: 'Qúy 2' },
+        // { id: '3', value: 'Qúy 3' },
+        // { id: '4', value: 'Qúy 4' }
     ];
 
 export const dataYearReport =
     [
-        { id: '1', value: '2019' },
-        { id: '2', value: '2020' },
-        { id: '3', value: '2021' },
-        { id: '4', value: '2022' }
+        // { id: '1', value: '2019' },
+        // { id: '2', value: '2020' },
+        // { id: '3', value: '2021' },
+        // { id: '4', value: '2022' }
     ];
 
 export const dataUser = {

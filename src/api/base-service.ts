@@ -176,7 +176,7 @@ export class BaseService {
             });
         }
 
-        formData.append('type','2'); // Type of app
+        formData.append('type',3); // Type of app
 
         console.log('formData = ', JSON.stringify(formData));
         return formData;

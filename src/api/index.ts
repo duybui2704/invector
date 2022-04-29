@@ -1,3 +1,4 @@
+import { ReportServices } from './report-services';
 import { AuthServices } from './auth-services';
 import { CommonServices } from './common-services';
 import { HistoryServices } from './history-service';
@@ -11,5 +12,7 @@ export class ApiServices {
     history = new HistoryServices();
 
     paymentMethod = new PaymentMethodServices();
+
+    report = new ReportServices();
 
 }

@@ -1,70 +1,120 @@
 import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryTheme, VictoryZoomContainer } from 'victory-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { observer } from 'mobx-react';
+import { useIsFocused } from '@react-navigation/native';
 
 import { Configs } from '@/common/Configs';
 import { Touchable } from '@/components/elements/touchable';
 import KeyValue from '@/components/KeyValue';
 import { COLORS, Styles } from '@/theme';
-import { DataChart, dataQuarterReport, dataYearReport } from '@/mocks/data';
-import { MonthReportModel } from '@/models/monthOfQuarter-model';
+import { DataChart } from '@/mocks/data';
+import { OverviewMonthReportModal, OverviewQuarterReportModal } from '@/models/monthOfQuarter-model';
 import Utils from '@/utils/Utils';
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
 import Languages from '@/common/Languages';
 import HeaderBar from '@/components/header';
+import { useAppStore } from '@/hooks';
+import { ItemProps } from '@/models/common-model';
+import Loading from '@/components/loading';
 
 const Report = observer(()=> {
+    const { apiServices } = useAppStore();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [quarter, setQuarter] = useState<string>('');
+    const [quarterList, setQuarterList] = useState<ItemProps[]>([]);
     const [year, setYear] = useState<string>('');
+    const [yearList, setYearList] = useState<ItemProps[]>([]);
     const quarterRef = useRef<BottomSheetModal>(null);
     const yearRef = useRef<BottomSheetModal>(null);
-    const keyExtractor = useCallback((item?: MonthReportModel) => {
-        return `${item?.id}${item?.quarter}${item?.year}`;
+    const isFocus = useIsFocused();
+
+    const [reportList, setReportList] = useState<OverviewQuarterReportModal>();
+
+    const keyExtractor = useCallback((item?: OverviewMonthReportModal, index?:any) => {
+        return `}${item?.month}${index}`;
     }, []);
 
+    const fetchDataSearch = useCallback(async()=>{
+        const resQuarters = await apiServices.report.getQuarters(3);
+        const resYear = await apiServices.report.getYear(3);
+        if(resQuarters.success){
+            const dataQuarter =  Utils.formatObjectToKeyLabel(resQuarters.data ) ;
+            setQuarterList(dataQuarter);
+        }
+        if(resYear.success){
+            const dataYear =   Utils.formatObjectToKeyLabel(resYear.data);
+            setYearList(dataYear);
+        }
+
+    },[apiServices.report]);
+
+    const fetchReport= useCallback(async()=>{
+        setIsLoading(true);
+        const res = await apiServices.report.requestFinanceReport(quarter.toLowerCase(), year);
+        if(res.success){
+            setIsLoading(false);
+            const data =  res.data as OverviewQuarterReportModal;
+            setReportList(data);          
+        }
+        setIsLoading(false);
+
+    },[apiServices.report, quarter, year]);
+
+
+    useEffect(()=>{
+        fetchDataSearch();
+        if(year !== '' && quarter !== ''){
+            fetchReport();
+        }
+    },[year, quarter]);
+
+    useEffect(()=>{
+
+    },[]);
+
     const renderItem = useCallback(({ item, isOverview }:
-        { isOverview?: boolean, item?: MonthReportModel }) => {
+        { isOverview?: boolean, item?: OverviewMonthReportModal }) => {
         const _onPress = () => {
         };
 
         return (
             <Touchable style={!isOverview ? styles.containerItem : styles.containerItemOverview} onPress={_onPress}>
                 <Text style={styles.overviewQuarterTxt}>
-                    {isOverview ? `${Languages.report.overview}${' '}${Languages.report.quarter}${' '}${DataChart?.quarter1?.quarter}` :
-                        `${Languages.report.month}${' '}${item?.month}`}
+                    {isOverview ? `${Languages.report.overview}${' '}${' '}${quarter}`|| 0 :
+                        `${Languages.report.month}${' '}${item?.month}` || 0}
                 </Text>
                 <KeyValue
                     styleTitle={styles.textLeftMonth}
                     title={Languages.report.contractNumber}
                     containerContent={styles.containerContentKeyValue}
-                    content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.contractNumberQuarter) : Utils.formatMoney(item?.contractNumber)}
+                    content={isOverview ? Utils.formatMoney(reportList?.total?.tong_hop_dong || 0) : Utils.formatMoney(item?.so_hop_dong_dau_tu || 0)}
                     styleColor={styles.txtContractNumber} />
                 <KeyValue
                     title={Languages.report.investMoney}
                     styleTitle={styles.textLeftMonth}
                     containerContent={styles.containerContentKeyValue}
-                    content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.investMountQuarter) : Utils.formatMoney(item?.investMount)}
+                    content={isOverview ? Utils.formatMoney(reportList?.total?.tong_tat_ca_tien_dau_tu || 0) : Utils.formatMoney(item?.tong_tien_dau_tu || 0)}
                     styleColor={styles.txtInvestNumber} />
                 <KeyValue
                     title={Languages.report.originMoneyCollected}
                     styleTitle={styles.textLeftMonth}
                     containerContent={styles.containerContentKeyValue}
-                    content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.originAmountEarningQuarter) : Utils.formatMoney(item?.originAmountEarning)}
+                    content={isOverview ? Utils.formatMoney(reportList?.total.tien_goc_thu_ve || 0) : Utils.formatMoney(item?.tien_goc_thu_ve || 0)}
                     styleColor={styles.txtEarning} />
                 <KeyValue
                     title={Languages.report.interest}
                     styleTitle={styles.textLeftMonth}
                     containerContent={styles.containerContentKeyValue}
-                    content={isOverview ? Utils.formatMoney(DataChart?.quarter1?.interestQuarter) : Utils.formatMoney(item?.interest)}
+                    content={isOverview ? Utils.formatMoney(reportList?.total.tong_lai_phi || 0) : Utils.formatMoney(item?.tong_lai_phi || 0)}
                     styleColor={styles.txtInterest}
                 />
             </Touchable>
         );
-    }, []);
+    }, [quarter, reportList?.total.tien_goc_thu_ve, reportList?.total?.tong_hop_dong, reportList?.total.tong_lai_phi, reportList?.total?.tong_tat_ca_tien_dau_tu]);
 
     const renderChart = useCallback(() => {
         return (
@@ -140,14 +190,15 @@ const Report = observer(()=> {
     const renderMonthList = useMemo(() => {
         return (
             <FlatList
-                data={DataChart.quarter1.data}
+                data={reportList?.data}
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
                 ListHeaderComponent={renderChart()}
                 style={styles.flatList}
+                initialNumToRender={3}
             />
         );
-    }, [keyExtractor, renderChart, renderItem]);
+    }, [keyExtractor, renderChart, renderItem, reportList?.data]);
 
     const onPressQuarter = useCallback((item?: any) => {
         setQuarter(item?.value);
@@ -160,7 +211,7 @@ const Report = observer(()=> {
             <View style={styles.rowFilter}>
                 <PickerBottomSheet
                     ref={quarterRef}
-                    data={dataQuarterReport}
+                    data={quarterList}
                     value={quarter}
                     placeholder={Languages.report.quarter}
                     onPressItem={onPressQuarter}
@@ -171,7 +222,7 @@ const Report = observer(()=> {
                 />
                 <PickerBottomSheet
                     ref={yearRef}
-                    data={dataYearReport}
+                    data={yearList}
                     value={year}
                     placeholder={Languages.report.year}
                     onPressItem={onPressYear}
@@ -182,13 +233,14 @@ const Report = observer(()=> {
                 />
             </View>
         );
-    }, [onPressQuarter, onPressYear, quarter, year]);
+    }, [onPressQuarter, onPressYear, quarter, quarterList, year, yearList]);
 
     return (
         <View style={styles.container}>
             <HeaderBar title={`${Languages.report.title}`} isLight={false} />
             {renderFilter}
             {renderMonthList}
+            {isLoading && <Loading isOverview/>}
         </View >
     );
 });

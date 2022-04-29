@@ -74,7 +74,7 @@ export enum API_CONFIG {
 
     // history
     HISTORY = '/investor/history_transaction_investor',
-    DETAILS_HISTORY = '/transaction/detail_transaction',
+    // DETAILS_HISTORY = '/transaction/detail_transaction',
 
     // notification
     NOTIFICATION = '/user/get_notification_user',
@@ -117,7 +117,12 @@ export enum API_CONFIG {
     REQUEST_CANCEL_VIMO_LINK = 'vimo_link/unLink_vimo' ,       // huy lien ket vimo
     REQUEST_INFO_VIMO_LINK = 'vimo_link/info_vimo_investor',  // xem thong tin lien ket vimo
     GET_BANK = 'bankNganLuong/get_all',  // lay danh sach tai khoan ngan hang 
-    CHOOSE_METHOD_RECEIVE_INTEREST = '/investor/confirm_account_payment'  // chon tai khoan nhan lai (vimo, bank)
+    CHOOSE_METHOD_RECEIVE_INTEREST = 'investor/confirm_account_payment',  // chon tai khoan nhan lai (vimo, bank)
+
+    // report 
+    GET_YEARS = 'investor/select_year', // get years for report
+    GET_QUARTERS = 'investor/select_quarters_the_year', // get quarters for report
+    REQUEST_FINANCE_REPORT = 'investor/financial_report' // bao cao tai chinh investor
 }
 
 export const PAYMENT_URL = {
