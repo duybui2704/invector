@@ -109,12 +109,12 @@ const Investment = observer(({ route }: any) => {
         (text: string) => {
             if (text) {
                 setDataFilter(
-                    dataFilter?.filter((item: any) =>
-                        Utils.formatMoney(item?.so_tien_dau_tu).includes(text)
+                    listStore?.filter((item: any) =>
+                        Utils.convertMoney(item?.so_tien_dau_tu).includes(text)
                     )
                 );
             } else {
-                setDataFilter(dataFilter);
+                setDataFilter(listStore);
             }
         },
         [dataFilter]
