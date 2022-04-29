@@ -66,9 +66,6 @@ const RootStack = observer(() => {
             <Stack.Navigator screenOptions={screenOptions}>
                 <Stack.Screen name={ScreenName.auth} component={Auth} />
                 <Stack.Screen name={ScreenName.success} component={SuccessSignUp} />
-                {/* <Stack.Screen name={ScreenName.login} component={Login} /> */}
-
-                {/* <Stack.Screen name={ScreenName.homeScreen} component={Home}/> */}
             </Stack.Navigator>
         );
     }, []);
@@ -80,7 +77,6 @@ const RootStack = observer(() => {
                 <Stack.Screen name={ScreenName.splash} component={Splash} />
                 <Stack.Screen name={ScreenName.auth} component={AuthStack} />
                 <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
-                <Stack.Screen name={ScreenName.auth} component={AuthStack} />
             </Stack.Navigator>
         );
     }, [AuthStack]);

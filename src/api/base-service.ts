@@ -175,7 +175,7 @@ export class BaseService {
             });
         }
 
-        formData.append('type', '2'); // Type of app
+        formData.append('type', 3);
 
         // console.log('formData = ', formData);
         return formData;

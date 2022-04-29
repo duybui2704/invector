@@ -24,6 +24,7 @@ export const DetailInvestment = observer(({ route }: any) => {
     const { apiServices } = useAppStore();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [data, setData] = useState<RootObject>();
+    const [dataHistory, setDataHistory] = useState<RootObject>();
 
     useEffect(() => {
         switch (status) {
@@ -34,7 +35,7 @@ export const DetailInvestment = observer(({ route }: any) => {
                 fetchDetailInvesting();
                 break;
             case ENUM_INVEST_STATUS.HISTORY:
-                fetchDetailHistoty();
+                fetchDetailHistory();
                 break;
             default:
                 break;
@@ -47,7 +48,8 @@ export const DetailInvestment = observer(({ route }: any) => {
         const resInvestNow = await apiServices.invest.getDetailInvestNow(id);
         setIsLoading(false);
         if (resInvestNow.success) {
-            console.log('resInvest');
+            const res = resInvestNow.data as RootObject;
+            setData(res);
         }
     }, []);
 
@@ -57,12 +59,13 @@ export const DetailInvestment = observer(({ route }: any) => {
         const resInvesting = await apiServices.invest.getInvestHaveContract(id);
         setIsLoading(false);
         if (resInvesting.success) {
-            console.log('DATA: ', resInvesting.data);
+            const res = resInvesting.data as RootObject;
+            setData(res);
         }
 
     }, []);
 
-    const fetchDetailHistoty = useCallback(async () => {
+    const fetchDetailHistory = useCallback(async () => {
         setIsLoading(true);
         console.log('resInvestHistory');
         const resInvestNow = await apiServices.invest.getDetailInvestNow(id);
@@ -164,11 +167,11 @@ export const DetailInvestment = observer(({ route }: any) => {
                     {renderInfoItem(Languages.detailInvest.moneyInvest, Utils.formatMoney(data?.so_tien_dau_tu), COLORS.RED)}
                     {renderInfoItem(Languages.detailInvest.interest, `${data?.ti_le_lai_suat_hang_thang}`)}
                     {renderInfoItem(Languages.detailInvest.interestMonth, Utils.formatMoney(data?.lai_hang_thang))}
-                    {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.day, `${data?.ngay_dao_han_du_kien}`, '')}
+                    {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.day, `${data?.ngay_dau_tu}`, '')}
                     {renderInfoItem(Languages.detailInvest.amountInterest, Utils.formatMoney(data?.tong_lai_nhan_duoc))}
-                    {renderInfoItem(Languages.detailInvest.period, `${data?.ngay_dao_han_du_kien}`)}
-                    {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.amountReceived, Utils.formatMoney(6000000))}
-                    {renderInfoItem(Languages.detailInvest.expectedDate, `${data?.ngay_dao_han_du_kien}`)}
+                    {renderInfoItem(Languages.detailInvest.period, `${data?.ngay_dao_han}`)}
+                    {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.amountReceived, Utils.formatMoney(data?.tong_lai_da_nhan))}
+                    {renderInfoItem(Languages.detailInvest.expectedDate, `${data?.ngay_dao_han}`)}
                     {renderInfoItem(Languages.detailInvest.formality, `${data?.hinh_thuc_tra_lai}`)}
                 </View>
                 {renderBottom}

@@ -25,6 +25,7 @@ import SessionManager from '@/manager/SessionManager';
 import { UserInfoModal } from '@/models/user-models';
 import { UserManager } from '@/manager/UserManager';
 import Navigator from '@/routers/Navigator';
+import Loading from '@/components/loading';
 
 const SignUp = observer(() => {
     const { apiServices, userManager } = useAppStore();
@@ -35,7 +36,7 @@ const SignUp = observer(() => {
     const [passNew, setPassNew] = useState<string>('');
     const [channel, setChannel] = useState<ItemProps>();
     const [dataChannel, setDataChannel] = useState<ItemProps[]>();
-    const [data, setData] = useState<any>('');
+    // const [data, setData] = useState<any>('');
     const [isNavigate, setNavigate] = useState<boolean>(false);
     const styles = MyStylesSign();
     const refPhone = useRef<TextFieldActions>(null);
@@ -121,9 +122,8 @@ const SignUp = observer(() => {
 
     const onSignIn = async () => {
         if (onValidate()) {
-            console.log('oke');
             setLoading(true);
-            const res = await apiServices.auth.registerAuth(name, phone, email, pass, passNew, channel?.value);
+            const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, channel?.value);
             setLoading(false);
             if (res.success) {
                 setNavigate(true);
@@ -192,13 +192,14 @@ const SignUp = observer(() => {
                         </Touchable>
                     </View>
                 </ScrollViewWithKeyboard>
+                {isLoading && <Loading isOverview />}
             </View>
         );
     };
 
     return (
         <View style={styles.container}>
-            {isNavigate ? <OtpSignIn phone={phone} data={data} /> : renderView()}
+            {isNavigate ? <OtpSignIn phone={phone} isChecked={checked} pass={pass} /> : renderView()}
         </View>
     );
 });

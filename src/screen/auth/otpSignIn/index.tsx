@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import {View, Text} from 'react-native';
 
 import Validate from '@/utils/Validate';
@@ -14,12 +14,19 @@ import Languages from '@/common/Languages';
 import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
 import FormValidate from '@/utils/FormValidate';
+import ChangePass from '../changePass';
+import Loading from '@/components/loading';
+import SessionManager from '@/manager/SessionManager';
 
 const OtpSignIn = (props: any) => {
     let timer = 0;
     const [check, setCheck] = useState<boolean>(false);
     const [isActive, setIsActive] = useState<boolean>(false);
+    const [isNavigate, setIsNavigate] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const phone = props.phone;
+    const pass = props.pass;
+    const [token, setToken] = useState<string>();
     const [timerCount, setTimerCount] = useState(60);
     const styles = MyStylesOtp();
     const [otp1, setOtp1] = useState<string>('');
@@ -124,46 +131,57 @@ const OtpSignIn = (props: any) => {
 
     const onPressOtp = async () => {
         const OTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
-        const res = await apiServices.auth.activeAccountSocial(
-            OTP,
-            phone
-        );
+        setToken(OTP);
         if (props?.isChangePass) {
-            if (res.success) {
-                const temp = res?.data as ActiveAccountSocialModel;
-                if (temp?.token_app) {
-                    userManager.updateUserInfo(temp);
-                    Navigator.navigateScreen(ScreenName.changePwd,
-                        {
-                            token: temp?.token_app,
-                            phone
-                        });
-                }
-            }
+            // const res = await apiServices.auth.activeAccountSocial(
+            //     OTP,
+            //     phone
+            // );
+            setIsNavigate(true);
+            // if (res.success) {
+            //     const temp = res?.data as ActiveAccountSocialModel;
+            //     if (temp?.token_app) {
+            //         userManager.updateUserInfo(temp);
+            //         setToken(temp?.token_app);
+            //     }
+            // }
         } else {
+            setIsLoading(true);
+            const res = await apiServices.auth.activeAccountSocial(
+                OTP,
+                phone
+            );
+            setIsLoading(false);
             if (res.success) {
+                if (!props.isChecked) {
+                    SessionManager.setSavePhoneLogin('');
+                    SessionManager.setSavePassLogin('');
+                } else {
+                    SessionManager.setSavePhoneLogin(phone);
+                    SessionManager.setSavePassLogin(pass);
+                }
                 const temp = res?.data as ActiveAccountSocialModel;
                 if (temp?.token_app) {
                     userManager.updateUserInfo(temp);
                 }
+                Navigator.navigateScreen(ScreenName.success);
             }
-            else {
-                const resOtp = await apiServices.auth.activeAuth(OTP, phone);
-                if (resOtp.success) {
-                    console.log('oke');
-                    setTimeout(() => {
-                    }, 1500);
-                }
-            }
-            Navigator.navigateScreen(ScreenName.success);
         }
 
     };
 
 
     const sendOTP = useCallback(async () => {
-        const resForgotOTP = await apiServices.auth.otpResetPwd(phone);
-    }, []);
+        setIsLoading(true);
+        const resSendOTP = await apiServices.auth.otpResetPwd(phone);
+        setIsLoading(false);
+        if (resSendOTP.success) {
+            setCheck(true);
+            setIsActive(true);
+            timer = getTime() + 60;
+            refreshCountdown();
+        }
+    }, [getTime]);
 
 
     const onChangeInputOneKeyPress = useCallback((keyPress?: any) => {
@@ -208,74 +226,82 @@ const OtpSignIn = (props: any) => {
         }
     }, []);
 
+    const renderOTP = () => {
+        return (
+            <View style={styles.container}>
+                <View style={styles.viewTop}>
+                    <Text style={styles.txtTitle}>{Languages.auth.txtTitleOtp}</Text>
+                    <IcLine width={'35%'} height={'40%'} />
+                </View>
+                <Text style={styles.confirmOtp}>{Languages.otp.confirmOtp}</Text>
+                <View style={styles.boxOtp}>
+                    {renderInput(
+                        otp1Ref,
+                        Languages.otp.otp1,
+                        otp1,
+                        onChangeInputOneKeyPress
+                    )}
+                    {renderInput(
+                        otp2Ref,
+                        Languages.otp.otp2,
+                        otp2,
+                        onChangeInputTwoKeyPress
+                    )}
+                    {renderInput(
+                        otp3Ref,
+                        Languages.otp.otp3,
+                        otp3,
+                        onChangeInputThreeKeyPress
+                    )}
+                    {renderInput(
+                        otp4Ref,
+                        Languages.otp.otp4,
+                        otp4,
+                        onChangeInputFourKeyPress
+                    )}
+                    {renderInput(
+                        otp5Ref,
+                        Languages.otp.otp5,
+                        otp5,
+                        onChangeInputFiveKeyPress
+                    )}
+                    {renderInput(
+                        otp6Ref,
+                        Languages.otp.otp6,
+                        otp6,
+                        onChangeInputSixKeyPress
+                    )}
+                </View>
+                {(otp1 !== '' && otp2 !== '' && otp3 && otp4 !== '' && otp5 !== '' && otp6 !== '') ?
+
+                    <Touchable style={styles.tobConfirm}
+                        onPress={onPressOtp} disabled={false}>
+                        <Text
+                            style={styles.txtConfirm}>{Languages.auth.conFirm}</Text>
+                    </Touchable>
+                    :
+                    <Touchable style={[styles.tobConfirm, { backgroundColor: COLORS.GRAY }]}
+                        onPress={onPressOtp} disabled={true}>
+                        <Text
+                            style={[styles.txtConfirm, { color: COLORS.BLACK }]}>{Languages.auth.conFirm}</Text>
+                    </Touchable>
+                }
+
+                <Touchable style={styles.sentOtp} disabled={false} onPress={sendOTP}>
+                    {check ?
+                        <Text style={styles.txtOtp}>{Languages.otp.sentOtp1}{timerCount}</Text> :
+                        <Text style={styles.txtOtp}>{Languages.otp.sentOtp2}</Text>
+                    }
+                </Touchable>
+                {isLoading && <Loading isOverview />}
+            </View>
+        );
+    };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.viewTop}>
-                <Text style={styles.txtTitle}>{Languages.auth.txtTitleOtp}</Text>
-                <IcLine width={'35%'} height={'40%'}/>
-            </View>
-            <Text style={styles.confirmOtp}>{Languages.otp.confirmOtp}</Text>
-            <View style={styles.boxOtp}>
-                {renderInput(
-                    otp1Ref,
-                    Languages.otp.otp1,
-                    otp1,
-                    onChangeInputOneKeyPress
-                )}
-                {renderInput(
-                    otp2Ref,
-                    Languages.otp.otp2,
-                    otp2,
-                    onChangeInputTwoKeyPress
-                )}
-                {renderInput(
-                    otp3Ref,
-                    Languages.otp.otp3,
-                    otp3,
-                    onChangeInputThreeKeyPress
-                )}
-                {renderInput(
-                    otp4Ref,
-                    Languages.otp.otp4,
-                    otp4,
-                    onChangeInputFourKeyPress
-                )}
-                {renderInput(
-                    otp5Ref,
-                    Languages.otp.otp5,
-                    otp5,
-                    onChangeInputFiveKeyPress
-                )}
-                {renderInput(
-                    otp6Ref,
-                    Languages.otp.otp6,
-                    otp6,
-                    onChangeInputSixKeyPress
-                )}
-            </View>
-            {(otp1 !== '' && otp2 !== '' && otp3 && otp4 !== '' && otp5 !== '' && otp6 !== '') ?
-
-                <Touchable style={styles.tobConfirm}
-                    onPress={onPressOtp} disabled={false}>
-                    <Text
-                        style={styles.txtConfirm}>{Languages.auth.conFirm}</Text>
-                </Touchable>
-                :
-                <Touchable style={[styles.tobConfirm, {backgroundColor: COLORS.GRAY}]}
-                    onPress={onPressOtp} disabled={true}>
-                    <Text
-                        style={[styles.txtConfirm, {color: COLORS.BLACK}]}>{Languages.auth.conFirm}</Text>
-                </Touchable>
-            }
-
-            <Touchable style={styles.sentOtp} disabled={false} onPress={sendOTP}>
-                {check ?
-                    <Text style={styles.txtOtp}>{Languages.otp.sentOtp1}{timerCount}</Text> :
-                    <Text style={styles.txtOtp}>{Languages.otp.sentOtp2}</Text>
-                }
-            </Touchable>
-        </View>
+        <>
+            {isNavigate ? <ChangePass phone={phone} token={token} /> : renderOTP()}
+        </>
     );
 };
 export default OtpSignIn;

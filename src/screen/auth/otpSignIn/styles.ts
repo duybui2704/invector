@@ -49,7 +49,8 @@ export const MyStylesOtp = () => {
                 ...Styles.typography.mediumSmall,
                 color: COLORS.BLACK,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                textAlign: 'center'
             },
             notifyOtp: {
                 marginTop: Configs.FontSize.size30

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         color: COLORS.WHITE,
         fontSize: Configs.FontSize.size16,
         textAlign: 'center',
-        fontFamily: 'bold'
+        fontFamily: Configs.FontFamily.bold
     },
     viewTob: {
         justifyContent: 'center',

@@ -89,10 +89,9 @@ const styles = StyleSheet.create({
         height: Configs.IconSize.size39
     },
     txtTitle: {
-        ...Styles.typography.medium,
+        ...Styles.typography.bold,
         fontSize: Configs.FontSize.size15,
-        color: COLORS.GREEN,
-        fontWeight: 'bold'
+        color: COLORS.GREEN
     },
     txtContent: {
         ...Styles.typography.regular,

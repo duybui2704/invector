@@ -96,9 +96,8 @@ const Login = observer(() => {
 
 
     const onLoginPhone = useCallback(async () => {
-        console.log('check:', checked);
         setLoading(true);
-        const res = await apiServices.auth.loginPhoneOld(phone, pass, 3);
+        const res = await apiServices.auth.loginPhone(phone, pass);
 
         if (res.success) {
             setLoading(false);
