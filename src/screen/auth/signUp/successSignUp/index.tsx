@@ -1,11 +1,12 @@
+import React from 'react';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+
 import Images from '@/assets/Images';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { COLORS } from '@/theme';
 import DimensionUtils from '@/utils/DimensionUtils';
 import { Touchable } from '@/components/elements/touchable';
-import React from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import Navigator from '@/routers/Navigator';
 import ScreenName, { TabNamesArray, TabsName } from '@/common/screenNames';
 
@@ -13,7 +14,7 @@ export const SuccessSignUp = () => {
 
     const gotoHome = () => {
         Navigator.navigateScreen(ScreenName.tabs);
-    }
+    };
 
     return (
         <ImageBackground style={{ flex: 1 }} source={Images.bg_successSignUp} resizeMode='stretch'>
@@ -28,7 +29,7 @@ export const SuccessSignUp = () => {
             </View>
         </ImageBackground>
     );
-}
+};
 
 const styles = StyleSheet.create({
     main: {
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     },
     txt2: {
         fontSize: Configs.FontSize.size14,
-        fontFamily: 'normal',
+        fontFamily: Configs.FontFamily.regular,
         color: COLORS.WHITE
     },
     txt3: {
@@ -67,5 +68,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         borderRadius: 20
-    },
+    }
 });

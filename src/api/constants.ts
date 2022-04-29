@@ -75,12 +75,14 @@ export enum API_CONFIG {
 
     // contracts
     CONTRACTS = 'contract/contract_tempo_by_user', // List danh sách hợp đồng
-    CONTRACT_DETAIL = 'contract/tempo_detail', // Chi tiết hợp đồng
-    CONTRACT_PAYMENT = 'transaction/getTransactionByUser', // Lịch sử thanh toán của hợp đồng
-    DOCUMENT = 'contract/get_image_accurecy', // Danh sách chứng từ
-    REQUEST_PAYMENT_MOMO = 'MoMoAppKH/initPayment', // Thanh toán qua MOMO
-    REQUEST_PAYMENT_BANK = 'transaction/app_create_transaction',
-    TRANSACTION_INFO = 'MoMoAppKH/transactionInfo',
+    CONTRACTS_HOT = 'contract/contract_investor_app',
+    CONTRACTS_DASH = '/contract/dashboard_investor',
+    CONTRACT_DETAIL = '/contract/detail_contract_investor', // Chi tiết hợp đồng
+    CONTRACT_OTP = '/contract/send_otp_invest',
+    CONTRACT_HAVE_INVESTED = '/contract/detail_contract_have_invested',
+    CONTRACT_ALL = '/contract/contract_investor_app_all',
+    CONTRACT_DETAIL_INVEST_NOW = '',
+
     // service payment
     GET_SERVICE_PROVIDERS = 'service/find_where', // list danh sách nhà cung cấp
     GET_PAYMENT_INFO = 'billingVimo/query_bill', // tìm thông tin hoá đơn

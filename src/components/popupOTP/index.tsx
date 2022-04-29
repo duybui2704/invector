@@ -10,7 +10,7 @@ import { MyTextInput } from '@/components/elements/textfield';
 import Validate from '@/utils/Validate';
 import { PopupActions, PopupProps } from '@/components/popupInvest/types';
 
-export const PopupInvest = forwardRef<PopupActions, PopupProps>(
+export const PopupInvestOTP = forwardRef<PopupActions, PopupProps>(
     ({
         onConfirm,
         onClose,

@@ -65,10 +65,10 @@ export const MyStylesCard = () => {
                 left: DimensionUtils.SCREEN_WIDTH * 0.1
             },
             viewTop: {
-                width: DimensionUtils.SCREEN_WIDTH * 0.9,
-                height: DimensionUtils.SCREEN_WIDTH * 0.9,
+                width: DimensionUtils.SCREEN_WIDTH,
+                height: DimensionUtils.SCREEN_WIDTH,
                 backgroundColor: COLORS.WHITE,
-                borderRadius: DimensionUtils.SCREEN_WIDTH * 0.45,
+                borderRadius: DimensionUtils.SCREEN_WIDTH * 0.5,
                 position: 'absolute',
                 top: -DimensionUtils.SCREEN_HEIGHT * 0.08,
                 left: -DimensionUtils.SCREEN_WIDTH * 0.2

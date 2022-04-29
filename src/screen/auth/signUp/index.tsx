@@ -21,9 +21,13 @@ import PickerBottomSheet from '@/components/PickerBottomSheet';
 import { MyStylesSign } from './styles';
 import OtpSignIn from '../otpSignIn';
 import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
+import SessionManager from '@/manager/SessionManager';
+import { UserInfoModal } from '@/models/user-models';
+import { UserManager } from '@/manager/UserManager';
+import Navigator from '@/routers/Navigator';
 
 const SignUp = observer(() => {
-    const { apiServices } = useAppStore();
+    const { apiServices, userManager } = useAppStore();
     const [phone, setPhone] = useState<string>('');
     const [pass, setPass] = useState<string>('');
     const [name, setName] = useState<string>('');
@@ -41,6 +45,8 @@ const SignUp = observer(() => {
     const refPass = useRef<TextFieldActions>(null);
     const refPassNew = useRef<TextFieldActions>(null);
     const [checked, setCheck] = useState<boolean>(false);
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const [userData, setUserData] = useState<UserInfoModal>();
 
     const onChangeText = (value: string, tag?: string) => {
         switch (tag) {
@@ -65,10 +71,8 @@ const SignUp = observer(() => {
     };
 
     const fetchData = async () => {
-        // setLoading(true);
         const res = await apiServices.auth.getChanelSource();
         if (res.success) {
-            // setLoading(false);
             const data = res.data as ChannelModal[];
             const temp = [] as ItemProps[];
             data?.forEach((item: any) => {
@@ -79,7 +83,6 @@ const SignUp = observer(() => {
             });
             setDataChannel(temp);
         }
-        // setLoading(false);
     };
 
     useEffect(() => {
@@ -102,20 +105,30 @@ const SignUp = observer(() => {
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
         const errMsgPwd = FormValidate.passValidate(pass);
         const errMsgName = FormValidate.userNameValidate(name);
-        const errMsgPwdNew = FormValidate.passConFirmPhone(passNew);
+        const errMsgPwdNew = FormValidate.passConFirmValidate(passNew, pass);
         const errMsgPwdEmail = FormValidate.emailValidate(email);
-        const errMsgChannel = FormValidate.inputNameEmpty(channel);
 
         refPhone.current?.setErrorMsg(errMsgPhone);
         refPass.current?.setErrorMsg(errMsgPwd);
         refName.current?.setErrorMsg(errMsgName);
         refPassNew.current?.setErrorMsg(errMsgPwdNew);
         refEmail.current?.setErrorMsg(errMsgPwdEmail);
-        refChannel.current?.setErrorMsg(errMsgChannel);
+        if (`${errMsgPhone}${errMsgPwd}${errMsgName}${errMsgPwd}${errMsgPwdNew}`.length === 0) {
+            return true;
+        }
+        return false;
     }, [channel, email, name, pass, passNew, phone]);
 
     const onSignIn = async () => {
-        setNavigate(true);
+        if (onValidate()) {
+            console.log('oke');
+            setLoading(true);
+            const res = await apiServices.auth.registerAuth(name, phone, email, pass, passNew, channel?.value);
+            setLoading(false);
+            if (res.success) {
+                setNavigate(true);
+            }
+        }
     };
 
     const onChangeChanel = (item: any) => {
@@ -148,8 +161,8 @@ const SignUp = observer(() => {
                     {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName)}
                     {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, false, 'NUMBER')}
                     {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail)}
-                    {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, true)}
-                    {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, true)}
+                    {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass)}
+                    {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass)}
                     <View style={styles.inputPass}>
                         <PickerBottomSheet
                             ref={refChannel}

@@ -36,7 +36,7 @@ export const MyStylesChangePass = () => {
             },
             content: {
                 flex: 1,
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.1,
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.06,
                 marginLeft: 10,
                 width: '90%'
             },
@@ -70,7 +70,7 @@ export const MyStylesChangePass = () => {
             txt: {
                 color: COLORS.GRAY, 
                 fontSize: Configs.FontSize.size12, 
-                fontFamily: 'normal'
+                fontFamily: Configs.FontFamily.regular
             },
             viewTitle: {
                 flexDirection: 'row',

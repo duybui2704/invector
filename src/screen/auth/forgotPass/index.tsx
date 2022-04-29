@@ -17,13 +17,11 @@ import { Touchable } from '@/components/elements/touchable';
 import { COLORS } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
 import ChangePass from '@/screen/auth/changePass';
+import OtpSignIn from '../otpSignIn';
 
 const ForgotPass = observer(() => {
     const {
-        apiServices,
-        userManager,
-        fastAuthInfoManager: fastAuthInfo,
-        appManager
+        apiServices
     } = useAppStore();
     const [phone, setPhone] = useState<any>('');
     const [isNavigate, setNavigate] = useState<boolean>(true);
@@ -31,30 +29,31 @@ const ForgotPass = observer(() => {
     const refPhone = useRef<TextFieldActions>(null);;
     const [isLoading, setLoading] = useState<boolean>(false);
 
-
-    const onChangeText = (value: string, tag?: string) => {
-        switch (tag) {
-            case Languages.auth.txtPhone:
-                setPhone(value);
-                break;
-            default:
-                break;
-        }
-    };
+    const onChangeText = useCallback((value: string, tag?: string) => {
+        setPhone(value);
+    }, [phone]);
 
     const onValidate = useCallback(() => {
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
-
         refPhone.current?.setErrorMsg(errMsgPhone);
-    }, []);
+        if (`${errMsgPhone}`.length === 0) {
+            return true;
+        }
+        return false;
+    }, [phone]);
 
     const onSentOtp = async () => {
-        setNavigate(false);
+        if (onValidate()) {
+            setLoading(true);
+            const resForgotOTP = await apiServices.auth.otpResetPwd(phone);
+            setLoading(false);
+            if (resForgotOTP.success) setNavigate(false);
+        }
     };
 
     return (
         <View style={styles.container}>
-            {!isNavigate ? <ChangePass /> :
+            {!isNavigate ? <OtpSignIn phone={phone} isChangePass /> :
                 <View style={styles.content}>
                     <View style={styles.viewTitle}>
                         <Text style={styles.txtTitle}>{Languages.auth.titleForgotPass}</Text>

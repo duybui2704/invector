@@ -39,7 +39,7 @@ const Splash = observer(() => {
 
     const nextScreen = useCallback(async () => {
         setTimeout(async () => {
-                Navigator.replaceScreen(ScreenNames.tabs);
+            Navigator.replaceScreen(ScreenNames.auth);
         }, 1e3);
     }, []);
 

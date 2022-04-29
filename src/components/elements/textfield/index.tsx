@@ -90,7 +90,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             if (onChangeText) {
                 onChangeText(textfieldVal, placeHolder || testID);
             }
-        }, [onChangeText, placeHolder, testID, textfieldVal]);
+        }, [onChangeText, placeHolder, testID, textfieldVal, value]);
 
         const getValue = useCallback(() => {
             return textfieldVal.trim();
@@ -136,14 +136,14 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             (text: string, tag? : string) => {
                 setValue(text);
             },
-            [setValue]
+            [value]
         );
 
         const eventEndEditing = useCallback(() => {
             if (onEndEditing) {
                 onEndEditing(`${textfieldVal}`, placeHolder || testID);
             }
-        }, [onEndEditing, placeHolder, textfieldVal, testID]);
+        }, [onEndEditing, placeHolder, textfieldVal, testID, value]);
 
         const onFocus = useCallback(() => {
             onFocusCallback?.(placeHolder);

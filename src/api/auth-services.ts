@@ -50,8 +50,6 @@ export class AuthServices extends BaseService {
         password: string,
         re_password: string,
         email: string,
-        identify: string,
-        loan_purpose: string,
         channels: any
     ) =>
         this.api().post(
@@ -60,9 +58,8 @@ export class AuthServices extends BaseService {
                 phone_number: await RsaUtils.encryptData(phone_number),
                 full_name,
                 password: await RsaUtils.encryptData(password),
+                re_password: await RsaUtils.encryptData(re_password),
                 email: await RsaUtils.encryptData(email),
-                identify,
-                loan_purpose,
                 channels
             })
         );

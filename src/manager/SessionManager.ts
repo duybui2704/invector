@@ -51,7 +51,8 @@ class SessionManager {
             StorageKeys.KEY_RATE,
             StorageKeys.KEY_ENABLE_FAST_AUTHENTICATION,
             StorageKeys.KEY_TEMP_DATA_FOR_PROPERTY_VALUATION,
-            StorageKeys.KEY_SAVE_LOGIN_PHONE
+            StorageKeys.KEY_SAVE_LOGIN_PHONE,
+            StorageKeys.KEY_SAVE_LOGIN_PASS
         ];
         AsyncStorage.multiGet(keys, (err, stores = []) => {
             for (let i = 0; i < stores.length; i++) {
@@ -75,6 +76,10 @@ class SessionManager {
                     try {
                         this.savePhone = store[1] ? JSON.parse(store[1]) : undefined;
                     } catch (e) { }
+                } else if (store[0] === StorageKeys.KEY_SAVE_LOGIN_PASS) {
+                    try {
+                        this.savePwd = store[1] ? JSON.parse(store[1]) : undefined;
+                    } catch (e) { }
                 }
                 else if (store[0] === StorageKeys.KEY_ENABLE_FAST_AUTHENTICATION) {
                     try {
@@ -82,22 +87,12 @@ class SessionManager {
                     } catch (e) { }
 
                 }
-                // else if (store[0] === StorageKeys.KEY_TEMP_DATA_FOR_PROPERTY_VALUATION) {
-                //     try {
-                //         this.tempDataForPropertyValuation = store[1] ? JSON.parse(store[1]) : undefined;
-                //     } catch (e) { }
-                //
-                // }
             }
             callback();
         });
     }
 
-    async setAccessToken(token?: string, pwd?: string) {
-        // let rsaPwd = pwd ? await RsaUtils.encryptData(pwd) : null;
-        // if (rsaPwd) {
-        //     rsaPwd = rsaPwd.split('\n').join('').split('\r').join('').split(' ').join('');
-        // }
+    async setAccessToken(token?: string) {
         if (token) {
             this.accessToken = `${token}`;
             StorageUtils.saveDataToKey(StorageKeys.KEY_ACCESS_TOKEN, this.accessToken);
@@ -124,6 +119,15 @@ class SessionManager {
             StorageUtils.saveDataToKey(StorageKeys.KEY_SAVE_LOGIN_PHONE, JSON.stringify(this.savePhone));
         } else {
             StorageUtils.clearDataOfKey(StorageKeys.KEY_SAVE_LOGIN_PHONE);
+        }
+    }
+
+    setSavePassLogin(pass?: string) {
+        this.savePwd = pass;
+        if (pass) {
+            StorageUtils.saveDataToKey(StorageKeys.KEY_SAVE_LOGIN_PASS, JSON.stringify(this.savePwd));
+        } else {
+            StorageUtils.clearDataOfKey(StorageKeys.KEY_SAVE_LOGIN_PASS);
         }
     }
 

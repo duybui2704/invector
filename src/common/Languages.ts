@@ -23,7 +23,7 @@ const Languages = {
         sumpProfit: 'Tổng lãi đã nhận',
         sumResidualProfit: 'Tổng lãi còn lại',
         have: 'Đang có',
-        vnd: 'VNĐ',
+        vnd: ' VNĐ',
         invest: 'Đầu tư',
         report: 'Báo cáo',
         payment: 'Thanh toán',
@@ -88,7 +88,7 @@ const Languages = {
         accVerified: 'Tài khoản đã xác thực',
         accuracyNow: 'Xác thực ngay',
         logout: 'Đăng xuất',
-        waitVerify: 'Tài khoản đang chờ xác thực',
+        waitVerify: 'Tài khoản đang chờ xác thực'
 
     },
     report: {

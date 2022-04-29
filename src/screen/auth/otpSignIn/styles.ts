@@ -10,7 +10,8 @@ export const MyStylesOtp = () => {
         StyleSheet.create({
             container: {
                 flex: 1,
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.12
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.06,
+                marginHorizontal: 15
             },
             viewTop: {
                 flexDirection: 'row',

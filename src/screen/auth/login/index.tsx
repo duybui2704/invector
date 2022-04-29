@@ -28,6 +28,7 @@ const Login = observer(() => {
         fastAuthInfoManager: fastAuthInfo,
         appManager
     } = useAppStore();
+
     const [phone, setPhone] = useState<string>('');
     const [pass, setPass] = useState<string>('');
     const [userData, setUserData] = useState<UserInfoModal>();
@@ -39,19 +40,17 @@ const Login = observer(() => {
 
     useEffect(() => {
         if (SessionManager.getPhoneLogin()) {
-            setPhone(SessionManager.getPhoneLogin.toString());
+            setPhone(SessionManager.getPhoneLogin());
             setCheck(true);
         }
         if (SessionManager.getPwdLogin()) {
-            setPass(SessionManager.getPwdLogin.toString);
+            setPass(SessionManager.getPwdLogin());
             setCheck(true);
         }
     }, []);
 
     useEffect(() => {
         setLoading(isLoading);
-        setPhone('0988251903');
-        setPass('12345678');
     }, [isLoading]);
 
     const onChangeText = (value: string, tag?: string) => {
@@ -69,14 +68,14 @@ const Login = observer(() => {
 
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
-    }, []);
+    }, [checked]);
 
     const checkbox = useMemo(() => {
         if (checked) {
             return <CheckIcon />;
         }
         return <UnCheckIcon />;
-    }, [checked]);
+    }, [onChangeChecked]);
 
     const renderInput = useCallback((ref: any, value: any, isPhone: boolean, placeHolder: string, rightIcon?: string, keyboardType?: any, maxLength?: number, isPass?: boolean) => {
         return (
@@ -97,6 +96,7 @@ const Login = observer(() => {
 
 
     const onLoginPhone = useCallback(async () => {
+        console.log('check:', checked);
         setLoading(true);
         const res = await apiServices.auth.loginPhoneOld(phone, pass, 3);
 
@@ -105,6 +105,14 @@ const Login = observer(() => {
             SessionManager.setAccessToken(res?.data?.token);
             const resInfoAcc = await apiServices.auth.getUserInfo(3);
             if (resInfoAcc.success) {
+                if (!checked) {
+                    SessionManager.setSavePhoneLogin('');
+                    SessionManager.setSavePassLogin('');
+                } else {
+                    SessionManager.setSavePhoneLogin(phone);
+                    SessionManager.setSavePassLogin(pass);
+                }
+                fastAuthInfo.setEnableFastAuthentication(false);
                 const data = resInfoAcc?.data as UserInfoModal;
                 setUserData(data);
                 userManager.updateUserInfo(data);
@@ -116,11 +124,11 @@ const Login = observer(() => {
         }
         setLoading(false);
 
-    }, [apiServices.auth, pass, phone, userManager]);
+    }, [apiServices.auth, pass, phone, userManager, onChangeChecked]);
 
     useEffect(() => {
         console.log('userData=', userData);
-    }, [isLoading, userData]);
+    }, [isLoading, userData, checked]);
 
     return (
         <View style={styles.content}>
@@ -136,9 +144,9 @@ const Login = observer(() => {
                     <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                 </Touchable>
 
-                <Touchable onPress={onLoginPhone} disabled={!checked}
-                    style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
-                    <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                <Touchable onPress={onLoginPhone} disabled={!(phone !== '' && pass !== '')}
+                    style={(phone !== '' && pass !== '') ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                    <Text style={(phone !== '' && pass !== '') ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
                         {Languages.auth.txtLogin}
                     </Text>
                 </Touchable>

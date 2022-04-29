@@ -27,36 +27,8 @@ import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import { MyStylesHome } from './styles';
 import Utils from '@/utils/Utils';
-
-const data = [
-    {
-        amountMoney: 80000000,
-        percent: '0.5%',
-        intent: 100000000,
-        time: '3 tháng',
-        formality: 'Lãi gốc hàng tháng',
-        id: 1,
-        interest: 1000000
-    },
-    {
-        amountMoney: 80000000,
-        percent: '0.5%',
-        intent: 100000000,
-        time: '3 tháng',
-        formality: 'Lãi gốc hàng tháng',
-        id: 2,
-        interest: 1000000
-    },
-    {
-        amountMoney: 80000000,
-        percent: '0.5%',
-        intent: 100000000,
-        time: '3 tháng',
-        formality: 'Lãi gốc hàng tháng',
-        id: 3,
-        interest: 1000000
-    }
-];
+import { RootObject } from '@/models/invest';
+import { DashBroad } from '@/models/dash';
 
 const Home = observer(() => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -65,6 +37,8 @@ const Home = observer(() => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [banners, setBanners] = useState<BannerModel[]>();
     const [news, setNews] = useState<NewsModel[]>();
+    const [dataArr, setDataArr] = useState<RootObject[]>();
+    const [dataDash, setDataDash] = useState<DashBroad>();
     const [insurances, setInsurances] = useState<NewsModel[]>();
     const { apiServices, userManager, appManager, fastAuthInfoManager } = useAppStore();
 
@@ -75,10 +49,31 @@ const Home = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
-        // fetchData();
+        fetchContractsDash();
+        fetchDataInvest();
+        fetchDataBanner();
     }, []);
 
-    const fetchData = useCallback(async () => {
+
+    const fetchDataInvest = useCallback(async () => {
+
+        const resInvest = await apiServices.common.getListInvest();
+        if (resInvest.success) {
+            setDataArr(resInvest.data as RootObject[]);
+        }
+    }, [dataArr]);
+
+
+    const fetchContractsDash = useCallback(async () => {
+
+        const resContractsDash = await apiServices.common.getContractsDash();
+        if (resContractsDash.success) {
+            setDataDash(resContractsDash.data as DashBroad);
+        }
+        console.log(dataDash);
+    }, [dataDash]);
+
+    const fetchDataBanner = useCallback(async () => {
         const resBanner = await apiServices.common.getBanners();
 
         if (resBanner.success) {
@@ -183,7 +178,7 @@ const Home = observer(() => {
                 <Text style={styles.txt1}>{Languages.home.sumInvest}</Text>
                 <View style={styles.viewTop2}>
                     <Text style={styles.txt2} numberOfLines={1}>
-                        {Utils.formatMoney(1245000000000000)}
+                        {Utils.formatMoney(dataDash?.so_du)}
                         <Text style={styles.txt4}> {Languages.home.vnd}</Text>
                     </Text>
                 </View>
@@ -193,7 +188,7 @@ const Home = observer(() => {
                             <Text style={styles.txt3}>{Languages.home.sumpProfit}</Text>
                             <Text style={styles.txt7} numberOfLines={1}
                             >
-                                {Utils.formatMoney(180000000000000000000)}
+                                {Utils.formatMoney(dataDash?.tong_goc_da_tra)}{ }
                                 <Text style={
                                     [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
                                 >{Languages.home.vnd}</Text>
@@ -204,7 +199,7 @@ const Home = observer(() => {
                         <View style={styles.txtRight}>
                             <Text style={styles.txt3}>{Languages.home.sumResidualProfit}</Text>
                             <Text style={styles.txt6} numberOfLines={1}>
-                                {Utils.formatMoney(12000000000000000)}
+                                {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
                                 <Text style={
                                     [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
                                 >{Languages.home.vnd}</Text>
@@ -225,7 +220,7 @@ const Home = observer(() => {
 
             <ScrollView style={styles.viewCenter}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
-                {data.map((item) => {
+                {dataArr?.map((item) => {
                     return <>{renderItem(item)}</>;
                 })}
                 <Touchable style={styles.more} onPress={gotoInvest}>

@@ -62,14 +62,16 @@ export const MyStylesHome = () => {
                 fontSize: Configs.FontSize.size16,
                 color: COLORS.WHITE,
                 marginHorizontal: 2,
-                marginRight: 5
+                marginRight: 5,
+                marginTop: 5
             },
             txt6: {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size16,
                 color: COLORS.WHITE,
                 marginHorizontal: 2,
-                marginLeft: 5
+                marginLeft: 5,
+                marginTop: 5
             },
             txtLeft: {
                 marginLeft: '30%',
@@ -83,7 +85,7 @@ export const MyStylesHome = () => {
             },
             viewTop1: {
                 flexDirection: 'row',
-                height: DimensionUtils.SCREEN_HEIGHT * 0.05
+                height: DimensionUtils.SCREEN_HEIGHT * 0.08
             },
             viewTop2: {
                 flexDirection: 'row',
@@ -129,11 +131,10 @@ export const MyStylesHome = () => {
             txtTob: {
                 fontSize: 10,
                 fontWeight: '600',
-                color: COLORS.GRAY,
-                marginHorizontal: 20
+                color: COLORS.GRAY
             },
             viewCenter: {
-                marginTop: DimensionUtils.SCREEN_HEIGHT / 3.85,
+                marginTop: DimensionUtils.SCREEN_HEIGHT / 3.6,
                 marginHorizontal: 10
             },
             item: {

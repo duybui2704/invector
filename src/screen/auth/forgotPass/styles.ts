@@ -39,7 +39,7 @@ export const MyStylesForgotPass = () => {
             },
             content: {
                 flex: 1,
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.13,
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.05,
                 marginLeft: 10,
                 width: '90%'
             },
@@ -77,7 +77,7 @@ export const MyStylesForgotPass = () => {
             txt: {
                 color: COLORS.GRAY, 
                 fontSize: Configs.FontSize.size12, 
-                fontFamily: 'normal'
+                fontFamily: Configs.FontFamily.regular
             },
             txtLeft: {
                 marginVertical: 10

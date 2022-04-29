@@ -57,7 +57,6 @@ export class BaseService {
             headers: defHeader,
             timeout: TIMEOUT_API
         });
-
         _api.addAsyncResponseTransform(async (response: any) => {
             const { data, message, code, success } = await this.checkResponseAPI(response);
 

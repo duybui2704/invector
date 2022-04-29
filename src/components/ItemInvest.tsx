@@ -24,10 +24,10 @@ const ItemInvest = ({ data, onPress, hasButton, title }: ItemProps
     return (
         <Touchable onPress={onPress} style={styles.item}>
             <View style={styles.rowTop}>
-                <Text style={[styles.txtMoney, styleText]}>{Utils.formatMoney(data?.amountMoney)}</Text>
+                <Text style={[styles.txtMoney, styleText]}>{Utils.formatMoney(data?.so_tien_dau_tu)}</Text>
                 <View style={styles.wrapText}>
                     <Text style={styles.txtInterest}>{Languages.invest.interest}</Text>
-                    <Text style={styles.txtPercent}>{data?.percent}</Text>
+                    <Text style={styles.txtPercent}>{data?.ti_le_lai_suat_hang_thang}</Text>
                 </View>
             </View>
             <Dash
@@ -38,16 +38,16 @@ const ItemInvest = ({ data, onPress, hasButton, title }: ItemProps
             <View style={styles.rowCenter}>
                 <View>
                     <Text style={styles.txtInterest}>{Languages.invest.time}</Text>
-                    <Text style={styles.txtFormality}>{data?.time}</Text>
+                    <Text style={styles.txtFormality}>{data?.thoi_gian_dau_tu}</Text>
                 </View>
                 {title === ENUM_INVEST_STATUS.HISTORY ?
                     <View style={styles.wrapText}>
                         <Text style={styles.txtInterest}>{Languages.invest.sumMoney}</Text>
-                        <Text style={styles.greenText}>{Utils.formatMoney(data?.sumMoney)}</Text>
+                        <Text style={styles.greenText}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
                     </View> :
                     <View style={styles.wrapText}>
                         <Text style={styles.txtInterest}>{Languages.invest.intent}</Text>
-                        <Text style={styles.greenText}>{Utils.formatMoney(data?.amountMoney)}</Text>
+                        <Text style={styles.greenText}>{Utils.formatMoney(data?.lai_hang_thang)}</Text>
                     </View>
                 }
             </View>
@@ -59,7 +59,7 @@ const ItemInvest = ({ data, onPress, hasButton, title }: ItemProps
             <View style={styles.rowBottom}>
                 <View>
                     <Text style={styles.txtInterest} >{Languages.invest.formalPayment}</Text>
-                    <Text style={styles.txtFormality}>{data?.formality}</Text>
+                    <Text style={styles.txtFormality}>{data?.hinh_thuc_tra_lai}</Text>
                 </View>
                 {title === ENUM_INVEST_STATUS.INVEST_NOW ? <Touchable onPress={onPress} style={styles.btInvestNow}>
                     <Text style={styles.txtInvestNow}>{Languages.invest.investNow}</Text>
@@ -67,7 +67,7 @@ const ItemInvest = ({ data, onPress, hasButton, title }: ItemProps
                 </Touchable> :
                     <View style={styles.wrapText}>
                         <Text style={styles.txtInterest} >{Languages.invest.getMoney}</Text>
-                        <Text style={styles.txtYellow}>{Utils.formatMoney(data?.interest)}</Text>
+                        <Text style={styles.txtYellow}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
                     </View>}
             </View>
         </Touchable>

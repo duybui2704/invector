@@ -16,12 +16,9 @@ import { Touchable } from '@/components/elements/touchable';
 import { COLORS } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
 
-const ChangePass = observer(() => {
+const ChangePass = observer((props: any) => {
     const {
-        apiServices,
-        userManager,
-        fastAuthInfoManager: fastAuthInfo,
-        appManager
+        apiServices
     } = useAppStore();
     const [confirmPass, setConfirmPass] = useState<any>('');
     const [newPass, setNewPass] = useState<any>('');
@@ -53,8 +50,12 @@ const ChangePass = observer(() => {
         const errMsgPwdNew = FormValidate.passConFirmValidate(newPass, confirmPass);
         refPassNew.current?.setErrorMsg(errMsgPwd);
         refConfirmPass.current?.setErrorMsg(errMsgPwdNew);
+        if (`${errMsgPwd}${errMsgPwdNew}`.length === 0) {
+            return true;
+        }
+        return false;
 
-    }, []);
+    }, [newPass, confirmPass]);
 
     const isDis = useCallback(() => {
         if (newPass !== '' && confirmPass !== '') {
@@ -63,7 +64,15 @@ const ChangePass = observer(() => {
     }, [newPass, confirmPass]);
 
     const onChange = async () => {
-        onValidate();
+        console.log('props', props);
+        if (onValidate()) {
+            setLoading(true);
+            const resChangePass = await apiServices.auth.updateNewPwd(props?.phone, props?.token, newPass, confirmPass);
+            setLoading(false);
+            if (resChangePass.success) {
+                console.log('okeeeeee');
+            }
+        }
     };
 
     return (

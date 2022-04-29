@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, Text, TextStyle, View } from 'react-native';
 import Dash from 'react-native-dash';
 
@@ -14,10 +14,63 @@ import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
 import ItemInfoContract from '@/components/ItemInfoContract';
+import { useAppStore } from '@/hooks';
+import { RootObject } from '@/models/invest';
 
 export const DetailInvestment = observer(({ route }: any) => {
 
     const { status } = route?.params as any;
+    const { id } = route?.params as any;
+    const { apiServices } = useAppStore();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [data, setData] = useState<RootObject>();
+
+    useEffect(() => {
+        switch (status) {
+            case ENUM_INVEST_STATUS.INVEST_NOW:
+                fetchDetailInvestNow();
+                break;
+            case ENUM_INVEST_STATUS.INVESTING:
+                fetchDetailInvesting();
+                break;
+            case ENUM_INVEST_STATUS.HISTORY:
+                fetchDetailHistoty();
+                break;
+            default:
+                break;
+        }
+    }, [status]);
+
+    const fetchDetailInvestNow = useCallback(async () => {
+        setIsLoading(true);
+        console.log('resInvest');
+        const resInvestNow = await apiServices.invest.getDetailInvestNow(id);
+        setIsLoading(false);
+        if (resInvestNow.success) {
+            console.log('resInvest');
+        }
+    }, []);
+
+    const fetchDetailInvesting = useCallback(async () => {
+        setIsLoading(true);
+        console.log('resInvesting');
+        const resInvesting = await apiServices.invest.getInvestHaveContract(id);
+        setIsLoading(false);
+        if (resInvesting.success) {
+            console.log('DATA: ', resInvesting.data);
+        }
+
+    }, []);
+
+    const fetchDetailHistoty = useCallback(async () => {
+        setIsLoading(true);
+        console.log('resInvestHistory');
+        const resInvestNow = await apiServices.invest.getDetailInvestNow(id);
+        setIsLoading(false);
+        if (resInvestNow.success) {
+            console.log('resInvest');
+        }
+    }, []);
 
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string, visible?: boolean) => {
         return (
@@ -54,8 +107,10 @@ export const DetailInvestment = observer(({ route }: any) => {
         );
     }, []);
     const navigateToInvest = useCallback(() => {
-        Navigator.pushScreen(ScreenName.invest);
-    }, []);
+        if (data) {
+            Navigator.pushScreen(ScreenName.invest, { d: data });
+        }
+    }, [data]);
 
     const renderBottom = useMemo(() => {
         switch (status) {
@@ -93,7 +148,7 @@ export const DetailInvestment = observer(({ route }: any) => {
             default:
                 return null;
         }
-    }, [navigateToInvest, renderItem, status]);
+    }, [navigateToInvest, renderItem, status, data]);
 
     return (
         <View>
@@ -102,18 +157,19 @@ export const DetailInvestment = observer(({ route }: any) => {
                 <View style={styles.wrapIcon}>
                     <IcBag />
                 </View>
+
                 <View style={styles.wrapInfo}>
                     <Text style={styles.title}>{Languages.detailInvest.information}</Text>
-                    {renderInfoItem(Languages.detailInvest.idContract, 'HD0100232042833210', COLORS.GREEN)}
-                    {renderInfoItem(Languages.detailInvest.moneyInvest, Utils.formatMoney(110000000), COLORS.RED)}
-                    {renderInfoItem(Languages.detailInvest.interest, '5%')}
-                    {renderInfoItem(Languages.detailInvest.interestMonth, Utils.formatMoney(110000))}
-                    {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.day, '16/05/2022', '')}
-                    {renderInfoItem(Languages.detailInvest.amountInterest, Utils.formatMoney(1000000))}
-                    {renderInfoItem(Languages.detailInvest.period, '24 tháng')}
+                    {renderInfoItem(Languages.detailInvest.idContract, `${data?.ma_hop_dong}`, COLORS.GREEN)}
+                    {renderInfoItem(Languages.detailInvest.moneyInvest, Utils.formatMoney(data?.so_tien_dau_tu), COLORS.RED)}
+                    {renderInfoItem(Languages.detailInvest.interest, `${data?.ti_le_lai_suat_hang_thang}`)}
+                    {renderInfoItem(Languages.detailInvest.interestMonth, Utils.formatMoney(data?.lai_hang_thang))}
+                    {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.day, `${data?.ngay_dao_han_du_kien}`, '')}
+                    {renderInfoItem(Languages.detailInvest.amountInterest, Utils.formatMoney(data?.tong_lai_nhan_duoc))}
+                    {renderInfoItem(Languages.detailInvest.period, `${data?.ngay_dao_han_du_kien}`)}
                     {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.amountReceived, Utils.formatMoney(6000000))}
-                    {renderInfoItem(Languages.detailInvest.expectedDate, '12/11/2024')}
-                    {renderInfoItem(Languages.detailInvest.formality, 'Lãi hàng tháng gôc cuối kỳ')}
+                    {renderInfoItem(Languages.detailInvest.expectedDate, `${data?.ngay_dao_han_du_kien}`)}
+                    {renderInfoItem(Languages.detailInvest.formality, `${data?.hinh_thuc_tra_lai}`)}
                 </View>
                 {renderBottom}
             </ScrollView>

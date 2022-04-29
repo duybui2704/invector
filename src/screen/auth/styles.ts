@@ -109,8 +109,11 @@ export const myStylesAuth = () => {
             },
             wrapAll: {
                 flex: 1,
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.23,
-                position: 'absolute'
+                top: DimensionUtils.SCREEN_HEIGHT / 2 - DimensionUtils.SCREEN_HEIGHT * 0.2,
+                position: 'absolute',
+                height: DimensionUtils.SCREEN_HEIGHT * 0.4,
+                borderTopEndRadius: 60,
+                borderBottomEndRadius: 60
             },
             logoTN: {
                 position: 'absolute',
@@ -200,7 +203,7 @@ export const myStylesAuth = () => {
                 position: 'absolute',
                 alignItems: 'center',
                 paddingHorizontal: 16,
-                marginTop: SCREEN_HEIGHT * 0.62,
+                bottom: DimensionUtils.SCREEN_HEIGHT * 0.05,
                 justifyContent: 'space-between'
             },
             txtLogin: {
