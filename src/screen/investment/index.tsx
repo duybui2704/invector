@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import { debounce } from 'lodash';
 import { useIsFocused } from '@react-navigation/core';
@@ -21,17 +21,16 @@ import { HeaderBar } from '../../components/header';
 import styles from './styles';
 import Utils from '@/utils/Utils';
 import { useAppStore } from '@/hooks';
-import { RootObject } from '@/models/invest';
+import { PackageInvest } from '@/models/invest';
 import { ApiServices } from '@/api';
 import Loading from '@/components/loading';
 
 
-const Investment = observer(({ route }: any) => {
+const Investment = observer(({ route }: { route: any }) => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
     const [textSearch, setTextSearch] = useState<string>();
-    const [listStore, setListStore] = useState<RootObject[]>();
-    const [dataFilter, setDataFilter] = useState<RootObject[]>();
-    const [title, setTitle] = useState<string>(Languages.invest.attractInvest);
+    const [listStore, setListStore] = useState<PackageInvest[]>();
+    const [dataFilter, setDataFilter] = useState<PackageInvest[]>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const isFocus = useIsFocused();
@@ -42,64 +41,68 @@ const Investment = observer(({ route }: any) => {
 
     useEffect(() => {
         if (isFocus) {
-            fetchData();
+            setBtnInvest(route?.params?.types || ENUM_INVEST_STATUS.INVEST_NOW);
+            fetchData(btnInvest);
         } else {
             common.setIsFocus(false);
         }
-    }, [common.isFocused, isFocus, title]);
+    }, [common.isFocused, isFocus]);
 
-    const fetchData = useCallback(() => {
-        switch (title) {
-            case Languages.invest.attractInvest:
+    const fetchData = useCallback((type: string) => {
+        switch (type) {
+            case ENUM_INVEST_STATUS.INVEST_NOW:
                 fetchDataInvestAll();
                 break;
-            case Languages.invest.investing:
+            case ENUM_INVEST_STATUS.INVESTING:
                 fetchDataInvesting();
                 break;
-            case Languages.invest.history:
+            case ENUM_INVEST_STATUS.HISTORY:
                 fetchDataInvestHistory();
                 break;
             default:
                 break;
         }
-    }, []);
+    }, [btnInvest]);
 
     const fetchDataInvestAll = useCallback(async () => {
+        console.log('invest_all');
         setIsLoading(true);
         const resInvest = await apiServices.invest.getInvestAll();
         setIsLoading(false);
         if (resInvest.success) {
-            setListStore(resInvest.data as RootObject[]);
-            setDataFilter(resInvest.data as RootObject[]);
+            setListStore(resInvest.data as PackageInvest[]);
+            setDataFilter(resInvest.data as PackageInvest[]);
         }
     }, []);
 
     const fetchDataInvesting = useCallback(async () => {
+        console.log('investing');
         setIsLoading(true);
         const resInvest = await apiServices.invest.getInvestAll();
         setIsLoading(false);
         if (resInvest.success) {
-            setListStore(resInvest.data as RootObject[]);
-            setDataFilter(resInvest.data as RootObject[]);
+            setListStore(resInvest.data as PackageInvest[]);
+            setDataFilter(resInvest.data as PackageInvest[]);
         }
     }, []);
 
     const fetchDataInvestHistory = useCallback(async () => {
+        console.log('invest_history');
         setIsLoading(true);
         const resInvest = await apiServices.invest.getInvestAll();
         setIsLoading(false);
         if (resInvest.success) {
-            setListStore(resInvest.data as RootObject[]);
-            setDataFilter(resInvest.data as RootObject[]);
+            setListStore(resInvest.data as PackageInvest[]);
+            setDataFilter(resInvest.data as PackageInvest[]);
         }
     }, []);
 
     const onRefresh = useCallback(() => {
         setIsRefreshing(true);
-        fetchData();
+        fetchData(btnInvest);
         setIsRefreshing(false);
         setTextSearch(undefined);
-    }, []);
+    }, [btnInvest]);
 
     const onChangeText = useCallback((text: string) => {
         setTextSearch(text);
@@ -250,19 +253,7 @@ const Investment = observer(({ route }: any) => {
 
         const onPress = () => {
             setBtnInvest(type);
-            switch (type) {
-                case ENUM_INVEST_STATUS.INVEST_NOW:
-                    setTitle(Languages.invest.attractInvest);
-                    return;
-                case ENUM_INVEST_STATUS.INVESTING:
-                    setTitle(Languages.invest.investing);
-                    return;
-                case ENUM_INVEST_STATUS.HISTORY:
-                    setTitle(Languages.invest.history);
-                    return;
-                default:
-                    setTitle('');
-            }
+            fetchData(type);
         };
 
         const getTitle = () => {

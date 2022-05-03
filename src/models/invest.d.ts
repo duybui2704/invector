@@ -1,4 +1,4 @@
-export interface RootObject {
+export interface PackageInvest {
     id: number;
     ma_hop_dong: string;
     so_tien_dau_tu: string;
@@ -10,7 +10,10 @@ export interface RootObject {
     ngay_dao_han: string;
     hinh_thuc_tra_lai: string;
     ti_le_lai_suat_hang_thang: string;
-    trang_thai_hop_dong: string
+    trang_thai_hop_dong: string;
+    ngay_dao_han_du_kien: string;
+    tong_lai_nhan_duoc: string;
+    thoi_gian_dau_tu: string;
 }
 
 export interface Notify {

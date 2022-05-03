@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
@@ -20,15 +20,11 @@ import { COLORS } from '@/theme';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
 import { MyStylesSign } from './styles';
 import OtpSignIn from '../otpSignIn';
-import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
-import SessionManager from '@/manager/SessionManager';
 import { UserInfoModal } from '@/models/user-models';
-import { UserManager } from '@/manager/UserManager';
-import Navigator from '@/routers/Navigator';
 import Loading from '@/components/loading';
 
 const SignUp = observer(() => {
-    const { apiServices, userManager } = useAppStore();
+    const { apiServices } = useAppStore();
     const [phone, setPhone] = useState<string>('');
     const [pass, setPass] = useState<string>('');
     const [name, setName] = useState<string>('');
@@ -136,11 +132,12 @@ const SignUp = observer(() => {
     };
 
     const renderInput = useCallback((
-        ref: any, value: string, isPhoneNumber: boolean, rightIcon: string, placeHolder: string, isPassword?: boolean, keyboardType?: any) => {
+        ref: any, value: string, isPhoneNumber: boolean, rightIcon: string, placeHolder: string, maxLength: number, isPassword?: boolean, keyboardType?: any) => {
         return <MyTextInput
             ref={ref}
             value={value}
             isPhoneNumber={isPhoneNumber}
+            maxLength={maxLength}
             rightIcon={rightIcon}
             placeHolder={placeHolder}
             containerInput={styles.inputPass}
@@ -157,12 +154,12 @@ const SignUp = observer(() => {
                     <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
                     <IcLine width={'50%'} height={'10%'} />
                 </View>
-                <ScrollViewWithKeyboard style={styles.scrollView}>
-                    {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName)}
-                    {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, false, 'NUMBER')}
-                    {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail)}
-                    {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass)}
-                    {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass)}
+                <ScrollView style={styles.scrollView}>
+                    {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 50, false)}
+                    {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER')}
+                    {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL')}
+                    {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true)}
+                    {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true)}
                     <View style={styles.inputPass}>
                         <PickerBottomSheet
                             ref={refChannel}
@@ -191,7 +188,7 @@ const SignUp = observer(() => {
                             </Text>
                         </Touchable>
                     </View>
-                </ScrollViewWithKeyboard>
+                </ScrollView>
                 {isLoading && <Loading isOverview />}
             </View>
         );

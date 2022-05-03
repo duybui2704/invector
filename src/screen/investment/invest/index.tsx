@@ -17,19 +17,33 @@ import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
 import { Configs } from '@/common/Configs';
 import { PopupInvestOTP } from '@/components/popupOTP';
-import { RootObject } from '@/models/invest';
+import { PackageInvest } from '@/models/invest';
 import { useAppStore } from '@/hooks';
 import Loading from '@/components/loading';
 
 
 const Invest = observer(({route}: any) => {
     const styles = MyStylesInvest();
-    const [csdl, setCsdl] = useState<RootObject>(route?.params?.d);
+    const [csdl, setCsdl] = useState<PackageInvest>();
     const [methodPayment, setMethodPayment] = useState<string>();
     const [isCheckBox, setIsCheckBox] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const refModal = useRef<any>();
     const { apiServices } = useAppStore();
+
+    useEffect(() => {
+        fetchDetailInvestNow();
+    }, []);
+
+    const fetchDetailInvestNow = useCallback(async () => {
+        setIsLoading(true);
+        const resInvestNow = await apiServices.invest.getDetailInvestNow(route.params.id);
+        setIsLoading(false);
+        if (resInvestNow.success) {
+            const res = resInvestNow.data as PackageInvest;
+            setCsdl(res);
+        }
+    }, []);
 
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string) => {
         return (
@@ -76,7 +90,6 @@ const Invest = observer(({route}: any) => {
         setIsLoading(true);
         if (resInvestOtp.success) {
             setIsLoading(false);
-            console.log('aaaa');
         }
         setIsLoading(false);
     }, []);

@@ -1,6 +1,7 @@
-import { COLORS } from './../../../theme/colors';
-import { useMemo } from "react"
-import { StyleSheet } from "react-native";
+import { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+
+import { COLORS } from '../../../theme/colors';
 import DimensionUtils from '@/utils/DimensionUtils';
 import { Configs } from '@/common/Configs';
 import { Styles } from '@/theme';
@@ -28,6 +29,7 @@ export const MyStylesNotifyInvest = () => {
             btInvest: {
                 width: (DimensionUtils.SCREEN_WIDTH - 40) / 3,
                 alignItems: 'center',
+                justifyContent: 'center',
                 paddingVertical: 4,
                 borderRadius: 26
             },
@@ -84,4 +86,4 @@ export const MyStylesNotifyInvest = () => {
             }
 
         }), []);
-}
+};

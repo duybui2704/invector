@@ -115,11 +115,14 @@ export const myStylesAuth = () => {
                 borderTopEndRadius: 60,
                 borderBottomEndRadius: 60
             },
-            logoTN: {
-                position: 'absolute',
-                top: -10,
-                left: DimensionUtils.SCREEN_WIDTH * 0.2
+            viewLogo: {
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                position: 'absolute'
+
             },
+
             checkbox: {
                 justifyContent: 'flex-end',
                 marginTop: 10,

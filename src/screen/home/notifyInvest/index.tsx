@@ -104,17 +104,10 @@ export const NotifyInvest = () => {
         const onRead = async (id: number) => {
             setIsLoading(true);
             const res = await apiServices.invest.getNotifyUpdateRead(id);
+            setIsLoading(false);
             if (res.success) {
                 fetchData(btnInvest);
             }
-        };
-
-        const type = (note: string) => {
-            styleText('0862319100');
-        };
-
-        const styleText = (message: string) => {
-
         };
 
         return (

@@ -19,7 +19,7 @@ export const MyStylesHome = () => {
             },
             txtCenter: {
                 ...Styles.typography.bold,
-                fontSize: Configs.FontSize.size18,
+                fontSize: Configs.FontSize.size16,
                 color: COLORS.BLACK,
                 marginVertical: 5
             },
@@ -135,7 +135,8 @@ export const MyStylesHome = () => {
             },
             viewCenter: {
                 marginTop: DimensionUtils.SCREEN_HEIGHT / 3.6,
-                marginHorizontal: 10
+                marginHorizontal: 10,
+                marginBottom: 20
             },
             item: {
                 width: '100%',
@@ -235,6 +236,9 @@ export const MyStylesHome = () => {
             },
             viewTxtBottom: {
                 width: '95%'
+            },
+            viewFlatList: {
+                marginBottom: DimensionUtils.SCREEN_HEIGHT * 0.06
             }
         }
         ), []);

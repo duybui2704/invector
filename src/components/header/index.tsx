@@ -3,6 +3,7 @@ import { Image, ImageBackground, StatusBar, Text, View, BackHandler } from 'reac
 
 import IcBack from '../../assets/image/header/ic_back_header.svg';
 import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
+import LogoHome from '../../assets/image/header/logo_home.svg';
 import IcNotifyInvest from '../../assets/image/header/ic_header_invest.svg';
 import Images from '../../assets/Images';
 import { isIOS } from '../../common/Configs';
@@ -13,6 +14,7 @@ import { styles } from './styles';
 import { COLORS } from '../../theme';
 import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
+import DimensionUtils from '@/utils/DimensionUtils';
 
 export const HeaderBar = ({
     onBackPressed,
@@ -41,7 +43,7 @@ export const HeaderBar = ({
     }, [exitApp, hasBack, onBackPressed, onGoBack]);
 
     const onNotifyInvest = useCallback(() => {
-        Navigator.pushScreen(ScreenName.notifyInvest);
+        Navigator.navigateScreen(ScreenName.notifyInvest);
     }, []);
 
     const renderBack = useMemo(() => (
@@ -68,8 +70,16 @@ export const HeaderBar = ({
                     style={styles.imageBg}
                     resizeMode='stretch'
                 >
-                    <Image source={Images.logo_header_home} resizeMode='contain' style={styles.logo} />
-                    <IcNotify style={styles.imgNotify} />
+                    <View style={styles.viewTop}>
+                        <LogoHome
+                            width={DimensionUtils.SCREEN_HEIGHT * 0.18}
+                            height={DimensionUtils.SCREEN_HEIGHT * 0.18}
+                            style={styles.logo}
+                        />
+                        <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
+                            <IcNotify style={styles.imgNotify} width={30} height={30} />
+                        </Touchable>
+                    </View>
                 </ImageBackground>
             )}
             {noStatusBar && isIOS ? null : <StatusBar
@@ -82,7 +92,7 @@ export const HeaderBar = ({
                 {renderTitle}
                 {(!exitApp) && (hasBack ? renderBack : null)}
                 {title === Languages.invest.title &&
-                    <Touchable style={styles.viewRight} onPress={onNotifyInvest}>
+                    <Touchable style={styles.viewRight} >
                         <IcNotifyInvest width={22} height={22} />
                     </Touchable>}
             </View>}

@@ -92,22 +92,24 @@ const ChangePass = observer((props: any) => {
                     ref={refPassNew}
                     value={newPass}
                     isPhoneNumber={true}
-                    maxLength={11}
+                    maxLength={50}
                     rightIcon={arrayIcon.login.pass}
                     placeHolder={Languages.auth.txtNewPass}
                     containerInput={styles.inputPass}
                     onChangeText={onChangeText}
+                    keyboardType={'DEFAULT'}
                     isPassword
                 />
                 <MyTextInput
                     ref={refConfirmPass}
                     value={confirmPass}
                     isPhoneNumber={true}
-                    maxLength={11}
+                    maxLength={50}
                     rightIcon={arrayIcon.login.pass}
                     placeHolder={Languages.auth.txtConfirmNewPass}
                     containerInput={styles.inputPass}
                     onChangeText={onChangeText}
+                    keyboardType={'DEFAULT'}
                     isPassword
                 />
                 <View style={styles.rowInfo}>

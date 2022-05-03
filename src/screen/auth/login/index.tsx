@@ -135,8 +135,8 @@ const Login = observer(() => {
                 <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
                 <IcLine width={'40%'} height={'20%'} />
             </View>
-            {renderInput(refPhone, phone, true, Languages.auth.txtPhone, arrayIcon.login.phone, 'PHONE', 11)}
-            {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 20, true)}
+            {renderInput(refPhone, phone, true, Languages.auth.txtPhone, arrayIcon.login.phone, 'PHONE', 10)}
+            {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true)}
             <View style={styles.rowInfo}>
                 <Touchable style={styles.checkbox} onPress={onChangeChecked}>
                     {checkbox}

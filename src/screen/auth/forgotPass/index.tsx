@@ -66,7 +66,7 @@ const ForgotPass = observer(() => {
                         ref={refPhone}
                         value={phone}
                         isPhoneNumber={true}
-                        maxLength={11}
+                        maxLength={10}
                         rightIcon={arrayIcon.login.phone}
                         placeHolder={Languages.auth.txtPhone}
                         containerInput={styles.inputPhone}

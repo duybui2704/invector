@@ -1,3 +1,12 @@
+import PasscodeAuth from '@el173/react-native-passcode-auth';
+import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetModal, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Keyboard, Platform, StyleSheet, Text, View } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import HTMLView from 'react-native-htmlview';
+import TouchID from 'react-native-touch-id';
+
 import ArrowIc from '@/assets/image/auth/ic_arrow_left.svg';
 import FingerIc from '@/assets/image/auth/ic_finger.svg';
 import FaceIDIc from '@/assets/image/auth/ic_faceid.svg';
@@ -18,14 +27,6 @@ import { UserInfoModal } from '@/models/user-models';
 import Navigator from '@/routers/Navigator';
 import { COLORS, HtmlStyles } from '@/theme';
 import StorageUtils from '@/utils/StorageUtils';
-import PasscodeAuth from '@el173/react-native-passcode-auth';
-import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetModal, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
-import { observer } from 'mobx-react-lite';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Keyboard, Platform, StyleSheet, Text, View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import HTMLView from 'react-native-htmlview';
-import TouchID from 'react-native-touch-id';
 import { MyStylesLogin } from './styles';
 
 const customTexts = {
@@ -36,7 +37,7 @@ const LoginWithBiometry = observer(() => {
     const {
         apiServices,
         userManager,
-        fastAuthInfoManager: fastAuthInfo,
+        fastAuthInfoManager: fastAuthInfo
     } = useAppStore();
     const [pass, setPass] = useState<string>('');
     const [userData, setUserData] = useState<UserInfoModal>();
@@ -65,8 +66,8 @@ const LoginWithBiometry = observer(() => {
     }, [fastAuthInfo]);
 
     const onLoginOther = useCallback(() => {
-        fastAuthInfo.setFocusLogin(true)
-    }, [])
+        fastAuthInfo.setFocusLogin(true);
+    }, []);
 
     const auth = useCallback(() => {
         if (Platform.OS === 'android') {
@@ -128,7 +129,7 @@ const LoginWithBiometry = observer(() => {
 
 
     const onLoginPhone = useCallback(async () => {
-        fastAuthInfo.setEnableFastAuthentication(false)
+        fastAuthInfo.setEnableFastAuthentication(false);
         Navigator.navigateToDeepScreen(
             [ScreenName.tabs],
             TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
@@ -145,17 +146,17 @@ const LoginWithBiometry = observer(() => {
                 <Touchable onPress={auth}>
                     <FingerIc />
                 </Touchable>
-            )
+            );
         }
         if (fastAuthInfo.supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
             return (
                 <Touchable onPress={auth}>
                     <FaceIDIc />
                 </Touchable>
-            )
+            );
         }
-        return null
-    }, [])
+        return null;
+    }, []);
 
     const checkPin = useCallback(async (value: string) => {
         const pin = await StorageUtils.getDataByKey(StorageKeys.KEY_PIN);
@@ -223,12 +224,12 @@ const LoginWithBiometry = observer(() => {
                 </View>
                 <View style={styles.wrapAvatar} />
                 <HTMLView
-                    value={'<p>' + Languages.loginWithBiometry.hello + ' <g>' + 'Dinh Truong Giang' + '</g>' + '</p>'}
+                    value={`<p>${Languages.loginWithBiometry.hello} <g>` + 'Dinh Truong Giang' + '</g>' + '</p>'}
                     stylesheet={HtmlStyles || undefined} />
                 <HTMLView
                     value={Languages.loginWithBiometry.description}
                     stylesheet={HtmlStyles || undefined} />
-                {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 20, true)}
+                {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true)}
                 <View style={styles.rowInfo}>
                     <Touchable style={styles.checkbox}>
                         <ArrowIc />

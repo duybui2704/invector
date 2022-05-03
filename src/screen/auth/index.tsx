@@ -108,11 +108,11 @@ const Auth = observer(() => {
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
             />
-            <LogoAuth
-                width={170}
-                height={170}
-                style={styles.logoTN}
-            />
+            <View style={styles.viewLogo}>
+                <LogoAuth
+                    width={DimensionUtils.SCREEN_HEIGHT * 0.22}
+                    height={DimensionUtils.SCREEN_HEIGHT * 0.22}
+                /></View>
             <View style={styles.viewSvg}>
                 <SvgComponent onNavigate={onNavigate} />
             </View>

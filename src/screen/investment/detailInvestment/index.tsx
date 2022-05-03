@@ -15,7 +15,7 @@ import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
 import ItemInfoContract from '@/components/ItemInfoContract';
 import { useAppStore } from '@/hooks';
-import { RootObject } from '@/models/invest';
+import { PackageInvest } from '@/models/invest';
 
 export const DetailInvestment = observer(({ route }: any) => {
 
@@ -23,8 +23,8 @@ export const DetailInvestment = observer(({ route }: any) => {
     const { id } = route?.params as any;
     const { apiServices } = useAppStore();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [data, setData] = useState<RootObject>();
-    const [dataHistory, setDataHistory] = useState<RootObject>();
+    const [data, setData] = useState<PackageInvest>();
+    const [dataHistory, setDataHistory] = useState<PackageInvest>();
 
     useEffect(() => {
         switch (status) {
@@ -48,7 +48,7 @@ export const DetailInvestment = observer(({ route }: any) => {
         const resInvestNow = await apiServices.invest.getDetailInvestNow(id);
         setIsLoading(false);
         if (resInvestNow.success) {
-            const res = resInvestNow.data as RootObject;
+            const res = resInvestNow.data as PackageInvest;
             setData(res);
         }
     }, []);
@@ -59,7 +59,7 @@ export const DetailInvestment = observer(({ route }: any) => {
         const resInvesting = await apiServices.invest.getInvestHaveContract(id);
         setIsLoading(false);
         if (resInvesting.success) {
-            const res = resInvesting.data as RootObject;
+            const res = resInvesting.data as PackageInvest;
             setData(res);
         }
 
@@ -68,10 +68,11 @@ export const DetailInvestment = observer(({ route }: any) => {
     const fetchDetailHistory = useCallback(async () => {
         setIsLoading(true);
         console.log('resInvestHistory');
-        const resInvestNow = await apiServices.invest.getDetailInvestNow(id);
+        const resInvestHistory = await apiServices.invest.getInvestHaveContract(id);
         setIsLoading(false);
-        if (resInvestNow.success) {
-            console.log('resInvest');
+        if (resInvestHistory.success) {
+            const res = resInvestHistory.data as PackageInvest;
+            setData(res);
         }
     }, []);
 
@@ -110,8 +111,9 @@ export const DetailInvestment = observer(({ route }: any) => {
         );
     }, []);
     const navigateToInvest = useCallback(() => {
+        console.log('data: ', data);
         if (data) {
-            Navigator.pushScreen(ScreenName.invest, { d: data });
+            Navigator.pushScreen(ScreenName.invest, { id: data?.id });
         }
     }, [data]);
 

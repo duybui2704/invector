@@ -15,7 +15,7 @@ import Profile from '@/screen/profile';
 import Report from '@/screen/report';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import { DetailInvestment } from "@/screen/investment/detailInvestment";
+import { DetailInvestment } from '@/screen/investment/detailInvestment';
 import Invest from '@/screen/investment/invest';
 import VerifyOTP from '@/screen/profile/verifyOTP/VerifyOTP';
 import ConfirmPhone from '@/screen/profile/confirmPhone/ConfirmPhone';
@@ -30,7 +30,7 @@ import AccountInfo from '@/screen/profile/accountInfo/AccountInfo';
 import EditAccountInfo from '@/screen/profile/editAccountInfo/EditAccountInfo';
 import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
 import Policy from '@/screen/profile/policy/Policy';
-import { NotifyInvest } from '@/screen/investment/notifyInvest';
+import { NotifyInvest } from '@/screen/home/notifyInvest';
 
 const TabsData = [
     {
@@ -74,6 +74,9 @@ const HomeStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.home} component={Home} />
+            <Stack.Screen name={ScreenName.notifyInvest} component={NotifyInvest} />
+            <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
+            <Stack.Screen name={ScreenName.invest} component={Invest} />
         </Stack.Navigator>
     );
 };
@@ -84,7 +87,6 @@ const InvestStack = () => {
             <Stack.Screen name={ScreenName.investment} component={Investment} />
             <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
             <Stack.Screen name={ScreenName.invest} component={Invest} />
-            <Stack.Screen name={ScreenName.notifyInvest} component={NotifyInvest} />
         </Stack.Navigator>
     );
 };

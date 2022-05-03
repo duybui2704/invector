@@ -1,7 +1,8 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, StatusBar, Text, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
 import { LINKS } from '@/api/constants';
 import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
@@ -27,7 +28,7 @@ import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import { MyStylesHome } from './styles';
 import Utils from '@/utils/Utils';
-import { RootObject } from '@/models/invest';
+import { PackageInvest } from '@/models/invest';
 import { DashBroad } from '@/models/dash';
 
 const Home = observer(() => {
@@ -37,10 +38,10 @@ const Home = observer(() => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [banners, setBanners] = useState<BannerModel[]>();
     const [news, setNews] = useState<NewsModel[]>();
-    const [dataArr, setDataArr] = useState<RootObject[]>();
+    const [dataArr, setDataArr] = useState<PackageInvest[]>();
     const [dataDash, setDataDash] = useState<DashBroad>();
     const [insurances, setInsurances] = useState<NewsModel[]>();
-    const { apiServices, userManager, appManager, fastAuthInfoManager } = useAppStore();
+    const { apiServices } = useAppStore();
 
     useEffect(() => {
         setTimeout(() => {
@@ -59,7 +60,7 @@ const Home = observer(() => {
 
         const resInvest = await apiServices.common.getListInvest();
         if (resInvest.success) {
-            setDataArr(resInvest.data as RootObject[]);
+            setDataArr(resInvest.data as PackageInvest[]);
         }
     }, [dataArr]);
 
@@ -70,7 +71,6 @@ const Home = observer(() => {
         if (resContractsDash.success) {
             setDataDash(resContractsDash.data as DashBroad);
         }
-        console.log(dataDash);
     }, [dataDash]);
 
     const fetchDataBanner = useCallback(async () => {
@@ -93,12 +93,13 @@ const Home = observer(() => {
         }
     }, [apiServices.common]);
 
-    const gotoProfile = () => {
-        Navigator.navigateScreen(TabsName.accountTabs);
+    const gotoInvestHistory = () => {
+
+        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVESTING });
     };
 
     const gotoInvest = () => {
-        Navigator.navigateScreen(TabsName.investTabs);
+        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVEST_NOW });
     };
 
     const gotoReport = () => {
@@ -113,19 +114,28 @@ const Home = observer(() => {
         Utils.openURL(LINKS.VPS);
     }, []);
 
-    const navigateToDetail = useCallback(() => {
-        // Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.detailInvestment, { status: btnInvest });
+    const navigateToDetail = useCallback((item: any) => {
+        Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
+    }, []);
+
+    const navigateToInvestNow = useCallback((item: any) => {
+        Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.invest, { status: btnInvest, id: item?.id });
     }, []);
 
     const renderItem = useCallback((item: any) => {
         return (
             <ItemInvest
-                onPress={navigateToDetail}
+                onPress={() => navigateToDetail(item)}
+                onPressInvestNow={() => navigateToInvestNow(item)}
                 data={item}
                 title={ENUM_INVEST_STATUS.INVEST_NOW}
             />
         );
     }, [btnInvest, navigateToDetail]);
+
+    const keyExtractor = useCallback((item: any, index: number) => {
+        return `${index}${item.id}`;
+    }, []);
 
     const iconTob = useCallback((title: string) => {
         switch (title) {
@@ -161,6 +171,37 @@ const Home = observer(() => {
                     <IcChevronRight width={20} height={20} />
                 </Touchable>
             </Touchable>
+        );
+    }, []);
+
+    const renderFooter = useCallback(() => {
+        return (
+            <>
+                {dataArr && <Touchable style={styles.more} onPress={gotoInvest}>
+                    <Text style={[styles.txt5, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
+                </Touchable>
+                }
+                <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
+                    <View style={styles.logoVfs}>
+                        <LogoVfs width={90} height={90} />
+                    </View>
+                    <View style={styles.txtVfs}>
+                        <Text style={[styles.txt4, { color: COLORS.RED_2 }]}>{Languages.home.stockVfs}</Text>
+                        <Text style={styles.txt5}>{Languages.home.signFree}</Text>
+                    </View>
+                </Touchable>
+                {banners && <Banner banners={banners} />}
+                <View style={styles.viewBottom}>
+                    <View style={styles.txtQuestionTop}><Text
+                        style={styles.txt}>{Languages.home.question}</Text></View>
+                    {renderTobBottom(Languages.home.todoInvest)}
+                    <IcLine width={'100%'} />
+                    {renderTobBottom(Languages.home.investNow)}
+                    <IcLine width={'100%'} />
+                    {renderTobBottom(Languages.home.percentCalculated)}
+                    <IcLine width={'100%'} />
+                    {renderTobBottom(Languages.home.paymentMethod)}
+                </View></>
         );
     }, []);
 
@@ -212,43 +253,23 @@ const Home = observer(() => {
 
             </View>
             <View style={styles.viewTob}>
-                {renderIconTob(gotoProfile, Languages.home.have)}
+                {renderIconTob(gotoInvestHistory, Languages.home.have)}
                 {renderIconTob(gotoInvest, Languages.home.invest)}
                 {renderIconTob(gotoReport, Languages.home.report)}
                 {renderIconTob(gotoPayment, Languages.home.payment)}
             </View>
 
-            <ScrollView style={styles.viewCenter}>
+            <View style={styles.viewCenter}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
-                {dataArr?.map((item) => {
-                    return <>{renderItem(item)}</>;
-                })}
-                <Touchable style={styles.more} onPress={gotoInvest}>
-                    <Text style={[styles.txt5, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
-                </Touchable>
-
-                <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
-                    <View style={styles.logoVfs}>
-                        <LogoVfs width={90} height={90} />
-                    </View>
-                    <View style={styles.txtVfs}>
-                        <Text style={[styles.txt4, { color: COLORS.RED_2 }]}>{Languages.home.stockVfs}</Text>
-                        <Text style={styles.txt5}>{Languages.home.signFree}</Text>
-                    </View>
-                </Touchable>
-                <Banner banners={banners} />
-                <View style={styles.viewBottom}>
-                    <View style={styles.txtQuestionTop}><Text
-                        style={styles.txt}>{Languages.home.question}</Text></View>
-                    {renderTobBottom(Languages.home.todoInvest)}
-                    <IcLine width={'100%'} />
-                    {renderTobBottom(Languages.home.investNow)}
-                    <IcLine width={'100%'} />
-                    {renderTobBottom(Languages.home.percentCalculated)}
-                    <IcLine width={'100%'} />
-                    {renderTobBottom(Languages.home.paymentMethod)}
-                </View>
-            </ScrollView>
+                <FlatList
+                    style={styles.viewFlatList}
+                    data={dataArr}
+                    renderItem={(item) => renderItem(item.item)}
+                    ListFooterComponent={renderFooter}
+                    ListFooterComponentStyle={styles.viewFlatList}
+                    keyExtractor={keyExtractor}
+                />
+            </View>
             {isLoading && <Loading isOverview />}
         </View>
     );
