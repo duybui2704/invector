@@ -31,7 +31,7 @@ import EditAccountInfo from '@/screen/profile/editAccountInfo/EditAccountInfo';
 import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
 import Policy from '@/screen/profile/policy/Policy';
 import { NotifyInvest } from '@/screen/investment/notifyInvest';
-import MyWebView from '@/screen/profile/myWedView/MyWebview';
+import MyWebView from '@/screen/profile/myWedView/MyWebView';
 
 const TabsData = [
     {

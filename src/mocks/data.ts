@@ -54,20 +54,20 @@ export const DataChart = {
                 id: 1,
                 quarter: 1,
                 contractNumber: 20,
-                investMount: 350000000,
-                originAmountEarning: 200000000,
-                interest: 12000000,
-                month: 'T1',
+                investMount: 0,
+                originAmountEarning: 20,
+                interest: 0,
+                month: 'T',
                 year: '2021'
             },
             {
                 id: 2,
                 quarter: 1,
                 contractNumber: 20,
-                investMount: 400000000,
-                originAmountEarning: 220000000,
-                interest: 12000000,
-                month: 'T2',
+                investMount: 0,
+                originAmountEarning: 0,
+                interest: 0,
+                month: 'T',
                 year: '2021'
             },
             {
@@ -77,7 +77,7 @@ export const DataChart = {
                 investMount: 380000000,
                 originAmountEarning: 250000000,
                 interest: 12000000,
-                month: 'T3',
+                month: 'T',
                 year: '2021'
             }
         ]

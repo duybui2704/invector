@@ -114,6 +114,7 @@ function formatObjectToKeyLabel(data: any) {
     return [];
 }
 
+
 export default {
     formatTextToNumber,
     capitalizeFirstLetter,

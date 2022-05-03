@@ -4,14 +4,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryTheme, VictoryZoomContainer } from 'victory-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { observer } from 'mobx-react';
-import { useIsFocused } from '@react-navigation/native';
 
 import { Configs } from '@/common/Configs';
 import { Touchable } from '@/components/elements/touchable';
 import KeyValue from '@/components/KeyValue';
 import { COLORS, Styles } from '@/theme';
-import { DataChart } from '@/mocks/data';
-import { OverviewMonthReportModal, OverviewQuarterReportModal } from '@/models/monthOfQuarter-model';
+import { OverviewMonthOfQuarterModal, TotalOfQuarterModal } from '@/models/monthOfQuarter-model';
 import Utils from '@/utils/Utils';
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
@@ -20,103 +18,118 @@ import HeaderBar from '@/components/header';
 import { useAppStore } from '@/hooks';
 import { ItemProps } from '@/models/common-model';
 import Loading from '@/components/loading';
+import DateUtils from '@/utils/DateUtils';
 
-const Report = observer(()=> {
+const Report = observer(() => {
     const { apiServices } = useAppStore();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [quarter, setQuarter] = useState<string>('');
+    const [quarter, setQuarter] = useState<string>(DateUtils.getCurrentQuarter().toString());
     const [quarterList, setQuarterList] = useState<ItemProps[]>([]);
-    const [year, setYear] = useState<string>('');
+    const [year, setYear] = useState<string>(DateUtils.getCurrentYear().toString());
     const [yearList, setYearList] = useState<ItemProps[]>([]);
+    const [dataChart, setDataChart] = useState<OverviewMonthOfQuarterModal[]>([]);
     const quarterRef = useRef<BottomSheetModal>(null);
     const yearRef = useRef<BottomSheetModal>(null);
-    const isFocus = useIsFocused();
+    const [total, setTotal] =  useState<TotalOfQuarterModal>();
 
-    const [reportList, setReportList] = useState<OverviewQuarterReportModal>();
+    const [reportList, setReportList] = useState<OverviewMonthOfQuarterModal[]>();
 
-    const keyExtractor = useCallback((item?: OverviewMonthReportModal, index?:any) => {
-        return `}${item?.month}${index}`;
+    const keyExtractor = useCallback((item?: OverviewMonthOfQuarterModal, index?: any) => {
+        return `${item?.month}${index}`;
     }, []);
 
-    const fetchDataSearch = useCallback(async()=>{
+    useEffect(() => {
+        fetchDataSearch();
+    }, []);
+
+    useEffect(() => {
+        if (year && quarter) {
+            fetchReport();
+        }
+    }, [quarter, year]);
+
+    const fetchDataSearch = useCallback(async () => {
         const resQuarters = await apiServices.report.getQuarters(3);
         const resYear = await apiServices.report.getYear(3);
-        if(resQuarters.success){
-            const dataQuarter =  Utils.formatObjectToKeyLabel(resQuarters.data ) ;
+        if (resQuarters.success) {
+            const dataQuarter = Utils.formatObjectToKeyLabel(resQuarters.data);
             setQuarterList(dataQuarter);
         }
-        if(resYear.success){
-            const dataYear =   Utils.formatObjectToKeyLabel(resYear.data);
+        if (resYear.success) {
+            const dataYear = Utils.formatObjectToKeyLabel(resYear.data);
             setYearList(dataYear);
         }
 
-    },[apiServices.report]);
+    }, [apiServices.report]);
 
-    const fetchReport= useCallback(async()=>{
+    const fetchReport = useCallback(async () => {
         setIsLoading(true);
-        const res = await apiServices.report.requestFinanceReport(quarter.toLowerCase(), year);
-        if(res.success){
+        const res = await apiServices.report.requestFinanceReport(quarter.substring(4), year);
+        if (res.success) {
             setIsLoading(false);
-            const data =  res.data as OverviewQuarterReportModal;
-            setReportList(data);          
+            const dataMonths =  res?.data as OverviewMonthOfQuarterModal[];
+            setReportList(dataMonths);
+
+            const dataTotal = res?.total as TotalOfQuarterModal;
+            setTotal(dataTotal);
+            const temp =  dataMonths.map((item) => {
+                return {
+                    month: `T${`${item?.month}`.slice(6,8).replace('/','')}`,
+                    year: item?.year,
+                    so_hop_dong_dau_tu: item?.so_hop_dong_dau_tu,
+                    tong_tien_dau_tu: item?.tong_tien_dau_tu,
+                    tien_goc_thu_ve: item?.tien_goc_thu_ve,
+                    tong_lai_phi: item?.tong_lai_phi,
+                    tong_tien_thu_ve: item?.tong_tien_thu_ve
+                };
+            }).reverse() as OverviewMonthOfQuarterModal[];
+            setDataChart(temp);
         }
         setIsLoading(false);
 
-    },[apiServices.report, quarter, year]);
-
-
-    useEffect(()=>{
-        fetchDataSearch();
-        if(year !== '' && quarter !== ''){
-            fetchReport();
-        }
-    },[year, quarter]);
-
-    useEffect(()=>{
-
-    },[]);
+    }, [apiServices.report, quarter, year]);
 
     const renderItem = useCallback(({ item, isOverview }:
-        { isOverview?: boolean, item?: OverviewMonthReportModal }) => {
+        { isOverview?: boolean, item?: OverviewMonthOfQuarterModal }) => {
         const _onPress = () => {
         };
 
         return (
             <Touchable style={!isOverview ? styles.containerItem : styles.containerItemOverview} onPress={_onPress}>
                 <Text style={styles.overviewQuarterTxt}>
-                    {isOverview ? `${Languages.report.overview}${' '}${' '}${quarter}`|| 0 :
-                        `${Languages.report.month}${' '}${item?.month}` || 0}
+                    {isOverview ? `${Languages.report.overview}${' '}${quarter}` || 0 :
+                        `${item?.month}`.slice(0, 8).replace('/','') || 0}
                 </Text>
                 <KeyValue
                     styleTitle={styles.textLeftMonth}
                     title={Languages.report.contractNumber}
                     containerContent={styles.containerContentKeyValue}
-                    content={isOverview ? Utils.formatMoney(reportList?.total?.tong_hop_dong || 0) : Utils.formatMoney(item?.so_hop_dong_dau_tu || 0)}
+                    content={isOverview ? Utils.formatMoney(total?.tong_hop_dong || 0) : Utils.formatMoney(item?.so_hop_dong_dau_tu || 0)}
                     styleColor={styles.txtContractNumber} />
                 <KeyValue
                     title={Languages.report.investMoney}
                     styleTitle={styles.textLeftMonth}
                     containerContent={styles.containerContentKeyValue}
-                    content={isOverview ? Utils.formatMoney(reportList?.total?.tong_tat_ca_tien_dau_tu || 0) : Utils.formatMoney(item?.tong_tien_dau_tu || 0)}
+                    content={isOverview ? Utils.formatMoney(total?.tong_tat_ca_tien_dau_tu || 0) : Utils.formatMoney(item?.tong_tien_dau_tu || 0)}
                     styleColor={styles.txtInvestNumber} />
                 <KeyValue
                     title={Languages.report.originMoneyCollected}
                     styleTitle={styles.textLeftMonth}
                     containerContent={styles.containerContentKeyValue}
-                    content={isOverview ? Utils.formatMoney(reportList?.total.tien_goc_thu_ve || 0) : Utils.formatMoney(item?.tien_goc_thu_ve || 0)}
+                    content={isOverview ? Utils.formatMoney(total?.tien_goc_thu_ve || 0) : Utils.formatMoney(item?.tien_goc_thu_ve || 0)}
                     styleColor={styles.txtEarning} />
                 <KeyValue
                     title={Languages.report.interest}
                     styleTitle={styles.textLeftMonth}
                     containerContent={styles.containerContentKeyValue}
-                    content={isOverview ? Utils.formatMoney(reportList?.total.tong_lai_phi || 0) : Utils.formatMoney(item?.tong_lai_phi || 0)}
+                    content={isOverview ? Utils.formatMoney(total?.tong_lai_phi || 0) : Utils.formatMoney(item?.tong_lai_phi || 0)}
                     styleColor={styles.txtInterest}
                 />
             </Touchable>
         );
-    }, [quarter, reportList?.total.tien_goc_thu_ve, reportList?.total?.tong_hop_dong, reportList?.total.tong_lai_phi, reportList?.total?.tong_tat_ca_tien_dau_tu]);
+    }, [quarter, total?.tien_goc_thu_ve, total?.tong_hop_dong, total?.tong_lai_phi, total?.tong_tat_ca_tien_dau_tu]);
 
-    const renderChart = useCallback(() => {
+    const renderChart = useMemo(() => {
         return (
             <View style={styles.containerContent}>
                 <Text style={styles.overviewQuarterTitle}>{Languages.report.quarterlyOverview}</Text>
@@ -132,21 +145,21 @@ const Report = observer(()=> {
                             <VictoryZoomContainer
                                 allowZoom={true}
                                 allowPan={true}
-                                zoomDomain={{ y: [1000000, 40000000] }}
+                                zoomDomain={{ y: [100000, 4000000] }}
                             />
                         }
                     >
                         <VictoryGroup
                             offset={-3}
                             domainPadding={{ y: [2, -2] }}
-                            domain={{ y: [1000000, 2000000000000] }}
+                            domain={{ y: [100000, 200000000000] }}
                             animate
                         >
 
                             <VictoryBar
-                                data={DataChart.quarter1.data}
+                                data={dataChart}
                                 x={'month'}
-                                y={'investMount'}
+                                y={'tong_tien_dau_tu'}
                                 alignment={'start'}
                                 animate
                                 barRatio={0.45}
@@ -154,9 +167,9 @@ const Report = observer(()=> {
                             />
 
                             <VictoryBar
-                                data={DataChart.quarter1.data}
+                                data={dataChart}
                                 x={'month'}
-                                y={'originAmountEarning'}
+                                y={'tong_tien_thu_ve'}
                                 alignment={'end'}
                                 barRatio={0.45}
                                 style={styles.chartEarning}
@@ -185,20 +198,20 @@ const Report = observer(()=> {
                 <Text style={styles.overviewQuarterTitle}>{Languages.report.monthOfQuarter}</Text>
             </View>
         );
-    }, [renderItem]);
+    }, [dataChart, renderItem]);
 
     const renderMonthList = useMemo(() => {
         return (
             <FlatList
-                data={reportList?.data}
+                data={reportList}
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
-                ListHeaderComponent={renderChart()}
+                ListHeaderComponent={renderChart}
                 style={styles.flatList}
-                initialNumToRender={3}
+                showsVerticalScrollIndicator={false}
             />
         );
-    }, [keyExtractor, renderChart, renderItem, reportList?.data]);
+    }, [keyExtractor, renderChart, renderItem, reportList]);
 
     const onPressQuarter = useCallback((item?: any) => {
         setQuarter(item?.value);
@@ -217,7 +230,7 @@ const Report = observer(()=> {
                     onPressItem={onPressQuarter}
                     btnContainer={styles.rowItemFilter}
                     valueText={[styles.txtInterest, styles.txtQuarter]}
-                    rightIcon={<ICUnderArrow  />}
+                    rightIcon={<ICUnderArrow />}
                     containerStyle={styles.containerItemFilter}
                 />
                 <PickerBottomSheet
@@ -228,7 +241,7 @@ const Report = observer(()=> {
                     onPressItem={onPressYear}
                     btnContainer={styles.rowItemFilter}
                     valueText={[styles.txtInterest, styles.txtQuarter]}
-                    rightIcon={<ICUnderArrow  />}
+                    rightIcon={<ICUnderArrow />}
                     containerStyle={styles.containerItemFilter}
                 />
             </View>
@@ -240,7 +253,7 @@ const Report = observer(()=> {
             <HeaderBar title={`${Languages.report.title}`} isLight={false} />
             {renderFilter}
             {renderMonthList}
-            {isLoading && <Loading isOverview/>}
+            {isLoading && <Loading isOverview />}
         </View >
     );
 });
@@ -377,11 +390,11 @@ const styles = StyleSheet.create({
     containerItemFilter: {
         marginBottom: -45
     },
-    containerContentKeyValue:{
+    containerContentKeyValue: {
         width: '100%',
         alignItems: 'center'
     },
-    textLeftMonth:{
+    textLeftMonth: {
         paddingVertical: 8
     }
 });

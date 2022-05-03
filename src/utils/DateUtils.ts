@@ -1,5 +1,7 @@
 import Moment from 'moment';
 
+import Languages from '@/common/Languages';
+
 const DEFAULT_DATE_FORMAT = 'DD/MM/YYYY';
 const FULL_DATE_FORMAT_MM_BEFORE = 'MM/DD/YYYY';
 const FULL_DATE_FORMAT = 'DD/MM/YYYY HH:mm';
@@ -61,6 +63,8 @@ function getDateFromString(date?: string, format = DEFAULT_DATE_FORMAT) {
     return date ? Moment(date, format).toDate() : new Date();
 };
 
+function getCurrentQuarter() {return `${Languages.report.quarter}${' '}${Moment(Moment().valueOf()).utc(true).quarter()}`;};
+
 export default {
     formatSimpleDate,
     getCurrentYear,
@@ -75,5 +79,6 @@ export default {
     getDateDetails,
     getDateFromString,
     formatDateSecondPicker,
-    formatMMDDYYYYPicker
+    formatMMDDYYYYPicker,
+    getCurrentQuarter
 };
