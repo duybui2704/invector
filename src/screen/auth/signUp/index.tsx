@@ -45,6 +45,11 @@ const SignUp = observer(() => {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [userData, setUserData] = useState<UserInfoModal>();
 
+
+    useEffect(() => {
+        fetchData();
+    }, [apiServices.auth]);
+
     const onChangeText = (value: string, tag?: string) => {
         switch (tag) {
             case Languages.auth.txtPhone:
@@ -82,10 +87,6 @@ const SignUp = observer(() => {
         }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, [apiServices.auth]);
-
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
 
@@ -116,7 +117,7 @@ const SignUp = observer(() => {
         return false;
     }, [channel, email, name, pass, passNew, phone]);
 
-    const onSignIn = async () => {
+    const onSignIn = useCallback(async () => {
         if (onValidate()) {
             setLoading(true);
             const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, channel?.value);
@@ -125,7 +126,7 @@ const SignUp = observer(() => {
                 setNavigate(true);
             }
         }
-    };
+    }, [name, phone, pass, passNew, channel, email]);
 
     const onChangeChanel = (item: any) => {
         setChannel(item);
@@ -148,6 +149,13 @@ const SignUp = observer(() => {
     }, [styles.inputPass]);
 
     const renderView = () => {
+        let isDisTouchable: boolean;
+        if (!(phone !== '' && pass !== '' && passNew !== '' && email !== '' && channel !== '' && name !== '')) {
+            isDisTouchable = false;
+        } else {
+            isDisTouchable = true;
+        }
+
         return (
             <View style={styles.content}>
                 <View style={styles.wrapLoginTxt}>
@@ -181,9 +189,9 @@ const SignUp = observer(() => {
                             </Touchable>
                             <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                         </View>
-                        <Touchable onPress={onSignIn} disabled={!checked}
-                            style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
-                            <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                        <Touchable onPress={onSignIn} disabled={!isDisTouchable}
+                            style={isDisTouchable ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                            <Text style={isDisTouchable ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
                                 {Languages.auth.txtSignUp}
                             </Text>
                         </Touchable>

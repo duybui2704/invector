@@ -18,6 +18,13 @@ import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import { MyStylesLogin } from './styles';
 import { UserInfoModal } from '@/models/user-models';
+import FormValidate from '@/utils/FormValidate';
+<<<<<<< Updated upstream
+=======
+import { dataUser } from '@/mocks/data';
+import FormValidate from '@/utils/FormValidate';
+
+>>>>>>> Stashed changes
 
 const Login = observer(() => {
     const {
@@ -95,6 +102,11 @@ const Login = observer(() => {
 
 
     const onLoginPhone = useCallback(async () => {
+        const errMsgPhone = FormValidate.passConFirmPhone(phone);
+        const errMsgPwd = FormValidate.passValidate(pass);
+
+        refPhone.current?.setErrorMsg(errMsgPhone);
+        refPass.current?.setErrorMsg(errMsgPwd);
         setLoading(true);
         const res = await apiServices.auth.loginPhone(phone, pass);
 
@@ -123,10 +135,6 @@ const Login = observer(() => {
         setLoading(false);
 
     }, [apiServices.auth, phone, pass, checked, fastAuthInfo, userManager]);
-
-    useEffect(() => {
-        console.log('userData=', userData);
-    }, [isLoading, userData, checked]);
 
     return (
         <View style={styles.content}>
