@@ -23,7 +23,7 @@ const EditAccountInfo = observer(() => {
     const styles = MyStylesEditAccountInfo();
     const [name, setName] = useState<string>(SessionManager.userInfo?.full_name || '');
     const [emailUser, setEmail] = useState<string>(SessionManager.userInfo?.email || '');
-    const [phone, setPhone] = useState<string>('');
+    const [phone, setPhone] = useState<string>(SessionManager.userInfo?.phone_number || '');
     const [genderUser, setGender] = useState<string>(SessionManager.userInfo?.gender || '');
     const [addressUser, setAddress] = useState<string>(SessionManager.userInfo?.address || '');
     const [jobUser, setJob] = useState<string>(SessionManager.userInfo?.job || '');
@@ -132,7 +132,7 @@ const EditAccountInfo = observer(() => {
                 {renderKeyFeature(nameRef, Languages.accountInfo.fullName, name)}
                 {renderKeyFeature(genderRef, Languages.accountInfo.gender, genderUser, 'DEFAULT', false, 3)}
                 {renderKeyFeature(birthdayRef, Languages.accountInfo.birthday, birthday)}
-                {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, SessionManager.savePhone?.toString(), 'PHONE', true)}
+                {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', true)}
                 {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL')}
                 {renderKeyFeature(addressRef, Languages.accountInfo.address, addressUser)}
                 {renderKeyFeature(jobRef, Languages.accountInfo.job, jobUser)}
@@ -146,7 +146,7 @@ const EditAccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [addressUser, birthday, emailUser, genderUser, jobUser, name, onSaveInfo, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit]);
+    }, [addressUser, birthday, emailUser, genderUser, jobUser, name, onSaveInfo, phone, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit]);
 
     return (
         <View style={styles.container}>

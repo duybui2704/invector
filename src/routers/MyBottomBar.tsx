@@ -15,7 +15,7 @@ import Profile from '@/screen/profile';
 import Report from '@/screen/report';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import { DetailInvestment } from '@/screen/investment/detailInvestment';
+import {DetailInvestment} from '@/screen/investment/detailInvestment';
 import Invest from '@/screen/investment/invest';
 import VerifyOTP from '@/screen/profile/verifyOTP/VerifyOTP';
 import ConfirmPhone from '@/screen/profile/confirmPhone/ConfirmPhone';
@@ -30,6 +30,7 @@ import AccountInfo from '@/screen/profile/accountInfo/AccountInfo';
 import EditAccountInfo from '@/screen/profile/editAccountInfo/EditAccountInfo';
 import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
 import Policy from '@/screen/profile/policy/Policy';
+import MyWebView from '@/screen/profile/myWedView/MyWebView';
 import { NotifyInvest } from '@/screen/home/notifyInvest';
 
 const TabsData = [
@@ -124,6 +125,7 @@ const AccountStack = () => {
             <Stack.Screen name={ScreenName.confirmPhone} component={ConfirmPhone} />
             <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} />
             <Stack.Screen name={ScreenName.policy} component={Policy} />
+            <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
         </Stack.Navigator>
     );
 };
@@ -162,7 +164,7 @@ const MyBottomTabs = observer(() => {
             navigation.navigate(route?.name);
         }
 
-    }, [userManager]);
+    }, [fastAuthInfoManager.isEnableFastAuth, userManager?.userInfo]);
 
     const getTabBarVisibility = useCallback((route: any) => {
         const routeName = getFocusedRouteNameFromRoute(route);

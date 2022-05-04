@@ -7,21 +7,19 @@ import {
 } from '@gorhom/bottom-sheet';
 import React, {
     forwardRef,
-    useCallback, useEffect,
-    useImperativeHandle,
+    useCallback, useImperativeHandle,
     useMemo,
     useRef
 } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import Dash from 'react-native-dash';
 
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import { Touchable } from '@/components/elements/touchable';
-import { COLORS, Styles } from '@/theme';
 import { ItemProps } from '@/models/common-model';
-import Languages from '@/common/Languages';
-import Utils from '@/utils/Utils';
+import { COLORS } from '@/theme';
 import { MyStylesBottomSheetInvest } from './styles';
+
 
 type BottomSheetProps = {
     data?: ItemProps[],
@@ -71,7 +69,7 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
         const close = useCallback(() => {
 
             onClose?.();
-        }, []);
+        }, [onClose]);
 
         const show = useCallback(() => {
             onOpen?.();
@@ -108,7 +106,7 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
                     </>
                 );
             },
-            [hide, onPressItem]
+            [close, onPressItem, styles.dash, styles.row, styles.value, styles.valueContainer, title]
         );
 
         const keyExtractor = useCallback((index: any) => {

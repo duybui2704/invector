@@ -11,7 +11,6 @@ import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import KeyValue from '@/components/KeyValue';
 import SessionManager from '@/manager/SessionManager';
-import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
 import { MyStylesAccountInfo } from './styles';
 import { useAppStore } from '@/hooks';
@@ -30,7 +29,8 @@ const AccountInfo = observer(() => {
     const fetchUserInfo = useCallback(async () => {
         const res = await apiServices.auth.getUserInfo(3);
         if(res.success){
-            setDataUser(res.data as UserInfoModal);
+            const data = res.data as UserInfoModal;
+            setDataUser(data);
         }
     }, [apiServices.auth]);
 
@@ -85,7 +85,7 @@ const AccountInfo = observer(() => {
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
-                {renderKeyFeature(Languages.accountInfo.phoneNumber, SessionManager.savePhone?.toString())}
+                {renderKeyFeature(Languages.accountInfo.phoneNumber, dataUsers?.phone_number)}
                 {renderKeyFeature(Languages.accountInfo.email, dataUsers?.email)}
                 {renderKeyFeature(Languages.accountInfo.fullName, dataUsers?.full_name)}
                 {renderKeyFeature(Languages.accountInfo.gender, dataUsers?.gender)}
@@ -99,7 +99,7 @@ const AccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [dataUsers?.address, dataUsers?.birth_date, dataUsers?.email, dataUsers?.full_name, dataUsers?.gender, dataUsers?.job, onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit]);
+    }, [dataUsers?.address, dataUsers?.birth_date, dataUsers?.email, dataUsers?.full_name, dataUsers?.gender, dataUsers?.job, dataUsers?.phone_number, onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit]);
 
     return (
         <View style={styles.container}>

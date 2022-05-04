@@ -26,12 +26,11 @@ import KeyValue from '@/components/KeyValue';
 import HeaderBar from '@/components/header';
 import { COLORS, Styles } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';
-import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
 import { Configs, isIOS } from '@/common/Configs';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
-import { ScreenName } from '@/common/screenNames';
+import { ScreenName, TabNamesArray } from '@/common/screenNames';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
@@ -45,6 +44,7 @@ import { CustomBackdropBottomSheet } from '@/components/CustomBottomSheet';
 import StorageUtils from '@/utils/StorageUtils';
 import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
+import { LINKS } from '@/api/constants';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -67,7 +67,7 @@ const Profile = observer(() => {
     const [errorText, setErrorText] = useState<string>('');
 
     useEffect(()=>{
-        if(!supportedBiometry || !SessionManager.getPhoneLogin.toString()){
+        if(!supportedBiometry || !SessionManager.accessToken){
             Navigator.pushScreen(ScreenName.auth);
         }
     },[supportedBiometry]);
@@ -89,6 +89,11 @@ const Profile = observer(() => {
 
     const onLogout = useCallback(() => {
         SessionManager.logout();
+        userManager.updateUserInfo(null);
+        Navigator.navigateToDeepScreen(
+            [ScreenName.tabs],
+            TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+        );
         userManager.updateUserInfo({});
         Navigator.replaceScreen(ScreenName.auth);
     }, [userManager]);
@@ -106,10 +111,18 @@ const Profile = observer(() => {
                     Navigator.pushScreen(ScreenName.accountLink);
                     break;
                 case Languages.account.useManual:
-                    Navigator.pushScreen(ScreenName.manual);
+                    Navigator.pushScreen(ScreenName.myWedView, 
+                        {
+                            title: Languages.account.useManual,
+                            url: LINKS.MANUAL_INVESTOR
+                        });
                     break;
                 case Languages.account.answer:
-                    Navigator.pushScreen(ScreenName.help);
+                    Navigator.pushScreen(ScreenName.myWedView, 
+                        {
+                            title: Languages.account.answer,
+                            url: LINKS.AQ_INVESTOR
+                        });
                     break;
                 case Languages.account.payMethod:
                     Navigator.pushScreen(ScreenName.paymentMethod);
@@ -118,7 +131,11 @@ const Profile = observer(() => {
                     callPhone();
                     break;
                 case Languages.account.policy:
-                    Navigator.pushScreen(ScreenName.policy);
+                    Navigator.pushScreen(ScreenName.myWedView, 
+                        {
+                            title: Languages.account.policy,
+                            url: LINKS.POLICY_INVESTOR
+                        });
                     break;
                 case Languages.account.web:
                     Utils.openURL(LINK_TIENNGAY.LINK_TIENNGAY_WEB);
@@ -264,7 +281,7 @@ const Profile = observer(() => {
     }, [isEnabledSwitch, onToggleBiometry, supportedBiometry]);
 
     const renderAccuracy = useMemo(() => {
-        switch (SessionManager.userInfo?.tinh_trang?.auth) {
+        switch (userManager.userInfo?.tinh_trang?.auth) {
             case 0:
                 return (
                     <View style={styles.accuracyWrap}>
@@ -290,7 +307,7 @@ const Profile = observer(() => {
                     </View>
                 );
         }
-    }, []);
+    }, [userManager.userInfo?.tinh_trang?.auth]);
     const renderPinCode = useMemo(() => {
         return (
             <BottomSheetModal

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import { debounce } from 'lodash';
 import { useIsFocused } from '@react-navigation/core';
@@ -14,7 +14,6 @@ import { Touchable } from '@/components/elements/touchable';
 import ItemInvest from '@/components/ItemInvest';
 import MyFlatList from '@/components/MyFlatList';
 import PopupInvest from '@/components/popupInvest';
-import { investData } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
 import { COLORS, Styles } from '@/theme';
 import { HeaderBar } from '../../components/header';
@@ -22,9 +21,7 @@ import styles from './styles';
 import Utils from '@/utils/Utils';
 import { useAppStore } from '@/hooks';
 import { PackageInvest } from '@/models/invest';
-import { ApiServices } from '@/api';
 import Loading from '@/components/loading';
-
 
 const Investment = observer(({ route }: { route: any }) => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -46,7 +43,7 @@ const Investment = observer(({ route }: { route: any }) => {
         } else {
             common.setIsFocus(false);
         }
-    }, [common.isFocused, isFocus]);
+    }, [btnInvest, common, common.isFocused, isFocus, route?.params?.types]);
 
     const fetchData = useCallback((type: string) => {
         switch (type) {
@@ -62,7 +59,7 @@ const Investment = observer(({ route }: { route: any }) => {
             default:
                 break;
         }
-    }, [btnInvest]);
+    }, []);
 
     const fetchDataInvestAll = useCallback(async () => {
         console.log('invest_all');
@@ -102,11 +99,11 @@ const Investment = observer(({ route }: { route: any }) => {
         fetchData(btnInvest);
         setIsRefreshing(false);
         setTextSearch(undefined);
-    }, [btnInvest]);
+    }, [btnInvest, fetchData]);
 
     const onChangeText = useCallback((text: string) => {
         setTextSearch(text);
-    }, [textSearch]);
+    }, []);
 
     const searchItem = useCallback(
         (text: string) => {
@@ -120,38 +117,35 @@ const Investment = observer(({ route }: { route: any }) => {
                 setDataFilter(listStore);
             }
         },
-        [dataFilter]
+        [listStore]
     );
 
     const search = useCallback((money: string, month: string) => {
         switch (money) {
             case ENUM_INVEST_MONEY.BELOW_10:
-                setDataFilter(
+                return setDataFilter(
                     listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) < 10000000 && item?.thoi_gian_dau_tu.includes(month))
                 );
-                return;
+
             case ENUM_INVEST_MONEY.ABOUT_10_50:
-                setDataFilter(
+                return setDataFilter(
                     listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) >= 10000000 && parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) < 50000000 && item?.thoi_gian_dau_tu.includes(month)
                     )
                 );
-                return;
             case ENUM_INVEST_MONEY.ABOUT_50_100:
-                setDataFilter(
+                return setDataFilter(
                     listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) < 100000000 && parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) >= 50000000 && item?.thoi_gian_dau_tu.includes(month)
                     )
                 );
-                return;
             case ENUM_INVEST_MONEY.ABOVE_100:
-                setDataFilter(
+                return setDataFilter(
                     listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) >= 100000000 && item?.thoi_gian_dau_tu.includes(month)
                     )
                 );
-                return;
             default:
-                setDataFilter(undefined);
+                return setDataFilter(undefined);
         }
-    }, [dataFilter]);
+    }, [listStore]);
 
     const searchMoneyOrMonth = useCallback((money: string, month: string) => {
         switch (money) {
@@ -187,7 +181,7 @@ const Investment = observer(({ route }: { route: any }) => {
         );
 
 
-    }, [dataFilter]);
+    }, [listStore]);
 
     const searchItemPicker = useCallback(
         (month: string, money: string) => {
@@ -203,7 +197,7 @@ const Investment = observer(({ route }: { route: any }) => {
 
             }
         },
-        [dataFilter]
+        [listStore, search, searchMoneyOrMonth]
     );
 
     const debounceSearchItem = useCallback(
@@ -222,7 +216,7 @@ const Investment = observer(({ route }: { route: any }) => {
         if (item) {
             Navigator.pushScreen(ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
         }
-    }, [btnInvest, dataFilter]);
+    }, [btnInvest]);
 
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
@@ -274,12 +268,12 @@ const Investment = observer(({ route }: { route: any }) => {
                 <Text style={[styles.txtBtInvest, styleTxt]}>{getTitle()}</Text>
             </Touchable>
         );
-    }, [btnInvest]);
+    }, [btnInvest, fetchData]);
 
     const onPopupInvest = useCallback(() => {
         popupInvestRef.current.show();
         common.setIsFocus(true);
-    }, []);
+    }, [common]);
 
     const renderSearchBar = useMemo(() => {
         return (
@@ -300,7 +294,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 </Touchable>
             </View>
         );
-    }, [onChangeText, textSearch]);
+    }, [handleInputOnchange, onPopupInvest, textSearch]);
 
     return (
         <View style={styles.main}>

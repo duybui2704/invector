@@ -18,15 +18,12 @@ import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import { MyStylesLogin } from './styles';
 import { UserInfoModal } from '@/models/user-models';
-import { dataUser } from '@/mocks/data';
-
 
 const Login = observer(() => {
     const {
         apiServices,
         userManager,
-        fastAuthInfoManager: fastAuthInfo,
-        appManager
+        fastAuthInfoManager: fastAuthInfo
     } = useAppStore();
 
     const [phone, setPhone] = useState<string>('');
@@ -40,17 +37,19 @@ const Login = observer(() => {
 
     useEffect(() => {
         if (SessionManager.getPhoneLogin()) {
-            setPhone(SessionManager.getPhoneLogin());
+            setPhone(SessionManager.getPhoneLogin() || '');
             setCheck(true);
         }
         if (SessionManager.getPwdLogin()) {
-            setPass(SessionManager.getPwdLogin());
+            setPass(SessionManager.getPwdLogin() || '');
             setCheck(true);
         }
     }, []);
 
     useEffect(() => {
         setLoading(isLoading);
+        setPhone('0359908532'); // 0961182794  // 0359908532 // 0988251903
+        setPass('12345678');
     }, [isLoading]);
 
     const onChangeText = (value: string, tag?: string) => {
@@ -68,14 +67,14 @@ const Login = observer(() => {
 
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
-    }, [checked]);
+    }, []);
 
     const checkbox = useMemo(() => {
         if (checked) {
             return <CheckIcon />;
         }
         return <UnCheckIcon />;
-    }, [onChangeChecked]);
+    }, [checked]);
 
     const renderInput = useCallback((ref: any, value: any, isPhone: boolean, placeHolder: string, rightIcon?: string, keyboardType?: any, maxLength?: number, isPass?: boolean) => {
         return (
@@ -123,7 +122,7 @@ const Login = observer(() => {
         }
         setLoading(false);
 
-    }, [apiServices.auth, pass, phone, userManager, onChangeChecked]);
+    }, [apiServices.auth, phone, pass, checked, fastAuthInfo, userManager]);
 
     useEffect(() => {
         console.log('userData=', userData);

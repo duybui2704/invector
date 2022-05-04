@@ -111,6 +111,21 @@ function covertSecondAndGetSecond(second: number) {
     return ((second / 1000) % 60);
 };
 
+function formatObjectToKeyLabel(data: any) {
+    const lengthArray = new Array(Object.keys(data).length);
+    if (lengthArray.length > 0) {
+        for (let i = 0; i < lengthArray.length; i++) {
+            lengthArray[i] = {
+                value: Object.values(data)[i],
+                label: Object.keys(data)[i]
+            };
+        }
+        return lengthArray;
+    }
+    return [];
+}
+
+
 export default {
     formatTextToNumber,
     capitalizeFirstLetter,
@@ -122,5 +137,6 @@ export default {
     encodePhone,
     covertSecondAndGetMinute,
     covertSecondAndGetSecond,
+    formatObjectToKeyLabel,
     convertMoney
 };

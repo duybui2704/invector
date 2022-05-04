@@ -16,18 +16,23 @@ import { PopupActions } from '@/components/popupStatus/types';
 import { HtmlStyles } from '@/theme';
 import Utils from '@/utils/Utils';
 import { MyStylesVerifyOTP } from './styles';
+import { useAppStore } from '@/hooks';
+import ToastUtils from '@/utils/ToastUtils';
+import Loading from '@/components/loading';
 
 const VerifyOTP = observer(({ route }: { route: any }) => {
-
+    const { apiServices } = useAppStore();
     const styles= MyStylesVerifyOTP();
-
+    const linked_id = route?.params?.linked_id;
     const [phone, setPhone] = useState<string>(route?.params?.phoneNumber);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>('');
-    const time = 120000 /10;
+    const time = 120000 ;    // set time resend OTP = 120s
     const [disableResend, setDisableResend] = useState<boolean>(true);
     const [overTime, setOverTime] = useState<number>(time);
     const intervalRef = useRef<any>();
     const popupResendCode = useRef<PopupActions>();
+
 
     useEffect(() => {
         if(overTime > 0 && disableResend === true){
@@ -46,7 +51,7 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
             popupResendCode.current?.show();
             setTimeout(() => {
                 popupResendCode.current?.hide();
-            }, 5500);
+            }, 10000);
             setDisableResend(false);
         }
     }, [overTime]);
@@ -55,17 +60,29 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
         setOTP(code);
     }, []);
 
-    const onSendOTP = useCallback(() => {
+    const onConfirmOTP = useCallback(async() => {
         if (otp.length === 6) {
-        //    
+            setIsLoading(true);
+            const res = await apiServices.paymentMethod.requestActiveLinkVimo(3, phone, linked_id, otp);
+            if(res.success){
+                ToastUtils.showSuccessToast(Languages.msgNotify.successSendLinkVimo);
+                setIsLoading(false);
+            }
+            else {ToastUtils.showErrorToast(Languages.msgNotify.failCancelLinkVimo);}
+            setIsLoading(false);
         }
-    }, [otp.length]);
+    }, [apiServices.paymentMethod, linked_id, otp, phone]);
 
     const onAgreeResendOTP = useCallback(async () => {
         setOverTime(time);
         setDisableResend((last) => !last);
         popupResendCode.current?.hide();
-    }, [time]);
+        const res = await apiServices.paymentMethod.requestSendLinkVimo(3, phone);
+        if(res.success){
+            ToastUtils.showSuccessToast(Languages.msgNotify.successLinkWithVimo);
+        }
+        else  ToastUtils.showErrorToast(Languages.msgNotify.failVerifyOTP);
+    }, [apiServices.paymentMethod, phone, time]);
 
     const renderPopup = useCallback((ref: any, content: string) => {
         return (
@@ -107,10 +124,11 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
                     <Button label={Languages.confirmPhone.verifyOTP}
                         buttonStyle={BUTTON_STYLES.GREEN}
                         isLowerCase
-                        onPress={onSendOTP}
+                        onPress={onConfirmOTP}
                     />
                 </View>
                 {renderPopup(popupResendCode, Languages.confirmPhone.popupOtpResendCode)}
+                {isLoading && <Loading isOverview/>}
             </View>
         </HideKeyboard >
     );

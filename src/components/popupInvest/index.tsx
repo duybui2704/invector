@@ -1,23 +1,19 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { Text, View, Modal } from 'react-native';
-// import Modal from 'react-native-modal';
+import React, { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import { Modal, Text, View } from 'react-native';
 
-import { PopupActions, PopupProps } from './types';
-import { MyStylePupUp } from '@/components/popupInvest/styles';
+import arrayIcon from '@/common/arrayIcon';
+import Languages from '@/common/Languages';
+import { ItemProps } from '@/components/bottomsheet';
+import { MyTextInput } from '@/components/elements/textfield';
+import { TextFieldActions } from '@/components/elements/textfield/types';
 import { Touchable } from '@/components/elements/touchable';
-import { COLORS } from '@/theme';
-import { MyTextInput } from "@/components/elements/textfield";
-import arrayIcon from "@/common/arrayIcon";
-import Languages from "@/common/Languages";
-import { TextFieldActions } from "@/components/elements/textfield/types";
-import { PopupInvest } from "@/components/popupOTP";
-import PopupStatusDetail from "@/components/popupInvest/bottomSheetInvest";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import BottomSheetComponentInvest from "@/components/popupInvest/bottomSheetInvest";
-import { ItemProps } from "@/components/bottomsheet";
-import { ENUM_INVEST_MONEY } from '@/common/constants';
+import BottomSheetComponentInvest from '@/components/popupInvest/bottomSheetInvest';
+import { MyStylePupUp } from '@/components/popupInvest/styles';
 import { useAppStore } from '@/hooks';
 import { arrMoney, arrMonth } from '@/mocks/data';
+import { COLORS } from '@/theme';
+import { PopupActions, PopupProps } from './types';
+
 
 const PopupStatus = forwardRef<PopupActions, PopupProps>(
     ({
@@ -49,7 +45,7 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
             }
             setVisible(true);
             setPicker(false);
-        }, []);
+        }, [common.isFocused]);
 
         const hide = useCallback(() => {
             setVisible(false);
@@ -78,13 +74,13 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
         const onChange = useCallback((value: string, title: string) => {
             switch (title) {
                 case Languages.invest.monthInvest:
-                    setMonth(value);
-                    return;
+                    return setMonth(value);
+
                 case Languages.invest.chooseMoney:
-                    setMoney(value);
-                    return;
+                    return setMoney(value);
+
                 default:
-                    break;
+                    return null;
             }
         }, []);
 
@@ -99,7 +95,7 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
                 setPicker(true);
                 refBottomSheetMoney.current.show();
             }
-            return;
+
         }, []);
 
         return (
@@ -107,7 +103,7 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
                 <View style={{ height: '100%', width: '100%' }}>
                     <Modal
                         visible={visible}
-                        animationType={"slide"}
+                        animationType={'slide'}
                         transparent={true}
                     >
                         <View style={styles.modal}>

@@ -4,5 +4,5 @@ export interface PagingConditionTypes {
     offset: number;
     startDate?: any;
     endDate?: any;
-    option?:any;
+    option?:string;
 }

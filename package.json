@@ -73,6 +73,7 @@
     "react-native-switch": "^1.5.1",
     "react-native-touch-id": "./src/libs/react-native-touch-id",
     "react-native-vector-icons": "^9.1.0",
+    "react-native-webview": "^11.18.2",
     "styled-components": "^5.3.5",
     "victory-native": "^36.3.1",
     "vue": "^3.2.31",

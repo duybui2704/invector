@@ -1,22 +1,34 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import Dash from 'react-native-dash';
+import { observer } from 'mobx-react';
 
 import Languages from '@/common/Languages';
 import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
+import { COLOR_TRANSACTION } from '@/common/constants';
 
-const KeyValueTransaction = ({ title, dateTime, content, noIndicator ,styleColor, debtNow}: 
-    { noIndicator?: boolean, title?: string, dateTime?: string, content?: string , styleColor?:string, debtNow?:number}) => {
+const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor, debtNow }:
+    { noIndicator?: boolean, title?: string, dateTime?: string, content?: string, styleColor?: string, debtNow?: number }) => {
+
+    const renderColor = useCallback((_styleColor?: string, _title?: string) => {
+        switch (_styleColor) {
+            case COLOR_TRANSACTION.RED:
+                return <Text style={[styles.leftText, styles.red]}>{_title}</Text>;
+            case COLOR_TRANSACTION.YELLOW:
+                return <Text style={[styles.leftText, styles.green]}>{_title}</Text>;
+            case COLOR_TRANSACTION.GREEN:
+                return <Text style={[styles.leftText, styles.yellow]}>{_title}</Text>;
+            default:
+                return <Text style={[styles.leftText, styles.yellow]}>{_title}</Text>;
+        }
+    }, []);
 
     return (
         <View style={styles.container}>
             <View style={styles.row}>
                 <View style={styles.row}>
-                    <Text style={styleColor==='red'?[styles.leftText,styles.red]:[styles.leftText,styles.green]}>
-                        {styleColor==='red'?`${'- '}`:`${'+ '}`}
-                    </Text>
-                    <Text style={styleColor==='red'?[styles.leftText,styles.red]:[styles.leftText,styles.green]}>{title}</Text>
+                    {renderColor(styleColor, title)}
                 </View>
                 <View>
                     <Text style={styles.dateText}>{dateTime}</Text>
@@ -30,12 +42,12 @@ const KeyValueTransaction = ({ title, dateTime, content, noIndicator ,styleColor
                 dashGap={5}
                 dashColor={COLORS.GRAY_13} />}
             <View style={styles.rowDebt}>
-                <Text style={styles.debtText}>{`${Languages.transaction.debtNow}: `}</Text>
-                <Text style={styles.debtNumber}>{`${debtNow || ''}`}</Text>
-            </View>    
+                <Text style={styles.debtText}>{`${Languages.transaction.allInvestNow}: `}</Text>
+                <Text style={styles.debtNumber}>{`${debtNow}`|| ''}</Text>
+            </View>
         </View>
     );
-};
+});
 
 export default KeyValueTransaction;
 
@@ -45,15 +57,17 @@ const styles = StyleSheet.create({
         marginTop: 10,
         backgroundColor: COLORS.WHITE,
         borderRadius: 16,
-        paddingHorizontal:16,
-        paddingVertical:3
+        paddingHorizontal: 16,
+        paddingVertical: 3
     },
-    row:{
+    row: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
-    rowDebt:{
-        flexDirection: 'row'
+    rowDebt: {
+        flexDirection: 'row',
+        paddingVertical:2
     },
     leftText: {
         ...Styles.typography.medium,
@@ -65,26 +79,31 @@ const styles = StyleSheet.create({
         ...Styles.typography.regular,
         color: COLORS.GRAY_12,
         fontSize: Configs.FontSize.size10,
-        alignSelf:'flex-end'
+        alignSelf: 'flex-end',
+        paddingVertical: 2
     },
     contentText: {
         ...Styles.typography.medium,
         color: COLORS.GRAY_7,
-        alignSelf:'flex-end'
+        alignSelf: 'flex-end',
+        paddingVertical: 2
     },
     dash: {
-        marginVertical:4
+        marginVertical: 4
     },
-    debtText:{
+    debtText: {
         ...Styles.typography.regular
     },
-    debtNumber:{
+    debtNumber: {
         ...Styles.typography.medium
     },
-    red:{
-        color:COLORS.RED
+    red: {
+        color: COLORS.RED
     },
-    green:{
-        color:COLORS.GREEN
+    green: {
+        color: COLORS.GREEN
+    },
+    yellow: {
+        color: COLORS.YELLOW
     }
 });

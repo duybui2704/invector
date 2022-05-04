@@ -37,6 +37,8 @@ target 'investorV2' do
   
   pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+  
   pod 'react-native-fbsdk-next', :path => '../node_modules/react-native-fbsdk-next'
 
   target 'investorV2Tests' do

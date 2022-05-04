@@ -1,7 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ScrollView, StatusBar, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StatusBar, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { LINKS } from '@/api/constants';
@@ -23,13 +23,13 @@ import ItemInvest from '@/components/ItemInvest';
 import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
 import { BannerModel } from '@/models/banner';
+import { DashBroad } from '@/models/dash';
+import { PackageInvest } from '@/models/invest';
 import { NewsModel } from '@/models/news';
 import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
-import { MyStylesHome } from './styles';
 import Utils from '@/utils/Utils';
-import { PackageInvest } from '@/models/invest';
-import { DashBroad } from '@/models/dash';
+import { MyStylesHome } from './styles';
 
 const Home = observer(() => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -62,7 +62,7 @@ const Home = observer(() => {
         if (resInvest.success) {
             setDataArr(resInvest.data as PackageInvest[]);
         }
-    }, [dataArr]);
+    }, [apiServices.common]);
 
 
     const fetchContractsDash = useCallback(async () => {
@@ -71,7 +71,7 @@ const Home = observer(() => {
         if (resContractsDash.success) {
             setDataDash(resContractsDash.data as DashBroad);
         }
-    }, [dataDash]);
+    }, [apiServices.common]);
 
     const fetchDataBanner = useCallback(async () => {
         const resBanner = await apiServices.common.getBanners();
@@ -116,11 +116,11 @@ const Home = observer(() => {
 
     const navigateToDetail = useCallback((item: any) => {
         Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
-    }, []);
+    }, [btnInvest]);
 
     const navigateToInvestNow = useCallback((item: any) => {
         Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.invest, { status: btnInvest, id: item?.id });
-    }, []);
+    }, [btnInvest]);
 
     const renderItem = useCallback((item: any) => {
         return (
@@ -131,7 +131,7 @@ const Home = observer(() => {
                 title={ENUM_INVEST_STATUS.INVEST_NOW}
             />
         );
-    }, [btnInvest, navigateToDetail]);
+    }, [navigateToDetail, navigateToInvestNow]);
 
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
@@ -153,16 +153,16 @@ const Home = observer(() => {
     }, []);
 
     const renderIconTob = useCallback((gotoScreen: any, title: string) => {
-        return(
+        return (
             <Touchable style={styles.tob} onPress={gotoScreen}>
                 {iconTob(title)}
                 <Text style={styles.txtTob}>{title}</Text>
             </Touchable>
         );
-    }, []);
+    }, [iconTob, styles.tob, styles.txtTob]);
 
     const renderTobBottom = useCallback((text: string) => {
-        return(
+        return (
             <Touchable style={styles.txtQuestion}>
                 <View style={styles.viewTxtBottom}>
                     <Text style={styles.txt5}>{text}</Text>
@@ -172,7 +172,7 @@ const Home = observer(() => {
                 </Touchable>
             </Touchable>
         );
-    }, []);
+    }, [styles.icon, styles.txt5, styles.txtQuestion, styles.viewTxtBottom]);
 
     const renderFooter = useCallback(() => {
         return (
@@ -203,7 +203,7 @@ const Home = observer(() => {
                     {renderTobBottom(Languages.home.paymentMethod)}
                 </View></>
         );
-    }, []);
+    }, [banners, dataArr, onOpenVPS, renderTobBottom, styles.logoVfs, styles.more, styles.txt, styles.txt4, styles.txt5, styles.txtQuestionTop, styles.txtVfs, styles.viewBottom, styles.viewVfs]);
 
     return (
         <View style={styles.main}>

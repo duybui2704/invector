@@ -17,12 +17,19 @@ import Navigator from '@/routers/Navigator';
 import { HtmlStyles } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
 import { MyStylesConfirmPhone } from './styles';
+import { useAppStore } from '@/hooks';
+import ToastUtils from '@/utils/ToastUtils';
+import Loading from '@/components/loading';
+import { DataSendLinkVimoModal } from '@/models/payment-link-models';
 
 
 const ConfirmPhone = observer(() => {
-    const styles =MyStylesConfirmPhone();
+    const { apiServices } = useAppStore();
+    const styles = MyStylesConfirmPhone();
     const [phone, setPhone] = useState<string>('');
     const phoneRef = useRef<TextFieldActions>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [dataSend, setDataSend] = useState<DataSendLinkVimoModal>();
 
     const renderInput = useCallback((_title?: any, _placeHolder?: any, _text?: string, _ref?: any, leftIcon?: any) => {
         const onChange = (text: string) => {
@@ -58,11 +65,23 @@ const ConfirmPhone = observer(() => {
         [phone]
     );
 
-    const onSendOTP = useCallback(() => {
+    const onSendOTP = useCallback(async () => {
         if (onValidation()) {
-            Navigator.pushScreen(ScreenName.verifyOTP, {phoneNumber: phone});
+            const res = await apiServices.paymentMethod.requestSendLinkVimo(3, phone);
+            const data = res?.data as DataSendLinkVimoModal;
+            setDataSend(data);
+            if (res.success) {
+                ToastUtils.showMsgToast(Languages.msgNotify.successSendLinkVimo);
+                Navigator.pushScreen(ScreenName.verifyOTP, { phoneNumber: phone, linked_id: dataSend?.linked_id });
+                setIsLoading(false);
+            }
+            else {ToastUtils.showErrorToast(Languages.msgNotify.failSendLinkVimo);}
+            setIsLoading(false);
+            
+            // Vi phai sandbox nen can so dien thoai da xac thuc, chờ update
+            Navigator.pushScreen(ScreenName.verifyOTP, { phoneNumber: phone, linked_id: dataSend?.linked_id });
         }
-    }, [onValidation, phone]);
+    }, [apiServices.paymentMethod, dataSend?.linked_id, onValidation, phone]);
 
     return (
         <HideKeyboard style={styles.container}>
@@ -82,6 +101,7 @@ const ConfirmPhone = observer(() => {
                         isLowerCase
                         onPress={onSendOTP}
                     />
+                    {isLoading && <Loading isOverview />}
                 </View>
             </View>
         </HideKeyboard >

@@ -3,13 +3,11 @@ import React from 'react';
 import Dash from 'react-native-dash';
 
 import { COLORS, Styles } from '@/theme';
-import { Touchable } from './elements/touchable';
 
-
-const KeyValue = (
+const KeyValueReport = (
     { title, content, noIndicator, styleColor,
         styleContainer, leftIcon, rightIcon, hasDashBottom,
-        styleTouchable, onPress, styleTitle, containerContent, disable }:
+        styleTouchable, styleTitle, containerContent }:
         {
             noIndicator?: boolean,
             title: string,
@@ -23,7 +21,6 @@ const KeyValue = (
             onPress?: any,
             styleTitle?: TextStyle,
             containerContent?: ViewStyle,
-            disable?:boolean
         }
 ) => {
 
@@ -36,14 +33,14 @@ const KeyValue = (
                 dashColor={COLORS.GRAY_13} />
             }
 
-            <Touchable style={[styles.row, styleTouchable]} onPress={onPress} disabled={disable}>
+            <View style={[styles.row, styleTouchable]}>
                 {leftIcon || null}
                 <View style={[styles.rowCenter, containerContent]}>
                     <Text style={[styles.leftText, styleTitle]}>{title}</Text>
                     <Text style={[styles.contentText, styleColor]}>{content}</Text>
                 </View>
                 {rightIcon || null}
-            </Touchable>
+            </View>
             {hasDashBottom && <Dash
                 dashThickness={1}
                 dashLength={10}
@@ -55,7 +52,7 @@ const KeyValue = (
     );
 };
 
-export default KeyValue;
+export default KeyValueReport;
 
 const styles = StyleSheet.create({
     container: {

@@ -18,23 +18,23 @@ export const MyStylesShareFriend = () => {
                 paddingBottom: 16,
                 alignSelf: 'center'
             },
-            wrapMyCode: {
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexDirection: 'row',
-                borderWidth: 1,
-                borderColor: COLORS.GRAY_14,
-                backgroundColor: COLORS.WHITE,
-                borderRadius: 40,
-                paddingHorizontal: 2,
-                paddingVertical: 3,
-                marginVertical: 8
-            },
             txtMyQrCode: {
                 ...Styles.typography.medium,
                 color: COLORS.GRAY_12,
                 fontSize: Configs.FontSize.size16,
                 marginTop: 24
+            },
+            wrapMyCode: {
+                justifyContent: 'space-between',
+                borderWidth: 1,
+                borderColor: COLORS.GRAY_14,
+                backgroundColor: COLORS.GRAY_13,
+                borderRadius: 40,
+                paddingHorizontal: 2,
+                paddingVertical: 2,
+                marginVertical: 8,
+                flex: 2,
+                marginRight: 10
             },
             textCode: {
                 ...Styles.typography.medium,
@@ -51,6 +51,11 @@ export const MyStylesShareFriend = () => {
                 color: COLORS.GRAY_12,
                 fontSize: Configs.FontSize.size16,
                 paddingBottom: 16
+            },
+            row:{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center'
             }
         });
     }, []);

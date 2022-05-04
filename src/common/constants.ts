@@ -157,4 +157,21 @@ export enum LINKS {
     FB_FAN_PAGE = 'https://www.facebook.com/groups/425567338856999',
     STORE_ANDROID = 'https://play.google.com/store/apps/details?id=vn.tienngay.customer',
     STORE_IOS = 'https://apps.apple.com/id/app/tienngay-customer/id1560920806'
-}
+};
+
+export enum COLOR_TRANSACTION {
+    RED = 'red',
+    YELLOW = 'yellow',
+    GREEN = 'green',
+};
+
+export enum STATE_LINK{
+    LINKING = 'Đang liên kết',
+};
+
+export enum TYPE_INTEREST_RECEIVE_ACC{
+    VIMO = 'vimo',
+    BANK = 'bank',
+    NGAN_LUONG = 'ngan_luong',
+    MOMO = 'momo'
+};

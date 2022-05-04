@@ -177,7 +177,7 @@ export class BaseService {
 
         formData.append('type', 3);
 
-        // console.log('formData = ', formData);
+        console.log('formData = ', JSON.stringify(formData));
         return formData;
     };
 

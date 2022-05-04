@@ -1,4 +1,4 @@
-import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal, SCREEN_HEIGHT, useBottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal, SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
 import React, {
     forwardRef,
     useCallback, useEffect,
@@ -6,7 +6,7 @@ import React, {
     useMemo,
     useRef
 } from 'react';
-import { StyleSheet, Text, TouchableHighlightBase, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Dash from 'react-native-dash';
 
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
@@ -58,7 +58,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
 
         useEffect(() => {
             console.log('data', data);
-        }, [])
+        }, []);
 
         const hide = useCallback(() => {
             bottomSheetRef?.current?.dismiss();
@@ -102,8 +102,8 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             [hasDash, hide, leftIcon, onPressItem, rightIcon]
         );
 
-        const keyExtractor = useCallback((index) => {
-            return `${index.id}`;
+        const keyExtractor = useCallback((item, index) => {
+            return `${item.id}${index}`;
         }, []);
 
         const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {

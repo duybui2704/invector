@@ -10,7 +10,10 @@ export enum LINKS {
     FAQ = 'https://tienngay.vn/home/faqs',
     FB_FAN_PAGE = 'https://www.facebook.com/groups/425567338856999',
     STORE_ANDROID = 'https://play.google.com/store/apps/details?id=vn.tienngay.customer',
-    STORE_IOS = 'https://apps.apple.com/id/app/tienngay-customer/id1560920806'
+    STORE_IOS = 'https://apps.apple.com/id/app/tienngay-customer/id1560920806',
+    AQ_INVESTOR= 'https://tienngay.vn/template/hoidap',
+    POLICY_INVESTOR = 'https://tienngay.vn/template/dieukhoansudung',
+    MANUAL_INVESTOR = 'https://tienngay.vn/template/thongtinapp'
 }
 
 export enum CONTACT {
@@ -24,8 +27,8 @@ export enum API_CONFIG {
     // BASE_URL = 'https://appkh.tienngay.vn/V2',
     // BASE_URL_OLD = 'https://sandboxappkh.tienngay.vn',
     // BASE_URL = 'https://sandboxappkh.tienngay.vn/V2',
-    BASE_URL = 'https://sandboxappndt.tienngay.vn/',
-    //  BASE_URL = 'https://appndt.tienngay.vn/',
+    // BASE_URL = 'https://sandboxappndt.tienngay.vn/',
+    BASE_URL = 'https://appndt.tienngay.vn/',
     DOMAIN_SHARE = 'https://',
 
     IMAGES_HOST = 'https://',
@@ -44,8 +47,12 @@ export enum API_CONFIG {
     // authentication
     LOGIN = 'auth/signin',  // Dang nhap investor
     TOKEN = '/token',
-    REFRESH_TOKEN = '/token',
-    USER_INFO = '/user/info_investor',
+    VALIDATE_TOKEN = 'auth/validate_token',  // validate token
+    REFRESH_TOKEN = 'auth/resend_token',     // gui lai token
+    ACTIVE_USER = '/auth/active_account',  // kich hoat tai khoan
+    USER_INFO = '/user/info_investor', // thông tin tài khoản investor
+    SAVE_TOKEN_DEVICE = 'user/save_device_token_user', // luu token device
+    CLEAR_TOKEN_DEVICE = 'user/delete_device_token_user', // xoa token thiet bi
     REGISTER = 'auth/investor_register',
     ACTIVE_AUTH = '/auth/auth_register', // kích hoạt tài khoản: OTP
     RESEND_OTP = '/auth/resend_token', // gửi lại otp
@@ -59,6 +66,7 @@ export enum API_CONFIG {
     OTP_RESET_PWD = '/auth/reset_password',
     UPDATE_PWD = 'auth/new_password',
     LINK_SOCIAL = '/user/link_social',
+    IDENTITY_VERIFY = 'user/identity_verification', //  xac thuc CCCD/CMT
 
     // upload ảnh
 
@@ -66,7 +74,7 @@ export enum API_CONFIG {
 
     // history
     HISTORY = '/investor/history_transaction_investor',
-    DETAILS_HISTORY = '/transaction/detail_transaction',
+    // DETAILS_HISTORY = '/transaction/detail_transaction',
 
     // notification
     NOTIFICATION = '/user/get_notification_user',
@@ -104,7 +112,20 @@ export enum API_CONFIG {
 
     // Get all store
     GET_ALL_STORE = '/store/get_all', // List danh sách phòng giao dịch
-    GET_RATE = '/rating_app/rate_of_satisfaction' // đánh giá ứng dụng
+    GET_RATE = '/rating_app/rate_of_satisfaction', // đánh giá ứng dụng
+
+    // link account with payment method
+    REQUEST_SEND_VIMO_LINK = 'vimo_link/send_link_vimo',    // gui lien ket vimo
+    REQUEST_ACTIVE_VIMO_LINK = 'vimo_link/active_link_vimo',  // active lien ket vimo
+    REQUEST_CANCEL_VIMO_LINK = 'vimo_link/unLink_vimo' ,       // huy lien ket vimo
+    REQUEST_INFO_VIMO_LINK = 'vimo_link/info_vimo_investor',  // xem thong tin lien ket vimo
+    GET_BANK = 'bankNganLuong/get_all',  // lay danh sach tai khoan ngan hang 
+    CHOOSE_METHOD_RECEIVE_INTEREST = 'investor/confirm_account_payment',  // chon tai khoan nhan lai (vimo, bank)
+
+    // report 
+    GET_YEARS = 'investor/select_year', // get years for report
+    GET_QUARTERS = 'investor/select_quarters_the_year', // get quarters for report
+    REQUEST_FINANCE_REPORT = 'investor/financial_report' // bao cao tai chinh investor
 }
 
 export const PAYMENT_URL = {

@@ -65,6 +65,11 @@ export const MyStylesAccountIdentify = () => {
                 color: COLORS.GRAY_12,
                 fontSize: Configs.FontSize.size12,
                 paddingVertical: 4
+            },
+            wrapBottom:{
+                paddingHorizontal: 16,
+                width: '100%',
+                marginBottom: 30
             }
         });
     }, []);

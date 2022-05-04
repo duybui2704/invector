@@ -183,7 +183,8 @@ const Languages = {
         errNameEmpty: 'Tên chủ tài khoản ngân hàng trống',
         errBankEmpty: 'Ngân hàng chưa được chọn',
         noInternet: 'Kết nối bị gián đoạn, vui lòng thử lại!',
-        sessionExpired: 'Kết nối bị gián đoạn, vui lòng thử lại!'
+        sessionExpired: 'Kết nối bị gián đoạn, vui lòng thử lại!',
+        errEmptyAvatarIdentity: 'Bạn cần điền đầy đủ cả mặt trước, mặt sau CCCD/CMT và avatar'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
@@ -404,6 +405,17 @@ const Languages = {
         popupOtpErrorTitle: 'Thông báo OTP',
         popupOtpErrorDescription: 'OTP không chính xác'
     },
+    msgNotify:{
+        successCancelLinkVimo: 'Bạn đã hủy liên kết với Vimo',
+        failCancelLinkVimo: 'Hủy liên kết với Vimo thất bại',
+        successSendLinkVimo: 'Investor đang gửi mã OTP',
+        failSendLinkVimo: 'Số điện thoại này không phải là số liên kết với Vimo',
+        successAccountLinkBank: 'Liên kết thành công tài khoản ngân hàng',
+        failAccountLinkBank: 'Liên kết thất bại tài khoản ngân hàng',
+        failVerifyOTP: 'Mã xác thực OTP không đúng',
+        successLinkWithVimo: 'Liên kết thành công với Vimo',
+        failPostIdentity: 'Lỗi gửi ảnh'
+    },
     loginWithBiometry: {
         hello: '<e>Xin chào,</e>',
         description: '<n><i>Chào mừng bạn quay trở lại với</i><g1> TienNgay.vn Đầu tư & Tích luỹ </g1><i> hãy đăng nhập nào</i></n>',
@@ -414,7 +426,7 @@ const Languages = {
         useFingerPrintError: 'Vân tay không khớp, vui lòng thử lại.',
         useFingerPrintManyTimesError:
             'Bạn đã nhập sai quá nhiều lần, vui lòng nhập mã pin.'
-    },
+    }
 
 
 };
