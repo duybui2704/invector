@@ -26,7 +26,6 @@ import KeyValue from '@/components/KeyValue';
 import HeaderBar from '@/components/header';
 import { COLORS, Styles } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';
-import { dataUser } from '@/mocks/data';
 import Navigator from '@/routers/Navigator';
 import { Configs, isIOS } from '@/common/Configs';
 import { Button } from '@/components/elements/button';
@@ -95,6 +94,8 @@ const Profile = observer(() => {
             [ScreenName.tabs],
             TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
         );
+        userManager.updateUserInfo({});
+        Navigator.replaceScreen(ScreenName.auth);
     }, [userManager]);
 
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {

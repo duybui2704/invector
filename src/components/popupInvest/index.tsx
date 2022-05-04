@@ -1,18 +1,19 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
-import { Text, View, Modal } from 'react-native';
+import { Modal, Text, View } from 'react-native';
 
-import { PopupActions, PopupProps } from './types';
-import { MyStylePupUp } from '@/components/popupInvest/styles';
-import { Touchable } from '@/components/elements/touchable';
-import { COLORS } from '@/theme';
-import { MyTextInput } from '@/components/elements/textfield';
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
-import { TextFieldActions } from '@/components/elements/textfield/types';
-import BottomSheetComponentInvest from '@/components/popupInvest/bottomSheetInvest';
 import { ItemProps } from '@/components/bottomsheet';
+import { MyTextInput } from '@/components/elements/textfield';
+import { TextFieldActions } from '@/components/elements/textfield/types';
+import { Touchable } from '@/components/elements/touchable';
+import BottomSheetComponentInvest from '@/components/popupInvest/bottomSheetInvest';
+import { MyStylePupUp } from '@/components/popupInvest/styles';
 import { useAppStore } from '@/hooks';
 import { arrMoney, arrMonth } from '@/mocks/data';
+import { COLORS } from '@/theme';
+import { PopupActions, PopupProps } from './types';
+
 
 const PopupStatus = forwardRef<PopupActions, PopupProps>(
     ({

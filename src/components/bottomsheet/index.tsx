@@ -23,7 +23,8 @@ import Languages from '@/common/Languages';
 import IcFindingContract from '@/assets/image/common/ic_search.svg';
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import DimensionUtils from '../../utils/DimensionUtils';
-import MyStyleBottomSheet from "@/components/bottomsheet/styles";
+import MyStyleBottomSheet from '@/components/bottomsheet/styles';
+
 const styles = MyStyleBottomSheet();
 export type ItemProps = {
     value?: string;

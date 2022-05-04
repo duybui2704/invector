@@ -30,8 +30,8 @@ import AccountInfo from '@/screen/profile/accountInfo/AccountInfo';
 import EditAccountInfo from '@/screen/profile/editAccountInfo/EditAccountInfo';
 import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
 import Policy from '@/screen/profile/policy/Policy';
-import { NotifyInvest } from '@/screen/investment/notifyInvest';
 import MyWebView from '@/screen/profile/myWedView/MyWebView';
+import { NotifyInvest } from '@/screen/home/notifyInvest';
 
 const TabsData = [
     {
@@ -75,6 +75,9 @@ const HomeStack = () => {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.home} component={Home} />
+            <Stack.Screen name={ScreenName.notifyInvest} component={NotifyInvest} />
+            <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
+            <Stack.Screen name={ScreenName.invest} component={Invest} />
         </Stack.Navigator>
     );
 };
@@ -85,7 +88,6 @@ const InvestStack = () => {
             <Stack.Screen name={ScreenName.investment} component={Investment} />
             <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
             <Stack.Screen name={ScreenName.invest} component={Invest} />
-            <Stack.Screen name={ScreenName.notifyInvest} component={NotifyInvest} />
         </Stack.Navigator>
     );
 };
@@ -149,12 +151,12 @@ const TabBar = ({ props }: any) => {
 
 
 const MyBottomTabs = observer(() => {
-    const { userManager } = useAppStore();
+    const { userManager, fastAuthInfoManager } = useAppStore();
 
     const onTabPress = useCallback((e: any, navigation: any, route: any) => {
         e?.preventDefault();
         const tab = TabsData.filter((item) => item.name === route?.name)[0];
-        if (route?.name !== TabsName.homeTabs && !userManager?.userInfo) {
+        if ((route?.name !== TabsName.homeTabs && !userManager?.userInfo) || fastAuthInfoManager.isEnableFastAuth) {
             navigation.navigate(ScreenName.auth);
             SessionManager.lastTabIndexBeforeOpenAuthTab = tab?.index;
         }
@@ -162,7 +164,7 @@ const MyBottomTabs = observer(() => {
             navigation.navigate(route?.name);
         }
 
-    }, [userManager]);
+    }, [fastAuthInfoManager.isEnableFastAuth, userManager?.userInfo]);
 
     const getTabBarVisibility = useCallback((route: any) => {
         const routeName = getFocusedRouteNameFromRoute(route);
@@ -201,6 +203,7 @@ const MyBottomTabs = observer(() => {
             appearance={{
                 horizontalPadding: 10
             }}
+
         >
             <Tab.Screen
                 name={TabsName.homeTabs}

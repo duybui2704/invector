@@ -13,13 +13,14 @@ export const MyStylesLogin = () => {
                 flex: 1,
                 backgroundColor: COLORS.GREEN,
                 width: DimensionUtils.SCREEN_WIDTH,
-                height: DimensionUtils.SCREEN_HEIGHT
+                height: DimensionUtils.SCREEN_HEIGHT,
+                justifyContent: 'center'
             },
             inputPhone: {
                 marginTop: 15,
                 borderRadius: 30,
                 height: Configs.FontSize.size40,
-                width: '90%',
+                width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row'
@@ -30,7 +31,7 @@ export const MyStylesLogin = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '90%',
+                width: '100%',
                 height: Configs.FontSize.size40
             },
             rowInfo: {
@@ -67,7 +68,8 @@ export const MyStylesLogin = () => {
             },
             content: {
                 justifyContent: 'center',
-                marginHorizontal: 10
+                marginHorizontal: 10,
+                marginVertical: DimensionUtils.SCREEN_HEIGHT * 0.06
             },
             txtSave: {
                 ...Styles.typography.regular,
@@ -101,8 +103,7 @@ export const MyStylesLogin = () => {
             },
             wrapLoginTxt: {
                 flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.1
+                alignItems: 'center'
             }
         });
     }, []);

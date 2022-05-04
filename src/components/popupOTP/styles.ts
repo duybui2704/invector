@@ -1,8 +1,9 @@
-import {useMemo} from "react";
-import {StyleSheet} from "react-native";
-import {COLORS, Styles} from "@/theme";
-import {Configs} from "@/common/Configs";
-import DimensionUtils from "@/utils/DimensionUtils";
+import { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+
+import { COLORS, Styles } from '@/theme';
+import { Configs } from '@/common/Configs';
+import DimensionUtils from '@/utils/DimensionUtils';
 
 export const MyStylesOtpInvest = () => {
     return useMemo(() =>
@@ -11,6 +12,13 @@ export const MyStylesOtpInvest = () => {
                 flex: 1,
                 backgroundColor: COLORS.WHITE_GRAY,
                 marginVertical: 16,
+                alignItems: 'center'
+            },
+            container: {
+                flex: 1,
+                backgroundColor: COLORS.TRANSPARENT,
+                borderColor: COLORS.TRANSPARENT,
+                justifyContent: 'center',
                 alignItems: 'center'
             },
             title: {
@@ -57,8 +65,7 @@ export const MyStylesOtpInvest = () => {
                 borderRadius: 10,
                 justifyContent: 'center',
                 alignItems: 'center'
-            },
-        })
-        ,[])
+            }
+        }), [])
     ;
-}
+};

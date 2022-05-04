@@ -15,7 +15,7 @@ export const loginWithGoogle = async () => {
     try {
         // await GoogleSignin.hasPlayServices();
         const { idToken } = await GoogleSignin.signIn();
-        
+
         if (idToken) {
             const userInfo = await GoogleSignin.signInSilently();
             if (userInfo) GoogleSignin.signOut();
@@ -43,6 +43,7 @@ export const loginWithFacebook = async () => {
             }
             else {
                 data = await Profile.getCurrentProfile();
+                console.log('data', data)
             }
             if (data) LoginManager.logOut();
             return data;
@@ -61,9 +62,9 @@ export const loginWithApple = async () => {
 
 
         const data = appleAuthRequestResponse;
-        console.log('dât',data);
+        console.log('dât', data);
         if (data?.identityToken) {
-            console.log('token',data?.identityToken);
+            console.log('token', data?.identityToken);
             return data;
         }
         return null;

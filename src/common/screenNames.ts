@@ -28,7 +28,8 @@ export const ScreenName = {
     verifyOTP: 'VerifyOTP',
     policy: 'Policy',
     notifyInvest: ' NotifyInvest',
-    myWedView: 'MyWedView'
+    myWedView: 'MyWedView',
+    splash: 'Slash'
 };
 
 export default ScreenName;

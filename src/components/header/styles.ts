@@ -58,17 +58,26 @@ export const styles = StyleSheet.create({
         height: DimensionUtils.SCREEN_WIDTH * 0.05
     },
     logo: {
-        position: 'absolute',
-        left: DimensionUtils.SCREEN_WIDTH * 0.03,
-        top: DimensionUtils.SCREEN_HEIGHT * 0.03,
-        width: DimensionUtils.SCREEN_WIDTH * 0.3,
-        height: DimensionUtils.SCREEN_WIDTH * 0.3
+        marginLeft: DimensionUtils.SCREEN_WIDTH * 0.05
     },
     imgNotify: {
-        position: 'absolute',
-        right: DimensionUtils.SCREEN_WIDTH * 0.03,
-        top: DimensionUtils.SCREEN_HEIGHT * 0.09,
         width: DimensionUtils.SCREEN_WIDTH * 0.08,
         height: DimensionUtils.SCREEN_WIDTH * 0.08
+    },
+    viewRight: {
+        position: 'absolute',
+        right: 10
+    }
+    ,
+    viewRightTop: {
+        position: 'absolute',
+        right: 10
+    },
+    viewTop: {
+        position: 'absolute',
+        top: 0,
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center'
     }
 });

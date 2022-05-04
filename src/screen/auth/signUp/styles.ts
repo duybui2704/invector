@@ -11,13 +11,16 @@ export const MyStylesSign = () => {
             container: {
                 flex: 1,
                 marginLeft: 10,
-                width: '85%'
+                width: '95%'
             },
             main: {
                 flex: 1,
                 backgroundColor: COLORS.GREEN,
                 width: DimensionUtils.SCREEN_WIDTH,
                 height: DimensionUtils.SCREEN_HEIGHT
+            },
+            scrollView: {
+                marginVertical: 20
             },
             wrapLoginTxt: {
                 flexDirection: 'row',
@@ -95,10 +98,9 @@ export const MyStylesSign = () => {
                 marginBottom: 20
             },
             content: {
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.05,
                 justifyContent: 'center',
-                width: '90%',
-                height: DimensionUtils.SCREEN_HEIGHT / 2.5
+                width: '88%',
+                height: '100%'
             },
             hisLop: {
                 paddingVertical: 10,

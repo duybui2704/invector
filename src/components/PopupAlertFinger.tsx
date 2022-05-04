@@ -2,29 +2,27 @@ import React, {
     forwardRef,
     useCallback,
     useImperativeHandle,
+    useMemo,
     useState
 } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { COLORS, Styles } from '@/theme';
-import Utils from '@/utils/Utils';
-import { PopupActionTypes, PopupPropsTypes } from '../models/typesPopup';
-import { Touchable } from './elements/touchable';
+import { PopupPropsTypes as PopupPropTypes } from '@/models/typesPopup';
+import { PopupActions } from './popupInvest/types';
 import Languages from '@/common/Languages';
-import { Configs } from '@/common/Configs';
 import { ENUM_BIOMETRIC_TYPE } from '@/common/constants';
+import { Configs } from '@/common/Configs';
 
 // import { PopupActions, PopupProps } from './types';
-interface PopupErrorBiometryProps extends PopupPropsTypes {
-    typeSupportBiometry?: string;
+interface PopupAlertFingerProps extends PopupPropTypes {
+    type?: string;
     btnText?: string;
 }
 
-const PopupErrorBiometry = forwardRef<
-    PopupActionTypes,
-    PopupErrorBiometryProps
-    >(({ onClose, title, typeSupportBiometry }: PopupErrorBiometryProps, ref) => {
+const PopupAlertFinger = forwardRef<PopupActions, PopupAlertFingerProps>(
+    ({ title, type }: PopupAlertFingerProps, ref) => {
         const [visible, setVisible] = useState<boolean>(false);
         const show = useCallback(() => {
             setVisible(true);
@@ -39,16 +37,20 @@ const PopupErrorBiometry = forwardRef<
             hide
         }));
 
-        const _onClose = useCallback(() => {
-            hide();
-            onClose?.();
-        }, [hide, onClose]);
-
-        const _openSetting = useCallback(() => {
-            _onClose();
-        // Utils.openSetting();
-        }, [_onClose]);
-
+        const renderTitle = useMemo(() => {
+            if (type === ENUM_BIOMETRIC_TYPE.FACE_ID) {
+                return (
+                    <Text style={styles.txtTitle}>
+                        {/* {Languages.authentication.descriptionFaceId} */}
+                    </Text>
+                );
+            }
+            return (
+                <Text style={styles.txtTitle}>
+                    {/* {Languages.authentication.description} */}
+                </Text>
+            );
+        }, [type]);
         return (
             <Modal
                 isVisible={visible}
@@ -59,19 +61,15 @@ const PopupErrorBiometry = forwardRef<
                 hideModalContentWhileAnimating
             >
                 <View style={styles.popup}>
-                    <Text style={styles.txtTitle}>{Languages.quickAuThen.quickAuthn}</Text>
-                    <Text style={styles.txtContent}>{typeSupportBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID ? Languages.quickAuThen.desSetFaceId : Languages.quickAuThen.desSetTouchId}</Text>
-                    <Touchable onPress={_openSetting} style={styles.setting}>
-                        <Text style={styles.txtSetting}>
-                            {Languages.quickAuThen.goToSetting}
-                        </Text>
-                    </Touchable>
+                    {renderTitle}
+                    <Text style={styles.txtContent}>{title}</Text>
                 </View>
             </Modal>
         );
-    });
+    }
+);
 
-export default PopupErrorBiometry;
+export default PopupAlertFinger;
 
 const styles = StyleSheet.create({
     popup: {
@@ -93,13 +91,13 @@ const styles = StyleSheet.create({
     txtTitle: {
         ...Styles.typography.bold,
         fontSize: Configs.FontSize.size15,
-        color: COLORS.BLACK
+        color: COLORS.GREEN
     },
     txtContent: {
         ...Styles.typography.regular,
         marginVertical: 10,
         marginRight: 20,
-        color: COLORS.BLACK,
+        color: COLORS.RED,
         fontSize: Configs.FontSize.size13
     },
     btn: {
@@ -117,13 +115,5 @@ const styles = StyleSheet.create({
     },
     iconClose: {
         alignItems: 'flex-end'
-    },
-    setting: {
-        alignSelf: 'flex-end',
-        marginRight: 10
-    },
-    txtSetting: {
-        ...Styles.typography.bold,
-        fontSize: Configs.FontSize.size16
     }
 });

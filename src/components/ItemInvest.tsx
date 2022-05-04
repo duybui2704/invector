@@ -13,10 +13,11 @@ import { ENUM_INVEST_STATUS } from '@/common/constants';
 type ItemProps = {
     data?: any;
     onPress?: () => void
+    onPressInvestNow?: () => void
     hasButton?: boolean | true
     title?: string
 };
-const ItemInvest = ({ data, onPress, hasButton, title }: ItemProps
+const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemProps
 ) => {
     const styleText = {
         color: hasButton ? COLORS.GREEN : COLORS.GRAY_7
@@ -24,10 +25,10 @@ const ItemInvest = ({ data, onPress, hasButton, title }: ItemProps
     return (
         <Touchable onPress={onPress} style={styles.item}>
             <View style={styles.rowTop}>
-                <Text style={[styles.txtMoney, styleText]}>{Utils.formatMoney(data?.amountMoney)}</Text>
+                <Text style={[styles.txtMoney, styleText]}>{Utils.formatMoney(data?.so_tien_dau_tu)}</Text>
                 <View style={styles.wrapText}>
                     <Text style={styles.txtInterest}>{Languages.invest.interest}</Text>
-                    <Text style={styles.txtPercent}>{data?.percent}</Text>
+                    <Text style={styles.txtPercent}>{data?.ti_le_lai_suat_hang_thang}</Text>
                 </View>
             </View>
             <Dash
@@ -38,16 +39,16 @@ const ItemInvest = ({ data, onPress, hasButton, title }: ItemProps
             <View style={styles.rowCenter}>
                 <View>
                     <Text style={styles.txtInterest}>{Languages.invest.time}</Text>
-                    <Text style={styles.txtFormality}>{data?.time}</Text>
+                    <Text style={styles.txtFormality}>{data?.thoi_gian_dau_tu}</Text>
                 </View>
                 {title === ENUM_INVEST_STATUS.HISTORY ?
                     <View style={styles.wrapText}>
                         <Text style={styles.txtInterest}>{Languages.invest.sumMoney}</Text>
-                        <Text style={styles.greenText}>{Utils.formatMoney(data?.sumMoney)}</Text>
+                        <Text style={styles.greenText}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
                     </View> :
                     <View style={styles.wrapText}>
                         <Text style={styles.txtInterest}>{Languages.invest.intent}</Text>
-                        <Text style={styles.greenText}>{Utils.formatMoney(data?.amountMoney)}</Text>
+                        <Text style={styles.greenText}>{Utils.formatMoney(data?.lai_hang_thang)}</Text>
                     </View>
                 }
             </View>
@@ -59,15 +60,15 @@ const ItemInvest = ({ data, onPress, hasButton, title }: ItemProps
             <View style={styles.rowBottom}>
                 <View>
                     <Text style={styles.txtInterest} >{Languages.invest.formalPayment}</Text>
-                    <Text style={styles.txtFormality}>{data?.formality}</Text>
+                    <Text style={styles.txtFormality}>{data?.hinh_thuc_tra_lai}</Text>
                 </View>
-                {title === ENUM_INVEST_STATUS.INVEST_NOW ? <Touchable onPress={onPress} style={styles.btInvestNow}>
+                {title === ENUM_INVEST_STATUS.INVEST_NOW ? <Touchable onPress={onPressInvestNow} style={styles.btInvestNow}>
                     <Text style={styles.txtInvestNow}>{Languages.invest.investNow}</Text>
                     <IcBtnInvest />
                 </Touchable> :
                     <View style={styles.wrapText}>
                         <Text style={styles.txtInterest} >{Languages.invest.getMoney}</Text>
-                        <Text style={styles.txtYellow}>{Utils.formatMoney(data?.interest)}</Text>
+                        <Text style={styles.txtYellow}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
                     </View>}
             </View>
         </Touchable>
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
         color: COLORS.GREEN
     },
     txtInterest: {
-        fontSize: Configs.FontSize.size12,
+        fontSize: Configs.FontSize.size11,
         color: COLORS.GRAY_12
     },
     txtPercent: {
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     txtInvestNow: {
         ...Styles.typography.medium,
         color: COLORS.WHITE,
-        fontSize: Configs.FontSize.size12,
+        fontSize: Configs.FontSize.size11,
         marginRight: 5
     },
     txtFormality: {

@@ -14,6 +14,17 @@ function formatMoney(number: string | number | undefined) {
         .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
 }
 
+function convertMoney(number: string | number | undefined) {
+    const hasMinus = `${number}`.includes('-');
+    number = `${number}`.replace(/[^0-9]/g, '');
+
+    if (!number || Number.isNaN(number) || Number(number) === 0) {
+        return '0';
+    }
+    return `${hasMinus ? '-' : ''}${Math.ceil(Number(number))
+        .toString()}`;
+}
+
 function formatTextToNumber(textNumber: string) {
     const num = (`${textNumber}`).replace(/[^0-9]/g, '');
     return num;
@@ -126,5 +137,6 @@ export default {
     encodePhone,
     covertSecondAndGetMinute,
     covertSecondAndGetSecond,
-    formatObjectToKeyLabel
+    formatObjectToKeyLabel,
+    convertMoney
 };

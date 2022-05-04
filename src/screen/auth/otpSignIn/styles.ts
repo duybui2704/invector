@@ -1,15 +1,17 @@
-import React, {useMemo} from "react";
-import {StyleSheet} from "react-native";
-import {COLORS, Styles} from "@/theme";
-import {Configs} from "@/common/Configs";
-import DimensionUtils from "@/utils/DimensionUtils";
+import React, { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+
+import { COLORS, Styles } from '@/theme';
+import { Configs } from '@/common/Configs';
+import DimensionUtils from '@/utils/DimensionUtils';
 
 export const MyStylesOtp = () => {
     return useMemo(() =>
         StyleSheet.create({
             container: {
                 flex: 1,
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.12
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.06,
+                marginHorizontal: 15
             },
             viewTop: {
                 flexDirection: 'row',
@@ -22,7 +24,7 @@ export const MyStylesOtp = () => {
             confirmOtp: {
                 ...Styles.typography.medium,
                 marginTop: 10,
-                color: COLORS.GRAY,
+                color: COLORS.GRAY
         
             },
             boxOtp: {
@@ -47,7 +49,8 @@ export const MyStylesOtp = () => {
                 ...Styles.typography.mediumSmall,
                 color: COLORS.BLACK,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                textAlign: 'center'
             },
             notifyOtp: {
                 marginTop: Configs.FontSize.size30
@@ -85,6 +88,5 @@ export const MyStylesOtp = () => {
                 ...Styles.typography.regular,
                 color: COLORS.RED
             }
-        })
-        , []);
+        }), []);
 };

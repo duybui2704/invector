@@ -1,71 +1,63 @@
-import { ENUM_INVEST_NOTIFY } from "@/common/constants";
-import Languages from "@/common/Languages";
-import { Touchable } from "@/components/elements/touchable";
-import HeaderBar from "@/components/header";
-import MyFlatList from "@/components/MyFlatList";
-import { COLORS, Styles } from "@/theme";
-import { useIsFocused } from "@react-navigation/core";
-import React, { useCallback, useEffect, useState } from "react";
-import { ScrollView, Text, TextStyle, View, ViewStyle } from "react-native";
-import Dash from "react-native-dash";
-import { MyStylesNotifyInvest } from "./styles";
+import React, { useCallback, useEffect, useState } from 'react';
+import { ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
+import Dash from 'react-native-dash';
+import { useIsFocused } from '@react-navigation/core';
+import { join } from 'lodash';
 
-const dataArr = [
-    {
-        id: '1',
-        title: 'Trả lãi đầu tư',
-        date: '10/10/2022',
-        time: '12:00:00',
-        note: 'Thông báo lãi tháng 3 gói đầu tư XLN374 trả lãi 1.000.000 VNĐ vào tài khoản ',
-        isRead: false,
-        rate: 4e5
-    },
-    {
-        id: '2',
-        title: 'Đầu tư thành công',
-        date: '10/10/2022',
-        time: '12:00:00',
-        note: 'Chúc mừng bạn đã đầu tư thành công gói đầu tư XLN374 với số tiền 80.000.000 VNĐ lãi hàng tháng gốc cuối... ',
-        isRead: false,
-        rate: 4e5
-    },
-    {
-        id: '3',
-        title: 'Thay đổi phần trăm tích luỹ',
-        date: '10/10/2022',
-        time: '12:00:00',
-        note: 'Thông báo đổi phần trăm tích luỹ gói đầu tư 80.000.000 VNĐ lãi hàng tháng gốc cuối kỳ ',
-        isRead: false
-    },
-    {
-        id: '4',
-        title: 'Tri ân khách hàng cùng tienngay.vn',
-        date: '10/10/2022',
-        time: '12:00:00',
-        note: 'Thông báo đổi phần trăm tích luỹ gói đầu tư 80.000.000 VNĐ lãi hàng tháng gốc cuối kỳ ',
-        isRead: false
-    },
-];
+import { ENUM_INVEST_NOTIFY } from '@/common/constants';
+import Languages from '@/common/Languages';
+import { Touchable } from '@/components/elements/touchable';
+import HeaderBar from '@/components/header';
+import MyFlatList from '@/components/MyFlatList';
+import { COLORS, Styles } from '@/theme';
+import { MyStylesNotifyInvest } from './styles';
+import { useAppStore } from '@/hooks';
+import { Notify } from '@/models/invest';
+import MyStyleLoading from '@/components/loading/styles';
 
 export const NotifyInvest = () => {
     const styles = MyStylesNotifyInvest();
     const [isRead, setIsRead] = useState<boolean>(false);
-    const [data, setData] = useState<any>(dataArr);
+    const [data, setData] = useState<Notify>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_NOTIFY.NOTIFY_ALL);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const isFocused = useIsFocused();
+    const { apiServices } = useAppStore();
 
     useEffect(() => {
         if (isFocused) {
-            setData(dataArr);
-
+            fetchData(btnInvest);
         }
     }, [isFocused]);
+
+    const fetchData = useCallback(async (type: string) => {
+        if (type === ENUM_INVEST_NOTIFY.NOTIFY_ALL) {
+            setIsLoading(true);
+            const res = await apiServices.invest.getNotify();
+            setIsLoading(false);
+            if (res.success) {
+                console.log(JSON.stringify(res.data));
+                const dataNotify = res.data as Notify;
+                setData(dataNotify);
+            }
+        }
+        else {
+            setIsLoading(true);
+            const res = await apiServices.invest.getNotifyOnRead();
+            setIsLoading(false);
+            if (res.success) {
+                console.log(JSON.stringify(res.data));
+                // const dataNotify = res.data as Notify;
+                // setData(dataNotify);
+            }
+        }
+    }, [btnInvest]);
 
     const onRefresh = useCallback(() => {
         setIsRefreshing(true);
         setIsRefreshing(false);
-        setData(dataArr);
+        fetchData(btnInvest);
     }, []);
 
     const renderInvest = useCallback((type: string) => {
@@ -81,6 +73,7 @@ export const NotifyInvest = () => {
 
         const onPress = () => {
             setBtnInvest(type);
+            fetchData(type);
         };
 
         const getTitle = () => {
@@ -90,7 +83,7 @@ export const NotifyInvest = () => {
                 case ENUM_INVEST_NOTIFY.UNREAD:
                     return Languages.invest.notifyUnRead;
                 default:
-                    break;
+                    return null;
             }
         };
         return (
@@ -105,16 +98,27 @@ export const NotifyInvest = () => {
         return `${index}${item.id}`;
     }, []);
 
+
     const ItemNotify = useCallback((onPress: any, item: any, title: string) => {
+
+        const onRead = async (id: number) => {
+            setIsLoading(true);
+            const res = await apiServices.invest.getNotifyUpdateRead(id);
+            setIsLoading(false);
+            if (res.success) {
+                fetchData(btnInvest);
+            }
+        };
+
         return (
-            <Touchable style={styles.item}>
+            <Touchable style={styles.item} onPress={() => onRead(item?.id)}>
                 <View style={styles.rowTop}>
                     <View style={styles.viewLeft}>
-                        <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
+                        <Text style={styles.title} numberOfLines={1}>{item?.note}</Text>
                     </View>
                     <View style={styles.txtRight}>
                         <Text style={styles.txtTimeDate}>{item.date}</Text>
-                        <Text style={styles.txtTimeDate}>{` ` + item.time}</Text>
+                        {/* <Text style={styles.txtTimeDate}>{` ${item.time}`}</Text> */}
                     </View>
 
                 </View>
@@ -124,7 +128,7 @@ export const NotifyInvest = () => {
                     dashGap={5}
                     dashColor={COLORS.GRAY_13}
                 />
-                <Text style={styles.txtNote}>{item.note}</Text>
+                <Text style={styles.txtNote}>{item?.message}</Text>
                 {/* {item.title === Languages.invest.investPay || item.title === Languages.invest.investSuccess
                     ? <Text style={styles.txtNote}>{item.rate}</Text> : null
                 } */}
@@ -134,8 +138,8 @@ export const NotifyInvest = () => {
     }, []);
 
     const onNotifyDetail = () => {
-        console.log('detail')
-    }
+        console.log('detail');
+    };
 
     const renderItem = useCallback(({ item }: any) => {
         switch (btnInvest) {
@@ -143,6 +147,8 @@ export const NotifyInvest = () => {
                 return ItemNotify(onNotifyDetail, item, ENUM_INVEST_NOTIFY.NOTIFY_ALL);
             case ENUM_INVEST_NOTIFY.UNREAD:
                 return ItemNotify(onNotifyDetail, item, ENUM_INVEST_NOTIFY.UNREAD);
+            default:
+                return null;
         }
     }, [btnInvest]);
 
@@ -154,7 +160,7 @@ export const NotifyInvest = () => {
                     {renderInvest(ENUM_INVEST_NOTIFY.NOTIFY_ALL)}
                     {renderInvest(ENUM_INVEST_NOTIFY.UNREAD)}
                 </View>
-                <MyFlatList
+                {data && <MyFlatList
                     contentContainerStyle={styles.flatList}
                     showsVerticalScrollIndicator={false}
                     data={data}
@@ -162,9 +168,9 @@ export const NotifyInvest = () => {
                     keyExtractor={keyExtractor}
                     refreshing={isRefreshing}
                     onRefresh={onRefresh}
-                />
+                />}
             </View>
         </View>
     );
-}
+};
 

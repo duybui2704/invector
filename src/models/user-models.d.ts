@@ -42,7 +42,7 @@ interface OtpModal {
     otp3: any;
     otp4: any;
     otp5: any;
-    otp6: any
+    otp6: any;
 }
 
 export interface StateUserInfo {

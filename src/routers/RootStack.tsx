@@ -14,6 +14,7 @@ import { useAppStore } from '@/hooks';
 import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC } from '@/common/constants';
 import { SuccessSignUp } from '@/screen/auth/signUp/successSignUp';
 import Broadening from '@/screen/broadening';
+import Splash from '@/screen/splash';
 
 
 const screenOptions = { headerShown: false };
@@ -65,9 +66,6 @@ const RootStack = observer(() => {
             <Stack.Navigator screenOptions={screenOptions}>
                 <Stack.Screen name={ScreenName.auth} component={Auth} />
                 <Stack.Screen name={ScreenName.success} component={SuccessSignUp} />
-                {/* <Stack.Screen name={ScreenName.login} component={Login} /> */}
-
-                {/* <Stack.Screen name={ScreenName.homeScreen} component={Home}/> */}
             </Stack.Navigator>
         );
     }, []);
@@ -76,6 +74,7 @@ const RootStack = observer(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
                 {/* <Stack.Screen name={ScreenName.onBoard} component={Broadening} /> */}
+                <Stack.Screen name={ScreenName.splash} component={Splash} />
                 <Stack.Screen name={ScreenName.auth} component={AuthStack} />
                 <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
             </Stack.Navigator>

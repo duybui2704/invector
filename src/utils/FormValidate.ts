@@ -189,5 +189,6 @@ export default {
     addressValidate,
     jobValidate,
     birthdayValidate,
-    inputValidate
+    inputValidate,
+    removeAscent
 };

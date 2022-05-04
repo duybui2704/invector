@@ -109,7 +109,7 @@ export default function Broadening() {
                     useNativeDriver: true
                 }).start(transitionNext);
             } else {
-                Navigator.replaceScreen(ScreenName.auth);
+                Navigator.replaceScreen(ScreenName.tabs);
             }
         },
         [swipe.x, transitionNext]

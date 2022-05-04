@@ -1,30 +1,32 @@
-import React, {useCallback, useMemo} from 'react';
-import {Image, ImageBackground, StatusBar, Text, View} from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { Image, ImageBackground, StatusBar, Text, View, BackHandler } from 'react-native';
 
 import IcBack from '../../assets/image/header/ic_back_header.svg';
 import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
+import LogoHome from '../../assets/image/header/logo_home.svg';
 import IcNotifyInvest from '../../assets/image/header/ic_header_invest.svg';
 import Images from '../../assets/Images';
-import {isIOS} from '../../common/Configs';
+import { isIOS } from '../../common/Configs';
 import Navigator from '../../routers/Navigator';
-import {Touchable} from '../elements/touchable';
-import {HeaderProps} from './types';
-import {styles} from './styles';
-import {COLORS} from '../../theme';
-import Languages from "@/common/Languages";
+import { Touchable } from '../elements/touchable';
+import { HeaderProps } from './types';
+import { styles } from './styles';
+import { COLORS } from '../../theme';
+import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
+import DimensionUtils from '@/utils/DimensionUtils';
 
 export const HeaderBar = ({
-                              onBackPressed,
-                              onGoBack,
-                              title,
-                              hasBack,
-                              noHeader,
-                              noStatusBar,
-                              isLight,
-                              imageBackground,
-                              exitApp
-                          }: HeaderProps) => {
+    onBackPressed,
+    onGoBack,
+    title,
+    hasBack,
+    noHeader,
+    noStatusBar,
+    isLight,
+    imageBackground,
+    exitApp
+}: HeaderProps) => {
 
     const _onBackPressed = useCallback(() => {
         if (!exitApp) {
@@ -41,12 +43,12 @@ export const HeaderBar = ({
     }, [exitApp, hasBack, onBackPressed, onGoBack]);
 
     const onNotifyInvest = useCallback(() => {
-        Navigator.pushScreen(ScreenName.notifyInvest)
+        Navigator.navigateScreen(ScreenName.notifyInvest);
     }, []);
 
     const renderBack = useMemo(() => (
         <Touchable style={styles.goBack} onPress={_onBackPressed} size={40}>
-            <IcBack width={27} height={27}/>
+            <IcBack width={27} height={27} />
         </Touchable>
     ), [_onBackPressed]);
 
@@ -68,8 +70,16 @@ export const HeaderBar = ({
                     style={styles.imageBg}
                     resizeMode='stretch'
                 >
-                    <Image source={Images.logo_header_home} resizeMode='contain' style={styles.logo}/>
-                    <IcNotify style={styles.imgNotify}/>
+                    <View style={styles.viewTop}>
+                        <LogoHome
+                            width={DimensionUtils.SCREEN_HEIGHT * 0.18}
+                            height={DimensionUtils.SCREEN_HEIGHT * 0.18}
+                            style={styles.logo}
+                        />
+                        <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
+                            <IcNotify style={styles.imgNotify} width={30} height={30} />
+                        </Touchable>
+                    </View>
                 </ImageBackground>
             )}
             {noStatusBar && isIOS ? null : <StatusBar
@@ -82,9 +92,9 @@ export const HeaderBar = ({
                 {renderTitle}
                 {(!exitApp) && (hasBack ? renderBack : null)}
                 {title === Languages.invest.title &&
-                    <Touchable style={{ position: 'absolute', right: 10 }} onPress={onNotifyInvest}>
-                    <IcNotifyInvest width={22} height={22}/>
-                  </Touchable>}
+                    <Touchable style={styles.viewRight} >
+                        <IcNotifyInvest width={22} height={22} />
+                    </Touchable>}
             </View>}
         </View>
     );
