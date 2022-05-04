@@ -27,8 +27,8 @@ export enum API_CONFIG {
     // BASE_URL = 'https://appkh.tienngay.vn/V2',
     // BASE_URL_OLD = 'https://sandboxappkh.tienngay.vn',
     // BASE_URL = 'https://sandboxappkh.tienngay.vn/V2',
-    BASE_URL = 'https://sandboxappndt.tienngay.vn/',
-    // BASE_URL = 'https://appndt.tienngay.vn/',
+    // BASE_URL = 'https://sandboxappndt.tienngay.vn/',
+    BASE_URL = 'https://appndt.tienngay.vn/',
     DOMAIN_SHARE = 'https://',
 
     IMAGES_HOST = 'https://',
@@ -66,7 +66,7 @@ export enum API_CONFIG {
     OTP_RESET_PWD = '/auth/reset_password', // otp reset pwd
     UPDATE_PWD = 'auth/new_password',
     LINK_SOCIAL = '/user/link_social',
-    IDENTITY_VERIFY = '/user/identity_verification', //  xac thuc CCCD/CMT
+    IDENTITY_VERIFY = 'user/identity_verification', //  xac thuc CCCD/CMT
 
     // upload ảnh
 

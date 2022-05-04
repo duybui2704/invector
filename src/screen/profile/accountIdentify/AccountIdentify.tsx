@@ -20,7 +20,7 @@ import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
 import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
-import { dataUser, typePhoto } from '@/mocks/data';
+import { typePhoto } from '@/mocks/data';
 import { PopupActionTypes } from '@/models/typesPopup';
 import { HtmlStyles } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
@@ -49,16 +49,18 @@ const AccountIdentify = observer(() => {
         setIdentity(value);
     }, []);
 
+    // <Text>{JSON.stringify(avatar?.images[0]?.path)}</Text>   // file duong dan image after photograph // Api can update sau
+
     const fetchIdentitiVerify = useCallback(async () => {
-        const res = await apiServices.auth.identityVerify(3, identity, frontIdentify, afterIdentify, avatar);
+        const res = await apiServices.auth.identityVerify(3, identity, frontIdentify?.images[0]?.path, afterIdentify?.images[0]?.path, avatar?.images[0]?.path);
         if (res.success) {
             popupConfirmRef.current?.show();
         }else {
-            ToastUtils.showErrorToast(Languages.msgNotify.failPostIdentity);
+            // ToastUtils.showErrorToast(Languages.msgNotify.failPostIdentity);
         }
     }, [afterIdentify, apiServices.auth, avatar, frontIdentify, identity]);
 
-    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean) => {
+    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, length?:number) => {
         return (
             <View style={styles.wrapInput}>
                 <Text style={styles.labelStyle}>{label}</Text>
@@ -68,6 +70,7 @@ const AccountIdentify = observer(() => {
                     placeHolder={label}
                     keyboardType={keyboardType}
                     value={value}
+                    maxLength={length}
                     onChangeText={onChangeText}
                     containerInput={styles.inputStyle}
                     disabled={disabled}
@@ -96,10 +99,13 @@ const AccountIdentify = observer(() => {
     }, []);
 
     const onVerify = useCallback(() => {
-        if (onValidate()) {
+        if (onValidate() && avatar && frontIdentify && afterIdentify) {
             fetchIdentitiVerify();
         }
-    }, [fetchIdentitiVerify, onValidate]);
+        else{
+            ToastUtils.showMsgToast(Languages.errorMsg.errEmptyAvatarIdentity);
+        }
+    }, [afterIdentify, avatar, fetchIdentitiVerify, frontIdentify, onValidate]);
 
     const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, hasImage?: boolean, imageSource?: string, disable?: boolean) => {
         return <PhotoPickerBottomSheet
@@ -152,7 +158,7 @@ const AccountIdentify = observer(() => {
                     <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[1]}</Text>
-                    {renderPhotoPicker(avatarRef, Languages.accountIdentify.avatar, avatar, <AvatarIC />, onPressItemAvatar, !!SessionManager.userInfo?.avatar_user, SessionManager.userInfo?.avatar_user)}
+                    {renderPhotoPicker(avatarRef, Languages.accountIdentify.avatar, avatar, <AvatarIC />, onPressItemAvatar, !!SessionManager.userInfo?.avatar, SessionManager.userInfo?.avatar)}
                 </View>
             </View>
         );
@@ -161,7 +167,7 @@ const AccountIdentify = observer(() => {
     const renderBottom = useMemo(() => {
         return (
             <View  style={styles.wrapBottom}>
-                {dataUser.tinh_trang?.auth === 0 &&
+                {SessionManager?.userInfo?.tinh_trang?.auth === 1 &&
                     <>
                         <HTMLView
                             value={Languages.accountIdentify.note}
@@ -190,7 +196,7 @@ const AccountIdentify = observer(() => {
                                 stylesheet={HtmlStyles || undefined}
                             />
                         </View>}
-                    {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, SessionManager.userInfo?.identity, 'NUMBER', !!SessionManager.userInfo?.identity)}
+                    {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, SessionManager.userInfo?.identity, 'NUMBER', !!SessionManager.userInfo?.identity, 12)}
                     {renderPhoto}
                     {renderBottom}
                     {renderPopupConfirm(popupConfirmRef)}

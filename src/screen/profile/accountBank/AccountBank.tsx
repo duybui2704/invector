@@ -29,6 +29,7 @@ import SessionManager from '@/manager/SessionManager';
 import { ItemProps } from '@/models/common-model';
 import ToastUtils from '@/utils/ToastUtils';
 import Loading from '@/components/loading';
+import { UserInfoModal } from '@/models/user-models';
 
 const AccountBank = observer(() => {
     const { apiServices } = useAppStore();
@@ -140,7 +141,7 @@ const AccountBank = observer(() => {
         bankRef.current?.setErrorMsg(errMsgBank);
 
         if (
-            `${errMsgAccNumber}${errMsgATMNumber}${errMsgName}${errMsgBank}`.length === 0
+            `${errMsgAccNumber}${errMsgName}${errMsgBank}`.length === 0
         ) {
             return true;
         }
@@ -154,13 +155,15 @@ const AccountBank = observer(() => {
             if(res.success){
                 ToastUtils.showSuccessToast(Languages.msgNotify.successAccountLinkBank);
                 setIsLoading(false);
-            }
-            else {
-                ToastUtils.showErrorToast(Languages.msgNotify.failAccountLinkBank);
+                const resUser = await apiServices.auth.getUserInfo(3);
+                const user = resUser.data as UserInfoModal;
+                SessionManager.setUserInfo(
+                    user
+                );
             }
         }
         setIsLoading(false);
-    }, [accountNumber, accountProvider, apiServices.paymentMethod, banks, onValidate]);
+    }, [accountNumber, accountProvider, apiServices.auth, apiServices.paymentMethod, banks, onValidate]);
 
     return (
         <BottomSheetModalProvider>
@@ -189,8 +192,8 @@ const AccountBank = observer(() => {
                                     {renderAccBank(Languages.accountBank.accountNumber, type === ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER)}
                                     {renderAccBank(Languages.accountBank.ATMNumber, type === ENUM_TYPE_CARD_BANK.ATM_NUMBER)}
                                 </View>
-                                {active ? renderInput(Languages.accountBank.accountNumber, Languages.accountBank.accountNumber, accountNumber, accountNumberRef, 'NUMBER', 15) :
-                                    renderInput(Languages.accountBank.ATMNumber, Languages.accountBank.ATMNumber, ATMNumber, ATMNumberRef, 'NUMBER', 15)}
+                                {active ? renderInput(Languages.accountBank.accountNumber, Languages.accountBank.accountNumber, accountNumber, accountNumberRef, 'NUMBER', 16) :
+                                    renderInput(Languages.accountBank.ATMNumber, Languages.accountBank.ATMNumber, ATMNumber, ATMNumberRef, 'NUMBER', 16)}
                                 {renderInput(Languages.accountBank.accountProvider, Languages.accountBank.accountProviderName, accountProvider, accountProviderRef)}
                             </KeyboardAvoidingView>
                             <HTMLView

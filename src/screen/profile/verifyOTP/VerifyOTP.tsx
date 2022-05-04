@@ -27,7 +27,7 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
     const [phone, setPhone] = useState<string>(route?.params?.phoneNumber);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>('');
-    const time = 120000 /10;    // set time resend OTP = 12s
+    const time = 120000 ;    // set time resend OTP = 120s
     const [disableResend, setDisableResend] = useState<boolean>(true);
     const [overTime, setOverTime] = useState<number>(time);
     const intervalRef = useRef<any>();

@@ -46,7 +46,7 @@ interface OtpModal {
 }
 
 export interface StateUserInfo {
-    auth?: number;
+    auth?: number; // 0: da xac thuc // 1: isn't xac thuc // 2: wait xac thuc
     status?: string;
     color?: string;
 }

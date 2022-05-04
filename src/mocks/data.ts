@@ -1,104 +1,13 @@
 import { ENUM_INVEST_MONEY } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { KeyValueModel } from '@/models/keyValue-model';
-import { TransactionModel } from '@/models/transaction-model';
 import { UserInfoModal } from '@/models/user-models';
-
-export const DATA = [
-    {
-        so_tien: '800000',
-        created_at: '14/02/2022 12:00:00',
-        hinh_thuc: 'Trả lãi đầu tư',
-        so_du: '4000000',
-        color: 'green'
-    },
-    {
-        so_tien: '800000',
-        created_at: '14/02/2022 12:00:00',
-        hinh_thuc: 'Đầu tư',
-        so_du: '4000000',
-        color: 'red'
-    },
-    {
-        so_tien: '800000',
-        created_at: '14/02/2022 12:00:00',
-        hinh_thuc: 'Trả lãi đầu tư',
-        so_du: '4000000',
-        color: 'green'
-    },
-    {
-        so_tien: '800000',
-        created_at: '14/02/2022 12:00:00',
-        hinh_thuc: 'Đầu tư',
-        so_du: '4000000',
-        color: 'red'
-    }
-] as TransactionModel[];
 
 export const TransactionTypes = [
     { label: Languages.transaction.all, value: 1, type: 'all' },
     { label: Languages.transaction.inMoney, value: 2, type: 'investor' },
     { label: Languages.transaction.outMoney, value: 3, type: 'pay' }
 ] as KeyValueModel[];
-
-export const DataChart = {
-    quarter1: {
-        contractNumberQuarter: 20,
-        investMountQuarter: 400000000,
-        originAmountEarningQuarter: 250000000,
-        interestQuarter: 12000000,
-        quarter: 1,
-        year: '2021',
-        data: [
-            {
-                id: 1,
-                quarter: 1,
-                contractNumber: 20,
-                investMount: 0,
-                originAmountEarning: 20,
-                interest: 0,
-                month: 'T',
-                year: '2021'
-            },
-            {
-                id: 2,
-                quarter: 1,
-                contractNumber: 20,
-                investMount: 0,
-                originAmountEarning: 0,
-                interest: 0,
-                month: 'T',
-                year: '2021'
-            },
-            {
-                id: 3,
-                quarter: 1,
-                contractNumber: 20,
-                investMount: 380000000,
-                originAmountEarning: 250000000,
-                interest: 12000000,
-                month: 'T',
-                year: '2021'
-            }
-        ]
-    }
-};
-
-export const dataQuarterReport =
-    [
-        // { id: '1', value: 'Qúy 1' },
-        // { id: '2', value: 'Qúy 2' },
-        // { id: '3', value: 'Qúy 3' },
-        // { id: '4', value: 'Qúy 4' }
-    ];
-
-export const dataYearReport =
-    [
-        // { id: '1', value: '2019' },
-        // { id: '2', value: '2020' },
-        // { id: '3', value: '2021' },
-        // { id: '4', value: '2022' }
-    ];
 
 export const dataUser = {
     full_name: 'Pham Minh Quý',
@@ -146,15 +55,6 @@ export const arrayData = [
 export const typePhoto = [
     { id: '1', value: 'Camera' },
     { id: '2', value: 'Library' }
-];
-
-export const dataBank = [
-    { id: '1', value: 'Vietcom Bank' },
-    { id: '2', value: 'TP Bank' },
-    { id: '3', value: 'BIDV' },
-    { id: '4', value: 'Viettin Bank' },
-    { id: '5', value: 'Sacom Bank' },
-    { id: '6', value: 'VP Bank' }
 ];
 
 export const investData = [

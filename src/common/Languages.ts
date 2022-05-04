@@ -183,7 +183,8 @@ const Languages = {
         errNameEmpty: 'Tên chủ tài khoản ngân hàng trống',
         errBankEmpty: 'Ngân hàng chưa được chọn',
         noInternet: 'Kết nối bị gián đoạn, vui lòng thử lại!',
-        sessionExpired: 'Kết nối bị gián đoạn, vui lòng thử lại!'
+        sessionExpired: 'Kết nối bị gián đoạn, vui lòng thử lại!',
+        errEmptyAvatarIdentity: 'Bạn cần điền đầy đủ cả mặt trước, mặt sau CCCD/CMT và avatar'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
