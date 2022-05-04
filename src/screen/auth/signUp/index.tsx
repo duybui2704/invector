@@ -103,7 +103,7 @@ const SignUp = observer(() => {
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
         const errMsgPwd = FormValidate.passValidate(pass);
         const errMsgName = FormValidate.userNameValidate(name);
-        const errMsgPwdNew = FormValidate.passConFirmValidate(passNew, pass);
+        const errMsgPwdNew = FormValidate.passConFirmValidate(pass, passNew);
         const errMsgPwdEmail = FormValidate.emailValidate(email);
 
         refPhone.current?.setErrorMsg(errMsgPhone);
@@ -111,7 +111,7 @@ const SignUp = observer(() => {
         refName.current?.setErrorMsg(errMsgName);
         refPassNew.current?.setErrorMsg(errMsgPwdNew);
         refEmail.current?.setErrorMsg(errMsgPwdEmail);
-        if (`${errMsgPhone}${errMsgPwd}${errMsgName}${errMsgPwd}${errMsgPwdNew}`.length === 0) {
+        if (`${errMsgPhone}${errMsgPwd}${errMsgName}`.length === 0) {
             return true;
         }
         return false;

@@ -43,7 +43,7 @@ const Investment = observer(({ route }: { route: any }) => {
         } else {
             common.setIsFocus(false);
         }
-    }, [btnInvest, common, common.isFocused, isFocus, route?.params?.types]);
+    }, [common, common.isFocused, isFocus, route?.params?.types]);
 
     const fetchData = useCallback((type: string) => {
         switch (type) {
@@ -218,6 +218,11 @@ const Investment = observer(({ route }: { route: any }) => {
         }
     }, [btnInvest]);
 
+    const navigateToInvestNow = useCallback((item: any) => {
+        Navigator.pushScreen(ScreenName.invest, { status: btnInvest, id: item?.id });
+    }, [btnInvest]);
+
+
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
     }, []);
@@ -225,7 +230,7 @@ const Investment = observer(({ route }: { route: any }) => {
     const renderItem = useCallback(({ item }: any) => {
         switch (btnInvest) {
             case ENUM_INVEST_STATUS.INVEST_NOW:
-                return <ItemInvest onPress={() => navigateToDetail(item)} data={item} title={ENUM_INVEST_STATUS.INVEST_NOW} />;
+                return <ItemInvest onPress={() => navigateToDetail(item)} onPressInvestNow={() => navigateToInvestNow(item)} data={item} title={ENUM_INVEST_STATUS.INVEST_NOW} />;
             case ENUM_INVEST_STATUS.INVESTING:
                 return <ItemInvest onPress={() => navigateToDetail(item)} data={item} title={ENUM_INVEST_STATUS.INVESTING} />;
             case ENUM_INVEST_STATUS.HISTORY:

@@ -23,20 +23,20 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
         color: hasButton ? COLORS.GREEN : COLORS.GRAY_7
     } as TextStyle;
     return (
-        <Touchable onPress={onPress} style={styles.item}>
-            <View style={styles.rowTop}>
+        <View style={styles.item}>
+            <Touchable onPress={onPress} style={styles.rowTop}>
                 <Text style={[styles.txtMoney, styleText]}>{Utils.formatMoney(data?.so_tien_dau_tu)}</Text>
                 <View style={styles.wrapText}>
                     <Text style={styles.txtInterest}>{Languages.invest.interest}</Text>
                     <Text style={styles.txtPercent}>{data?.ti_le_lai_suat_hang_thang}</Text>
                 </View>
-            </View>
+            </Touchable>
             <Dash
                 dashThickness={1}
                 dashLength={10}
                 dashGap={5}
                 dashColor={COLORS.GRAY_13} />
-            <View style={styles.rowCenter}>
+            <Touchable onPress={onPress} style={styles.rowCenter}>
                 <View>
                     <Text style={styles.txtInterest}>{Languages.invest.time}</Text>
                     <Text style={styles.txtFormality}>{data?.thoi_gian_dau_tu}</Text>
@@ -51,27 +51,27 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
                         <Text style={styles.greenText}>{Utils.formatMoney(data?.lai_hang_thang)}</Text>
                     </View>
                 }
-            </View>
+            </Touchable>
             <Dash
                 dashThickness={1}
                 dashLength={10}
                 dashGap={5}
                 dashColor={COLORS.GRAY_13} />
-            <View style={styles.rowBottom}>
+            <Touchable onPress={title === ENUM_INVEST_STATUS.INVEST_NOW ? onPressInvestNow : onPress} style={styles.rowBottom}>
                 <View>
                     <Text style={styles.txtInterest} >{Languages.invest.formalPayment}</Text>
                     <Text style={styles.txtFormality}>{data?.hinh_thuc_tra_lai}</Text>
                 </View>
-                {title === ENUM_INVEST_STATUS.INVEST_NOW ? <Touchable onPress={onPressInvestNow} style={styles.btInvestNow}>
+                {title === ENUM_INVEST_STATUS.INVEST_NOW ? <View style={styles.btInvestNow}>
                     <Text style={styles.txtInvestNow}>{Languages.invest.investNow}</Text>
                     <IcBtnInvest />
-                </Touchable> :
+                </View > :
                     <View style={styles.wrapText}>
                         <Text style={styles.txtInterest} >{Languages.invest.getMoney}</Text>
                         <Text style={styles.txtYellow}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
                     </View>}
-            </View>
-        </Touchable>
+            </Touchable>
+        </View>
     );
 };
 const styles = StyleSheet.create({
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         color: COLORS.GREEN
     },
     txtInterest: {
-        fontSize: Configs.FontSize.size11,
+        fontSize: Configs.FontSize.size10,
         color: COLORS.GRAY_12
     },
     txtPercent: {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     txtInvestNow: {
         ...Styles.typography.medium,
         color: COLORS.WHITE,
-        fontSize: Configs.FontSize.size11,
+        fontSize: Configs.FontSize.size10,
         marginRight: 5
     },
     txtFormality: {
