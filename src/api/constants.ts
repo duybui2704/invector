@@ -24,8 +24,8 @@ export enum API_CONFIG {
     // BASE_URL = 'https://appkh.tienngay.vn/V2',
     // BASE_URL_OLD = 'https://sandboxappkh.tienngay.vn',
     // BASE_URL = 'https://sandboxappkh.tienngay.vn/V2',
-    // HOST: 'https://sandboxappndt.tienngay.vn/',
-     BASE_URL = 'https://appndt.tienngay.vn/',
+    BASE_URL = 'https://sandboxappndt.tienngay.vn/',
+    //  BASE_URL = 'https://appndt.tienngay.vn/',
     DOMAIN_SHARE = 'https://',
 
     IMAGES_HOST = 'https://',
@@ -45,18 +45,18 @@ export enum API_CONFIG {
     LOGIN = 'auth/signin',  // Dang nhap investor
     TOKEN = '/token',
     REFRESH_TOKEN = '/token',
-    USER_INFO = '/user/info_investor', // thông tin tài khoản investor
-    REGISTER = '/auth/app_register', // đăng kí tài khoản
+    USER_INFO = '/user/info_investor',
+    REGISTER = 'auth/investor_register',
     ACTIVE_AUTH = '/auth/auth_register', // kích hoạt tài khoản: OTP
     RESEND_OTP = '/auth/resend_token', // gửi lại otp
-    CHANEL = '/configuration_formality/get_utm_source', // list danh sách kênh đăng kí
+    CHANEL = '/contract/get_utm_source', // list danh sách kênh đăng kí
     UPDATE_USER_INFO = 'user/update_profile_investor', // update user account
     CHANGE_NEW_PWD = '/user/change_password_user', // change mật khẩu mới
     LOGOUT = '/api/Logout', // logout
     LOGIN_THIRD_PARTY = 'auth/login', // login bên thứ 3  facebook, google, apple,
     CONFIRM_PHONE_NUMBER = 'auth/update_phone_number', // xác thực số điện thoại
-    ACTIVE_ACCOUNT_SOCIAL = 'auth/auth_otp_active', // active tài khoản sau khi xác thực OTP
-    OTP_RESET_PWD = '/auth/reset_password', // otp reset pwd
+    ACTIVE_ACCOUNT_SOCIAL = '/auth/active_account',
+    OTP_RESET_PWD = '/auth/reset_password',
     UPDATE_PWD = 'auth/new_password',
     LINK_SOCIAL = '/user/link_social',
 
@@ -70,17 +70,20 @@ export enum API_CONFIG {
 
     // notification
     NOTIFICATION = '/user/get_notification_user',
+    NOTIFY_UPDATE_READ = '/user/update_read_notification',
     CREATE_FCM_TOKEN = 'user/save_device_token_user',
-    GET_UNREAD_COUNT_NOTIFICATION = 'user/get_count_notification_user',
+    GET_ONREAD_COUNT_NOTIFICATION = '/user/get_count_notification_user',
 
     // contracts
     CONTRACTS = 'contract/contract_tempo_by_user', // List danh sách hợp đồng
-    CONTRACT_DETAIL = 'contract/tempo_detail', // Chi tiết hợp đồng
-    CONTRACT_PAYMENT = 'transaction/getTransactionByUser', // Lịch sử thanh toán của hợp đồng
-    DOCUMENT = 'contract/get_image_accurecy', // Danh sách chứng từ
-    REQUEST_PAYMENT_MOMO = 'MoMoAppKH/initPayment', // Thanh toán qua MOMO
-    REQUEST_PAYMENT_BANK = 'transaction/app_create_transaction',
-    TRANSACTION_INFO = 'MoMoAppKH/transactionInfo',
+    CONTRACTS_HOT = 'contract/contract_investor_app',
+    CONTRACTS_DASH = '/contract/dashboard_investor',
+    CONTRACT_DETAIL = '/contract/detail_contract_investor', // Chi tiết hợp đồng
+    CONTRACT_OTP = '/contract/send_otp_invest',
+    CONTRACT_HAVE_INVESTED = '/contract/detail_contract_have_invested',
+    CONTRACT_ALL = '/contract/contract_investor_app_all',
+    CONTRACT_DETAIL_INVEST_NOW = '/contract/detail_contract_investor',
+
     // service payment
     GET_SERVICE_PROVIDERS = 'service/find_where', // list danh sách nhà cung cấp
     GET_PAYMENT_INFO = 'billingVimo/query_bill', // tìm thông tin hoá đơn

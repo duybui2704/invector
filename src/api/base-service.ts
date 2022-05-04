@@ -57,7 +57,6 @@ export class BaseService {
             headers: defHeader,
             timeout: TIMEOUT_API
         });
-
         _api.addAsyncResponseTransform(async (response: any) => {
             const { data, message, code, success } = await this.checkResponseAPI(response);
 
@@ -176,7 +175,7 @@ export class BaseService {
             });
         }
 
-        formData.append('type', '2'); // Type of app
+        formData.append('type', 3);
 
         // console.log('formData = ', formData);
         return formData;

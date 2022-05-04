@@ -17,8 +17,8 @@ export class AuthServices extends BaseService {
         this.api().post(
             API_CONFIG.LOGIN,
             this.buildFormData({
-                phone_number: await RsaUtils.encryptData(phone_number),
-                password: await RsaUtils.encryptData(password)
+                phone_number,
+                password
             })
         );
 
@@ -50,19 +50,16 @@ export class AuthServices extends BaseService {
         password: string,
         re_password: string,
         email: string,
-        identify: string,
-        loan_purpose: string,
-        channels: any
+        channels: string
     ) =>
         this.api().post(
             API_CONFIG.REGISTER,
             this.buildFormData({
-                phone_number: await RsaUtils.encryptData(phone_number),
+                phone_number,
                 full_name,
-                password: await RsaUtils.encryptData(password),
-                email: await RsaUtils.encryptData(email),
-                identify,
-                loan_purpose,
+                password,
+                re_password,
+                email,
                 channels
             })
         );
@@ -71,9 +68,9 @@ export class AuthServices extends BaseService {
         this.api().post(
             API_CONFIG.CHANGE_NEW_PWD,
             this.buildFormData({
-                current_password: current_password ? await RsaUtils.encryptData(current_password) : '',
-                password: await RsaUtils.encryptData(password),
-                re_password: await RsaUtils.encryptData(re_password)
+                current_password: current_password || '',
+                password,
+                re_password
             })
         );
 
@@ -93,7 +90,7 @@ export class AuthServices extends BaseService {
         this.api().post(
             API_CONFIG.RESEND_OTP,
             this.buildFormData({
-                phone_number: await RsaUtils.encryptData(phone_number)
+                phone_number
             })
         );
 
@@ -101,7 +98,7 @@ export class AuthServices extends BaseService {
         this.api().post(
             API_CONFIG.OTP_RESET_PWD,
             this.buildFormData({
-                phone_number: await RsaUtils.encryptData(phone_number)
+                phone_number
             })
         );
 
@@ -114,10 +111,10 @@ export class AuthServices extends BaseService {
         this.api().post(
             API_CONFIG.UPDATE_PWD,
             this.buildFormData({
-                phone_number: await RsaUtils.encryptData(phone_number),
-                token_reset_password: await RsaUtils.encryptData(token_reset_password),
-                password: await RsaUtils.encryptData(password),
-                re_password: await RsaUtils.encryptData(re_password)
+                phone_number,
+                token_reset_password,
+                password,
+                re_password
             })
         );
 

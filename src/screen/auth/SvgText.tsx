@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Circle, G, Svg, Text, TextPath, TSpan } from 'react-native-svg';
 
@@ -9,22 +9,36 @@ import Languages from '@/common/Languages';
 import { Configs } from '@/common/Configs';
 import DimensionUtils from '@/utils/DimensionUtils';
 
+const ratio = DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH;
+
 const SvgComponent = observer((props: any) => {
-    const ratio = DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH;
+    // const ratio = DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH;
     const [login, setLogin] = useState<boolean>(true);
     const [signUp, setSignUp] = useState<boolean>(false);
     const [forgotPwd, setForgotPwd] = useState<boolean>(false);
     const [key, setKey] = useState<string>('');
     const [r, setR] = useState<number>(0);
     const [x, setX] = useState<number>(0);
+    const [dx, setDx] = useState<number>(0);
 
     useEffect(() => {
         if (props.onNavigate) {
             props.onNavigate(key);
         }
-        screenRatio();
     }, [props.onNavigate, key, props]);
-    
+
+    useLayoutEffect(() => {
+        if (ratio < 1.662) {
+            setR(DimensionUtils.SCREEN_WIDTH * 0.54);
+            setX(DimensionUtils.SCREEN_WIDTH * 0.2);
+            setDx(0);
+        } else {
+            setR(DimensionUtils.SCREEN_WIDTH * 0.6);
+            setX(DimensionUtils.SCREEN_WIDTH * 0.22);
+            setDx(DimensionUtils.SCREEN_WIDTH * 0.6 * 0.035);
+        }
+    }, []);
+
     const onNavigateLogin = useCallback(() => {
         setSignUp(false);
         setLogin(true);
@@ -44,16 +58,6 @@ const SvgComponent = observer((props: any) => {
         setLogin(false);
         setForgotPwd(true);
         setKey(Languages.auth.forgotPwd);
-    }, []);
-
-    const screenRatio = useCallback(() => {
-        if (ratio < 1.662) {
-            setR(DimensionUtils.SCREEN_WIDTH * 0.54);
-            setX(DimensionUtils.SCREEN_WIDTH * 0.2);
-        } else {
-            setR(DimensionUtils.SCREEN_WIDTH * 0.6);
-            setX(DimensionUtils.SCREEN_WIDTH * 0.22);
-        }
     }, []);
 
     return (
@@ -92,7 +96,7 @@ const SvgComponent = observer((props: any) => {
                     stroke={COLORS.NO_BACKDROP}
                 >
                     <TextPath href="#circle" >
-                        <TSpan dx={6.01 * r} dy={-15}>
+                        <TSpan dx={6.05 * r} dy={-15}>
                             {Languages.auth.txtD}
                         </TSpan>
                     </TextPath>
@@ -108,7 +112,7 @@ const SvgComponent = observer((props: any) => {
                     stroke={COLORS.NO_BACKDROP}
                 >
                     <TextPath href="#circle" >
-                        <TSpan dx={r * 0.04} dy={-15} >
+                        <TSpan dx={dx} dy={-15} >
                             {Languages.auth.txtK}
                         </TSpan>
                     </TextPath>

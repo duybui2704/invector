@@ -72,7 +72,7 @@ export const HtmlStyles = {
         fontSize: Configs.FontSize.size13,
         textAlign: 'center'
     },
-    c:{
+    c: {
         ...Styles.typography.regular,
         color: COLORS.GRAY_12,
         fontSize: Configs.FontSize.size14,
@@ -109,9 +109,24 @@ export const HtmlStyles = {
         fontSize: Configs.FontSize.size12,
         color: COLORS.DARK_GRAY
     },
-    p:{
-        marginVertical: 16
-    }
+    p: {
+        marginVertical: 5
+    },
+    i: {
+        ...Styles.typography.regular,
+        fontSize: Configs.FontSize.size12,
+        color: COLORS.GRAY_7
+    },
+    e: {
+        ...Styles.typography.medium,
+        fontSize: Configs.FontSize.size14,
+        color: COLORS.GRAY_7
+    },
+    g1: {
+        ...Styles.typography.regular,
+        color: COLORS.GREEN,
+        fontSize: Configs.FontSize.size12
+    },
 };
 
 export const HtmlStylesSeen = {

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
@@ -20,7 +20,8 @@ import { COLORS } from '@/theme';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
 import { MyStylesSign } from './styles';
 import OtpSignIn from '../otpSignIn';
-import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
+import { UserInfoModal } from '@/models/user-models';
+import Loading from '@/components/loading';
 
 const SignUp = observer(() => {
     const { apiServices } = useAppStore();
@@ -31,7 +32,7 @@ const SignUp = observer(() => {
     const [passNew, setPassNew] = useState<string>('');
     const [channel, setChannel] = useState<ItemProps>();
     const [dataChannel, setDataChannel] = useState<ItemProps[]>();
-    const [data, setData] = useState<any>('');
+    // const [data, setData] = useState<any>('');
     const [isNavigate, setNavigate] = useState<boolean>(false);
     const styles = MyStylesSign();
     const refPhone = useRef<TextFieldActions>(null);
@@ -41,6 +42,8 @@ const SignUp = observer(() => {
     const refPass = useRef<TextFieldActions>(null);
     const refPassNew = useRef<TextFieldActions>(null);
     const [checked, setCheck] = useState<boolean>(false);
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const [userData, setUserData] = useState<UserInfoModal>();
 
     const onChangeText = (value: string, tag?: string) => {
         switch (tag) {
@@ -65,10 +68,8 @@ const SignUp = observer(() => {
     };
 
     const fetchData = async () => {
-        // setLoading(true);
         const res = await apiServices.auth.getChanelSource();
         if (res.success) {
-            // setLoading(false);
             const data = res.data as ChannelModal[];
             const temp = [] as ItemProps[];
             data?.forEach((item: any) => {
@@ -79,7 +80,6 @@ const SignUp = observer(() => {
             });
             setDataChannel(temp);
         }
-        // setLoading(false);
     };
 
     useEffect(() => {
@@ -102,20 +102,29 @@ const SignUp = observer(() => {
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
         const errMsgPwd = FormValidate.passValidate(pass);
         const errMsgName = FormValidate.userNameValidate(name);
-        const errMsgPwdNew = FormValidate.passConFirmPhone(passNew);
+        const errMsgPwdNew = FormValidate.passConFirmValidate(passNew, pass);
         const errMsgPwdEmail = FormValidate.emailValidate(email);
-        const errMsgChannel = FormValidate.inputNameEmpty(channel);
 
         refPhone.current?.setErrorMsg(errMsgPhone);
         refPass.current?.setErrorMsg(errMsgPwd);
         refName.current?.setErrorMsg(errMsgName);
         refPassNew.current?.setErrorMsg(errMsgPwdNew);
         refEmail.current?.setErrorMsg(errMsgPwdEmail);
-        refChannel.current?.setErrorMsg(errMsgChannel);
+        if (`${errMsgPhone}${errMsgPwd}${errMsgName}${errMsgPwd}${errMsgPwdNew}`.length === 0) {
+            return true;
+        }
+        return false;
     }, [channel, email, name, pass, passNew, phone]);
 
     const onSignIn = async () => {
-        setNavigate(true);
+        if (onValidate()) {
+            setLoading(true);
+            const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, channel?.value);
+            setLoading(false);
+            if (res.success) {
+                setNavigate(true);
+            }
+        }
     };
 
     const onChangeChanel = (item: any) => {
@@ -123,11 +132,12 @@ const SignUp = observer(() => {
     };
 
     const renderInput = useCallback((
-        ref: any, value: string, isPhoneNumber: boolean, rightIcon: string, placeHolder: string, isPassword?: boolean, keyboardType?: any) => {
+        ref: any, value: string, isPhoneNumber: boolean, rightIcon: string, placeHolder: string, maxLength: number, isPassword?: boolean, keyboardType?: any) => {
         return <MyTextInput
             ref={ref}
             value={value}
             isPhoneNumber={isPhoneNumber}
+            maxLength={maxLength}
             rightIcon={rightIcon}
             placeHolder={placeHolder}
             containerInput={styles.inputPass}
@@ -144,48 +154,49 @@ const SignUp = observer(() => {
                     <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
                     <IcLine width={'50%'} height={'10%'} />
                 </View>
-                <ScrollViewWithKeyboard style={{marginVertical: 20}}>
-                {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName)}
-                {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, false, 'NUMBER')}
-                {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail)}
-                {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, true)}
-                {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, true)}
-                <View style={styles.inputPass}>
-                    <PickerBottomSheet
-                        ref={refChannel}
-                        containerStyle={styles.containerOverViewPicker}
-                        rightIcon={<ICUnderArrow />}
-                        placeholder={Languages.auth.knowChannel}
-                        onPressItem={onChangeChanel}
-                        value={channel?.value}
-                        data={dataChannel}
-                        valueText={styles.valuePicker}
-                        btnContainer={styles.containerPicker}
-                        placeholderStyle={styles.containerPlaceholderPicker}
-                    />
-                </View>
-                <View style={styles.rowInfo}>
-                    <View style={styles.row}>
-                        <Touchable style={styles.checkbox} onPress={onChangeChecked}>
-                            {checkbox}
-                        </Touchable>
-                        <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
+                <ScrollView style={styles.scrollView}>
+                    {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 50, false)}
+                    {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER')}
+                    {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL')}
+                    {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true)}
+                    {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true)}
+                    <View style={styles.inputPass}>
+                        <PickerBottomSheet
+                            ref={refChannel}
+                            containerStyle={styles.containerOverViewPicker}
+                            rightIcon={<ICUnderArrow />}
+                            placeholder={Languages.auth.knowChannel}
+                            onPressItem={onChangeChanel}
+                            value={channel?.value}
+                            data={dataChannel}
+                            valueText={styles.valuePicker}
+                            btnContainer={styles.containerPicker}
+                            placeholderStyle={styles.containerPlaceholderPicker}
+                        />
                     </View>
-                    <Touchable onPress={onSignIn} disabled={!checked}
-                        style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
-                        <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                            {Languages.auth.txtSignUp}
-                        </Text>
-                    </Touchable>
-                </View>
-                </ScrollViewWithKeyboard>
+                    <View style={styles.rowInfo}>
+                        <View style={styles.row}>
+                            <Touchable style={styles.checkbox} onPress={onChangeChecked}>
+                                {checkbox}
+                            </Touchable>
+                            <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
+                        </View>
+                        <Touchable onPress={onSignIn} disabled={!checked}
+                            style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                            <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                                {Languages.auth.txtSignUp}
+                            </Text>
+                        </Touchable>
+                    </View>
+                </ScrollView>
+                {isLoading && <Loading isOverview />}
             </View>
         );
     };
 
     return (
         <View style={styles.container}>
-            {isNavigate ? <OtpSignIn phone={phone} data={data} /> : renderView()}
+            {isNavigate ? <OtpSignIn phone={phone} isChecked={checked} pass={pass} /> : renderView()}
         </View>
     );
 });

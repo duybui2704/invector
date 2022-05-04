@@ -466,7 +466,7 @@ const defaultStyles = StyleSheet.create({
     title: {
         color: COLORS.WHITE,
         textAlign: 'center',
-        fontWeight: 'bold',
+        fontWeight: Configs.FontFamily.bold,
         fontSize: 20,
         marginBottom: 20
     },

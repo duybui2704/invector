@@ -25,6 +25,7 @@
     "@react-native-clipboard/clipboard": "^1.8.5",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/checkbox": "^0.5.12",
+    "@react-native-firebase/app": "^14.9.1",
     "@react-native-google-signin/google-signin": "^7.2.2",
     "@react-native-picker/picker": "^2.4.0",
     "@react-navigation/bottom-tabs": "^6.3.1",

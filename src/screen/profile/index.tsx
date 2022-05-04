@@ -90,7 +90,7 @@ const Profile = observer(() => {
     const onLogout = useCallback(() => {
         SessionManager.logout();
         userManager.updateUserInfo({});
-        Navigator.navigateScreen(ScreenName.home);
+        Navigator.replaceScreen(ScreenName.auth);
     }, [userManager]);
 
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {

@@ -26,7 +26,7 @@ const ItemInfoContract = ({ label, value, colorText }: ItemProps
                 dashColor={COLORS.GRAY_13} />
             <View style={styles.wrapItem}>
                 <Text style={styles.label}>{label}</Text>
-                <Text style={[styles.txtValue, styleText]}>{value}</Text>
+                <Text style={[styles.txtValue, styleText]} numberOfLines={2}>{value}</Text>
             </View>
         </>
     );
@@ -40,11 +40,13 @@ const styles = StyleSheet.create({
     },
     label: {
         ...Styles.typography.regular,
-        color: COLORS.GRAY_12
+        color: COLORS.GRAY_12,
+        maxWidth: '50%'
     },
     txtValue: {
         ...Styles.typography.medium,
-        color: COLORS.GRAY_7
+        color: COLORS.GRAY_7,
+        maxWidth: '50%'
     }
 });
 export default ItemInfoContract;

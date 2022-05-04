@@ -21,6 +21,10 @@ const styles = StyleSheet.create({
         color: COLORS.GRAY_7,
         marginBottom: 10
     },
+    center: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     wrapInfo: {
         backgroundColor: COLORS.WHITE,
         paddingHorizontal: 16,

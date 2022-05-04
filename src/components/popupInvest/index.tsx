@@ -16,8 +16,8 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import BottomSheetComponentInvest from "@/components/popupInvest/bottomSheetInvest";
 import { ItemProps } from "@/components/bottomsheet";
 import { ENUM_INVEST_MONEY } from '@/common/constants';
-import { arrMoney, arrMonth } from '@/screen/mocks/mocks';
 import { useAppStore } from '@/hooks';
+import { arrMoney, arrMonth } from '@/mocks/data';
 
 const PopupStatus = forwardRef<PopupActions, PopupProps>(
     ({

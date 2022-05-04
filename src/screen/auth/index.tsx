@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -20,6 +20,10 @@ import { loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
 import ForgotPass from './forgotPass';
 import DimensionUtils from '@/utils/DimensionUtils';
 import LogoAuth from '@/assets/image/auth/logo_auth.svg';
+import SessionManager from '@/manager/SessionManager';
+import Navigator from '@/routers/Navigator';
+import ScreenName, { TabsName } from '@/common/screenNames';
+import LoginWithBiometry from './loginWithBiometrty';
 
 const Auth = observer(() => {
     const styles = myStylesAuth();
@@ -34,14 +38,18 @@ const Auth = observer(() => {
     } = useAppStore();
 
     useEffect(() => {
+        if (SessionManager.accessToken) {
+            console.log('token');
+            Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
+        }
         screenRatio();
     }, []);
 
     const screenRatio = useCallback(() => {
         if (ratio < 1.662) {
-            setWid(DimensionUtils.SCREEN_WIDTH * 0.75);
+            setWid(DimensionUtils.SCREEN_WIDTH * 0.65);
         } else {
-            setWid(DimensionUtils.SCREEN_WIDTH * 0.85);
+            setWid(DimensionUtils.SCREEN_WIDTH * 0.75);
         }
     }, []);
 
@@ -79,6 +87,19 @@ const Auth = observer(() => {
         // if (userInfo) initUser(ENUM_PROVIDER.GOOGLE, userInfo?.user?.id);
     }, []);
 
+    const renderContent = useMemo(() => {
+        switch (isNavigate) {
+            case Languages.auth.txtLogin:
+                if (fastAuthInfo?.isEnableFastAuth && !fastAuthInfo.isFocusLogin) return <LoginWithBiometry />;
+                return <Login />;
+            case Languages.auth.txtSignUp:
+                return <SignUp />;
+            case Languages.auth.forgotPwd:
+                return <ForgotPass />;
+            default:
+                return null;
+        }
+    }, [isNavigate, fastAuthInfo?.isEnableFastAuth, fastAuthInfo.isFocusLogin]);
     return (
         <ImageBackground style={styles.main} source={Images.bg_board} resizeMode={'stretch'}>
             <StatusBar
@@ -87,11 +108,11 @@ const Auth = observer(() => {
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
             />
-            <LogoAuth
-                width={170}
-                height={170}
-                style={styles.logoTN}
-            />
+            <View style={styles.viewLogo}>
+                <LogoAuth
+                    width={DimensionUtils.SCREEN_HEIGHT * 0.22}
+                    height={DimensionUtils.SCREEN_HEIGHT * 0.22}
+                /></View>
             <View style={styles.viewSvg}>
                 <SvgComponent onNavigate={onNavigate} />
             </View>
@@ -99,22 +120,22 @@ const Auth = observer(() => {
                 {isNavigate === Languages.auth.txtLogin ? <Login/> :
                     isNavigate === Languages.auth.txtSignUp ? <SignUp/> : <ForgotPass/>
                 }
-                <View style={styles.viewBottom}>
-                    <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
-                    <View style={styles.viewIcon}>
-                        <Touchable style={styles.icon} onPress={onLoginFacebook}>
-                            <IcFaceAuth />
-                        </Touchable>
-                        <Touchable style={styles.icon} onPress={onLoginGoogle}>
-                            <IcGoogleAuth />
-                        </Touchable>
-                        <Touchable style={styles.icon}>
-                            <IcInsAuth />
-                        </Touchable>
-                        <Touchable style={styles.icon}>
-                            <IcLinkedInAuth />
-                        </Touchable>
-                    </View>
+            </View>
+            <View style={styles.viewBottom}>
+                <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
+                <View style={styles.viewIcon}>
+                    <Touchable style={styles.icon} onPress={onLoginFacebook}>
+                        <IcFaceAuth />
+                    </Touchable>
+                    <Touchable style={styles.icon} onPress={onLoginGoogle}>
+                        <IcGoogleAuth />
+                    </Touchable>
+                    <Touchable style={styles.icon}>
+                        <IcInsAuth />
+                    </Touchable>
+                    <Touchable style={styles.icon}>
+                        <IcLinkedInAuth />
+                    </Touchable>
                 </View>
             </View>
         </ImageBackground>

@@ -35,10 +35,10 @@ export const MyStylesChangePass = () => {
                 paddingVertical: 16
             },
             content: {
-               flex: 1,
-               marginTop: DimensionUtils.SCREEN_HEIGHT * 0.1,
-               marginLeft: 10,
-               width: '90%'
+                flex: 1,
+                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.06,
+                marginLeft: 10,
+                width: '90%'
             },
             txtSave: {
                 ...Styles.typography.regular,
@@ -70,7 +70,14 @@ export const MyStylesChangePass = () => {
             txt: {
                 color: COLORS.GRAY, 
                 fontSize: Configs.FontSize.size12, 
-                fontFamily: 'normal'
+                fontFamily: Configs.FontFamily.regular
+            },
+            viewTitle: {
+                flexDirection: 'row',
+                alignItems: 'center'
+            },
+            viewTxt: {
+                marginVertical: 10
             }
         
         });

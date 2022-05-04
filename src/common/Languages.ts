@@ -24,7 +24,7 @@ const Languages = {
         sumpProfit: 'Tổng lãi đã nhận',
         sumResidualProfit: 'Tổng lãi còn lại',
         have: 'Đang có',
-        vnd: 'VNĐ',
+        vnd: ' VNĐ',
         invest: 'Đầu tư',
         report: 'Báo cáo',
         payment: 'Thanh toán',
@@ -89,7 +89,7 @@ const Languages = {
         accVerified: 'Tài khoản đã xác thực',
         accuracyNow: 'Xác thực ngay',
         logout: 'Đăng xuất',
-        waitVerify: 'Tài khoản đang chờ xác thực',
+        waitVerify: 'Tài khoản đang chờ xác thực'
 
     },
     report: {
@@ -403,7 +403,19 @@ const Languages = {
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         popupOtpErrorTitle: 'Thông báo OTP',
         popupOtpErrorDescription: 'OTP không chính xác'
-    }
+    },
+    loginWithBiometry: {
+        hello: '<e>Xin chào,</e>',
+        description: '<n><i>Chào mừng bạn quay trở lại với</i><g1> TienNgay.vn Đầu tư & Tích luỹ </g1><i> hãy đăng nhập nào</i></n>',
+        loginWithOther: 'Đăng nhập với tài khoản khác'
+    },
+    biometry: {
+        useFingerprint: 'Đăng nhập bằng vân tay của bạn',
+        useFingerPrintError: 'Vân tay không khớp, vui lòng thử lại.',
+        useFingerPrintManyTimesError:
+            'Bạn đã nhập sai quá nhiều lần, vui lòng nhập mã pin.'
+    },
+
 
 };
 export default Languages;
