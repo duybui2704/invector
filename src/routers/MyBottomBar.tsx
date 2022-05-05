@@ -21,15 +21,12 @@ import VerifyOTP from '@/screen/profile/verifyOTP/VerifyOTP';
 import ConfirmPhone from '@/screen/profile/confirmPhone/ConfirmPhone';
 import AccountBank from '@/screen/profile/accountBank/AccountBank';
 import ChangePwd from '@/screen/profile/changePwd/ChangePwd';
-import Help from '@/screen/profile/help/Help';
-import Manual from '@/screen/profile/manual/Manual';
 import ShareFriend from '@/screen/profile/shareFriend/ShareFriend';
 import AccountLink from '@/screen/profile/accountLink/AcountLink';
 import AccountIdentify from '@/screen/profile/accountIdentify/AccountIdentify';
 import AccountInfo from '@/screen/profile/accountInfo/AccountInfo';
 import EditAccountInfo from '@/screen/profile/editAccountInfo/EditAccountInfo';
 import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
-import Policy from '@/screen/profile/policy/Policy';
 import MyWebView from '@/screen/profile/myWedView/MyWebView';
 import { NotifyInvest } from '@/screen/home/notifyInvest';
 
@@ -118,13 +115,10 @@ const AccountStack = () => {
             <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} />
             <Stack.Screen name={ScreenName.changePwd} component={ChangePwd} />
             <Stack.Screen name={ScreenName.accountLink} component={AccountLink} />
-            <Stack.Screen name={ScreenName.manual} component={Manual} />
-            <Stack.Screen name={ScreenName.help} component={Help} />
             <Stack.Screen name={ScreenName.paymentMethod} component={PaymentMethod} />
             <Stack.Screen name={ScreenName.accountBank} component={AccountBank} />
             <Stack.Screen name={ScreenName.confirmPhone} component={ConfirmPhone} />
             <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} />
-            <Stack.Screen name={ScreenName.policy} component={Policy} />
             <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
         </Stack.Navigator>
     );
