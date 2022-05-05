@@ -32,6 +32,16 @@ export const MyStylesHome = () => {
                 alignItems: 'center',
                 marginHorizontal: 10
             },
+            viewTopCenter: {
+                position: 'absolute',
+                left: '-2%',
+                top: DimensionUtils.SCREEN_HEIGHT * 0.12,
+                height: DimensionUtils.SCREEN_HEIGHT * 0.18,
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginHorizontal: 10
+            },
             txt1: {
                 ...Styles.typography.medium,
                 color: COLORS.WHITE
@@ -239,6 +249,32 @@ export const MyStylesHome = () => {
             },
             viewFlatList: {
                 marginBottom: DimensionUtils.SCREEN_HEIGHT * 0.06
+            },
+            txtLogin: {
+                fontSize: Configs.FontSize.size16,
+                color: COLORS.GREEN,
+                fontFamily: Configs.FontFamily.bold,
+                textAlign: 'center'
+            },
+            tobAuth: {
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
+            txtHello: {
+                fontFamily: Configs.FontFamily.bold,
+                fontSize: Configs.FontSize.size20,
+                color: COLORS.WHITE
+            },
+            txtName: {
+                fontFamily: Configs.FontFamily.bold,
+                fontSize: Configs.FontSize.size24,
+                color: COLORS.WHITE
+            },
+            txtInvest: {
+                fontFamily: Configs.FontFamily.bold,
+                fontSize: Configs.FontSize.size18,
+                color: COLORS.WHITE
             }
         }
         ), []);

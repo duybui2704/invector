@@ -11,6 +11,8 @@ export class InvestServices extends BaseService {
 
     getInvestAll = async () => this.api().post(API_CONFIG.CONTRACT_ALL, this.buildFormData({}));
 
+    getInvesting = async () => this.api().post(API_CONFIG.CONTRACT_ALL, this.buildFormData({}));
+
     getDetailInvestNow = async (id: string) => this.api().post(API_CONFIG.CONTRACT_DETAIL_INVEST_NOW, this.buildFormData({ id }));
 
     getNotify = async () => this.api().post(API_CONFIG.NOTIFICATION, this.buildFormData({}));

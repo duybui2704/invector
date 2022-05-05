@@ -27,8 +27,8 @@ export enum API_CONFIG {
     // BASE_URL = 'https://appkh.tienngay.vn/V2',
     // BASE_URL_OLD = 'https://sandboxappkh.tienngay.vn',
     // BASE_URL = 'https://sandboxappkh.tienngay.vn/V2',
-    // BASE_URL = 'https://sandboxappndt.tienngay.vn/',
-    BASE_URL = 'https://appndt.tienngay.vn/',
+    BASE_URL = 'https://sandboxappndt.tienngay.vn/',
+    // BASE_URL = 'https://appndt.tienngay.vn/',
     DOMAIN_SHARE = 'https://',
 
     IMAGES_HOST = 'https://',

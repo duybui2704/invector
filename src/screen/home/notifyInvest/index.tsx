@@ -48,8 +48,13 @@ export const NotifyInvest = () => {
             setIsLoading(false);
             if (res.success) {
                 console.log(JSON.stringify(res.data));
-                // const dataNotify = res.data as Notify;
-                // setData(dataNotify);
+                if (res.data?.length >= 0) {
+                    const dataNotify = res.data as Notify;
+                    setData(dataNotify);
+                } else {
+                    setData(undefined);
+                }
+
             }
         }
     }, [btnInvest]);
@@ -106,7 +111,7 @@ export const NotifyInvest = () => {
             const res = await apiServices.invest.getNotifyUpdateRead(id);
             setIsLoading(false);
             if (res.success) {
-                fetchData(btnInvest);
+                // fetchData(btnInvest);
             }
         };
 

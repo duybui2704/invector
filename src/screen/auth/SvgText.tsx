@@ -22,10 +22,27 @@ const SvgComponent = observer((props: any) => {
     const [dx, setDx] = useState<number>(0);
 
     useEffect(() => {
+        console.log(props);
+        if (props.title) {
+            if (props.title === Languages.auth.txtLogin) {
+                setSignUp(false);
+                setLogin(true);
+                setForgotPwd(false);
+            } else if (props.title === Languages.auth.txtSignUp) {
+                setSignUp(true);
+                setLogin(false);
+                setForgotPwd(false);
+            }
+            else {
+                setSignUp(false);
+                setLogin(false);
+                setForgotPwd(true);
+            }
+        }
         if (props.onNavigate) {
             props.onNavigate(key);
         }
-    }, [props.onNavigate, key, props]);
+    }, [props.onNavigate, key]);
 
     useLayoutEffect(() => {
         if (ratio < 1.662) {

@@ -116,10 +116,12 @@ const Login = observer(() => {
                 setUserData(data);
                 userManager.updateUserInfo(data);
             }
-            Navigator.navigateToDeepScreen(
-                [ScreenName.tabs],
-                TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
-            );
+            setTimeout(() => {
+                Navigator.navigateToDeepScreen(
+                    [ScreenName.tabs],
+                    TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+                );
+            }, 200);
         }
         setLoading(false);
 

@@ -91,8 +91,7 @@ const Profile = observer(() => {
         SessionManager.logout();
         userManager.updateUserInfo(null);
         Navigator.navigateToDeepScreen(
-            [ScreenName.tabs],
-            TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+            [ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin }
         );
         userManager.updateUserInfo({});
         Navigator.replaceScreen(ScreenName.auth);
