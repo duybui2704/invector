@@ -88,6 +88,13 @@ export const MyStylesReport = () => {
                 fontSize: Configs.FontSize.size20,
                 textAlign: 'center'
             },
+            monthTxt: {
+                ...Styles.typography.medium,
+                color: COLORS.GRAY_7,
+                marginVertical: 8,
+                fontSize: Configs.FontSize.size16,
+                textAlign: 'center'
+            },
             containerItem: {
                 marginBottom: 8,
                 backgroundColor: COLORS.WHITE,

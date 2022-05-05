@@ -22,7 +22,6 @@ import ToastUtils from '@/utils/ToastUtils';
 import Loading from '@/components/loading';
 import { DataSendLinkVimoModal } from '@/models/payment-link-models';
 
-
 const ConfirmPhone = observer(() => {
     const { apiServices } = useAppStore();
     const styles = MyStylesConfirmPhone();
@@ -67,19 +66,16 @@ const ConfirmPhone = observer(() => {
 
     const onSendOTP = useCallback(async () => {
         if (onValidation()) {
-            const res = await apiServices.paymentMethod.requestSendLinkVimo(3, phone);
+            setIsLoading(true);
+            const res = await apiServices.paymentMethod.requestSendLinkVimo(phone);
             const data = res?.data as DataSendLinkVimoModal;
             setDataSend(data);
             if (res.success) {
-                ToastUtils.showMsgToast(Languages.msgNotify.successSendLinkVimo);
-                Navigator.pushScreen(ScreenName.verifyOTP, { phoneNumber: phone, linked_id: dataSend?.linked_id });
+                ToastUtils.showSuccessToast(Languages.msgNotify.successSendLinkVimo);
+                Navigator.pushScreen(ScreenName.verifyOTP, { linked_code: dataSend?.linked_id, phoneNumber: phone});
                 setIsLoading(false);
             }
-            else {ToastUtils.showErrorToast(Languages.msgNotify.failSendLinkVimo);}
             setIsLoading(false);
-            
-            // Vi phai sandbox nen can so dien thoai da xac thuc, chờ update
-            Navigator.pushScreen(ScreenName.verifyOTP, { phoneNumber: phone, linked_id: dataSend?.linked_id });
         }
     }, [apiServices.paymentMethod, dataSend?.linked_id, onValidation, phone]);
 
@@ -102,6 +98,7 @@ const ConfirmPhone = observer(() => {
                         onPress={onSendOTP}
                     />
                     {isLoading && <Loading isOverview />}
+                    <Text>{JSON.stringify(dataSend?.linked_id)}</Text>
                 </View>
             </View>
         </HideKeyboard >

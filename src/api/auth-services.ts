@@ -26,6 +26,7 @@ export class AuthServices extends BaseService {
 
     updateUserInf = async (
         full_name: string,
+        avatar: any,
         gender: string,
         birth_date: string,
         phone: string,
@@ -37,6 +38,7 @@ export class AuthServices extends BaseService {
             API_CONFIG.UPDATE_USER_INFO,
             this.buildFormData({
                 full_name,
+                avatar,
                 gender,
                 birth_date,
                 phone,
@@ -66,35 +68,8 @@ export class AuthServices extends BaseService {
             })
         );
 
-    changePwdAuth = async (current_password: string, password: string, re_password: string) =>
-        this.api().post(
-            API_CONFIG.CHANGE_NEW_PWD,
-            this.buildFormData({
-                current_password: current_password || '',
-                password,
-                re_password
-            })
-        );
-
     getChanelSource = async () =>
         this.api().post(API_CONFIG.CHANEL, this.buildFormData({}));
-
-    activeAuth = async (otp: string, phone_number: string) =>
-        this.api().post(
-            API_CONFIG.ACTIVE_AUTH,
-            this.buildFormData({
-                otp: await RsaUtils.encryptData(otp),
-                phone_number: await RsaUtils.encryptData(phone_number)
-            })
-        );
-
-    resendOtp = async (phone_number: string) =>
-        this.api().post(
-            API_CONFIG.RESEND_OTP,
-            this.buildFormData({
-                phone_number
-            })
-        );
 
     otpResetPwd = async (phone_number: string) =>
         this.api().post(
@@ -120,24 +95,6 @@ export class AuthServices extends BaseService {
             })
         );
 
-    loginWithThirdParty = async (type_login: string, provider_id: string) =>
-        this.api().post(
-            API_CONFIG.LOGIN_THIRD_PARTY,
-            this.buildFormData({
-                type_login,
-                provider_id
-            })
-        );
-
-    confirmPhoneNumber = async (user_id: string, phone_number: string) =>
-        this.api().post(
-            API_CONFIG.CONFIRM_PHONE_NUMBER,
-            this.buildFormData({
-                user_id,
-                phone_number
-            })
-        );
-
     activeAccountSocial = async (otp: string, user_id: string) =>
         this.api().post(
             API_CONFIG.ACTIVE_ACCOUNT_SOCIAL,
@@ -147,25 +104,8 @@ export class AuthServices extends BaseService {
             })
         );
 
-    getUserInfo = async (type: number) =>
-        this.api().post(API_CONFIG.USER_INFO, this.buildFormData({ type }));
-
-    linkSocialAccount = async (type_login: string, provider_id: string) =>
-        this.api().post(
-            API_CONFIG.LINK_SOCIAL,
-            this.buildFormData({ type_login, provider_id })
-        );
-
-
-    uploadHttpImage = async (
-        file: any
-    ) =>
-        this.api().post(
-            API_CONFIG.UPLOAD_HTTP_IMAGE,
-            this.buildFormData({
-                file
-            })
-        );
+    getUserInfo = async (type:number) =>
+        this.api().post(API_CONFIG.USER_INFO, this.buildFormData({type}));
 
     identityVerify = async (type: number,
         identity: string,

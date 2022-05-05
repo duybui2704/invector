@@ -93,7 +93,7 @@ const Report = observer(() => {
     
         return (
             <View style={!isOverview ? styles.containerItem : styles.containerItemOverview}>
-                <Text style={styles.overviewQuarterTxt}>
+                <Text style={isOverview ? styles.overviewQuarterTxt : styles.monthTxt}>
                     {isOverview ? `${Languages.report.overview}${' '}${quarter}` || 0 :
                         `${item?.month}`.slice(0, 8).replace('/','') || 0}
                 </Text>
@@ -124,7 +124,7 @@ const Report = observer(() => {
                 />
             </View>
         );
-    }, [quarter, styles.containerContentKeyValue, styles.containerItem, styles.containerItemOverview, styles.overviewQuarterTxt, styles.textLeftMonth, styles.txtContractNumber, styles.txtEarning, styles.txtInterest, styles.txtInvestNumber, total?.tien_goc_thu_ve, total?.tong_hop_dong, total?.tong_lai_phi, total?.tong_tat_ca_tien_dau_tu]);
+    }, [quarter, styles.containerContentKeyValue, styles.containerItem, styles.containerItemOverview, styles.monthTxt, styles.overviewQuarterTxt, styles.textLeftMonth, styles.txtContractNumber, styles.txtEarning, styles.txtInterest, styles.txtInvestNumber, total?.tien_goc_thu_ve, total?.tong_hop_dong, total?.tong_lai_phi, total?.tong_tat_ca_tien_dau_tu]);
 
     const renderChart = useMemo(() => {
         return (

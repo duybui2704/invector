@@ -27,7 +27,7 @@ export const MyStylesVerifyOTP = () => {
             },
             reSendCodeText: {
                 ...Styles.typography.regular,
-                paddingVertical: 20,
+                marginBottom: 24,
                 color: COLORS.RED_4,
                 textAlign: 'center'
             },
@@ -50,7 +50,7 @@ export const MyStylesVerifyOTP = () => {
                 color: COLORS.GREEN
             },
             wrapOTp: {
-                height: SCREEN_HEIGHT * 0.1
+                height: SCREEN_HEIGHT * 0.12
             }
         });
     }, []);

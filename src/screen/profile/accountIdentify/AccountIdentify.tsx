@@ -10,7 +10,7 @@ import AfterIC from '@/assets/image/ic_identify_after.svg';
 import BeforeIC from '@/assets/image/ic_identify_before.svg';
 import AvatarIC from '@/assets/image/ic_KYC_avatar.svg';
 import WarnIC from '@/assets/image/ic_warn_round_yellow.svg';
-import { noteAvatar, noteKYC } from '@/common/constants';
+import { noteAvatar, noteKYC, STATE_VERIFY_ACC } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
@@ -51,7 +51,7 @@ const AccountIdentify = observer(() => {
 
     // <Text>{JSON.stringify(avatar?.images[0]?.path)}</Text>   // file duong dan image after photograph // Api can update sau
 
-    const fetchIdentitiVerify = useCallback(async () => {
+    const fetchIdentityVerify = useCallback(async () => {
         const res = await apiServices.auth.identityVerify(3, identity, frontIdentify?.images[0]?.path, afterIdentify?.images[0]?.path, avatar?.images[0]?.path);
         if (res.success) {
             popupConfirmRef.current?.show();
@@ -100,12 +100,12 @@ const AccountIdentify = observer(() => {
 
     const onVerify = useCallback(() => {
         if (onValidate() && avatar && frontIdentify && afterIdentify) {
-            fetchIdentitiVerify();
+            fetchIdentityVerify();
         }
         else{
             ToastUtils.showMsgToast(Languages.errorMsg.errEmptyAvatarIdentity);
         }
-    }, [afterIdentify, avatar, fetchIdentitiVerify, frontIdentify, onValidate]);
+    }, [afterIdentify, avatar, fetchIdentityVerify, frontIdentify, onValidate]);
 
     const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, hasImage?: boolean, imageSource?: string, disable?: boolean) => {
         return <PhotoPickerBottomSheet
@@ -167,7 +167,7 @@ const AccountIdentify = observer(() => {
     const renderBottom = useMemo(() => {
         return (
             <View  style={styles.wrapBottom}>
-                {SessionManager?.userInfo?.tinh_trang?.auth === 1 &&
+                {SessionManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED &&
                     <>
                         <HTMLView
                             value={Languages.accountIdentify.note}
@@ -189,7 +189,7 @@ const AccountIdentify = observer(() => {
             <View style={styles.container}>
                 <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack />
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    {SessionManager.userInfo?.tinh_trang?.auth === 0 &&
+                    {SessionManager.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.VERIFIED &&
                         <View style={styles.wrapTopHtml}>
                             <HTMLView
                                 value={Languages.accountIdentify.noteTopIdentify}

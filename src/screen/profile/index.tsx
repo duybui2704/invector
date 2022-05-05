@@ -35,7 +35,7 @@ import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 import KeyToggleValue from '@/components/KeyToggleSwitch';
-import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC, GET_LINK_INVESTOR, LINK_TIENNGAY, messageError, StorageKeys } from '@/common/constants';
+import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC, GET_LINK_INVESTOR, LINK_TIENNGAY, messageError, STATE_VERIFY_ACC, StorageKeys } from '@/common/constants';
 import PopupConfirmBiometry from '@/components/PopupConfirmBiometry';
 import { PopupActionTypes } from '@/models/typesPopup';
 import PopupErrorBiometry from '@/components/PopupErrorBiometry';
@@ -93,8 +93,6 @@ const Profile = observer(() => {
         Navigator.navigateToDeepScreen(
             [ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin }
         );
-        userManager.updateUserInfo({});
-        Navigator.replaceScreen(ScreenName.auth);
     }, [userManager]);
 
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
@@ -280,20 +278,20 @@ const Profile = observer(() => {
     }, [isEnabledSwitch, onToggleBiometry, supportedBiometry]);
 
     const renderAccuracy = useMemo(() => {
-        switch (userManager.userInfo?.tinh_trang?.auth) {
-            case 0:
+        switch (userManager.userInfo?.tinh_trang?.status) {
+            case STATE_VERIFY_ACC.VERIFIED:
                 return (
                     <View style={styles.accuracyWrap}>
                         <Text style={styles.txtAccuracy}>{Languages.account.accVerified}</Text>
                     </View>
                 );
-            case 1:
+            case STATE_VERIFY_ACC.NO_VERIFIED:
                 return (
                     <View style={styles.notAccuracyWrap}>
                         <Text style={styles.txtNotAccuracy}>{Languages.account.accuracyNow}</Text>
                     </View>
                 );
-            case 2:
+            case STATE_VERIFY_ACC.WAIT:
                 return (
                     <View style={styles.waitAccuracyWrap}>
                         <Text style={styles.txtWaitAccuracy}>{Languages.account.waitVerify}</Text>
@@ -306,7 +304,7 @@ const Profile = observer(() => {
                     </View>
                 );
         }
-    }, [userManager.userInfo?.tinh_trang?.auth]);
+    }, [userManager.userInfo?.tinh_trang?.status]);
     const renderPinCode = useMemo(() => {
         return (
             <BottomSheetModal
@@ -348,13 +346,13 @@ const Profile = observer(() => {
             <HeaderBar title={Languages.account.title} isLight={false} />
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
                 <Touchable style={styles.accContainer} onPress={onNavigateAccInfo}>
-                    {!userManager.userInfo?.avatar ?
+                    {!userManager.userInfo?.avatar_user ?
                         <AvatarIC style={styles.circleWrap} />
                         :
                         <FastImage
                             style={styles.circleWrap}
                             source={{
-                                uri: userManager.userInfo?.avatar
+                                uri: userManager.userInfo?.avatar_user
                             }}
                             resizeMode={FastImage.resizeMode.cover}
                         />

@@ -18,7 +18,7 @@ import { MyStylesPaymentMethod } from './styles';
 import SessionManager from '@/manager/SessionManager';
 import { useAppStore } from '@/hooks';
 import { InfoLinkVimoModal } from '@/models/user-models';
-import { TYPE_INTEREST_RECEIVE_ACC } from '@/common/constants';
+import { STATE_LINK, TYPE_INTEREST_RECEIVE_ACC } from '@/common/constants';
 import ToastUtils from '@/utils/ToastUtils';
 
 const PaymentMethod = observer(() => {
@@ -27,10 +27,9 @@ const PaymentMethod = observer(() => {
     const vimoRef = useRef<PopupActionTypes>();
     const [dataInfoVimo, setDataInfoVimo] = useState<InfoLinkVimoModal>();
     const [paymentReceive, setpaymentReceive] = useState<string>(SessionManager.userInfo?.tra_lai?.type_interest_receiving_account || '');
-    const [active, setActive] = useState<boolean>(!!paymentReceive);
 
     const fetchInfoVimoLink = useCallback(async () => {
-        const res = await apiServices.paymentMethod.requestInfoLinkVimo(3);
+        const res = await apiServices.paymentMethod.requestInfoLinkVimo();
         if (res.success) {
             const data = res.data as InfoLinkVimoModal;
             setDataInfoVimo(data);
@@ -39,22 +38,20 @@ const PaymentMethod = observer(() => {
 
     useEffect(() => {
         fetchInfoVimoLink();
-        if (paymentReceive === '') {
-            setActive(false);
-        }
     }, []);
 
     const onPopupVimoAgree = useCallback(async () => {
-        const res = await apiServices.paymentMethod.requestCancelLinkVimo(3);
+        const res = await apiServices.paymentMethod.requestCancelLinkVimo();
         if (res.success) {
             ToastUtils.showSuccessToast(Languages.msgNotify.successCancelLinkVimo);
             vimoRef.current?.hide();
+            fetchInfoVimoLink();
         } else {
-            ToastUtils.showSuccessToast(Languages.msgNotify.failCancelLinkVimo);
+            // ToastUtils.showSuccessToast(Languages.msgNotify.failCancelLinkVimo);
             vimoRef.current?.hide();
         }
 
-    }, [apiServices.paymentMethod]);
+    }, [apiServices.paymentMethod, fetchInfoVimoLink]);
 
     const popupVimo = useCallback((ref?: any, icon?: any) => {
         return (
@@ -101,17 +98,34 @@ const PaymentMethod = observer(() => {
         } else {
             Navigator.pushScreen(ScreenName.confirmPhone);
         }
+
     }, []);
 
     const onBank = useCallback(() => {
         Navigator.pushScreen(ScreenName.accountBank);
     }, []);
 
-    const renderItemMethod = useCallback((leftIcon?: any, title?: string, activeMethod?: boolean) => {
-        const _onPress = () => {
+    const onChangeMethodVimo = useCallback(async () => {
+        const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest(TYPE_INTEREST_RECEIVE_ACC.VIMO);
+        if (res.success) {
+            ToastUtils.showSuccessToast(Languages.msgNotify.successChangeMethod);
+        }
+    }, [apiServices.paymentMethod]);
+
+    const onChangeMethodBank = useCallback(async () => {
+        const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest(TYPE_INTEREST_RECEIVE_ACC.BANK);
+        if (res.success) {
+            ToastUtils.showSuccessToast(Languages.msgNotify.successChangeMethod);
+            onBank();
+
+        }
+    }, [apiServices.paymentMethod, onBank]);
+
+    const renderItemMethod = useCallback((leftIcon?: any, title?: string, activeLink?: boolean, activeMethod?: boolean) => {
+        const _onPressToLink = () => {
             switch (title) {
                 case Languages.paymentMethod.vimo:
-                    onVimo(activeMethod);
+                    onVimo(activeLink);
                     break;
                 case Languages.paymentMethod.bank:
                     onBank();
@@ -120,19 +134,33 @@ const PaymentMethod = observer(() => {
                     break;
             }
         };
+        const _onPressToChooseMethod = () => {
+            switch (title) {
+                case Languages.paymentMethod.vimo:
+                    onChangeMethodVimo();
+                    break;
+                case Languages.paymentMethod.bank:
+                    onChangeMethodBank();
+                    break;
+                default:
+                    break;
+            }
+        };
         return (
-            <Touchable style={styles.wrapItemPayment} onPress={_onPress}>
+            <View style={styles.wrapItemPayment} >
                 {leftIcon}
                 <View style={styles.wrapRightItemPayment}>
-                    <View>
+                    <Touchable onPress={_onPressToLink}>
                         <Text style={styles.titleItemLink}>{`${title}`}</Text>
-                        {renderStateLink(activeMethod)}
-                    </View>
-                    {renderRightIcon(activeMethod)}
+                        {renderStateLink(activeLink)}
+                    </Touchable>
+                    <Touchable onPress={_onPressToChooseMethod} disabled={activeMethod}>
+                        {renderRightIcon(activeMethod)}
+                    </Touchable>
                 </View>
-            </Touchable>
+            </View>
         );
-    }, [onBank, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapRightItemPayment]);
+    }, [onBank, onChangeMethodBank, onChangeMethodVimo, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapRightItemPayment]);
 
     return (
         <View style={styles.container}>
@@ -141,11 +169,13 @@ const PaymentMethod = observer(() => {
                 <Text style={styles.txtMethodChoose}>{Languages.paymentMethod.methodChoose}</Text>
                 {renderItemMethod(<VimoIC />,
                     Languages.paymentMethod.vimo,
-                    paymentReceive === TYPE_INTEREST_RECEIVE_ACC.VIMO
+                    dataInfoVimo?.trang_thai === STATE_LINK.LINKING,
+                    dataInfoVimo?.trang_thai === STATE_LINK.LINKING
                 )}
                 {renderItemMethod(<BankIC />,
                     Languages.paymentMethod.bank,
-                    paymentReceive === TYPE_INTEREST_RECEIVE_ACC.BANK
+                    paymentReceive === TYPE_INTEREST_RECEIVE_ACC.BANK,
+                    SessionManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.BANK
                 )}
             </View>
             {popupVimo(vimoRef, <WarnIC />)}

@@ -18,8 +18,6 @@ import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import { MyStylesLogin } from './styles';
 import { UserInfoModal } from '@/models/user-models';
-import { dataUser } from '@/mocks/data';
-
 
 const Login = observer(() => {
     const {
@@ -53,7 +51,7 @@ const Login = observer(() => {
         setLoading(isLoading);
     }, [isLoading]);
 
-    const onChangeText = (value: string, tag?: string) => {
+    const onChangeText = useCallback((value: string, tag?: string) => {
         switch (tag) {
             case Languages.auth.txtPhone:
                 setPhone(value);
@@ -64,7 +62,7 @@ const Login = observer(() => {
             default:
                 break;
         }
-    };
+    },[]);
 
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
@@ -92,7 +90,7 @@ const Login = observer(() => {
                 isPassword={isPass}
             />
         );
-    }, [styles.inputPhone]);
+    }, [onChangeText, styles.inputPhone]);
 
 
     const onLoginPhone = useCallback(async () => {

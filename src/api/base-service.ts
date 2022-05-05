@@ -58,7 +58,7 @@ export class BaseService {
             timeout: TIMEOUT_API
         });
         _api.addAsyncResponseTransform(async (response: any) => {
-            const { data, message, code, success } = await this.checkResponseAPI(response);
+            const { data, message, code, success, total } = await this.checkResponseAPI(response);
 
             if (typeof data !== 'undefined') {
                 try {
@@ -72,6 +72,7 @@ export class BaseService {
             response.success = success;
             response.message = message;
             response.code = code;
+            response.data.total = total;
         });
 
         return _api;
