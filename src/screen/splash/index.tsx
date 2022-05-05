@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { HeaderBar } from '@/components/header';
 import DimensionUtils from '@/utils/DimensionUtils';
 import Navigator from '@/routers/Navigator';
-import ScreenNames from '@/common/screenNames';
+import ScreenNames, { ScreenName, TabsName } from '@/common/screenNames';
 import SessionManager from '@/manager/SessionManager';
 import { useAppStore } from '@/hooks';
 import { AppStatusModel } from '@/models/app-status';
@@ -39,7 +39,7 @@ const Splash = observer(() => {
 
     const nextScreen = useCallback(async () => {
         setTimeout(async () => {
-            Navigator.replaceScreen(ScreenNames.auth);
+            Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
         }, 1e3);
     }, []);
 

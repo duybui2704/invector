@@ -43,7 +43,7 @@ export default function Card({
 
     const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
         inputRange: [-ACTION_OFFSET, 0, ACTION_OFFSET],
-        outputRange: ['8deg', '0deg', '-8deg']
+        outputRange: ['8deg', '0deg', '8deg']
     });
 
     const animatedCardStyle = {

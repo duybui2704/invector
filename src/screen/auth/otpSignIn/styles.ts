@@ -79,7 +79,7 @@ export const MyStylesOtp = () => {
                 color: COLORS.WHITE
             },
             sentOtp: {
-                width: DimensionUtils.SCREEN_WIDTH * 0.3,
+                width: DimensionUtils.SCREEN_WIDTH * 0.5,
                 height: DimensionUtils.SCREEN_HEIGHT * 0.05,
                 marginVertical: 20,
                 marginHorizontal: 5

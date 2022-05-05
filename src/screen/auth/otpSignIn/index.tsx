@@ -287,7 +287,7 @@ const OtpSignIn = (props: any) => {
                     </Touchable>
                 }
 
-                <Touchable style={styles.sentOtp} disabled={false} onPress={sendOTP}>
+                <Touchable style={styles.sentOtp} disabled={check} onPress={sendOTP}>
                     {check ?
                         <Text style={styles.txtOtp}>{Languages.otp.sentOtp1}{timerCount}</Text> :
                         <Text style={styles.txtOtp}>{Languages.otp.sentOtp2}</Text>

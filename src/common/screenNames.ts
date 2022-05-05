@@ -3,6 +3,7 @@ export const ScreenName = {
     otp: 'Otp',
     tabs: 'Tabs',
     auth: 'Auth',
+    authStack: 'AuthStack',
     signIn: 'SignIn',
     home: 'Home',
     investment: 'Investment',

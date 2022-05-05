@@ -25,7 +25,7 @@ import Navigator from '@/routers/Navigator';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import LoginWithBiometry from './loginWithBiometrty';
 
-const Auth = observer(() => {
+const Auth = observer(({ route }: any) => {
     const styles = myStylesAuth();
     const ratio = DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH;
     const [wid, setWid] = useState<number>(0);
@@ -38,9 +38,9 @@ const Auth = observer(() => {
     } = useAppStore();
 
     useEffect(() => {
-        if (SessionManager.accessToken) {
-            console.log('token');
-            Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
+        if (route?.params) {
+            console.log('route:', route.params);
+            setIsNavigate(route?.params.titleAuth);
         }
         screenRatio();
     }, []);
@@ -114,7 +114,7 @@ const Auth = observer(() => {
                     height={DimensionUtils.SCREEN_HEIGHT * 0.22}
                 /></View>
             <View style={styles.viewSvg}>
-                <SvgComponent onNavigate={onNavigate} />
+                <SvgComponent onNavigate={onNavigate} title={isNavigate} />
             </View>
             <View style={[styles.wrapAll, { width: wid }]}>
                 {isNavigate === Languages.auth.txtLogin ? <Login/> :

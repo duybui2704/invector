@@ -41,7 +41,10 @@ const Languages = {
         interestRateMonth: 'Lãi xuất tháng',
         timeInvest: 'Thời gian đầu tư',
         interestExpected: 'Lãi dự kiến',
-        formInterestPay: 'Hình thức trả lãi'
+        formInterestPay: 'Hình thức trả lãi',
+        hello: 'Chào mừng bạn đến với',
+        nameApp: 'TienNgay.Vn',
+        investAndAccumulate: 'Đầu tư & Tích luỹ'
 
     },
     invest: {

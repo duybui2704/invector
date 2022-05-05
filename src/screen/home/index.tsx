@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { StatusBar, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -27,9 +27,10 @@ import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
 import { NewsModel } from '@/models/news';
 import Navigator from '@/routers/Navigator';
-import { COLORS } from '@/theme';
+import { COLORS, Styles } from '@/theme';
 import Utils from '@/utils/Utils';
 import { MyStylesHome } from './styles';
+import SessionManager from '@/manager/SessionManager';
 
 const Home = observer(() => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -54,7 +55,6 @@ const Home = observer(() => {
         fetchDataInvest();
         fetchDataBanner();
     }, []);
-
 
     const fetchDataInvest = useCallback(async () => {
 
@@ -115,12 +115,24 @@ const Home = observer(() => {
     }, []);
 
     const navigateToDetail = useCallback((item: any) => {
-        Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
+        if (SessionManager.accessToken) {
+            Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
+        } else {
+            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
+        }
     }, [btnInvest]);
 
     const navigateToInvestNow = useCallback((item: any) => {
-        Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.invest, { status: btnInvest, id: item?.id });
+        if (SessionManager.accessToken) {
+            Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.invest, { status: btnInvest, id: item?.id });
+        } else {
+            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
+        }
     }, [btnInvest]);
+
+    const gotoLogin = useCallback((titleAuth: string) => {
+        Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth });
+    }, []);
 
     const renderItem = useCallback((item: any) => {
         return (
@@ -215,49 +227,66 @@ const Home = observer(() => {
                 backgroundColor={COLORS.TRANSPARENT}
             />
 
-            <View style={styles.viewTop}>
-                <Text style={styles.txt1}>{Languages.home.sumInvest}</Text>
-                <View style={styles.viewTop2}>
-                    <Text style={styles.txt2} numberOfLines={1}>
-                        {Utils.formatMoney(dataDash?.so_du)}
-                        <Text style={styles.txt4}> {Languages.home.vnd}</Text>
-                    </Text>
-                </View>
-                <View style={styles.viewTop1}>
-                    <View style={styles.viewTop3}>
-                        <View style={styles.txtLeft}>
-                            <Text style={styles.txt3}>{Languages.home.sumpProfit}</Text>
-                            <Text style={styles.txt7} numberOfLines={1}
-                            >
-                                {Utils.formatMoney(dataDash?.tong_goc_da_tra)}{ }
-                                <Text style={
-                                    [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
-                                >{Languages.home.vnd}</Text>
-                            </Text>
-                        </View>
+            {SessionManager.accessToken ?
+                <View style={styles.viewTop}>
+                    <Text style={styles.txt1}>{Languages.home.sumInvest}</Text>
+                    <View style={styles.viewTop2}>
+                        <Text style={styles.txt2} numberOfLines={1}>
+                            {Utils.formatMoney(dataDash?.so_du)}
+                            <Text style={styles.txt4}> {Languages.home.vnd}</Text>
+                        </Text>
                     </View>
-                    <View style={styles.viewTop3}>
-                        <View style={styles.txtRight}>
-                            <Text style={styles.txt3}>{Languages.home.sumResidualProfit}</Text>
-                            <Text style={styles.txt6} numberOfLines={1}>
-                                {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
-                                <Text style={
-                                    [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
-                                >{Languages.home.vnd}</Text>
-
-                            </Text>
+                    <View style={styles.viewTop1}>
+                        <View style={styles.viewTop3}>
+                            <View style={styles.txtLeft}>
+                                <Text style={styles.txt3}>{Languages.home.sumpProfit}</Text>
+                                <Text style={styles.txt7} numberOfLines={1}
+                                >
+                                    {Utils.formatMoney(dataDash?.tong_goc_da_tra)}{ }
+                                    <Text style={
+                                        [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
+                                    >{Languages.home.vnd}</Text>
+                                </Text>
+                            </View>
                         </View>
+                        <View style={styles.viewTop3}>
+                            <View style={styles.txtRight}>
+                                <Text style={styles.txt3}>{Languages.home.sumResidualProfit}</Text>
+                                <Text style={styles.txt6} numberOfLines={1}>
+                                    {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
+                                    <Text style={
+                                        [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
+                                    >{Languages.home.vnd}</Text>
+
+                                </Text>
+                            </View>
+                        </View>
+
                     </View>
 
                 </View>
-
-            </View>
-            <View style={styles.viewTob}>
-                {renderIconTob(gotoInvestHistory, Languages.home.have)}
-                {renderIconTob(gotoInvest, Languages.home.invest)}
-                {renderIconTob(gotoReport, Languages.home.report)}
-                {renderIconTob(gotoPayment, Languages.home.payment)}
-            </View>
+                :
+                <View style={styles.viewTopCenter}>
+                    <Text style={styles.txtHello}>{Languages.home.hello}</Text>
+                    <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
+                    <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
+                </View>}
+            {SessionManager.accessToken ?
+                <View style={styles.viewTob}>
+                    {renderIconTob(gotoInvestHistory, Languages.home.have)}
+                    {renderIconTob(gotoInvest, Languages.home.invest)}
+                    {renderIconTob(gotoReport, Languages.home.report)}
+                    {renderIconTob(gotoPayment, Languages.home.payment)}
+                </View>
+                :
+                <View style={styles.viewTob}>
+                    <Touchable style={styles.tobAuth} onPress={() => gotoLogin(Languages.auth.txtLogin)}>
+                        <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
+                    </Touchable>
+                    <Touchable style={styles.tobAuth} onPress={() => gotoLogin(Languages.auth.txtSignUp)}>
+                        <Text style={styles.txtLogin}>{Languages.auth.txtSignUp}</Text>
+                    </Touchable>
+                </View>}
 
             <View style={styles.viewCenter}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>

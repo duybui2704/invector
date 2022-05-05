@@ -23,7 +23,8 @@ const Login = observer(() => {
     const {
         apiServices,
         userManager,
-        fastAuthInfoManager: fastAuthInfo
+        fastAuthInfoManager: fastAuthInfo,
+        appManager
     } = useAppStore();
 
     const [phone, setPhone] = useState<string>('');
@@ -37,20 +38,18 @@ const Login = observer(() => {
 
     useEffect(() => {
         if (SessionManager.getPhoneLogin()) {
-            setPhone(SessionManager.getPhoneLogin() || '');
+            setPhone(SessionManager.getPhoneLogin());
             setCheck(true);
         }
         if (SessionManager.getPwdLogin()) {
-            setPass(SessionManager.getPwdLogin() || '');
+            setPass(SessionManager.getPwdLogin());
             setCheck(true);
         }
     }, []);
 
     useEffect(() => {
-        // setLoading(isLoading);
-        setPhone('0359908532'); // 0961182794  // 0359908532 // 0988251903
-        setPass('12345678');
-    }, []);
+        setLoading(isLoading);
+    }, [isLoading]);
 
     const onChangeText = useCallback((value: string, tag?: string) => {
         switch (tag) {
@@ -67,14 +66,14 @@ const Login = observer(() => {
 
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
-    }, []);
+    }, [checked]);
 
     const checkbox = useMemo(() => {
         if (checked) {
             return <CheckIcon />;
         }
         return <UnCheckIcon />;
-    }, [checked]);
+    }, [onChangeChecked]);
 
     const renderInput = useCallback((ref: any, value: any, isPhone: boolean, placeHolder: string, rightIcon?: string, keyboardType?: any, maxLength?: number, isPass?: boolean) => {
         return (
@@ -115,14 +114,16 @@ const Login = observer(() => {
                 setUserData(data);
                 userManager.updateUserInfo(data);
             }
-            Navigator.navigateToDeepScreen(
-                [ScreenName.tabs],
-                TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
-            );
+            setTimeout(() => {
+                Navigator.navigateToDeepScreen(
+                    [ScreenName.tabs],
+                    TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+                );
+            }, 200);
         }
         setLoading(false);
 
-    }, [apiServices.auth, phone, pass, checked, fastAuthInfo, userManager]);
+    }, [apiServices.auth, pass, phone, userManager, onChangeChecked]);
 
     useEffect(() => {
         console.log('userData=', userData);

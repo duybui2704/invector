@@ -66,7 +66,6 @@ const ChangePass = observer((props: any) => {
     }, [newPass, confirmPass]);
 
     const onChange = async () => {
-        console.log('props', props);
         if (onValidate()) {
             setLoading(true);
             const resChangePass = await apiServices.auth.updateNewPwd(props?.phone, props?.token, newPass, confirmPass);
