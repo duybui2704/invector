@@ -21,7 +21,9 @@ export const MyStylesConfirmPhone = () => {
             },
             title: {
                 ...Styles.typography.regular,
-                marginBottom: 5
+                marginBottom: 5,
+                marginTop: 16,
+                color: COLORS.GRAY_7
             },
             containerStyle: {
                 backgroundColor: COLORS.WHITE,
@@ -34,7 +36,7 @@ export const MyStylesConfirmPhone = () => {
                 fontSize: Configs.FontSize.size14
             },
             groupInput: {
-                marginBottom: 30
+                marginBottom: 35
             },
             logo: {
                 flex: 1,

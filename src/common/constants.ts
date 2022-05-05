@@ -175,3 +175,9 @@ export enum TYPE_INTEREST_RECEIVE_ACC{
     NGAN_LUONG = 'ngan_luong',
     MOMO = 'momo'
 };
+
+export enum STATE_VERIFY_ACC{
+    VERIFIED = 'Đã xác nhận thông tin',
+    WAIT = 'Chờ TienNgay xác nhận thông tin',
+    NO_VERIFIED = 'Cần xác thực thông tin CMT/CCCD'
+};

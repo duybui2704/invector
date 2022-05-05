@@ -47,12 +47,12 @@ const Login = observer(() => {
     }, []);
 
     useEffect(() => {
-        setLoading(isLoading);
+        // setLoading(isLoading);
         setPhone('0359908532'); // 0961182794  // 0359908532 // 0988251903
         setPass('12345678');
-    }, [isLoading]);
+    }, []);
 
-    const onChangeText = (value: string, tag?: string) => {
+    const onChangeText = useCallback((value: string, tag?: string) => {
         switch (tag) {
             case Languages.auth.txtPhone:
                 setPhone(value);
@@ -63,7 +63,7 @@ const Login = observer(() => {
             default:
                 break;
         }
-    };
+    },[]);
 
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
@@ -91,7 +91,7 @@ const Login = observer(() => {
                 isPassword={isPass}
             />
         );
-    }, [styles.inputPhone]);
+    }, [onChangeText, styles.inputPhone]);
 
 
     const onLoginPhone = useCallback(async () => {

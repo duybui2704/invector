@@ -10,11 +10,11 @@ import ScreenName from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import KeyValue from '@/components/KeyValue';
-import SessionManager from '@/manager/SessionManager';
 import Navigator from '@/routers/Navigator';
 import { MyStylesAccountInfo } from './styles';
 import { useAppStore } from '@/hooks';
 import { UserInfoModal } from '@/models/user-models';
+import { STATE_VERIFY_ACC } from '@/common/constants';
 
 const AccountInfo = observer(() => {
     const { apiServices } = useAppStore();
@@ -55,17 +55,17 @@ const AccountInfo = observer(() => {
     }, [onNavigateKYC, styles.txtContentKYC]);
 
     const renderAccuracy = useMemo(() => {
-        switch (dataUsers?.tinh_trang?.auth) {
-            case 0:
+        switch (dataUsers?.tinh_trang?.status) {
+            case STATE_VERIFY_ACC.VERIFIED:
                 return <>{renderTopAcc(<KYCVerifyIcon />, '', Languages.account.accVerified, styles.accuracyWrap, styles.txtAccuracy)}</>;
-            case 1:
+            case STATE_VERIFY_ACC.NO_VERIFIED:
                 return <>{renderTopAcc(<KYCIcon />, Languages.accountInfo.content, Languages.account.accuracyNow, styles.notAccuracyWrap, styles.txtNotAccuracy)}</>;
-            case 2:
+            case STATE_VERIFY_ACC.WAIT:
                 return <>{renderTopAcc(<KYCIcon />, Languages.accountInfo.noteWaitVerify, Languages.accountInfo.accWaitVerify, styles.waitAccuracyWrap, styles.txtWaitAccuracy)}</>;
             default:
                 return <>{renderTopAcc(<KYCIcon />, Languages.accountInfo.content, Languages.account.accuracyNow, styles.notAccuracyWrap, styles.txtNotAccuracy)}</>;
         }
-    }, [dataUsers?.tinh_trang?.auth, renderTopAcc, styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy, styles.txtWaitAccuracy, styles.waitAccuracyWrap]);
+    }, [dataUsers?.tinh_trang?.status, renderTopAcc, styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy, styles.txtWaitAccuracy, styles.waitAccuracyWrap]);
 
     const renderKeyFeature = useCallback((title: string, content?: string) => {
         return (

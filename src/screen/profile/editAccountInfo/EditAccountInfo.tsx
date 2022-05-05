@@ -28,6 +28,7 @@ const EditAccountInfo = observer(() => {
     const [addressUser, setAddress] = useState<string>(SessionManager.userInfo?.address || '');
     const [jobUser, setJob] = useState<string>(SessionManager.userInfo?.job || '');
     const [birthday, setBirthday] = useState<string>(SessionManager.userInfo?.birth_date || '');
+    const [avatarAcc, setAvatarAcc] = useState<any>(SessionManager.userInfo?.avatar_user || '');
 
     const nameRef = useRef<TextFieldActions>();
     const emailRef = useRef<TextFieldActions>();
@@ -107,11 +108,12 @@ const EditAccountInfo = observer(() => {
 
     const onSaveInfo = useCallback(async() => {
         if (onValidate()) {
-            const res = await apiServices.auth.updateUserInf(name, genderUser,birthday, phone, emailUser, addressUser, jobUser);
+            const res = await apiServices.auth.updateUserInf(name, avatarAcc, genderUser,birthday, phone, emailUser, addressUser, jobUser);
             if(res.success){
                 userManager.updateUserInfo({
                     ...userManager.userInfo,
                     full_name: name,
+                    avatar: avatarAcc,
                     gender: genderUser,
                     birth_date: birthday,
                     phone_number: phone,
@@ -119,11 +121,11 @@ const EditAccountInfo = observer(() => {
                     address: addressUser,
                     job: jobUser
                 });
-                ToastUtils.showSuccessToast(Languages.accountInfo.editAcc);
+                ToastUtils.showSuccessToast(Languages.accountInfo.successEdit);
             }
             
         }
-    }, [addressUser, apiServices.auth, birthday, emailUser, genderUser, jobUser, name, onValidate, phone, userManager]);
+    }, [addressUser, apiServices.auth, avatarAcc, birthday, emailUser, genderUser, jobUser, name, onValidate, phone, userManager]);
 
 
     const renderInfoAcc = useMemo(() => {
@@ -155,13 +157,13 @@ const EditAccountInfo = observer(() => {
                 <HideKeyboard>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.topContainer}>
-                            {!SessionManager?.userInfo?.avatar ?
+                            {!avatarAcc?
                                 <AvatarIC style={styles.circleWrap} />
                                 :
                                 <FastImage
                                     style={styles.circleWrap}
                                     source={{
-                                        uri: SessionManager?.userInfo?.avatar
+                                        uri: avatarAcc
                                     }}
                                     resizeMode={FastImage.resizeMode.cover}
                                 />

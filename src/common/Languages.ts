@@ -256,7 +256,8 @@ const Languages = {
         address: 'Địa chỉ',
         edit: 'Chỉnh sửa',
         save: 'Lưu lại',
-        editAcc: 'Chỉnh sửa thông tin'
+        editAcc: 'Chỉnh sửa thông tin',
+        successEdit: 'Chỉnh sửa thông tin thành công'
     },
     accountIdentify: {
         accountIdentify: 'Xác thực tài khoản',
@@ -378,6 +379,8 @@ const Languages = {
         vimo: 'Tài khoản Vimo',
         bank: 'Tài khoản Ngân hàng',
         cancelLinkVimo: 'Huỷ liên kết ví Vimo',
+        changeMethodBank: 'Bạn có muốn chuyển sang liên kết ngân hàng',
+        changeMethodVimo: 'Bạn có muốn chuyển sang liên kết Vimo',
         contentCancelLinkVimo: 'Bạn có thật sự muốn huỷ liên kết với ví Vimo. Nếu bạn huỷ liên kết bạn sẽ không thể đầu tư bằng ví Vimo'
     },
     accountBank: {
@@ -414,7 +417,13 @@ const Languages = {
         failAccountLinkBank: 'Liên kết thất bại tài khoản ngân hàng',
         failVerifyOTP: 'Mã xác thực OTP không đúng',
         successLinkWithVimo: 'Liên kết thành công với Vimo',
-        failPostIdentity: 'Lỗi gửi ảnh'
+        failPostIdentity: 'Lỗi gửi ảnh',
+        successVimoLink: 'Liên kết Vimo thành công',
+        failVimoLink: 'Liên kết Vimo thất bại',
+        successReOTPVimo: 'Mã OTP đã được gửi lại',
+        failReOTPVimo: 'Không thể gửi lại mã OTP',
+        successChangeMethod: 'Bạn đã chuyển liên kết thành công',
+        failChangeMethod: 'Bạn không thể chuyển liên kết'
     },
     loginWithBiometry: {
         hello: '<e>Xin chào,</e>',
