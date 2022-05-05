@@ -29,6 +29,7 @@ import EditAccountInfo from '@/screen/profile/editAccountInfo/EditAccountInfo';
 import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
 import MyWebView from '@/screen/profile/myWedView/MyWebView';
 import { NotifyInvest } from '@/screen/home/notifyInvest';
+import PaymentWebview from '@/screen/investment/paymentWebview';
 
 const TabsData = [
     {
@@ -75,6 +76,7 @@ const HomeStack = () => {
             <Stack.Screen name={ScreenName.notifyInvest} component={NotifyInvest} />
             <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
             <Stack.Screen name={ScreenName.invest} component={Invest} />
+            <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
         </Stack.Navigator>
     );
 };
@@ -85,6 +87,7 @@ const InvestStack = () => {
             <Stack.Screen name={ScreenName.investment} component={Investment} />
             <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
             <Stack.Screen name={ScreenName.invest} component={Invest} />
+            <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
         </Stack.Navigator>
     );
 };

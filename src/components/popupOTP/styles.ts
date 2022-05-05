@@ -11,7 +11,7 @@ export const MyStylesOtpInvest = () => {
             main: {
                 flex: 1,
                 backgroundColor: COLORS.WHITE_GRAY,
-                marginVertical: 16,
+                // marginVertical: 16,
                 alignItems: 'center'
             },
             container: {
@@ -59,7 +59,7 @@ export const MyStylesOtpInvest = () => {
             },
             tobModal: {
                 flexDirection: 'column',
-                width: '100%',
+                // width: '100%',
                 height: DimensionUtils.SCREEN_HEIGHT / 2.5,
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 10,

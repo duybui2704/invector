@@ -27,7 +27,8 @@ export const ScreenName = {
     verifyOTP: 'VerifyOTP',
     notifyInvest: ' NotifyInvest',
     myWedView: 'MyWedView',
-    splash: 'Slash'
+    splash: 'Slash',
+    paymentWebview:'PaymentWebview'
 };
 
 export default ScreenName;

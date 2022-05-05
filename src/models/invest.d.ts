@@ -30,3 +30,30 @@ export interface Notify {
     updated_at: number;
 
 }
+export interface InvestorInfoModel {
+    avatar: string;
+    avatar_user: string
+    card_back: string
+    email: string
+    front_facing_card: string
+    full_name: string
+    identity: string
+    phone_number: string
+    tinh_trang: StatusInvestModel
+    tra_lai: InterestPaymentModel
+}
+
+export interface StatusInvestModel {
+    status: string
+    color: string
+    auth: boolean
+}
+export interface InterestPaymentModel {
+    type_interest_receiving_account: string
+    interest_receiving_account: string
+    bank_name: string
+    name_bank_account: string
+    type_card: string
+}
+
+

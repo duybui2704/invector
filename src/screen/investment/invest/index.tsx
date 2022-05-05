@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Alert, Platform, ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import IcBag from '@/assets/image/ic_bag.svg';
 import Languages from '@/common/Languages';
@@ -17,11 +17,13 @@ import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
 import { Configs } from '@/common/Configs';
 import { PopupInvestOTP } from '@/components/popupOTP';
-import { PackageInvest } from '@/models/invest';
+import { InvestorInfoModel, PackageInvest } from '@/models/invest';
 import { useAppStore } from '@/hooks';
 import Loading from '@/components/loading';
 import PopupConfirmPolicy from '@/components/PopupConfirmPolicy';
 import { PopupActionTypes } from '@/models/typesPopup';
+import Navigator from '@/routers/Navigator';
+import ScreenName, { TabsName } from '@/common/screenNames';
 
 
 const Invest = observer(({ route }: any) => {
@@ -30,7 +32,7 @@ const Invest = observer(({ route }: any) => {
     const [methodPayment, setMethodPayment] = useState<string>();
     const [isCheckBox, setIsCheckBox] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const refModal = useRef<any>();
+    const refModal = useRef<PopupActionTypes>();
     const refPopupPolicy = useRef<PopupActionTypes>(null);
     const { apiServices } = useAppStore();
 
@@ -47,6 +49,67 @@ const Invest = observer(({ route }: any) => {
             setCsdl(res);
         }
     }, [apiServices.invest, route.params.id]);
+
+    const checkBox = useCallback(() => {
+        setIsCheckBox(!isCheckBox);
+    }, [isCheckBox]);
+
+    const onInvest = useCallback(async () => {
+        const res = await apiServices.invest.getInforInvest();
+        if (res.success) {
+            const data = res.data as InvestorInfoModel;
+            if (data?.tra_lai && !data?.tra_lai?.type_interest_receiving_account) {
+                Alert.alert(
+                    Languages.invest.notify, Languages.invest.updateBankInfo,
+                    [
+                        {
+                            text: Languages.common.cancel,
+                            style: 'cancel'
+                        },
+                        {
+                            text: Languages.common.agree,
+                            style: 'default',
+                            onPress: () => {
+                                Navigator.navigateScreen(TabsName.accountTabs);
+                            }
+                        }
+                    ]
+                );
+            }
+            else if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
+                const resPayment = await apiServices.invest.requestNganLuong(csdl?.id?.toString() || '', Platform.OS);
+                if (res.success && resPayment.data) {
+                    Navigator.pushScreen(ScreenName.paymentWebview, {
+                        url: resPayment?.data
+                    });
+                }
+            }
+            else {
+                refModal.current?.show();
+                console.log('vimo');
+            }
+        }
+    }, [apiServices.invest, csdl?.id, methodPayment]);
+
+    const openPolicy = useCallback(() => {
+        refPopupPolicy.current?.show();
+    }, []);
+
+    const onConfirmPopup = useCallback(() => {
+        setIsCheckBox(true);
+        refPopupPolicy.current?.hide();
+    }, []);
+
+
+    const onSendOTP = useCallback(async () => {
+        const id = csdl?.id.toString();
+        const resInvestOtp = await apiServices.invest.getInvestOtp(id || '');
+        setIsLoading(true);
+        if (resInvestOtp.success) {
+            setIsLoading(false);
+        }
+        setIsLoading(false);
+    }, [apiServices.invest, csdl?.id]);
 
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string) => {
         return (
@@ -78,31 +141,6 @@ const Invest = observer(({ route }: any) => {
         );
     }, [methodPayment, styles.btSelected, styles.circle, styles.greenText, styles.txtMethod, styles.wrapItemMethod, styles.wrapLabel]);
 
-    const checkBox = useCallback(() => {
-        setIsCheckBox(!isCheckBox);
-    }, [isCheckBox]);
-
-    const onInvest = useCallback(() => {
-        
-    }, []);
-
-    const openPolicy = useCallback(() => {
-        refPopupPolicy.current?.show();
-    }, []);
-    const onConfirmPopup = useCallback(() => {
-        setIsCheckBox(true);
-        refPopupPolicy.current?.hide();
-    }, []);
-
-    const sendOtp = useCallback(async () => {
-        const id = csdl?.id.toString();
-        const resInvestOtp = await apiServices.invest.getInvestOtp(id);
-        setIsLoading(true);
-        if (resInvestOtp.success) {
-            setIsLoading(false);
-        }
-        setIsLoading(false);
-    }, [apiServices.invest, csdl?.id]);
 
     return (
         <View>
@@ -156,8 +194,11 @@ const Invest = observer(({ route }: any) => {
                     </Text>
                 </Touchable>
             </ScrollView>
-            <PopupInvestOTP ref={refModal} />
-            <PopupConfirmPolicy onConfirm={onConfirmPopup} ref={refPopupPolicy} />
+            <PopupInvestOTP onSendOTP={onSendOTP} ref={refModal} />
+            <PopupConfirmPolicy
+                onConfirm={onConfirmPopup}
+                ref={refPopupPolicy}
+            />
             {isLoading && <Loading isOverview />}
         </View>
     );
