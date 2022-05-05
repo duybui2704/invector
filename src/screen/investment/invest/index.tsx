@@ -1,18 +1,18 @@
-import {observer} from 'mobx-react';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import { observer } from 'mobx-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import IcBag from '@/assets/image/ic_bag.svg';
 import Languages from '@/common/Languages';
 import HeaderBar from '@/components/header';
-import {COLORS, HtmlStyles} from '@/theme';
+import { COLORS, HtmlStyles } from '@/theme';
 import Utils from '@/utils/Utils';
 import { MyStylesInvest } from '@/screen/investment/invest/styles';
 import ItemInfoContract from '@/components/ItemInfoContract';
 import IcVimo from '@/assets/image/ic_vimo.svg';
 import IcNganLuong from '@/assets/image/ic_ngan_luong.svg';
-import {Touchable} from '@/components/elements/touchable';
-import {ENUM_METHOD_PAYMENT} from '@/common/constants';
+import { Touchable } from '@/components/elements/touchable';
+import { ENUM_METHOD_PAYMENT } from '@/common/constants';
 import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
 import { Configs } from '@/common/Configs';
@@ -20,15 +20,18 @@ import { PopupInvestOTP } from '@/components/popupOTP';
 import { PackageInvest } from '@/models/invest';
 import { useAppStore } from '@/hooks';
 import Loading from '@/components/loading';
+import PopupConfirmPolicy from '@/components/PopupConfirmPolicy';
+import { PopupActionTypes } from '@/models/typesPopup';
 
 
-const Invest = observer(({route}: any) => {
+const Invest = observer(({ route }: any) => {
     const styles = MyStylesInvest();
     const [csdl, setCsdl] = useState<PackageInvest>();
     const [methodPayment, setMethodPayment] = useState<string>();
     const [isCheckBox, setIsCheckBox] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const refModal = useRef<any>();
+    const refPopupPolicy = useRef<PopupActionTypes>(null);
     const { apiServices } = useAppStore();
 
     useEffect(() => {
@@ -43,11 +46,11 @@ const Invest = observer(({route}: any) => {
             const res = resInvestNow.data as PackageInvest;
             setCsdl(res);
         }
-    }, []);
+    }, [apiServices.invest, route.params.id]);
 
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string) => {
         return (
-            <ItemInfoContract label={label} value={value} colorText={colorText}/>
+            <ItemInfoContract label={label} value={value} colorText={colorText} />
         );
     }, []);
 
@@ -69,19 +72,26 @@ const Invest = observer(({route}: any) => {
                     {linked && <Text style={styles.greenText}>{Languages.detailInvest.linked}</Text>}
                 </View>
                 <View style={[styles.btSelected, borderColor]}>
-                    {selected && < View style={styles.circle}/>}
+                    {selected && < View style={styles.circle} />}
                 </View>
             </Touchable>
         );
-    }, [methodPayment]);
+    }, [methodPayment, styles.btSelected, styles.circle, styles.greenText, styles.txtMethod, styles.wrapItemMethod, styles.wrapLabel]);
 
     const checkBox = useCallback(() => {
         setIsCheckBox(!isCheckBox);
     }, [isCheckBox]);
 
-    const onModal= useCallback(() =>{
-        refModal.current.show();
-        sendOtp();
+    const onInvest = useCallback(() => {
+        
+    }, []);
+
+    const openPolicy = useCallback(() => {
+        refPopupPolicy.current?.show();
+    }, []);
+    const onConfirmPopup = useCallback(() => {
+        setIsCheckBox(true);
+        refPopupPolicy.current?.hide();
     }, []);
 
     const sendOtp = useCallback(async () => {
@@ -92,15 +102,15 @@ const Invest = observer(({route}: any) => {
             setIsLoading(false);
         }
         setIsLoading(false);
-    }, []);
+    }, [apiServices.invest, csdl?.id]);
 
     return (
         <View>
-            <HeaderBar title={Languages.invest.title} hasBack/>
+            <HeaderBar title={Languages.invest.title} hasBack />
             <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}
                 style={styles.wrapContent}>
                 <View style={styles.wrapIcon}>
-                    <IcBag/>
+                    <IcBag />
                 </View>
                 <View style={styles.wrapInfo}>
                     <Text style={styles.title}>{Languages.detailInvest.information}</Text>
@@ -116,35 +126,38 @@ const Invest = observer(({route}: any) => {
                 <Text style={styles.labelMoney}>{Languages.detailInvest.money}</Text>
                 <Text style={styles.money}>{Utils.formatMoney(csdl?.so_tien_dau_tu)}</Text>
                 <Text style={styles.headerText}>{Languages.detailInvest.method}</Text>
-                {renderMethod(<IcVimo/>, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, true)}
-                {renderMethod(<IcNganLuong/>, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
+                {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, true)}
+                {renderMethod(<IcNganLuong />, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
                 <View style={styles.viewBottom}>
                     <Touchable onPress={checkBox}>
-                        {!isCheckBox ? <IcCheckBoxOff width={25} height={25}/> : <IcCheckBoxOn width={25} height={25}/>}
+                        {!isCheckBox ? <IcCheckBoxOff width={25} height={25} /> : <IcCheckBoxOn width={25} height={25} />}
                     </Touchable>
-                    <Text style={styles.txtCheckBox}>
-                        {Languages.detailInvest.agreeTermsWith}
-                        <Text style={{
-                            color: COLORS.GREEN,
-                            fontFamily: Configs.FontFamily.bold
-                        }}>{Languages.detailInvest.rules}</Text>
-                        {Languages.detailInvest.tienngay}
-                    </Text>
+                    <Touchable onPress={openPolicy} style={styles.policy}>
+                        <Text style={styles.txtCheckBox}>
+                            {Languages.detailInvest.agreeTermsWith}
+                            <Text style={{
+                                color: COLORS.GREEN,
+                                fontFamily: Configs.FontFamily.bold
+                            }}>{Languages.detailInvest.rules}</Text>
+                            {Languages.detailInvest.tienngay}
+                        </Text>
+                    </Touchable>
                 </View>
 
                 <Touchable
-                    onPress={onModal}
+                    onPress={onInvest}
                     disabled={!(isCheckBox && methodPayment)}
                     style={isCheckBox && methodPayment ? styles.tobBottom :
-                        [styles.tobBottom, {backgroundColor: COLORS.GRAY}]}>
+                        [styles.tobBottom, { backgroundColor: COLORS.GRAY }]}>
                     <Text
                         style={isCheckBox && methodPayment ? styles.txtTob :
-                            [styles.txtTob, {color: COLORS.BLACK}]}>
+                            [styles.txtTob, { color: COLORS.BLACK }]}>
                         {Languages.invest.investNow}
                     </Text>
                 </Touchable>
             </ScrollView>
             <PopupInvestOTP ref={refModal} />
+            <PopupConfirmPolicy onConfirm={onConfirmPopup} ref={refPopupPolicy} />
             {isLoading && <Loading isOverview />}
         </View>
     );

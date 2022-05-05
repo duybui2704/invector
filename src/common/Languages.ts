@@ -72,7 +72,8 @@ const Languages = {
         investPay: 'Trả lãi đầu tư',
         investSuccess: 'Đầu tư thành công',
         changePercent: 'Thay đổi tích luỹ phần trăm',
-        availableBalance: 'Số dư hiện có'
+        availableBalance: 'Số dư hiện có',
+        policy:'Điều khoản sử dụng và chính sách'
     },
     account: {
         title: 'Tài khoản',
