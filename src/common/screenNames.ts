@@ -21,13 +21,10 @@ export const ScreenName = {
     invest: 'Invest',
     changePwd: 'ChangePwd',
     accountLink: 'AccountLink',
-    manual: 'Manual',
-    help: 'Help',
     paymentMethod: 'PaymentMethod',
     accountBank: 'AccountBank',
     confirmPhone: 'ConfirmPhone',
     verifyOTP: 'VerifyOTP',
-    policy: 'Policy',
     notifyInvest: ' NotifyInvest',
     myWedView: 'MyWedView',
     splash: 'Slash'
