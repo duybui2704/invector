@@ -1,8 +1,9 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { StatusBar, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { ImageBackground, StatusBar, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import ParallaxScrollView from 'react-native-parallax-scroll-view';
 
 import { LINKS } from '@/api/constants';
 import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
@@ -11,6 +12,8 @@ import IcDollar from '@/assets/image/home/ic_dollar.svg';
 import IcLine from '@/assets/image/home/ic_line_home.svg';
 import IcSmartPhone from '@/assets/image/home/ic_smartphone.svg';
 import IcWallet from '@/assets/image/home/ic_wallet.svg';
+import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
+import LogoHome from '../../assets/image/header/logo_home.svg';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
 import { Configs } from '@/common/Configs';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
@@ -31,6 +34,9 @@ import { COLORS, Styles } from '@/theme';
 import Utils from '@/utils/Utils';
 import { MyStylesHome } from './styles';
 import SessionManager from '@/manager/SessionManager';
+import NotificationListening from './NotificationListening';
+import DimensionUtils from '@/utils/DimensionUtils';
+import Images from '@/assets/Images';
 
 const Home = observer(() => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -134,6 +140,10 @@ const Home = observer(() => {
         Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth });
     }, []);
 
+    const onNotifyInvest = useCallback(() => {
+        Navigator.navigateScreen(ScreenName.notifyInvest);
+    }, []);
+
     const renderItem = useCallback((item: any) => {
         return (
             <ItemInvest
@@ -149,7 +159,7 @@ const Home = observer(() => {
         return `${index}${item.id}`;
     }, []);
 
-    const iconTob = useCallback((title: string) => {
+    const iconTouchable = useCallback((title: string) => {
         switch (title) {
             case Languages.home.have:
                 return <IcWallet width={20} height={20} />;
@@ -167,11 +177,11 @@ const Home = observer(() => {
     const renderIconTob = useCallback((gotoScreen: any, title: string) => {
         return (
             <Touchable style={styles.tob} onPress={gotoScreen}>
-                {iconTob(title)}
+                {iconTouchable(title)}
                 <Text style={styles.txtTob}>{title}</Text>
             </Touchable>
         );
-    }, [iconTob, styles.tob, styles.txtTob]);
+    }, [iconTouchable, styles.tob, styles.txtTob]);
 
     const renderTobBottom = useCallback((text: string) => {
         return (
@@ -217,90 +227,117 @@ const Home = observer(() => {
         );
     }, [banners, dataArr, onOpenVPS, renderTobBottom, styles.logoVfs, styles.more, styles.txt, styles.txt4, styles.txt5, styles.txtQuestionTop, styles.txtVfs, styles.viewBottom, styles.viewVfs]);
 
-    return (
-        <View style={styles.main}>
-            <HeaderBar exitApp imageBackground />
-            <StatusBar
-                barStyle={'light-content'}
-                animated
-                translucent
-                backgroundColor={COLORS.TRANSPARENT}
-            />
-
-            {SessionManager.accessToken ?
-                <View style={styles.viewTop}>
-                    <Text style={styles.txt1}>{Languages.home.sumInvest}</Text>
-                    <View style={styles.viewTop2}>
-                        <Text style={styles.txt2} numberOfLines={1}>
-                            {Utils.formatMoney(dataDash?.so_du)}
-                            <Text style={styles.txt4}> {Languages.home.vnd}</Text>
-                        </Text>
-                    </View>
-                    <View style={styles.viewTop1}>
-                        <View style={styles.viewTop3}>
-                            <View style={styles.txtLeft}>
-                                <Text style={styles.txt3}>{Languages.home.sumpProfit}</Text>
-                                <Text style={styles.txt7} numberOfLines={1}
-                                >
-                                    {Utils.formatMoney(dataDash?.tong_goc_da_tra)}{ }
-                                    <Text style={
-                                        [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
-                                    >{Languages.home.vnd}</Text>
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.viewTop3}>
-                            <View style={styles.txtRight}>
-                                <Text style={styles.txt3}>{Languages.home.sumResidualProfit}</Text>
-                                <Text style={styles.txt6} numberOfLines={1}>
-                                    {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
-                                    <Text style={
-                                        [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
-                                    >{Languages.home.vnd}</Text>
-
-                                </Text>
-                            </View>
-                        </View>
-
-                    </View>
-
-                </View>
-                :
-                <View style={styles.viewTopCenter}>
-                    <Text style={styles.txtHello}>{Languages.home.hello}</Text>
-                    <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
-                    <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
-                </View>}
-            {SessionManager.accessToken ?
-                <View style={styles.viewTob}>
-                    {renderIconTob(gotoInvestHistory, Languages.home.have)}
-                    {renderIconTob(gotoInvest, Languages.home.invest)}
-                    {renderIconTob(gotoReport, Languages.home.report)}
-                    {renderIconTob(gotoPayment, Languages.home.payment)}
-                </View>
-                :
-                <View style={styles.viewTob}>
-                    <Touchable style={styles.tobAuth} onPress={() => gotoLogin(Languages.auth.txtLogin)}>
-                        <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
+    const renderViewFooter = () => {
+        return (
+            <View style={styles.viewForeground}>
+                <View style={styles.viewTopLogo}>
+                    <LogoHome
+                        width={DimensionUtils.SCREEN_HEIGHT * 0.18}
+                        height={DimensionUtils.SCREEN_HEIGHT * 0.18}
+                        style={styles.logo}
+                    />
+                    <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
+                        <IcNotify style={styles.imgNotify} width={30} height={30} />
                     </Touchable>
-                    <Touchable style={styles.tobAuth} onPress={() => gotoLogin(Languages.auth.txtSignUp)}>
-                        <Text style={styles.txtLogin}>{Languages.auth.txtSignUp}</Text>
-                    </Touchable>
-                </View>}
+                </View>
+                {SessionManager.accessToken ?
+                    <View style={styles.viewTop}>
+                        <Text style={styles.txt1}>{Languages.home.sumInvest}</Text>
+                        <View style={styles.viewTop2}>
+                            <Text style={styles.txt2} numberOfLines={1}>
+                                {Utils.formatMoney(dataDash?.so_du)}
+                                <Text style={styles.txt4}> {Languages.home.vnd}</Text>
+                            </Text>
+                        </View>
+                        <View style={styles.viewTop1}>
+                            <View style={styles.viewTop3}>
+                                <View style={styles.txtLeft}>
+                                    <Text style={styles.txt3}>{Languages.home.sumpProfit}</Text>
+                                    <Text style={styles.txt7} numberOfLines={1}
+                                    >
+                                        {Utils.formatMoney(dataDash?.tong_goc_da_tra)}{ }
+                                        <Text style={
+                                            [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
+                                        >{Languages.home.vnd}</Text>
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.viewTop3}>
+                                <View style={styles.txtRight}>
+                                    <Text style={styles.txt3}>{Languages.home.sumResidualProfit}</Text>
+                                    <Text style={styles.txt6} numberOfLines={1}>
+                                        {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
+                                        <Text style={
+                                            [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
+                                        >{Languages.home.vnd}</Text>
 
-            <View style={styles.viewCenter}>
-                <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
-                <FlatList
-                    style={styles.viewFlatList}
-                    data={dataArr}
-                    renderItem={(item) => renderItem(item.item)}
-                    ListFooterComponent={renderFooter}
-                    ListFooterComponentStyle={styles.viewFlatList}
-                    keyExtractor={keyExtractor}
-                />
+                                    </Text>
+                                </View>
+                            </View>
+
+                        </View>
+
+                    </View>
+                    :
+                    <View style={styles.viewTopCenter}>
+                        <Text style={styles.txtHello}>{Languages.home.hello}</Text>
+                        <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
+                        <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
+                    </View>}
+                {SessionManager.accessToken ?
+                    <View style={styles.viewTob}>
+                        {renderIconTob(gotoInvestHistory, Languages.home.have)}
+                        {renderIconTob(gotoInvest, Languages.home.invest)}
+                        {renderIconTob(gotoReport, Languages.home.report)}
+                        {renderIconTob(gotoPayment, Languages.home.payment)}
+                    </View>
+                    :
+                    <View style={styles.viewTob}>
+                        <Touchable style={styles.tobAuth} onPress={() => gotoLogin(Languages.auth.txtLogin)}>
+                            <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
+                        </Touchable>
+                        <Touchable style={styles.tobAuth} onPress={() => gotoLogin(Languages.auth.txtSignUp)}>
+                            <Text style={styles.txtLogin}>{Languages.auth.txtSignUp}</Text>
+                        </Touchable>
+                    </View>}
+
             </View>
-            {isLoading && <Loading isOverview />}
-        </View>
+        );
+    };
+
+    return (
+        <NotificationListening>
+            <View style={styles.main}>
+                <StatusBar
+                    barStyle={'light-content'}
+                    animated
+                    translucent
+                    backgroundColor={COLORS.TRANSPARENT}
+                />
+                <ParallaxScrollView
+                    contentBackgroundColor={COLORS.TRANSPARENT}
+                    backgroundColor={COLORS.TRANSPARENT}
+                    parallaxHeaderHeight={DimensionUtils.SCREEN_HEIGHT * 0.38}
+                    stickyHeaderHeight={DimensionUtils.SCREEN_HEIGHT * 0.12}
+                    renderBackground={() => (
+                        <HeaderBar exitApp imageBackground />
+                    )}
+                    renderForeground={() => renderViewFooter()}>
+                    <View style={styles.viewCenter}>
+                        <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
+                        <FlatList
+                            style={styles.viewFlatList}
+                            data={dataArr}
+                            renderItem={(item) => renderItem(item.item)}
+                            ListFooterComponent={renderFooter}
+                            ListFooterComponentStyle={styles.viewFlatList}
+                            keyExtractor={keyExtractor}
+                        />
+                    </View>
+                </ParallaxScrollView>
+                {isLoading && <Loading isOverview />}
+            </View >
+        </NotificationListening >
     );
 });
 

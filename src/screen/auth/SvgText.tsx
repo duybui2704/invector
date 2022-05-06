@@ -20,6 +20,9 @@ const SvgComponent = observer((props: any) => {
     const [r, setR] = useState<number>(0);
     const [x, setX] = useState<number>(0);
     const [dx, setDx] = useState<number>(0);
+    const [dx2, setDx2] = useState<number>(0);
+    const [dx3, setDx3] = useState<number>(0);
+    const [dx1, setDx1] = useState<number>(0);
 
     useEffect(() => {
         console.log(props);
@@ -48,11 +51,17 @@ const SvgComponent = observer((props: any) => {
         if (ratio < 1.662) {
             setR(DimensionUtils.SCREEN_WIDTH * 0.54);
             setX(DimensionUtils.SCREEN_WIDTH * 0.2);
+            setDx1(DimensionUtils.SCREEN_WIDTH * 0.54 * 5.96);
+            setDx2(DimensionUtils.SCREEN_WIDTH * 0.54 * 5.06);
+            setDx3(DimensionUtils.SCREEN_WIDTH * 0.54 * 0.46);
             setDx(0);
         } else {
             setR(DimensionUtils.SCREEN_WIDTH * 0.6);
             setX(DimensionUtils.SCREEN_WIDTH * 0.22);
             setDx(DimensionUtils.SCREEN_WIDTH * 0.6 * 0.035);
+            setDx1(DimensionUtils.SCREEN_WIDTH * 0.6 * 6.05);
+            setDx2(DimensionUtils.SCREEN_WIDTH * 0.6 * 5.17);
+            setDx3(DimensionUtils.SCREEN_WIDTH * 0.6 * 0.55);
         }
     }, []);
 
@@ -98,7 +107,7 @@ const SvgComponent = observer((props: any) => {
                     stroke={COLORS.NO_BACKDROP}
                 >
                     <TextPath href="#circle" >
-                        <TSpan dx={5.17 * r} dy={-15}>
+                        <TSpan dx={dx2} dy={-15}>
                             {Languages.auth.txtLogin}
                         </TSpan>
                     </TextPath>
@@ -113,7 +122,7 @@ const SvgComponent = observer((props: any) => {
                     stroke={COLORS.NO_BACKDROP}
                 >
                     <TextPath href="#circle" >
-                        <TSpan dx={6.05 * r} dy={-15}>
+                        <TSpan dx={dx1} dy={-15}>
                             {Languages.auth.txtD}
                         </TSpan>
                     </TextPath>
@@ -145,7 +154,7 @@ const SvgComponent = observer((props: any) => {
                     stroke={COLORS.NO_BACKDROP}
                 >
                     <TextPath href="#circle" >
-                        <TSpan dx={r * 0.55} dy={-15} >
+                        <TSpan dx={dx3} dy={-15} >
                             {Languages.auth.forgotPwd}
                         </TSpan>
                     </TextPath>

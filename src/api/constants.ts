@@ -46,6 +46,8 @@ export enum API_CONFIG {
 
     // notification
     NOTIFICATION = '/user/get_notification_user',
+    CREATE_FCM_TOKEN = 'user/save_device_token_user',
+    GET_UNREAD_COUNT_NOTIFICATION = 'user/get_count_notification_user',
     NOTIFY_UPDATE_READ = '/user/update_read_notification',
     GET_ONREAD_COUNT_NOTIFICATION = '/user/get_count_notification_user',
 

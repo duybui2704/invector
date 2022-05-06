@@ -4,6 +4,7 @@ import { CommonServices } from './common-services';
 import { HistoryServices } from './history-service';
 import { PaymentMethodServices } from './payment-method-services';
 import { InvestServices } from './invest_services';
+import { NotificationServices } from './notification-services';
 
 export class ApiServices {
     auth = new AuthServices();
@@ -17,5 +18,7 @@ export class ApiServices {
     report = new ReportServices();
     
     invest = new InvestServices();
+
+    notification = new NotificationServices();
 
 }
