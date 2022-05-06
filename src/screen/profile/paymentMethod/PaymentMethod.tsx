@@ -112,15 +112,6 @@ const PaymentMethod = observer(() => {
         }
     }, [apiServices.paymentMethod]);
 
-    const onChangeMethodBank = useCallback(async () => {
-        const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest(TYPE_INTEREST_RECEIVE_ACC.BANK);
-        if (res.success) {
-            ToastUtils.showSuccessToast(Languages.msgNotify.successChangeMethod);
-            onBank();
-
-        }
-    }, [apiServices.paymentMethod, onBank]);
-
     const renderItemMethod = useCallback((leftIcon?: any, title?: string, activeLink?: boolean, activeMethod?: boolean) => {
         const _onPressToLink = () => {
             switch (title) {
@@ -140,7 +131,7 @@ const PaymentMethod = observer(() => {
                     onChangeMethodVimo();
                     break;
                 case Languages.paymentMethod.bank:
-                    onChangeMethodBank();
+                    onBank();
                     break;
                 default:
                     break;
@@ -160,7 +151,7 @@ const PaymentMethod = observer(() => {
                 </View>
             </View>
         );
-    }, [onBank, onChangeMethodBank, onChangeMethodVimo, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapRightItemPayment]);
+    }, [onBank, onChangeMethodVimo, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapRightItemPayment]);
 
     return (
         <View style={styles.container}>

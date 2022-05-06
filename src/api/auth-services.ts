@@ -1,19 +1,7 @@
-import { ImageOrVideo } from 'react-native-image-crop-picker';
-
-import RsaUtils from '@/utils/RsaUtils';
 import { BaseService } from './base-service';
 import { API_CONFIG } from './constants';
 
 export class AuthServices extends BaseService {
-    loginPhoneOld = async (phone_number: string, password: string, type: number) =>
-        this.api().post(
-            API_CONFIG.LOGIN,
-            this.buildFormData({
-                phone_number,
-                password,
-                type
-            })
-        );
 
     loginPhone = async (phone_number: string, password: string) =>
         this.api().post(
@@ -26,7 +14,7 @@ export class AuthServices extends BaseService {
 
     updateUserInf = async (
         full_name: string,
-        avatar: any,
+        file: any,
         gender: string,
         birth_date: string,
         phone: string,
@@ -38,7 +26,7 @@ export class AuthServices extends BaseService {
             API_CONFIG.UPDATE_USER_INFO,
             this.buildFormData({
                 full_name,
-                avatar,
+                file,
                 gender,
                 birth_date,
                 phone,
@@ -107,7 +95,7 @@ export class AuthServices extends BaseService {
     getUserInfo = async (type:number) =>
         this.api().post(API_CONFIG.USER_INFO, this.buildFormData({type}));
 
-    identityVerify = async (type: number,
+    identityVerify = async (
         identity: string,
         front_facing_card: any,
         card_back: any,
@@ -116,7 +104,6 @@ export class AuthServices extends BaseService {
         this.api().post(
             API_CONFIG.IDENTITY_VERIFY,
             this.buildFormData({
-                type,
                 identity,
                 front_facing_card,
                 card_back,

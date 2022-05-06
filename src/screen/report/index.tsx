@@ -176,7 +176,7 @@ const Report = observer(() => {
                         <VictoryLabel x={30} y={25} style={styles.labelAxis}
                             text={Languages.report.month}
                         />
-                        <VictoryLabel x={320} y={230} style={styles.labelAxis}
+                        <VictoryLabel x={SCREEN_WIDTH *0.8} y={SCREEN_HEIGHT *0.28} style={styles.labelAxis}
                             text={Languages.common.VND}
                         />
                     </VictoryChart>

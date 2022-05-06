@@ -92,7 +92,8 @@ const Languages = {
         accVerified: 'Tài khoản đã xác thực',
         accuracyNow: 'Xác thực ngay',
         logout: 'Đăng xuất',
-        waitVerify: 'Tài khoản đang chờ xác thực'
+        waitVerify: 'Tài khoản đang chờ xác thực',
+        logoutNotice: 'Bạn có chắc chắn muốn đăng xuất không?'
 
     },
     report: {
@@ -117,7 +118,8 @@ const Languages = {
         cancel: 'Hủy',
         continue: 'Tiếp tục',
         VND: 'VNĐ',
-        hotline: '18006907'
+        hotline: '18006907',
+        notice: 'Thông báo'
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng Tienngay',
@@ -187,7 +189,7 @@ const Languages = {
         errBankEmpty: 'Ngân hàng chưa được chọn',
         noInternet: 'Kết nối bị gián đoạn, vui lòng thử lại!',
         sessionExpired: 'Kết nối bị gián đoạn, vui lòng thử lại!',
-        errEmptyAvatarIdentity: 'Bạn cần điền đầy đủ cả mặt trước, mặt sau CCCD/CMT và avatar'
+        errEmptyIdentity: 'Bạn cần điền đầy đủ thông tin trước khi xác thực'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
@@ -402,6 +404,7 @@ const Languages = {
         phone: 'Số điện thoại',
         inputPhone: 'Nhập số điện thoại',
         sendOTP: 'Gửi OTP',
+        reSendOTP: 'Gửi lại mã OTP',
         verifyOTP: 'Xác nhận OTP',
         noteVerifyOTP: '<p><r>Chú ý:</r> <s> Mã OTP đã được gửi về số điện thoại %phone, nhập mã OTP và xác nhận để liên kết tài khoản</s></p>',
         reSendCode: 'Gửi lại mã sau ',

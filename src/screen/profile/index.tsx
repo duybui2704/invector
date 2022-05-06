@@ -7,6 +7,7 @@ import FastImage from 'react-native-fast-image';
 import TouchID from 'react-native-touch-id';
 import PasscodeAuth from '@el173/react-native-passcode-auth';
 
+import WarnIC from '@/assets/image/ic_warn_vimo_red_round.svg';
 import ChangePwdIC from '@/assets/image/ic_change_pwd.svg';
 import FaceIdIC from '@/assets/image/ic_faceid_big.svg';
 import StarIC from '@/assets/image/ic_star_rate.svg';
@@ -45,6 +46,7 @@ import StorageUtils from '@/utils/StorageUtils';
 import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
 import { LINKS } from '@/api/constants';
+import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -65,12 +67,13 @@ const Profile = observer(() => {
         duration: 800
     });
     const [errorText, setErrorText] = useState<string>('');
+    const popupLogout = useRef<PopupActionTypes>();
 
-    useEffect(()=>{
-        if(!supportedBiometry || !SessionManager.accessToken){
+    useEffect(() => {
+        if (!supportedBiometry || !SessionManager.accessToken) {
             Navigator.pushScreen(ScreenName.auth);
         }
-    },[supportedBiometry]);
+    }, [supportedBiometry]);
 
     const callPhone = useCallback(() => {
         Utils.callNumber(Languages.common.hotline);
@@ -78,22 +81,43 @@ const Profile = observer(() => {
 
     const onLinkRate = useCallback(() => {
         if (isIOS) {
-            return  Utils.openURL(GET_LINK_INVESTOR.LINK_IOS);
+            return Utils.openURL(GET_LINK_INVESTOR.LINK_IOS);
         }
-        return  Utils.openURL(GET_LINK_INVESTOR.LINK_ANDROID);
+        return Utils.openURL(GET_LINK_INVESTOR.LINK_ANDROID);
     }, []);
 
     const onNavigateAccInfo = useCallback(() => {
         return Navigator.pushScreen(ScreenName.accountInfo);
     }, []);
 
-    const onLogout = useCallback(() => {
+    const onPopupLogout = useCallback(() => {
+        popupLogout.current?.show();
+    }, []);
+
+    const onAgreeLogout = useCallback(() => {
         SessionManager.logout();
         userManager.updateUserInfo(null);
         Navigator.navigateToDeepScreen(
             [ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin }
         );
     }, [userManager]);
+
+    const renderPopupLogout = useCallback((ref: any) => {
+        return (
+            <PopupNotifyNoAction
+                ref={ref}
+                renderIcon={<WarnIC />}
+                containerAllBtn={styles.containerAllBtnPopup}
+                containerAgreeBtn={styles.containerItemBtnPopup}
+                containerCancelBtn={styles.containerCancelBtnPopup}
+                renderContent={Languages.account.logoutNotice}
+                renderTitle={Languages.account.logout}
+                textCancel={styles.textCancel}
+                hasButton
+                onConfirm={onAgreeLogout}
+            />
+        );
+    }, [onAgreeLogout]);
 
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
         const onNavigateScreen = () => {
@@ -108,14 +132,14 @@ const Profile = observer(() => {
                     Navigator.pushScreen(ScreenName.accountLink);
                     break;
                 case Languages.account.useManual:
-                    Navigator.pushScreen(ScreenName.myWedView, 
+                    Navigator.pushScreen(ScreenName.myWedView,
                         {
                             title: Languages.account.useManual,
                             url: LINKS.MANUAL_INVESTOR
                         });
                     break;
                 case Languages.account.answer:
-                    Navigator.pushScreen(ScreenName.myWedView, 
+                    Navigator.pushScreen(ScreenName.myWedView,
                         {
                             title: Languages.account.answer,
                             url: LINKS.AQ_INVESTOR
@@ -128,7 +152,7 @@ const Profile = observer(() => {
                     callPhone();
                     break;
                 case Languages.account.policy:
-                    Navigator.pushScreen(ScreenName.myWedView, 
+                    Navigator.pushScreen(ScreenName.myWedView,
                         {
                             title: Languages.account.policy,
                             url: LINKS.POLICY_INVESTOR
@@ -383,13 +407,14 @@ const Profile = observer(() => {
                 <Button label={`${Languages.account.logout}`}
                     style={styles.wrapBtn}
                     buttonStyle={BUTTON_STYLES.GRAY_RED}
-                    onPress={onLogout}
+                    onPress={onPopupLogout}
                     isLowerCase
                 />
             </ScrollView>
             {popupUpdatePassCode}
             {renderPopupError}
             {renderPinCode}
+            {renderPopupLogout(popupLogout)}
         </View>
     );
 });
@@ -527,6 +552,21 @@ const styles = StyleSheet.create({
     },
     wrapPin: {
         flex: 1
+    },
+    containerAllBtnPopup:{
+        flexDirection: 'row-reverse'
+    },
+    containerItemBtnPopup:{
+        backgroundColor: COLORS.RED_2,
+        borderColor : COLORS.RED_2,
+        borderRadius: 20
+    },
+    containerCancelBtnPopup:{
+        borderColor : COLORS.GRAY_13,
+        borderRadius: 20
+    },
+    textCancel:{
+        color: COLORS.GRAY_12
     }
 });
 const customStyles = StyleSheet.create({
