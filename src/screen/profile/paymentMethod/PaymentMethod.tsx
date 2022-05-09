@@ -37,7 +37,7 @@ const PaymentMethod = observer(() => {
 
     useEffect(() => {
         fetchInfoVimoLink();
-    }, []);
+    }, [fetchInfoVimoLink]);
 
     const onPopupVimoAgree = useCallback(async () => {
         const res = await apiServices.paymentMethod.requestCancelLinkVimo();
@@ -160,7 +160,7 @@ const PaymentMethod = observer(() => {
                 {renderItemMethod(<VimoIC />,
                     Languages.paymentMethod.vimo,
                     dataInfoVimo?.trang_thai === STATE_LINK.LINKING,
-                    dataInfoVimo?.trang_thai === STATE_LINK.LINKING
+                    userManager.userInfo?.tra_lai?.type_interest_receiving_account !== TYPE_INTEREST_RECEIVE_ACC.BANK
                 )}
                 {renderItemMethod(<BankIC />,
                     Languages.paymentMethod.bank,

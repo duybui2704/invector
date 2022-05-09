@@ -18,6 +18,8 @@ import { HtmlStyles } from '@/theme';
 import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
 import { MyStylesVerifyOTP } from './styles';
+import Navigator from '@/routers/Navigator';
+import ScreenName from '@/common/screenNames';
 
 const VerifyOTP = observer(({ route }: { route: any }) => {
     const { apiServices } = useAppStore();
@@ -26,7 +28,7 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
     const [phone, setPhone] = useState<string>(route?.params?.phoneNumber);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [otp, setOTP] = useState<string>('');
-    const time = 120000 / 10;    // set time resend OTP = 120s
+    const time = 120000;    // set time resend OTP = 120s
     const [overTime, setOverTime] = useState<number>(time);
     const intervalRef = useRef<any>();
 
@@ -56,6 +58,7 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
             if (res.success) {
                 ToastUtils.showSuccessToast(Languages.msgNotify.successVimoLink);
                 setIsLoading(false);
+                Navigator.navigateToDeepScreen( [ScreenName.tabs], ScreenName.paymentMethod);
             }
             setIsLoading(false);
         }
@@ -72,7 +75,6 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
             setLinked(data.linked_id);
             setIsLoading(false);
         }
-        // else ToastUtils.showErrorToast(Languages.msgNotify.failReOTPVimo);
         setIsLoading(false);
     }, [apiServices.paymentMethod, phone, time]);
 
@@ -113,9 +115,9 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
                         onPress={onConfirmOTP}
                     />
                 </View>
-                {/* <Text>{phone}</Text>
+                <Text>{phone}</Text>
                 <Text>{linked_id}</Text>
-                <Text>{otp}</Text> */}
+                <Text>{otp}</Text>
                 {isLoading && <Loading isOverview />}
             </View>
         </HideKeyboard >
