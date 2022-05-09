@@ -48,8 +48,8 @@ const Report = observer(() => {
     }, [quarter, year]);
 
     const fetchDataSearch = useCallback(async () => {
-        const resQuarters = await apiServices.report.getQuarters(3);
-        const resYear = await apiServices.report.getYear(3);
+        const resQuarters = await apiServices.report.getQuarters();
+        const resYear = await apiServices.report.getYear();
         if (resQuarters.success) {
             const dataQuarter = Utils.formatObjectToKeyLabel(resQuarters.data);
             setQuarterList(dataQuarter);

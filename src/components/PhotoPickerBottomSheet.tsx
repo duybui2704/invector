@@ -46,7 +46,6 @@ const PhotoPickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
             label,
             hasDash,
             icon,
-            hasImage,
             imageSource,
             containerImage
         }: PickerProps,
@@ -74,9 +73,9 @@ const PhotoPickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
                     style={styles.wrapItemPhoto}
                 >
                     <Text style={styles.identifyTextStyle}>{label}</Text>
-                    {image?.images[0].path || hasImage ? (
+                    {image?.images?.[0]?.path || imageSource ? (
                         <FastImage style={[styles.image,containerImage]}
-                            source={ { uri: !hasImage ? image?.images[0].path : imageSource }}
+                            source={ { uri: image?.images?.[0]?.path ? image?.images?.[0]?.path : imageSource }}
                             resizeMode={FastImage.resizeMode.cover} />
                     ) : (
                         icon

@@ -15,18 +15,17 @@ import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 import { PopupActionTypes } from '@/models/typesPopup';
 import Navigator from '@/routers/Navigator';
 import { MyStylesPaymentMethod } from './styles';
-import SessionManager from '@/manager/SessionManager';
 import { useAppStore } from '@/hooks';
 import { InfoLinkVimoModal } from '@/models/user-models';
 import { STATE_LINK, TYPE_INTEREST_RECEIVE_ACC } from '@/common/constants';
 import ToastUtils from '@/utils/ToastUtils';
 
 const PaymentMethod = observer(() => {
-    const { apiServices } = useAppStore();
+    const { apiServices, userManager } = useAppStore();
     const styles = MyStylesPaymentMethod();
     const vimoRef = useRef<PopupActionTypes>();
     const [dataInfoVimo, setDataInfoVimo] = useState<InfoLinkVimoModal>();
-    const [paymentReceive, setpaymentReceive] = useState<string>(SessionManager.userInfo?.tra_lai?.type_interest_receiving_account || '');
+    const [paymentReceive, setpaymentReceive] = useState<string>(userManager.userInfo?.tra_lai?.type_interest_receiving_account || '');
 
     const fetchInfoVimoLink = useCallback(async () => {
         const res = await apiServices.paymentMethod.requestInfoLinkVimo();
@@ -166,7 +165,7 @@ const PaymentMethod = observer(() => {
                 {renderItemMethod(<BankIC />,
                     Languages.paymentMethod.bank,
                     paymentReceive === TYPE_INTEREST_RECEIVE_ACC.BANK,
-                    SessionManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.BANK
+                    userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.BANK
                 )}
             </View>
             {popupVimo(vimoRef, <WarnIC />)}

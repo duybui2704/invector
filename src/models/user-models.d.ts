@@ -19,6 +19,7 @@ export interface UserInfoModal {
     timeExpried_active?: number;
     created_by?: string;
     token_app?: string;
+    token?: string;
     _id?: Id;
     role_user?: string;
     updated_at?: string;
@@ -63,4 +64,10 @@ export interface RePay {
 export interface InfoLinkVimoModal {
     phone?: string;
     trang_thai?: string;
+}
+
+export interface UpdateInfoModal {
+    status?: number;
+    message?: string;
+    url_avatar?: string;
 }

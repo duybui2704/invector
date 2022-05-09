@@ -75,7 +75,7 @@ const AccountIdentify = observer(() => {
         );
         if (res.success) {
             popupConfirmRef.current?.show();
-            const resUser = await apiServices.auth.getUserInfo(3);
+            const resUser = await apiServices.auth.getUserInfo();
             if (resUser.success) {
                 const data = resUser.data as UserInfoModal;
                 userManager.updateUserInfo({
@@ -138,7 +138,7 @@ const AccountIdentify = observer(() => {
         }
     }, [afterIdentify, avatar, fetchIdentityVerify, frontIdentify, onValidate]);
 
-    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, hasImage?: boolean, imageSource?: string, disable?: boolean) => {
+    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, imageSource?: string, disable?: boolean) => {
         return <PhotoPickerBottomSheet
             ref={ref}
             label={label}
@@ -148,7 +148,6 @@ const AccountIdentify = observer(() => {
             onPressItem={onPressItem}
             containerStyle={styles.pickerContainer}
             hasDash
-            hasImage={hasImage}
             imageSource={imageSource}
             disable={disable}
         />;
@@ -191,7 +190,6 @@ const AccountIdentify = observer(() => {
                         frontIdentify,
                         <BeforeIC />,
                         onPressItemFrontPhoto,
-                        !!SessionManager.userInfo?.front_facing_card,
                         SessionManager.userInfo?.front_facing_card,
                         SessionManager.userInfo?.front_facing_card ? !!SessionManager.userInfo?.front_facing_card : !!frontIdentify?.images?.[0]?.path
                     )}
@@ -200,7 +198,6 @@ const AccountIdentify = observer(() => {
                         afterIdentify,
                         <AfterIC />,
                         onPressItemBehindPhoto,
-                        !!SessionManager.userInfo?.card_back,
                         SessionManager.userInfo?.card_back,
                         SessionManager.userInfo?.card_back ? !!SessionManager.userInfo?.card_back : !!afterIdentify?.images?.[0]?.path
                     )}
@@ -212,7 +209,6 @@ const AccountIdentify = observer(() => {
                         avatar,
                         <AvatarIC />,
                         onPressItemAvatar,
-                        !!SessionManager.userInfo?.avatar,
                         SessionManager.userInfo?.avatar,
                         SessionManager.userInfo?.avatar ? !!SessionManager.userInfo?.avatar : !!avatar?.images?.[0]?.path
                     )}

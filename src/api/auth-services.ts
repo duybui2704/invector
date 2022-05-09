@@ -13,26 +13,26 @@ export class AuthServices extends BaseService {
         );
 
     updateUserInf = async (
-        full_name: string,
-        file: any,
-        gender: string,
-        birth_date: string,
-        phone: string,
-        email: string,
-        address: string,
-        job: string
+        full_name?: string,
+        gender?: string,
+        birth_date?: string,
+        phone?: string,
+        email?: string,
+        address?: string,
+        job?: string,
+        file?: any
     ) =>
         this.api().post(
             API_CONFIG.UPDATE_USER_INFO,
             this.buildFormData({
                 full_name,
-                file,
                 gender,
                 birth_date,
                 phone,
                 email,
                 address,
-                job
+                job,
+                file
             })
         );
 
@@ -83,17 +83,17 @@ export class AuthServices extends BaseService {
             })
         );
 
-    activeAccountSocial = async (otp: string, user_id: string) =>
+    activeAccount = async (token: any, phone_number: string) =>
         this.api().post(
-            API_CONFIG.ACTIVE_ACCOUNT_SOCIAL,
+            API_CONFIG.ACTIVE_ACCOUNT,
             this.buildFormData({
-                otp,
-                user_id
+                token,
+                phone_number
             })
         );
 
-    getUserInfo = async (type:number) =>
-        this.api().post(API_CONFIG.USER_INFO, this.buildFormData({type}));
+    getUserInfo = async () =>
+        this.api().post(API_CONFIG.USER_INFO, this.buildFormData({}));
 
     identityVerify = async (
         identity: string,

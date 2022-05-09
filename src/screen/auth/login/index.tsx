@@ -23,8 +23,7 @@ const Login = observer(() => {
     const {
         apiServices,
         userManager,
-        fastAuthInfoManager: fastAuthInfo,
-        appManager
+        fastAuthInfoManager: fastAuthInfo
     } = useAppStore();
 
     const [phone, setPhone] = useState<string>('');
@@ -38,11 +37,11 @@ const Login = observer(() => {
 
     useEffect(() => {
         if (SessionManager.getPhoneLogin()) {
-            setPhone(SessionManager.getPhoneLogin());
+            setPhone(SessionManager.getPhoneLogin() || '');
             setCheck(true);
         }
         if (SessionManager.getPwdLogin()) {
-            setPass(SessionManager.getPwdLogin());
+            setPass(SessionManager.getPwdLogin() || '');
             setCheck(true);
         }
     }, []);
@@ -66,14 +65,14 @@ const Login = observer(() => {
 
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
-    }, [checked]);
+    }, []);
 
     const checkbox = useMemo(() => {
         if (checked) {
             return <CheckIcon />;
         }
         return <UnCheckIcon />;
-    }, [onChangeChecked]);
+    }, [checked]);
 
     const renderInput = useCallback((ref: any, value: any, isPhone: boolean, placeHolder: string, rightIcon?: string, keyboardType?: any, maxLength?: number, isPass?: boolean) => {
         return (
@@ -99,8 +98,9 @@ const Login = observer(() => {
 
         if (res.success) {
             setLoading(false);
-            SessionManager.setAccessToken(res?.data?.token);
-            const resInfoAcc = await apiServices.auth.getUserInfo(3);
+            const resData =  res.data as UserInfoModal;
+            SessionManager.setAccessToken(resData?.token);
+            const resInfoAcc = await apiServices.auth.getUserInfo();
             if (resInfoAcc.success) {
                 if (!checked) {
                     SessionManager.setSavePhoneLogin('');
@@ -123,7 +123,7 @@ const Login = observer(() => {
         }
         setLoading(false);
 
-    }, [apiServices.auth, pass, phone, userManager, onChangeChecked]);
+    }, [apiServices.auth, phone, pass, checked, fastAuthInfo, userManager]);
 
     useEffect(() => {
         console.log('userData=', userData);
