@@ -19,6 +19,7 @@ import { useAppStore } from '@/hooks';
 import { InfoLinkVimoModal } from '@/models/user-models';
 import { STATE_LINK, TYPE_INTEREST_RECEIVE_ACC } from '@/common/constants';
 import ToastUtils from '@/utils/ToastUtils';
+import Loading from '@/components/loading';
 
 const PaymentMethod = observer(() => {
     const { apiServices, userManager } = useAppStore();
@@ -26,18 +27,26 @@ const PaymentMethod = observer(() => {
     const vimoRef = useRef<PopupActionTypes>();
     const [dataInfoVimo, setDataInfoVimo] = useState<InfoLinkVimoModal>();
     const [paymentReceive, setpaymentReceive] = useState<string>(userManager.userInfo?.tra_lai?.type_interest_receiving_account || '');
-
-    const fetchInfoVimoLink = useCallback(async () => {
-        const res = await apiServices.paymentMethod.requestInfoLinkVimo();
-        if (res.success) {
-            const data = res.data as InfoLinkVimoModal;
-            setDataInfoVimo(data);
-        }
-    }, [apiServices.paymentMethod]);
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         fetchInfoVimoLink();
-    }, [fetchInfoVimoLink]);
+    }, []);
+
+    const fetchInfoVimoLink = useCallback(async () => {
+        setLoading(true);
+        const res = await apiServices.paymentMethod.requestInfoLinkVimo();
+        if (res.success) {
+            setLoading(false);
+            const data = res.data as InfoLinkVimoModal;
+            setDataInfoVimo(data);
+            userManager.updateUserInfo({
+                ...userManager.userInfo,
+                infoLinkVimo: { ...data }
+            });
+        }
+        setLoading(false);
+    }, [apiServices.paymentMethod, userManager]);
 
     const onPopupVimoAgree = useCallback(async () => {
         const res = await apiServices.paymentMethod.requestCancelLinkVimo();
@@ -46,7 +55,6 @@ const PaymentMethod = observer(() => {
             vimoRef.current?.hide();
             fetchInfoVimoLink();
         } else {
-            // ToastUtils.showSuccessToast(Languages.msgNotify.failCancelLinkVimo);
             vimoRef.current?.hide();
         }
 
@@ -143,6 +151,7 @@ const PaymentMethod = observer(() => {
                     <Touchable onPress={_onPressToLink}>
                         <Text style={styles.titleItemLink}>{`${title}`}</Text>
                         {renderStateLink(activeLink)}
+                        {isLoading && <Loading/>}
                     </Touchable>
                     <Touchable onPress={_onPressToChooseMethod} disabled={activeMethod}>
                         {renderRightIcon(activeMethod)}
@@ -150,7 +159,7 @@ const PaymentMethod = observer(() => {
                 </View>
             </View>
         );
-    }, [onBank, onChangeMethodVimo, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapRightItemPayment]);
+    }, [isLoading, onBank, onChangeMethodVimo, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapRightItemPayment]);
 
     return (
         <View style={styles.container}>
@@ -160,7 +169,7 @@ const PaymentMethod = observer(() => {
                 {renderItemMethod(<VimoIC />,
                     Languages.paymentMethod.vimo,
                     dataInfoVimo?.trang_thai === STATE_LINK.LINKING,
-                    userManager.userInfo?.tra_lai?.type_interest_receiving_account !== TYPE_INTEREST_RECEIVE_ACC.BANK
+                    userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.VIMO
                 )}
                 {renderItemMethod(<BankIC />,
                     Languages.paymentMethod.bank,

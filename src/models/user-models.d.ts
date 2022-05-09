@@ -35,7 +35,8 @@ export interface UserInfoModal {
     card_back?: string,
     accuracy?: number;   /// 0: da xac thuc/// 1: chua xac thuc//// 2: cho xac thuc
     address?: string;
-    job?: string
+    job?: string;
+    infoLinkVimo?: InfoLinkVimoModal;
 }
 interface OtpModal {
     otp1: any;

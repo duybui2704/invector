@@ -19,8 +19,8 @@ export enum CONTACT {
 export const STORE_APP_LINK = isIOS ? LINKS.STORE_IOS : LINKS.STORE_ANDROID;
 
 export enum API_CONFIG {
-    BASE_URL = 'https://sandboxappndt.tienngay.vn/',
-    // BASE_URL = 'https://appndt.tienngay.vn/',
+    // BASE_URL = 'https://sandboxappndt.tienngay.vn/',
+    BASE_URL = 'https://appndt.tienngay.vn/',
 
     // common
     GET_BANNERS = '/banner/get_all_home', // banner app
