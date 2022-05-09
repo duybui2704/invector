@@ -77,7 +77,8 @@ const Languages = {
         updateBankInfo:
             'Bạn chưa cập nhật hình thức nhận tiền lãi đầu tư. Bạn có muốn cập nhật ngay bây giờ không?',
         payFinished:
-            '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>'
+        '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>',
+        error:'Không lấy được dữ liệu'
 
     },
     account: {
@@ -358,7 +359,8 @@ const Languages = {
         unpaid: 'Chưa thanh toán',
         agreeTermsWith: 'Tôi đã đọc và đồng ý với ',
         rules: 'Điều khoản sử dụng và chính sách ',
-        tienngay: 'của Tienngay.vn'
+        tienngay: 'của Tienngay.vn',
+        error:'Không lấy được dữ liệu, vui lòng thử lại sau'
     },
     changePwd: {
         title: 'Đổi mật khẩu',

@@ -238,7 +238,7 @@ const Investment = observer(({ route }: { route: any }) => {
             default:
                 return null;
         }
-    }, [btnInvest, navigateToDetail]);
+    }, [btnInvest, navigateToDetail, navigateToInvestNow]);
 
     const renderInvest = useCallback((type: string) => {
         const styleBt = {

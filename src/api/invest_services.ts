@@ -30,4 +30,8 @@ export class InvestServices extends BaseService {
         client_code: platform
     }));
 
+    confirmInvest = async (id: string, otp: string) => this.api().post(API_CONFIG.CONFIRM_INVEST, this.buildFormData({
+        contract_id: id,
+        otp_invest: otp
+    }));
 }

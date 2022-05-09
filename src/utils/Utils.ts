@@ -201,6 +201,9 @@ async function configNotification(onNotification: () => void) {
         requestPermissions: true
     });
 }
+function convertSecondToMinutes(value:number) {
+    return `${Math.floor(value / 60)  }:${  value % 60 ? value % 60 : '00'}`;
+}
 
 
 
@@ -219,5 +222,6 @@ export default {
     convertMoney,
     getFileName,
     configNotification,
-    getFcmToken
+    getFcmToken,
+    convertSecondToMinutes
 };

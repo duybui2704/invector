@@ -55,5 +55,11 @@ export interface InterestPaymentModel {
     name_bank_account: string
     type_card: string
 }
+export interface CheckVimoWalletModel {
+    data:any
+    message:string
+    status:number
+
+}
 
 
