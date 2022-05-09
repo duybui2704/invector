@@ -62,7 +62,7 @@ export enum API_CONFIG {
     CONTRACT_DETAIL_INVEST_NOW = '/contract/detail_contract_investor',
     GET_INFOR_INVESTOR = 'user/info_investor',
     REQUEST_NGAN_LUONG = 'V2/contract/investment_ngan_luong',
-    CONFIRM_INVEST ='contract/financial_investment_new',
+    CONFIRM_INVEST ='/contract/financial_investment_new',
 
     // link account with payment method
     REQUEST_SEND_VIMO_LINK = 'vimo_link/send_link_vimo',    // gui lien ket vimo

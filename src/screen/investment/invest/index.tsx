@@ -1,30 +1,31 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Platform, ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, Platform, ScrollView, Text, View, ViewStyle } from 'react-native';
 
 import IcBag from '@/assets/image/ic_bag.svg';
-import Languages from '@/common/Languages';
-import HeaderBar from '@/components/header';
-import { COLORS, HtmlStyles } from '@/theme';
-import Utils from '@/utils/Utils';
-import { MyStylesInvest } from '@/screen/investment/invest/styles';
-import ItemInfoContract from '@/components/ItemInfoContract';
-import IcVimo from '@/assets/image/ic_vimo.svg';
 import IcNganLuong from '@/assets/image/ic_ngan_luong.svg';
-import { Touchable } from '@/components/elements/touchable';
-import { ENUM_METHOD_PAYMENT } from '@/common/constants';
-import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
+import IcVimo from '@/assets/image/ic_vimo.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
+import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
 import { Configs } from '@/common/Configs';
-import { PopupInvestOTP } from '@/components/popupOTP';
-import { CheckVimoWalletModel, InvestorInfoModel, PackageInvest } from '@/models/invest';
-import { useAppStore } from '@/hooks';
+import { ENUM_METHOD_PAYMENT } from '@/common/constants';
+import Languages from '@/common/Languages';
+import ScreenName, { TabsName } from '@/common/screenNames';
+import { Button } from '@/components/elements/button';
+import { Touchable } from '@/components/elements/touchable';
+import HeaderBar from '@/components/header';
+import ItemInfoContract from '@/components/ItemInfoContract';
 import Loading from '@/components/loading';
 import PopupConfirmPolicy from '@/components/PopupConfirmPolicy';
+import { PopupInvestOTP } from '@/components/popupOTP';
+import { useAppStore } from '@/hooks';
+import { CheckVimoWalletModel, InvestorInfoModel, PackageInvest } from '@/models/invest';
 import { PopupActionTypes } from '@/models/typesPopup';
 import Navigator from '@/routers/Navigator';
-import ScreenName, { TabsName } from '@/common/screenNames';
+import { MyStylesInvest } from '@/screen/investment/invest/styles';
+import { COLORS } from '@/theme';
+import Utils from '@/utils/Utils';
+
 
 
 const Invest = observer(({ route }: any) => {
@@ -39,8 +40,6 @@ const Invest = observer(({ route }: any) => {
 
     useEffect(() => {
         fetchDetailInvestNow();
-        refModal.current?.show();
-
     }, []);
 
     const fetchDetailInvestNow = useCallback(async () => {
@@ -58,19 +57,19 @@ const Invest = observer(({ route }: any) => {
     }, [isCheckBox]);
 
     const getOtpVimo = useCallback(async () => {
-        refModal.current?.show();
-        // const resOtp = await apiServices.invest.getOTP(csdl?.id?.toString() || '');
-        // if (resOtp.success && resOtp.data) {
-        //     refModal.current?.show();
-        // }
-        // else {
-        //     const infor = resOtp?.data as CheckVimoWalletModel;
-        //     Alert.alert(infor.message || Languages.detailInvest.error);
-        // }
-    }, []);
+        const resOtp = await apiServices.invest.getOTP(csdl?.id?.toString() || '');
+        if (resOtp.success && resOtp.data) {
+            refModal.current?.show();
+        }
+        else {
+            const infor = resOtp?.data as CheckVimoWalletModel;
+            Alert.alert(infor.message || Languages.detailInvest.error);
+        }
+    }, [apiServices.invest, csdl?.id]);
 
     const onInvest = useCallback(async () => {
         const res = await apiServices.invest.getInforInvest();
+        setIsLoading(true);
         if (res.success) {
             const data = res.data as InvestorInfoModel;
             if (data?.tra_lai && !data?.tra_lai?.type_interest_receiving_account) {
@@ -103,6 +102,7 @@ const Invest = observer(({ route }: any) => {
                 getOtpVimo();
             }
         }
+        setIsLoading(false);
     }, [apiServices.invest, csdl?.id, getOtpVimo, methodPayment]);
 
     const openPolicy = useCallback(() => {
@@ -119,8 +119,10 @@ const Invest = observer(({ route }: any) => {
         const res = await apiServices.invest.confirmInvest(csdl?.id?.toString() || '', otp);
         if (res?.success) {
             const data = res?.data as CheckVimoWalletModel;
-            Alert.alert(data?.message);
-            return true;
+            if (data?.status === 200 || data?.status === 201) {
+                Alert.alert(data.message || '');
+            }
+            return data;
         }
         return false;
     }, [apiServices.invest, csdl?.id]);
@@ -170,7 +172,7 @@ const Invest = observer(({ route }: any) => {
                     {renderInfoItem(Languages.detailInvest.interest, `${csdl?.ti_le_lai_suat_hang_thang}`)}
                     {renderInfoItem(Languages.detailInvest.interestMonth, Utils.formatMoney(csdl?.lai_hang_thang))}
                     {renderInfoItem(Languages.detailInvest.amountInterest, Utils.formatMoney(csdl?.tong_lai_nhan_duoc))}
-                    {renderInfoItem(Languages.detailInvest.period, `${csdl?.thoi_gian_dau_tu}`)}
+                    {renderInfoItem(Languages.detailInvest.period, `${csdl?.ki_han_dau_tu}`)}
                     {renderInfoItem(Languages.detailInvest.expectedDate, `${csdl?.ngay_dao_han_du_kien}`)}
                     {renderInfoItem(Languages.detailInvest.formality, `${csdl?.hinh_thuc_tra_lai}`)}
                 </View>
@@ -194,21 +196,15 @@ const Invest = observer(({ route }: any) => {
                         </Text>
                     </Touchable>
                 </View>
-
-                <Touchable
-                    onPress={onInvest}
+                <Button
+                    buttonStyle={(isCheckBox && methodPayment) ? 'GREEN' : 'GRAY'}
+                    label={Languages.invest.investNow}
                     disabled={!(isCheckBox && methodPayment)}
-                    style={isCheckBox && methodPayment ? styles.tobBottom :
-                        [styles.tobBottom, { backgroundColor: COLORS.GRAY }]}>
-                    <Text
-                        style={isCheckBox && methodPayment ? styles.txtTob :
-                            [styles.txtTob, { color: COLORS.BLACK }]}>
-                        {Languages.invest.investNow}
-                    </Text>
-                </Touchable>
+                    onPress={onInvest}
+                />
 
             </ScrollView>
-            <PopupInvestOTP onConfirmOTP={onConfirmOTP} getOTPcode={getOtpVimo} ref={refModal} />
+            <PopupInvestOTP idContract={csdl?.id?.toString()} getOTPcode={getOtpVimo} ref={refModal} />
             <PopupConfirmPolicy
                 onConfirm={onConfirmPopup}
                 ref={refPopupPolicy}

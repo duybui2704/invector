@@ -1,82 +1,122 @@
-import OtpInputs from 'react-native-otp-inputs';
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
+import OtpInputs from 'react-native-otp-inputs';
 
+import IcClose from '@/assets/image/invest/ic_close.svg';
 import LogoOtpInvest from '@/assets/image/invest/logo_otp_invest.svg';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
+import { useAppStore } from '@/hooks';
+import { CheckVimoWalletModel } from '@/models/invest';
 import { PopupActionTypes, PopupPropsTypes } from '@/models/typesPopup';
 import { COLORS } from '@/theme/colors';
 import { Styles } from '@/theme/styles';
 import DimensionUtils from '@/utils/DimensionUtils';
 import { Touchable } from '../elements/touchable';
-import { useAppStore } from '@/hooks';
+import Utils from '@/utils/Utils';
+
 
 
 interface PopupOTPProps extends PopupPropsTypes {
-    onConfirmOTP?: (text: string) => any;
-    getOTPcode?: () => any
+    getOTPcode?: () => any,
+    idContract?: string
 }
 
-const second = 120;
 
 export const PopupInvestOTP = forwardRef<
     PopupActionTypes,
     PopupOTPProps
->(({ onConfirmOTP: onSendOTP, getOTPcode }: PopupOTPProps, ref) => {
-
+>(({  getOTPcode,
+    idContract }: PopupOTPProps, ref) => {
+    const { apiServices } = useAppStore();
     const [visible, setVisible] = useState<boolean>(false);
-    const [activeButton, setActiveButton] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [startCount, setStartCount] = useState<boolean>(false);
-    const [timer, setTimer] = useState<number>(120);
+    const [startCount, setStartCount] = useState<boolean>(true);
+    const [timer, setTimer] = useState<number>(0);
     const [pin, setPin] = useState<string>('');
+    const [erroMsg, setErrMsg] = useState<string>('');
     const intervalRef = useRef<any>();
-    console.log('t',timer);
-
     useEffect(() => {
-
-        intervalRef.current = setTimeout(() => {
+        intervalRef.current = setInterval(() => {
             setTimer((t) => t - 1);
         }, 1000);
-    
+        if (timer <= 0) {
+            clearInterval(intervalRef.current);
+            setStartCount(false);
+        }
+        return () => {
+            clearInterval(intervalRef.current);
+            setStartCount(true);
+        };
+
     }, [timer]);
+
+    const _onCancel = useCallback(() => {
+        setLoading(false);
+        setStartCount(true);
+        setTimer(0);
+        setPin('');
+    }, []);
 
     const show = useCallback(() => {
         setVisible(true);
+        setTimer(120);
     }, []);
 
     const hide = useCallback(() => {
         setVisible(false);
-    }, []);
+        _onCancel();
+    }, [_onCancel]);
 
     useImperativeHandle(ref, () => ({
         show,
         hide
     }));
 
+    useEffect(() => {
+        if (pin.toString().length === 6) {
+            onConfirm();
+        }
+    }, [pin]);
+
     const onConfirm = useCallback(async () => {
         setLoading(true);
-        const result = await onSendOTP?.(pin);
+        const res = await apiServices.invest.confirmInvest(idContract || '', pin);
+        if (res?.success) {
+            const data = res?.data as CheckVimoWalletModel;
+            if (data?.status === 200 || data?.status === 201) {
+                Alert.alert(data.message || '');
+                _onCancel();
+                hide();
+            }
+            else {
+                setErrMsg(data?.message);
+            }
+        }
+        else {
+            setErrMsg(res?.message || '');
+        }
         setLoading(false);
-        if (result) setStartCount(true);
-    }, [onSendOTP, pin]);
+    }, [_onCancel, apiServices.invest, hide, idContract, pin]);
 
     const onChangeCode = useCallback((code: string) => {
         setPin(code);
+        setErrMsg('');
     }, []);
 
-    const onResend = useCallback(()=>{
-        
-    },[]);
+    const onResend = useCallback(async () => {
+        await getOTPcode?.();
+        setStartCount(true);
+        setTimer(120);
+    }, [getOTPcode]);
 
     const renderBtConfirm = useMemo(() => {
         if (!loading) {
             return (
                 <Touchable onPress={onConfirm} style={styles.btConfirm}>
-                    <Text style={styles.txtBt}>{Languages.otp.keyOtp}</Text>
+                    <Text style={styles.txtBt}>{ Languages.otp.keyOtp.toUpperCase()}</Text>
                 </Touchable>
             );
         }
@@ -88,29 +128,36 @@ export const PopupInvestOTP = forwardRef<
     }, [loading, onConfirm]);
 
     const renderResend = useMemo(() => {
-        return(
-            <Touchable onPress={onResend} style={styles.btResend}>
-                <Text style={styles.txtBt}>{`${Languages.otp.resentCode} sau ${timer}s`}</Text>
+        if (startCount) {
+            return (
+                <View style={styles.btResend}>
+                    <Text style={styles.txtBt}>{`${Languages.otp.resentCode.toUpperCase()} SAU ${Utils.convertSecondToMinutes(timer)}s`}</Text>
+                </View>
+            );
+        }
+        return (
+            <Touchable onPress={onResend} style={styles.btResendActive}>
+                <Text style={styles.txtBt}>{Languages.otp.resentCode.toUpperCase()}</Text>
             </Touchable>
         );
-    }, [onResend, timer]);
+    }, [onResend, startCount, timer]);
 
     return (
         <Modal
             isVisible={visible}
             animationIn="slideInUp"
             useNativeDriver={true}
-            onBackdropPress={hide}
             avoidKeyboard={true}
             hideModalContentWhileAnimating
-            hasBackdrop
         >
             <View style={styles.container}>
                 <View style={styles.tobModal}>
+                    <Touchable onPress={hide} style={styles.ic_close}>
+                        <IcClose width={20} height={20} />
+                    </Touchable>
                     <LogoOtpInvest width={200} />
                     <Text style={styles.title}>{Languages.otp.title}</Text>
                     <Text style={styles.txt}>{Languages.otp.completionOtp}</Text>
-
                     <View style={styles.boxOtp}>
                         <OtpInputs
                             handleChange={onChangeCode}
@@ -120,6 +167,7 @@ export const PopupInvestOTP = forwardRef<
                             focusStyles={styles.focusStyle}
                         />
                     </View>
+                    {!!erroMsg && <Text style={styles.errTxt}>{erroMsg}</Text>}
                     <View>
                         {renderBtConfirm}
                         {renderResend}
@@ -205,7 +253,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.WHITE,
         height: DimensionUtils.SCREEN_WIDTH * 0.14,
         paddingHorizontal: 10,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginBottom: 10
     },
     btConfirm: {
         paddingVertical: 16,
@@ -215,7 +264,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 10,
-        marginTop: 20
+        marginTop: 10
     },
     btResend: {
         paddingVertical: 16,
@@ -224,8 +273,23 @@ const styles = StyleSheet.create({
         width: 240,
         alignItems: 'center'
     },
+    btResendActive: {
+        paddingVertical: 16,
+        backgroundColor: COLORS.GREEN,
+        borderRadius: 40,
+        width: 240,
+        alignItems: 'center'
+    },
     txtBt: {
         ...Styles.typography.medium,
         color: COLORS.WHITE
-    }
+    },
+    ic_close: {
+        position: 'absolute',
+        right: 16,
+        top: 16
+    },
+    errTxt:{
+        ...Styles.typography.regular,
+        color:COLORS.RED    }
 });

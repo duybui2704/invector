@@ -20,7 +20,7 @@ type ItemProps = {
 const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemProps
 ) => {
     const styleText = {
-        color: hasButton ? COLORS.GREEN : COLORS.GRAY_7
+        color: !hasButton ? COLORS.GREEN : COLORS.GRAY_7
     } as TextStyle;
     return (
         <View style={styles.item}>
@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
         marginRight: 5
     },
     txtFormality: {
-        ...Styles.typography.medium
+        ...Styles.typography.medium,
+        fontSize:Configs.FontSize.size13
     },
     txtYellow: {
         ...Styles.typography.medium,
