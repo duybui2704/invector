@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Platform, ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
+import OTPInputView from '@twotalltotems/react-native-otp-input';
 
 import IcBag from '@/assets/image/ic_bag.svg';
 import Languages from '@/common/Languages';
@@ -17,7 +18,7 @@ import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
 import { Configs } from '@/common/Configs';
 import { PopupInvestOTP } from '@/components/popupOTP';
-import { InvestorInfoModel, PackageInvest } from '@/models/invest';
+import { CheckVimoWalletModel, InvestorInfoModel, PackageInvest } from '@/models/invest';
 import { useAppStore } from '@/hooks';
 import Loading from '@/components/loading';
 import PopupConfirmPolicy from '@/components/PopupConfirmPolicy';
@@ -32,12 +33,14 @@ const Invest = observer(({ route }: any) => {
     const [methodPayment, setMethodPayment] = useState<string>();
     const [isCheckBox, setIsCheckBox] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const refModal = useRef<PopupActionTypes>();
+    const refModal = useRef<PopupActionTypes>(null);
     const refPopupPolicy = useRef<PopupActionTypes>(null);
     const { apiServices } = useAppStore();
 
     useEffect(() => {
         fetchDetailInvestNow();
+        refModal.current?.show();
+
     }, []);
 
     const fetchDetailInvestNow = useCallback(async () => {
@@ -53,6 +56,18 @@ const Invest = observer(({ route }: any) => {
     const checkBox = useCallback(() => {
         setIsCheckBox(!isCheckBox);
     }, [isCheckBox]);
+
+    const getOtpVimo = useCallback(async () => {
+        refModal.current?.show();
+        // const resOtp = await apiServices.invest.getOTP(csdl?.id?.toString() || '');
+        // if (resOtp.success && resOtp.data) {
+        //     refModal.current?.show();
+        // }
+        // else {
+        //     const infor = resOtp?.data as CheckVimoWalletModel;
+        //     Alert.alert(infor.message || Languages.detailInvest.error);
+        // }
+    }, []);
 
     const onInvest = useCallback(async () => {
         const res = await apiServices.invest.getInforInvest();
@@ -84,12 +99,11 @@ const Invest = observer(({ route }: any) => {
                     });
                 }
             }
-            else {
-                refModal.current?.show();
-                console.log('vimo');
+            else if (methodPayment === ENUM_METHOD_PAYMENT.VIMO) {
+                getOtpVimo();
             }
         }
-    }, [apiServices.invest, csdl?.id, methodPayment]);
+    }, [apiServices.invest, csdl?.id, getOtpVimo, methodPayment]);
 
     const openPolicy = useCallback(() => {
         refPopupPolicy.current?.show();
@@ -101,14 +115,14 @@ const Invest = observer(({ route }: any) => {
     }, []);
 
 
-    const onSendOTP = useCallback(async () => {
-        const id = csdl?.id.toString();
-        const resInvestOtp = await apiServices.invest.getInvestOtp(id || '');
-        setIsLoading(true);
-        if (resInvestOtp.success) {
-            setIsLoading(false);
+    const onConfirmOTP = useCallback(async (otp: string) => {
+        const res = await apiServices.invest.confirmInvest(csdl?.id?.toString() || '', otp);
+        if (res?.success) {
+            const data = res?.data as CheckVimoWalletModel;
+            Alert.alert(data?.message);
+            return true;
         }
-        setIsLoading(false);
+        return false;
     }, [apiServices.invest, csdl?.id]);
 
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string) => {
@@ -140,7 +154,6 @@ const Invest = observer(({ route }: any) => {
             </Touchable>
         );
     }, [methodPayment, styles.btSelected, styles.circle, styles.greenText, styles.txtMethod, styles.wrapItemMethod, styles.wrapLabel]);
-
 
     return (
         <View>
@@ -193,8 +206,9 @@ const Invest = observer(({ route }: any) => {
                         {Languages.invest.investNow}
                     </Text>
                 </Touchable>
+
             </ScrollView>
-            <PopupInvestOTP onSendOTP={onSendOTP} ref={refModal} />
+            <PopupInvestOTP onConfirmOTP={onConfirmOTP} getOTPcode={getOtpVimo} ref={refModal} />
             <PopupConfirmPolicy
                 onConfirm={onConfirmPopup}
                 ref={refPopupPolicy}

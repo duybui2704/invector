@@ -1,6 +1,6 @@
-import OTPInputView from '@twotalltotems/react-native-otp-input';
-import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import OtpInputs from 'react-native-otp-inputs';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Modal from 'react-native-modal';
 
 import LogoOtpInvest from '@/assets/image/invest/logo_otp_invest.svg';
@@ -11,20 +11,38 @@ import { COLORS } from '@/theme/colors';
 import { Styles } from '@/theme/styles';
 import DimensionUtils from '@/utils/DimensionUtils';
 import { Touchable } from '../elements/touchable';
+import { useAppStore } from '@/hooks';
 
 
 interface PopupOTPProps extends PopupPropsTypes {
-    onSendOTP?: () => any;
+    onConfirmOTP?: (text: string) => any;
+    getOTPcode?: () => any
 }
 
+const second = 120;
 
 export const PopupInvestOTP = forwardRef<
     PopupActionTypes,
     PopupOTPProps
->(({ onClose, onSendOTP }: PopupOTPProps, ref) => {
-
+>(({ onConfirmOTP: onSendOTP, getOTPcode }: PopupOTPProps, ref) => {
 
     const [visible, setVisible] = useState<boolean>(false);
+    const [activeButton, setActiveButton] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const [startCount, setStartCount] = useState<boolean>(false);
+    const [timer, setTimer] = useState<number>(120);
+    const [pin, setPin] = useState<string>('');
+    const intervalRef = useRef<any>();
+    console.log('t',timer);
+
+    useEffect(() => {
+
+        intervalRef.current = setTimeout(() => {
+            setTimer((t) => t - 1);
+        }, 1000);
+    
+    }, [timer]);
 
     const show = useCallback(() => {
         setVisible(true);
@@ -39,16 +57,43 @@ export const PopupInvestOTP = forwardRef<
         hide
     }));
 
-    const onPressOtp = useCallback(() => {
-
-    }, []);
+    const onConfirm = useCallback(async () => {
+        setLoading(true);
+        const result = await onSendOTP?.(pin);
+        setLoading(false);
+        if (result) setStartCount(true);
+    }, [onSendOTP, pin]);
 
     const onChangeCode = useCallback((code: string) => {
-        if (code.toString().length === 6) {
-            hide();
-            onSendOTP?.();
+        setPin(code);
+    }, []);
+
+    const onResend = useCallback(()=>{
+        
+    },[]);
+
+    const renderBtConfirm = useMemo(() => {
+        if (!loading) {
+            return (
+                <Touchable onPress={onConfirm} style={styles.btConfirm}>
+                    <Text style={styles.txtBt}>{Languages.otp.keyOtp}</Text>
+                </Touchable>
+            );
         }
-    }, [hide, onSendOTP]);
+        return (
+            <View style={styles.btConfirm}>
+                <ActivityIndicator size="small" color={COLORS.WHITE} />
+            </View>
+        );
+    }, [loading, onConfirm]);
+
+    const renderResend = useMemo(() => {
+        return(
+            <Touchable onPress={onResend} style={styles.btResend}>
+                <Text style={styles.txtBt}>{`${Languages.otp.resentCode} sau ${timer}s`}</Text>
+            </Touchable>
+        );
+    }, [onResend, timer]);
 
     return (
         <Modal
@@ -67,22 +112,17 @@ export const PopupInvestOTP = forwardRef<
                     <Text style={styles.txt}>{Languages.otp.completionOtp}</Text>
 
                     <View style={styles.boxOtp}>
-                        <OTPInputView
-                            pinCount={6}
-                            autoFocusOnLoad
-                            editable={true}
-                            codeInputFieldStyle={styles.underlineStyleBase}
+                        <OtpInputs
+                            handleChange={onChangeCode}
+                            numberOfInputs={6}
                             style={styles.wrapOTP}
-                            onCodeChanged={onChangeCode}
+                            inputStyles={styles.viewOtp}
+                            focusStyles={styles.focusStyle}
                         />
                     </View>
                     <View>
-                        <Touchable style={styles.btConfirm}>
-                            <Text style={styles.txtBt}>{Languages.otp.keyOtp}</Text>
-                        </Touchable>
-                        <Touchable style={styles.btResend}>
-                            <Text style={styles.txtBt}>{Languages.otp.resentCode} sau 2:00</Text>
-                        </Touchable>
+                        {renderBtConfirm}
+                        {renderResend}
                     </View>
                 </View>
             </View>
@@ -119,14 +159,22 @@ const styles = StyleSheet.create({
         fontSize: Configs.FontSize.size16
     },
     viewOtp: {
-        width: DimensionUtils.SCREEN_WIDTH * 0.14,
-        height: DimensionUtils.SCREEN_WIDTH * 0.14,
+        ...Styles.typography.medium,
+        width: (DimensionUtils.SCREEN_WIDTH - 64 - 5 * 5) / 6,
+        height: (DimensionUtils.SCREEN_WIDTH - 64 - 5 * 5) / 6,
         marginVertical: 10,
         marginHorizontal: 2,
         borderWidth: 1,
-        borderRadius: DimensionUtils.SCREEN_WIDTH * 0.07,
+        borderRadius: ((DimensionUtils.SCREEN_WIDTH - 64 - 5 * 5) / 6) / 2,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingLeft: ((DimensionUtils.SCREEN_WIDTH - 64 - 5 * 5) / 6) / 2 - 4,
+        borderColor: COLORS.GRAY_6,
+        color: COLORS.BLACK,
+        fontSize: Configs.FontSize.size18
+    },
+    focusStyle: {
+
     },
     boxOtp: {
         flexDirection: 'row',
@@ -156,8 +204,8 @@ const styles = StyleSheet.create({
     wrapOTP: {
         backgroundColor: COLORS.WHITE,
         height: DimensionUtils.SCREEN_WIDTH * 0.14,
-        width: '100%',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        flexDirection: 'row'
     },
     btConfirm: {
         paddingVertical: 16,

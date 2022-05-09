@@ -352,7 +352,8 @@ const Languages = {
         unpaid: 'Chưa thanh toán',
         agreeTermsWith: 'Tôi đã đọc và đồng ý với ',
         rules: 'Điều khoản sử dụng và chính sách ',
-        tienngay: 'của Tienngay.vn'
+        tienngay: 'của Tienngay.vn',
+        error:'Không lấy được dữ liệu, vui lòng thử lại sau'
     },
     changePwd: {
         title: 'Đổi mật khẩu',
