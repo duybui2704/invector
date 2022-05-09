@@ -2,11 +2,13 @@ import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import React, {
     forwardRef,
     useCallback,
+    useEffect,
     useImperativeHandle,
     useState
 } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import DatePicker, { DatePickerProps } from 'react-native-date-picker';
+import { useIsFocused } from '@react-navigation/core';
 
 import ICCalender from '@/assets/image/ic_calender.svg';
 import { Configs } from '@/common/Configs';
@@ -14,6 +16,7 @@ import Languages from '@/common/Languages';
 import { Touchable } from './elements/touchable';
 import DateUtils from '@/utils/DateUtils';
 import { COLORS, Styles } from '@/theme';
+import { useAppStore } from '@/hooks';
 
 interface DatePickerTransactionProps extends DatePickerProps {
   title?: string;
@@ -43,7 +46,19 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
     ) => {
         const [visible, setVisible] = useState<boolean>(false);
         const [dateValue,setDateValue] = useState<Date | string| undefined| number | any >();
+        const { common } = useAppStore();
+        const isFocused = useIsFocused();
+
+        useEffect(() => {
+            if (common.isFocused || common.refresh) {
+                date = new Date();
+                onConfirmDatePicker('', title);
+                setDateValue(null);
+            }
+        }, [common.isFocused, common.refresh]);
+
         const show = useCallback(() => {
+            common.setRefresh(false);
             setVisible(true);
         }, []);
 
@@ -77,7 +92,7 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
             <>
                 <Touchable style={styles.itemPicker} onPress={show}>
                     <Text style={styles.placeholderDate}>
-                        {dateValue ? DateUtils.formatMMDDYYYYPicker(dateValue) : title}
+                        {dateValue && !common.refresh ? DateUtils.formatMMDDYYYYPicker(dateValue) : title}
                     </Text>
                     <ICCalender/>
                     <DatePicker

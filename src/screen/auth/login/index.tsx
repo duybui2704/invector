@@ -49,14 +49,12 @@ const Login = observer(() => {
 
     useEffect(() => {
         setLoading(isLoading);
-        setPhone('0961182794'); // 0961182794  // 0359908532 // 0988251903
-        setPass('12345678');
     }, [isLoading]);
 
     const onChangeText = useCallback((value: string, tag?: string) => {
         switch (tag) {
             case Languages.auth.txtPhone:
-                // setPhone(value);
+                setPhone(value);
                 break;
             case Languages.auth.txtPass:
                 setPass(value);

@@ -154,7 +154,7 @@ const MyBottomTabs = observer(() => {
         e?.preventDefault();
         const tab = TabsData.filter((item) => item.name === route?.name)[0];
         if ((route?.name !== TabsName.homeTabs && !userManager?.userInfo) || fastAuthInfoManager.isEnableFastAuth) {
-            navigation.navigate(ScreenName.auth);
+            navigation.navigate(ScreenName.authStack);
             SessionManager.lastTabIndexBeforeOpenAuthTab = tab?.index;
         }
         else {
