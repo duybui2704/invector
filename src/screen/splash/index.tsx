@@ -39,7 +39,12 @@ const Splash = observer(() => {
 
     const nextScreen = useCallback(async () => {
         setTimeout(async () => {
-            Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
+            if (SessionManager.isSkipOnboarding) {
+                Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
+            } else {
+                Navigator.replaceScreen(ScreenNames.onBoard);
+            }
+
         }, 1e3);
     }, []);
 

@@ -79,8 +79,8 @@ const RootStack = observer(() => {
     const AppStack = useCallback(() => {
         return (
             <Stack.Navigator screenOptions={screenOptions}>
-                {/* <Stack.Screen name={ScreenName.onBoard} component={Broadening} /> */}
                 <Stack.Screen name={ScreenName.splash} component={Splash} />
+                <Stack.Screen name={ScreenName.onBoard} component={Broadening} />
                 <Stack.Screen name={ScreenName.authStack} component={AuthStack} />
                 <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
             </Stack.Navigator>

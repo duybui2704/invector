@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } fro
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import Animated from 'react-native-reanimated';
 
 import { LINKS } from '@/api/constants';
 import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
@@ -323,7 +324,7 @@ const Home = observer(() => {
                         <HeaderBar exitApp imageBackground />
                     )}
                     renderForeground={() => renderViewFooter()}>
-                    <View style={styles.viewCenter}>
+                    <Animated.View style={styles.viewCenter}>
                         <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
                         <FlatList
                             style={styles.viewFlatList}
@@ -333,7 +334,7 @@ const Home = observer(() => {
                             ListFooterComponentStyle={styles.viewFlatList}
                             keyExtractor={keyExtractor}
                         />
-                    </View>
+                    </Animated.View>
                 </ParallaxScrollView>
                 {isLoading && <Loading isOverview />}
             </View >
