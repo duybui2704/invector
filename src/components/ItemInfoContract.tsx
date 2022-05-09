@@ -3,6 +3,7 @@ import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import Dash from 'react-native-dash';
 
 import { COLORS, Styles } from '@/theme';
+import { Configs } from '@/common/Configs';
 
 
 type ItemProps = {
@@ -25,7 +26,7 @@ const ItemInfoContract = ({ label, value, colorText }: ItemProps
                 dashGap={5}
                 dashColor={COLORS.GRAY_13} />
             <View style={styles.wrapItem}>
-                <Text style={styles.label}>{label}</Text>
+                <Text numberOfLines={3} style={styles.label}>{label}</Text>
                 <Text style={[styles.txtValue, styleText]} numberOfLines={2}>{value}</Text>
             </View>
         </>
@@ -41,12 +42,13 @@ const styles = StyleSheet.create({
     label: {
         ...Styles.typography.regular,
         color: COLORS.GRAY_12,
-        maxWidth: '50%'
+        fontSize: Configs.FontSize.size12
     },
     txtValue: {
         ...Styles.typography.medium,
         color: COLORS.GRAY_7,
-        maxWidth: '50%'
+        maxWidth: '70%',
+        fontSize: Configs.FontSize.size13
     }
 });
 export default ItemInfoContract;

@@ -70,7 +70,7 @@ const Investment = observer(({ route }: { route: any }) => {
             setListStore(resInvest.data as PackageInvest[]);
             setDataFilter(resInvest.data as PackageInvest[]);
         }
-    }, []);
+    }, [apiServices.invest]);
 
     const fetchDataInvesting = useCallback(async () => {
         console.log('investing');

@@ -16,13 +16,14 @@ import ScreenName from '@/common/screenNames';
 import ItemInfoContract from '@/components/ItemInfoContract';
 import { useAppStore } from '@/hooks';
 import { PackageInvest } from '@/models/invest';
+import Loading from '@/components/loading';
 
 export const DetailInvestment = observer(({ route }: any) => {
 
     const { status } = route?.params as any;
     const { id } = route?.params as any;
     const { apiServices } = useAppStore();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [data, setData] = useState<PackageInvest>();
     const [dataHistory, setDataHistory] = useState<PackageInvest>();
 
@@ -51,7 +52,7 @@ export const DetailInvestment = observer(({ route }: any) => {
             const res = resInvestNow.data as PackageInvest;
             setData(res);
         }
-    }, []);
+    }, [apiServices.invest, id]);
 
     const fetchDetailInvesting = useCallback(async () => {
         setIsLoading(true);
@@ -63,10 +64,9 @@ export const DetailInvestment = observer(({ route }: any) => {
             setData(res);
         }
 
-    }, []);
+    }, [apiServices.invest, id]);
 
     const fetchDetailHistory = useCallback(async () => {
-        setIsLoading(true);
         console.log('resInvestHistory');
         const resInvestHistory = await apiServices.invest.getInvestHaveContract(id);
         setIsLoading(false);
@@ -74,7 +74,7 @@ export const DetailInvestment = observer(({ route }: any) => {
             const res = resInvestHistory.data as PackageInvest;
             setData(res);
         }
-    }, []);
+    }, [apiServices.invest, id]);
 
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string, visible?: boolean) => {
         return (
@@ -153,31 +153,43 @@ export const DetailInvestment = observer(({ route }: any) => {
             default:
                 return null;
         }
-    }, [navigateToInvest, renderItem, status, data]);
+    }, [navigateToInvest, renderItem, status]);
+
+    const renderInfoContract = useMemo(()=>{
+        if(!isLoading)
+        {
+            return(
+                <>
+                    <View style={styles.wrapInfo}>
+                        <Text style={styles.title}>{Languages.detailInvest.information}</Text>
+                        {renderInfoItem(Languages.detailInvest.idContract, `${data?.ma_hop_dong}`, COLORS.GREEN)}
+                        {renderInfoItem(Languages.detailInvest.moneyInvest, Utils.formatMoney(data?.so_tien_dau_tu), COLORS.RED)}
+                        {renderInfoItem(Languages.detailInvest.interest, `${data?.ti_le_lai_suat_hang_thang}`)}
+                        {renderInfoItem(Languages.detailInvest.interestMonth, Utils.formatMoney(data?.lai_hang_thang))}
+                        {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.day, `${data?.ngay_dau_tu}`, '')}
+                        {renderInfoItem(Languages.detailInvest.amountInterest, Utils.formatMoney(data?.tong_lai_nhan_duoc))}
+                        {renderInfoItem(Languages.detailInvest.period, `${data?.thoi_gian_dau_tu}`)}
+                        {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.amountReceived, Utils.formatMoney(data?.tong_lai_da_nhan))}
+                        {renderInfoItem(Languages.detailInvest.expectedDate, `${data?.ngay_dao_han_du_kien}`)}
+                        {renderInfoItem(Languages.detailInvest.formality, `${data?.hinh_thuc_tra_lai}`)}
+                    </View>
+                    {renderBottom}
+                </>
+            );
+        }
+        return null;
+    },[data, isLoading, renderInfoItem, status,renderBottom]);
 
     return (
-        <View>
+        <View style={styles.container}>
             <HeaderBar title={Languages.detailInvest.title} hasBack />
             <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false} style={styles.wrapContent}>
                 <View style={styles.wrapIcon}>
                     <IcBag />
                 </View>
-
-                <View style={styles.wrapInfo}>
-                    <Text style={styles.title}>{Languages.detailInvest.information}</Text>
-                    {renderInfoItem(Languages.detailInvest.idContract, `${data?.ma_hop_dong}`, COLORS.GREEN)}
-                    {renderInfoItem(Languages.detailInvest.moneyInvest, Utils.formatMoney(data?.so_tien_dau_tu), COLORS.RED)}
-                    {renderInfoItem(Languages.detailInvest.interest, `${data?.ti_le_lai_suat_hang_thang}`)}
-                    {renderInfoItem(Languages.detailInvest.interestMonth, Utils.formatMoney(data?.lai_hang_thang))}
-                    {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.day, `${data?.ngay_dau_tu}`, '')}
-                    {renderInfoItem(Languages.detailInvest.amountInterest, Utils.formatMoney(data?.tong_lai_nhan_duoc))}
-                    {renderInfoItem(Languages.detailInvest.period, `${data?.ngay_dao_han}`)}
-                    {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.amountReceived, Utils.formatMoney(data?.tong_lai_da_nhan))}
-                    {renderInfoItem(Languages.detailInvest.expectedDate, `${data?.ngay_dao_han}`)}
-                    {renderInfoItem(Languages.detailInvest.formality, `${data?.hinh_thuc_tra_lai}`)}
-                </View>
-                {renderBottom}
+                {renderInfoContract}
             </ScrollView>
+            {isLoading && <Loading isOverview />}
         </View>
     );
 });

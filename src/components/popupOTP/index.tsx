@@ -1,218 +1,183 @@
-import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState} from 'react';
-import { Text, View } from 'react-native';
+import OTPInputView from '@twotalltotems/react-native-otp-input';
+import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { MyStylesOtpInvest } from '@/components/popupOTP/styles';
 import LogoOtpInvest from '@/assets/image/invest/logo_otp_invest.svg';
+import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
-import { TextFieldActions } from '@/components/elements/textfield/types';
-import { MyTextInput } from '@/components/elements/textfield';
-import Validate from '@/utils/Validate';
-import { PopupActions, PopupProps } from '@/components/popupInvest/types';
+import { PopupActionTypes, PopupPropsTypes } from '@/models/typesPopup';
+import { COLORS } from '@/theme/colors';
+import { Styles } from '@/theme/styles';
+import DimensionUtils from '@/utils/DimensionUtils';
+import { Touchable } from '../elements/touchable';
 
-export const PopupInvestOTP = forwardRef<PopupActions, PopupProps>(
-    ({
-        onConfirm,
-        onClose,
-        title,
-        description,
-        data
-    }: PopupProps, ref) => {
-        const styles = MyStylesOtpInvest();
-        const [otp1, setOtp1] = useState<string>('');
-        const [otp2, setOtp2] = useState<string>('');
-        const [otp3, setOtp3] = useState<string>('');
-        const [otp4, setOtp4] = useState<string>('');
-        const [otp5, setOtp5] = useState<string>('');
-        const [otp6, setOtp6] = useState<string>('');
-        const otp1Ref = useRef<TextFieldActions>();
-        const otp2Ref = useRef<TextFieldActions>();
-        const otp3Ref = useRef<TextFieldActions>();
-        const otp4Ref = useRef<TextFieldActions>();
-        const otp5Ref = useRef<TextFieldActions>();
-        const otp6Ref = useRef<TextFieldActions>();
 
-        const [visible, setVisible] = useState<boolean>(false);
+interface PopupOTPProps extends PopupPropsTypes {
+    onSendOTP?: () => any;
+}
 
-        const show = useCallback(() => {
-            setVisible(true);
-        }, []);
 
-        const hide = useCallback(() => {
-            setVisible(false);
-        }, []);
+export const PopupInvestOTP = forwardRef<
+    PopupActionTypes,
+    PopupOTPProps
+>(({ onClose, onSendOTP }: PopupOTPProps, ref) => {
 
-        useImperativeHandle(ref, () => ({
-            show,
-            hide
-        }));
 
-        const textInputChange = useCallback((text: string, ref: any) => {
-            const value = Validate.stringIsNumberOnly(text) ? text.trim() : '';
-            if (value !== '') {
-                ref.current.focus();
-            }
-        }, []);
+    const [visible, setVisible] = useState<boolean>(false);
 
-        const onChangeText = useCallback((value: string, tag?: string) => {
-            switch (tag) {
-                case Languages.otp.otp1:
-                    setOtp1(value);
-                    textInputChange(value, otp2Ref);
-                    break;
-                case Languages.otp.otp2:
-                    setOtp2(value);
-                    textInputChange(value, otp3Ref);
-                    break;
-                case Languages.otp.otp3:
-                    setOtp3(value);
-                    textInputChange(value, otp4Ref);
-                    break;
-                case Languages.otp.otp4:
-                    setOtp4(value);
-                    textInputChange(value, otp5Ref);
-                    break;
-                case Languages.otp.otp5:
-                    setOtp5(value);
-                    textInputChange(value, otp6Ref);
-                    break;
-                case Languages.otp.otp6:
-                    setOtp6(value);
-                    break;
-                default:
-                    break;
-            }
-            if (otp1 !== '' && otp2 !== '' && otp3 !== '' && otp4 !== '' && otp5 !== '' && otp6 !== '') {
-                onPressOtp();
-            }
-        }, [textInputChange, otp1, otp2, otp3, otp4, otp5, otp6]);
+    const show = useCallback(() => {
+        setVisible(true);
+    }, []);
 
-        const onChangeInputOneKeyPress = useCallback((keyPress?: any) => {
-            const key = keyPress.nativeEvent.key;
-            if (key === 'Backspace') {
-                otp1Ref.current?.focus();
-            }
-        }, []);
+    const hide = useCallback(() => {
+        setVisible(false);
+    }, []);
 
-        const onChangeInputThreeKeyPress = useCallback((keyPress?: any) => {
-            const key = keyPress.nativeEvent.key;
-            if (key === 'Backspace') {
-                otp3Ref.current?.focus();
-            }
-        }, []);
+    useImperativeHandle(ref, () => ({
+        show,
+        hide
+    }));
 
-        const onChangeInputTwoKeyPress = useCallback((keyPress?: any) => {
-            const key = keyPress.nativeEvent.key;
-            if (key === 'Backspace') {
-                otp2Ref.current?.focus();
-            }
-        }, []);
+    const onPressOtp = useCallback(() => {
 
-        const onChangeInputFourKeyPress = useCallback((keyPress?: any) => {
-            const key = keyPress.nativeEvent.key;
-            if (key === 'Backspace') {
-                otp4Ref.current?.focus();
-            }
-        }, []);
+    }, []);
 
-        const onChangeInputFiveKeyPress = useCallback((keyPress?: any) => {
-            const key = keyPress.nativeEvent.key;
-            if (key === 'Backspace') {
-                otp5Ref.current?.focus();
-            }
-        }, []);
-
-        const onChangeInputSixKeyPress = useCallback((keyPress?: any) => {
-            const key = keyPress.nativeEvent.key;
-            if (key === 'Backspace') {
-                otp6Ref.current?.focus();
-            }
-        }, []);
-
-        const onPressOtp = useCallback(() => {
+    const onChangeCode = useCallback((code: string) => {
+        if (code.toString().length === 6) {
             hide();
-            // console.log('onPressOtp');
-            // Navigator.replaceScreen(ScreenName.investment);
-        }, []);
+            onSendOTP?.();
+        }
+    }, [hide, onSendOTP]);
 
-        const renderInput =
-        (
-            ref: any,
-            testId: string,
-            value: string,
-            onKeyPress?: any,
-            disabled?: any
-        ) => {
-            return (
-                <MyTextInput
-                    ref={ref}
-                    isPhoneNumber
-                    inputStyle={styles.inputOtp}
-                    value={value}
-                    containerInput={styles.viewOtp}
-                    keyboardType={'NUMBER'}
-                    onChangeText={onChangeText}
-                    maxLength={1}
-                    testID={testId}
-                    autoFocus={disabled}
-                    onKeyPress={onKeyPress}
-                />
-            );
-        };
-        return (
-            <Modal
-                isVisible={visible}
-                animationIn="slideInUp"
-                useNativeDriver={true}
-                onBackdropPress={hide}
-                avoidKeyboard={true}
-                hideModalContentWhileAnimating
-            >
-                <View style={styles.container}>
-                    <View style={styles.tobModal}>
-                        <LogoOtpInvest width={200} />
-                        <Text style={styles.title}>{Languages.otp.title}</Text>
-                        <Text style={styles.txt}>{Languages.otp.completionOtp}</Text>
-                        <View style={styles.boxOtp}>
-                            {renderInput(
-                                otp1Ref,
-                                Languages.otp.otp1,
-                                otp1,
-                                onChangeInputOneKeyPress
-                            )}
-                            {renderInput(
-                                otp2Ref,
-                                Languages.otp.otp2,
-                                otp2,
-                                onChangeInputTwoKeyPress
-                            )}
-                            {renderInput(
-                                otp3Ref,
-                                Languages.otp.otp3,
-                                otp3,
-                                onChangeInputThreeKeyPress
-                            )}
-                            {renderInput(
-                                otp4Ref,
-                                Languages.otp.otp4,
-                                otp4,
-                                onChangeInputFourKeyPress
-                            )}
-                            {renderInput(
-                                otp5Ref,
-                                Languages.otp.otp5,
-                                otp5,
-                                onChangeInputFiveKeyPress
-                            )}
-                            {renderInput(
-                                otp6Ref,
-                                Languages.otp.otp6,
-                                otp6,
-                                onChangeInputSixKeyPress
-                            )}
-                        </View>
+    return (
+        <Modal
+            isVisible={visible}
+            animationIn="slideInUp"
+            useNativeDriver={true}
+            onBackdropPress={hide}
+            avoidKeyboard={true}
+            hideModalContentWhileAnimating
+            hasBackdrop
+        >
+            <View style={styles.container}>
+                <View style={styles.tobModal}>
+                    <LogoOtpInvest width={200} />
+                    <Text style={styles.title}>{Languages.otp.title}</Text>
+                    <Text style={styles.txt}>{Languages.otp.completionOtp}</Text>
+
+                    <View style={styles.boxOtp}>
+                        <OTPInputView
+                            pinCount={6}
+                            autoFocusOnLoad
+                            editable={true}
+                            codeInputFieldStyle={styles.underlineStyleBase}
+                            style={styles.wrapOTP}
+                            onCodeChanged={onChangeCode}
+                        />
+                    </View>
+                    <View>
+                        <Touchable style={styles.btConfirm}>
+                            <Text style={styles.txtBt}>{Languages.otp.keyOtp}</Text>
+                        </Touchable>
+                        <Touchable style={styles.btResend}>
+                            <Text style={styles.txtBt}>{Languages.otp.resentCode} sau 2:00</Text>
+                        </Touchable>
                     </View>
                 </View>
-            </Modal>
-        );
-    });
+            </View>
+        </Modal>
+    );
+});
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: COLORS.TRANSPARENT,
+        borderColor: COLORS.TRANSPARENT,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    title: {
+        ...Styles.typography.bold,
+        fontSize: Configs.FontSize.size16,
+        marginTop: 20,
+        color: COLORS.GRAY_7
+    },
+    txt: {
+        ...Styles.typography.regular,
+        fontSize: Configs.FontSize.size14,
+        color: COLORS.GRAY_12,
+        marginHorizontal: 16,
+        textAlign: 'center',
+        padding: 10
+
+    },
+    inputOtp: {
+        color: COLORS.GRAY_7,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        fontSize: Configs.FontSize.size16
+    },
+    viewOtp: {
+        width: DimensionUtils.SCREEN_WIDTH * 0.14,
+        height: DimensionUtils.SCREEN_WIDTH * 0.14,
+        marginVertical: 10,
+        marginHorizontal: 2,
+        borderWidth: 1,
+        borderRadius: DimensionUtils.SCREEN_WIDTH * 0.07,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    boxOtp: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: DimensionUtils.SCREEN_WIDTH * 0.01,
+        marginBottom: DimensionUtils.SCREEN_WIDTH * 0.01
+    },
+    tobModal: {
+        backgroundColor: COLORS.WHITE,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 16
+
+    },
+    underlineStyleBase: {
+        width: DimensionUtils.SCREEN_WIDTH * 0.13,
+        height: DimensionUtils.SCREEN_WIDTH * 0.13,
+        borderWidth: 1,
+        borderColor: COLORS.GRAY_4,
+        color: COLORS.BLACK,
+        fontSize: Configs.FontSize.size20,
+        borderRadius: DimensionUtils.SCREEN_WIDTH * 0.07,
+        justifyContent: 'center'
+    },
+    wrapOTP: {
+        backgroundColor: COLORS.WHITE,
+        height: DimensionUtils.SCREEN_WIDTH * 0.14,
+        width: '100%',
+        paddingHorizontal: 10
+    },
+    btConfirm: {
+        paddingVertical: 16,
+        backgroundColor: COLORS.GREEN,
+        borderRadius: 40,
+        width: 240,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10,
+        marginTop: 20
+    },
+    btResend: {
+        paddingVertical: 16,
+        backgroundColor: COLORS.GRAY_6,
+        borderRadius: 40,
+        width: 240,
+        alignItems: 'center'
+    },
+    txtBt: {
+        ...Styles.typography.medium,
+        color: COLORS.WHITE
+    }
+});

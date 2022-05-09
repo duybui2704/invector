@@ -8,6 +8,9 @@ import { COLORS } from '@/theme/colors';
 
 
 const styles = StyleSheet.create({
+    container:{
+        flex:1
+    },
     wrapContent: {
         marginHorizontal: 16
     },
@@ -17,7 +20,7 @@ const styles = StyleSheet.create({
     title: {
         ...Styles.typography.regular,
         textAlign: 'center',
-        fontSize: Configs.FontSize.size20,
+        fontSize: Configs.FontSize.size16,
         color: COLORS.GRAY_7,
         marginBottom: 10
     },

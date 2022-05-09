@@ -3,6 +3,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+     <uses-permission android:name="android.permission.VIBRATE" />
 
 
     <application
@@ -16,6 +17,12 @@
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+        <meta-data
+            android:name="com.bugsnag.android.ENDPOINT_NOTIFY"
+            android:value="https://notify.bugsnag.com" />
+        <meta-data
+            android:name="com.bugsnag.android.ENDPOINT_SESSIONS"
+            android:value="https://sessions.bugsnag.com" />
 
       <activity
         android:name=".MainActivity"

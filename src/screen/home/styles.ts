@@ -30,7 +30,17 @@ export const MyStylesHome = () => {
                 height: DimensionUtils.SCREEN_HEIGHT * 0.3,
                 width: '100%',
                 alignItems: 'center',
-                marginHorizontal: 10
+                marginHorizontal: 10,
+                marginTop: 10
+            },
+            viewTopLogo: {
+                flexDirection: 'row',
+                width: '100%',
+                alignItems: 'center',
+                marginHorizontal: 10,
+                marginTop: 10,
+                position: 'absolute',
+                top: 0
             },
             viewTopCenter: {
                 position: 'absolute',
@@ -144,7 +154,6 @@ export const MyStylesHome = () => {
                 color: COLORS.GRAY
             },
             viewCenter: {
-                marginTop: DimensionUtils.SCREEN_HEIGHT / 3.6,
                 marginHorizontal: 10,
                 marginBottom: 20
             },
@@ -248,7 +257,7 @@ export const MyStylesHome = () => {
                 width: '95%'
             },
             viewFlatList: {
-                marginBottom: DimensionUtils.SCREEN_HEIGHT * 0.06
+                marginBottom: 0
             },
             txtLogin: {
                 fontSize: Configs.FontSize.size16,
@@ -275,6 +284,22 @@ export const MyStylesHome = () => {
                 fontFamily: Configs.FontFamily.bold,
                 fontSize: Configs.FontSize.size18,
                 color: COLORS.WHITE
+            },
+            viewForeground: {
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center'
+            },
+            viewRightTop: {
+                position: 'absolute',
+                right: 10
+            },
+            logo: {
+                marginLeft: DimensionUtils.SCREEN_WIDTH * 0.05
+            },
+            imgNotify: {
+                width: DimensionUtils.SCREEN_WIDTH * 0.08,
+                height: DimensionUtils.SCREEN_WIDTH * 0.08
             }
         }
         ), []);

@@ -72,7 +72,13 @@ const Languages = {
         investPay: 'Trả lãi đầu tư',
         investSuccess: 'Đầu tư thành công',
         changePercent: 'Thay đổi tích luỹ phần trăm',
-        availableBalance: 'Số dư hiện có'
+        availableBalance: 'Số dư hiện có',
+        policy:'Điều khoản sử dụng và chính sách',
+        updateBankInfo:
+        'Bạn chưa cập nhật hình thức nhận tiền lãi đầu tư. Bạn có muốn cập nhật ngay bây giờ không?',
+        payFinished:
+        '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>'
+
     },
     account: {
         title: 'Tài khoản',
@@ -279,17 +285,11 @@ const Languages = {
         waitVerifyContent: 'Chứng từ của bạn đang được xác minh, bạn có thể tiến hành đầu tư sau khi chứng từ đã được xác thực'
     },
     otp: {
-        keyOtp: 'Xác nhận mã OTP ',
+        keyOtp: 'Xác nhận ',
         confirmOtp: 'Hãy nhập và xác nhận mã OTP',
         verificationCode: 'Mã xác thực đã được gửi đến số điện thoại ',
         codeExpiresLater: ' Mã hết hiệu lực sau ',
-        resentCode: 'Gửi lại mã !',
-        otp1: 'otp1',
-        otp2: 'otp2',
-        otp3: 'otp3',
-        otp4: 'otp4',
-        otp5: 'otp5',
-        otp6: 'otp6',
+        resentCode: 'Gửi lại mã',
         popupOtpErrorTitle: 'Thông báo OTP',
         popupOtpErrorDescription: 'OTP không chính xác',
         popupOtpSuccessDescription: 'Đăng ký thành công',

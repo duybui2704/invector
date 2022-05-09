@@ -68,16 +68,4 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         right: 10
     }
-    ,
-    viewRightTop: {
-        position: 'absolute',
-        right: 10
-    },
-    viewTop: {
-        position: 'absolute',
-        top: 0,
-        flexDirection: 'row',
-        width: '100%',
-        alignItems: 'center'
-    }
 });

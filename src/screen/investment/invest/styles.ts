@@ -116,11 +116,10 @@ export const MyStylesInvest = () => {
             },
             viewBottom: {
                 marginVertical: 10,
-                height: 50,
                 width: '100%',
                 flexDirection: 'row',
-                justifyContent: 'center'
-                // alignItems: 'center'
+                justifyContent: 'center',
+                alignItems: 'center'
             },
             tobBottom: {
                 marginVertical: 10,
@@ -140,7 +139,10 @@ export const MyStylesInvest = () => {
             },
             txtCheckBox: {
                 fontSize: Configs.FontSize.size14,
-                color: COLORS.BLACK,
+                color: COLORS.BLACK
+                
+            },
+            policy:{
                 width: '90%',
                 height: '100%',
                 marginLeft: 10

@@ -46,6 +46,8 @@ export enum API_CONFIG {
 
     // notification
     NOTIFICATION = '/user/get_notification_user',
+    CREATE_FCM_TOKEN = 'user/save_device_token_user',
+    GET_UNREAD_COUNT_NOTIFICATION = 'user/get_count_notification_user',
     NOTIFY_UPDATE_READ = '/user/update_read_notification',
     GET_ONREAD_COUNT_NOTIFICATION = '/user/get_count_notification_user',
 
@@ -58,6 +60,8 @@ export enum API_CONFIG {
     CONTRACT_HAVE_INVESTED = '/contract/detail_contract_have_invested',
     CONTRACT_ALL = '/contract/contract_investor_app_all',
     CONTRACT_DETAIL_INVEST_NOW = '/contract/detail_contract_investor',
+    GET_INFOR_INVESTOR = 'user/info_investor',
+    REQUEST_NGAN_LUONG = 'V2/contract/investment_ngan_luong',
 
     // link account with payment method
     REQUEST_SEND_VIMO_LINK = 'vimo_link/send_link_vimo',    // gui lien ket vimo
@@ -70,5 +74,13 @@ export enum API_CONFIG {
     // report 
     GET_YEARS = 'investor/select_year', // get years for report
     GET_QUARTERS = 'investor/select_quarters_the_year', // get quarters for report
-    REQUEST_FINANCE_REPORT = 'investor/financial_report' // bao cao tai chinh investor
+    REQUEST_FINANCE_REPORT = 'investor/financial_report', // bao cao tai chinh investor
+
+    // investor
+    
+    
 }
+export const PAYMENT_URL = {
+    NL_SUCCESSFULLY: `${API_CONFIG.BASE_URL}transaction/success`,
+    NL_FAILED: 'http://sandboxappndt.tienngay.vn/V2/contract/cancel'
+};

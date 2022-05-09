@@ -5,6 +5,7 @@ import { AppManager } from '@/manager/AppManager';
 import { FastAuthInfo as FastAuthInfoManager } from '@/manager/FastAuthInfoManager';
 import { UserManager } from '@/manager/UserManager';
 import { Common } from '@/manager/Common';
+import { NotificationManager } from '@/manager/NotificationManager';
 
 class AppStore {
     @observable fastAuthInfoManager = new FastAuthInfoManager();
@@ -14,6 +15,8 @@ class AppStore {
     apiServices = new ApiServices();
 
     @observable userManager = new UserManager();
+
+    @observable notificationManager = new NotificationManager();
 
     @observable common = new Common();
 

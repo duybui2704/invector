@@ -24,6 +24,8 @@ const Transaction = observer(() => {
     const isFocused = useIsFocused();
     const [isFreshing, setIsFreshing] = useState<boolean>(true);
     const [dataHistory, setDataHistory] = useState<TransactionModel[]>([]);
+    const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState<boolean>(true);
+    const { common } = useAppStore();
 
     const condition = useRef<PagingConditionTypes>({
         isLoading: true,
@@ -36,16 +38,21 @@ const Transaction = observer(() => {
     const [selectedFilter, setSelectedFilter] = useState<string>(condition.current.option || '');
 
 
+    useEffect(() => {
+        if (isFocused) {
+            common.setIsFocus(true);
+            fetchHistory();
+            setSelectedFilter(TransactionTypes[0].type);
+        } else {
+            common.setIsFocus(false);
+        }
+    }, [isFocused, common.isFocused]);
+
     const fetchHistory = useCallback(async (fDate?: string, tDate?: string, option?: string) => {
-        console.log('start', DateUtils.formatMMDDYYYYPicker(condition.current.startDate));
-        console.log('end', DateUtils.formatMMDDYYYYPicker(condition.current.endDate));
-        console.log('option', condition.current.option);
-        console.log('select', selectedFilter);
         const res = await apiServices.history.getHistory(
-            3,
             fDate || '',
             tDate || '',
-            condition.current.option || option
+            option || ''
         );
 
         if (res.success) {
@@ -55,13 +62,7 @@ const Transaction = observer(() => {
         }
         setIsFreshing(false);
 
-    }, [apiServices.history, selectedFilter]);
-
-    useEffect(() => {
-        if (isFocused) {
-            fetchHistory();
-        }
-    }, []);
+    }, [apiServices.history]);
 
     const onRefresh = useCallback((startDate?: Date, endDate?: Date, isRefreshDate?: boolean, option?: string) => {
         setIsFreshing(true);
@@ -72,20 +73,21 @@ const Transaction = observer(() => {
         condition.current.option = option || TransactionTypes[0].type;
         setSelectedFilter(condition.current.option || '');
         if (isRefreshDate) {
-            return fetchHistory(
+            common.setRefresh(true);
+            fetchHistory(
                 '',
                 '',
-                selectedFilter
+                condition.current.option
             );
-
+        } else {
+            fetchHistory(
+                `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}`,
+                `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}`,
+                condition.current.option
+            );
         }
-        return fetchHistory(
-            `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}`,
-            `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}`,
-            selectedFilter
-        );
 
-    }, [fetchHistory, selectedFilter]);
+    }, [fetchHistory, condition.current.option]);
 
 
 
@@ -98,12 +100,21 @@ const Transaction = observer(() => {
 
             const _onPress = () => {
                 condition.current.option = item.type;
+                condition.current.isLoading = false;
                 setSelectedFilter(item.type || TransactionTypes[0].type);
-                fetchHistory(
-                    !condition.current.isLoading ? `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}` : '',
-                    !condition.current.isLoading ? `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}` : '',
-                    condition.current.option
-                );
+                if (condition.current.startDate && condition.current.endDate) {
+                    fetchHistory(
+                        `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}`,
+                        `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}`,
+                        condition.current.option
+                    );
+                } else {
+                    fetchHistory(
+                        '',
+                        '',
+                        condition.current.option
+                    );
+                }
             };
 
             return (
@@ -116,7 +127,7 @@ const Transaction = observer(() => {
                 />
             );
         },
-        [fetchHistory, selectedFilter]
+        [selectedFilter, condition]
     );
     const renderFilter = useMemo(() => {
         return (
@@ -133,8 +144,8 @@ const Transaction = observer(() => {
     }, []);
 
     const onEndReached = useCallback(() => {
-        if (!condition.current.isLoading && condition.current.canLoadMore) {
-            // fetchHistory();
+        if (!onEndReachedCalledDuringMomentum) {
+            fetchHistory();
         }
     }, [fetchHistory]);
 
@@ -160,9 +171,10 @@ const Transaction = observer(() => {
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
                 refreshing={isFreshing}
-                onRefresh={onRefresh}
+                onRefresh={() => onRefresh(condition.current.startDate, condition.current.endDate, true, condition.current.option)}
                 onEndReached={onEndReached}
-                onEndReachedThreshold={0.01}
+                onEndReachedThreshold={0.5}
+                onMomentumScrollBegin={() => setOnEndReachedCalledDuringMomentum(false)}
             />
         );
     }, [dataHistory, isFreshing, keyExtractor, onEndReached, onRefresh, renderItem]);
@@ -170,10 +182,16 @@ const Transaction = observer(() => {
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
             case Languages?.transaction?.fromDate:
-                onRefresh(date, condition.current.endDate, false, condition.current.option);
+                condition.current.startDate = date;
+                if (condition.current.endDate && condition.current.endDate) {
+                    onRefresh(date, condition.current.endDate, false, condition.current.option);
+                }
                 break;
             case Languages?.transaction?.toDate:
-                onRefresh(condition.current.startDate, date, false, condition.current.option);
+                condition.current.endDate = date;
+                if (condition.current.startDate && condition.current.endDate) {
+                    onRefresh(condition.current.startDate, date, false, condition.current.option);
+                }
                 break;
             default:
                 break;

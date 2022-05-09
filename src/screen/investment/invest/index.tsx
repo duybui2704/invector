@@ -1,34 +1,39 @@
-import {observer} from 'mobx-react';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import { ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { observer } from 'mobx-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Alert, Platform, ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import IcBag from '@/assets/image/ic_bag.svg';
 import Languages from '@/common/Languages';
 import HeaderBar from '@/components/header';
-import {COLORS, HtmlStyles} from '@/theme';
+import { COLORS, HtmlStyles } from '@/theme';
 import Utils from '@/utils/Utils';
 import { MyStylesInvest } from '@/screen/investment/invest/styles';
 import ItemInfoContract from '@/components/ItemInfoContract';
 import IcVimo from '@/assets/image/ic_vimo.svg';
 import IcNganLuong from '@/assets/image/ic_ngan_luong.svg';
-import {Touchable} from '@/components/elements/touchable';
-import {ENUM_METHOD_PAYMENT} from '@/common/constants';
+import { Touchable } from '@/components/elements/touchable';
+import { ENUM_METHOD_PAYMENT } from '@/common/constants';
 import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
 import { Configs } from '@/common/Configs';
 import { PopupInvestOTP } from '@/components/popupOTP';
-import { PackageInvest } from '@/models/invest';
+import { InvestorInfoModel, PackageInvest } from '@/models/invest';
 import { useAppStore } from '@/hooks';
 import Loading from '@/components/loading';
+import PopupConfirmPolicy from '@/components/PopupConfirmPolicy';
+import { PopupActionTypes } from '@/models/typesPopup';
+import Navigator from '@/routers/Navigator';
+import ScreenName, { TabsName } from '@/common/screenNames';
 
 
-const Invest = observer(({route}: any) => {
+const Invest = observer(({ route }: any) => {
     const styles = MyStylesInvest();
     const [csdl, setCsdl] = useState<PackageInvest>();
     const [methodPayment, setMethodPayment] = useState<string>();
     const [isCheckBox, setIsCheckBox] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const refModal = useRef<any>();
+    const refModal = useRef<PopupActionTypes>();
+    const refPopupPolicy = useRef<PopupActionTypes>(null);
     const { apiServices } = useAppStore();
 
     useEffect(() => {
@@ -43,11 +48,72 @@ const Invest = observer(({route}: any) => {
             const res = resInvestNow.data as PackageInvest;
             setCsdl(res);
         }
+    }, [apiServices.invest, route.params.id]);
+
+    const checkBox = useCallback(() => {
+        setIsCheckBox(!isCheckBox);
+    }, [isCheckBox]);
+
+    const onInvest = useCallback(async () => {
+        const res = await apiServices.invest.getInforInvest();
+        if (res.success) {
+            const data = res.data as InvestorInfoModel;
+            if (data?.tra_lai && !data?.tra_lai?.type_interest_receiving_account) {
+                Alert.alert(
+                    Languages.invest.notify, Languages.invest.updateBankInfo,
+                    [
+                        {
+                            text: Languages.common.cancel,
+                            style: 'cancel'
+                        },
+                        {
+                            text: Languages.common.agree,
+                            style: 'default',
+                            onPress: () => {
+                                Navigator.navigateScreen(TabsName.accountTabs);
+                            }
+                        }
+                    ]
+                );
+            }
+            else if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
+                const resPayment = await apiServices.invest.requestNganLuong(csdl?.id?.toString() || '', Platform.OS);
+                if (res.success && resPayment.data) {
+                    Navigator.pushScreen(ScreenName.paymentWebview, {
+                        url: resPayment?.data
+                    });
+                }
+            }
+            else {
+                refModal.current?.show();
+                console.log('vimo');
+            }
+        }
+    }, [apiServices.invest, csdl?.id, methodPayment]);
+
+    const openPolicy = useCallback(() => {
+        refPopupPolicy.current?.show();
     }, []);
+
+    const onConfirmPopup = useCallback(() => {
+        setIsCheckBox(true);
+        refPopupPolicy.current?.hide();
+    }, []);
+
+
+    const onSendOTP = useCallback(async () => {
+        const id = csdl?.id.toString();
+        const resInvestOtp = await apiServices.invest.getInvestOtp(id || '');
+        setIsLoading(true);
+        if (resInvestOtp.success) {
+            setIsLoading(false);
+        }
+        setIsLoading(false);
+    }, [apiServices.invest, csdl?.id]);
 
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string) => {
         return (
-            <ItemInfoContract label={label} value={value} colorText={colorText}/>
+            <ItemInfoContract label={label} value={value} colorText={colorText} />
         );
     }, []);
 
@@ -69,38 +135,20 @@ const Invest = observer(({route}: any) => {
                     {linked && <Text style={styles.greenText}>{Languages.detailInvest.linked}</Text>}
                 </View>
                 <View style={[styles.btSelected, borderColor]}>
-                    {selected && < View style={styles.circle}/>}
+                    {selected && < View style={styles.circle} />}
                 </View>
             </Touchable>
         );
-    }, [methodPayment]);
+    }, [methodPayment, styles.btSelected, styles.circle, styles.greenText, styles.txtMethod, styles.wrapItemMethod, styles.wrapLabel]);
 
-    const checkBox = useCallback(() => {
-        setIsCheckBox(!isCheckBox);
-    }, [isCheckBox]);
-
-    const onModal= useCallback(() =>{
-        refModal.current.show();
-        sendOtp();
-    }, []);
-
-    const sendOtp = useCallback(async () => {
-        const id = csdl?.id.toString();
-        const resInvestOtp = await apiServices.invest.getInvestOtp(id);
-        setIsLoading(true);
-        if (resInvestOtp.success) {
-            setIsLoading(false);
-        }
-        setIsLoading(false);
-    }, []);
 
     return (
         <View>
-            <HeaderBar title={Languages.invest.title} hasBack/>
+            <HeaderBar title={Languages.invest.title} hasBack />
             <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}
                 style={styles.wrapContent}>
                 <View style={styles.wrapIcon}>
-                    <IcBag/>
+                    <IcBag />
                 </View>
                 <View style={styles.wrapInfo}>
                     <Text style={styles.title}>{Languages.detailInvest.information}</Text>
@@ -116,35 +164,41 @@ const Invest = observer(({route}: any) => {
                 <Text style={styles.labelMoney}>{Languages.detailInvest.money}</Text>
                 <Text style={styles.money}>{Utils.formatMoney(csdl?.so_tien_dau_tu)}</Text>
                 <Text style={styles.headerText}>{Languages.detailInvest.method}</Text>
-                {renderMethod(<IcVimo/>, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, true)}
-                {renderMethod(<IcNganLuong/>, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
+                {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, true)}
+                {renderMethod(<IcNganLuong />, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
                 <View style={styles.viewBottom}>
                     <Touchable onPress={checkBox}>
-                        {!isCheckBox ? <IcCheckBoxOff width={25} height={25}/> : <IcCheckBoxOn width={25} height={25}/>}
+                        {!isCheckBox ? <IcCheckBoxOff width={25} height={25} /> : <IcCheckBoxOn width={25} height={25} />}
                     </Touchable>
-                    <Text style={styles.txtCheckBox}>
-                        {Languages.detailInvest.agreeTermsWith}
-                        <Text style={{
-                            color: COLORS.GREEN,
-                            fontFamily: Configs.FontFamily.bold
-                        }}>{Languages.detailInvest.rules}</Text>
-                        {Languages.detailInvest.tienngay}
-                    </Text>
+                    <Touchable onPress={openPolicy} style={styles.policy}>
+                        <Text style={styles.txtCheckBox}>
+                            {Languages.detailInvest.agreeTermsWith}
+                            <Text style={{
+                                color: COLORS.GREEN,
+                                fontFamily: Configs.FontFamily.bold
+                            }}>{Languages.detailInvest.rules}</Text>
+                            {Languages.detailInvest.tienngay}
+                        </Text>
+                    </Touchable>
                 </View>
 
                 <Touchable
-                    onPress={onModal}
+                    onPress={onInvest}
                     disabled={!(isCheckBox && methodPayment)}
                     style={isCheckBox && methodPayment ? styles.tobBottom :
-                        [styles.tobBottom, {backgroundColor: COLORS.GRAY}]}>
+                        [styles.tobBottom, { backgroundColor: COLORS.GRAY }]}>
                     <Text
                         style={isCheckBox && methodPayment ? styles.txtTob :
-                            [styles.txtTob, {color: COLORS.BLACK}]}>
+                            [styles.txtTob, { color: COLORS.BLACK }]}>
                         {Languages.invest.investNow}
                     </Text>
                 </Touchable>
             </ScrollView>
-            <PopupInvestOTP ref={refModal} />
+            <PopupInvestOTP onSendOTP={onSendOTP} ref={refModal} />
+            <PopupConfirmPolicy
+                onConfirm={onConfirmPopup}
+                ref={refPopupPolicy}
+            />
             {isLoading && <Loading isOverview />}
         </View>
     );
