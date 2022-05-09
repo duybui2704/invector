@@ -17,6 +17,7 @@ import { EventEmitter } from '@/utils/EventEmitter';
 import FormValidate from '@/utils/FormValidate';
 import ToastUtils from '@/utils/ToastUtils';
 import { MyStylesChangePwd } from './styles';
+import arrayIcon from '@/common/arrayIcon';
 
 
 const ChangePwd = observer(() => {
@@ -60,13 +61,15 @@ const ChangePwd = observer(() => {
                     placeHolder={_placeHolder}
                     containerInput={disabled ? styles.containerStyle : styles.containerDisableStyle}
                     inputStyle={styles.inputStyle}
-                    isPassword
+                    isPassword={true}
                     inputStylePwDIcon={styles.pwd}
                     maxLength={15}
                     value={_text}
+                    keyboardType={'DEFAULT'}
                     onChangeText={onChange}
-                    hasUnderline={false} />
-
+                    hasUnderline={false}
+                    rightIcon={arrayIcon.login.pass}
+                />
             </View>;
         }
         return null;

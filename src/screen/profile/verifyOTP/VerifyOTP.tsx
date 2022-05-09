@@ -33,7 +33,7 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
     const intervalRef = useRef<any>();
 
     useEffect(() => {
-        if ( overTime > 0 ) {
+        if (overTime > 0) {
             intervalRef.current = setInterval(() => {
                 setOverTime(timer => timer - 1000);
             }, 1000);
@@ -58,7 +58,7 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
             if (res.success) {
                 ToastUtils.showSuccessToast(Languages.msgNotify.successVimoLink);
                 setIsLoading(false);
-                Navigator.navigateToDeepScreen( [ScreenName.tabs], ScreenName.paymentMethod);
+                Navigator.pushScreen(ScreenName.paymentMethod);
             }
             setIsLoading(false);
         }
@@ -115,9 +115,6 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
                         onPress={onConfirmOTP}
                     />
                 </View>
-                <Text>{phone}</Text>
-                <Text>{linked_id}</Text>
-                <Text>{otp}</Text>
                 {isLoading && <Loading isOverview />}
             </View>
         </HideKeyboard >

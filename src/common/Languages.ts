@@ -73,9 +73,9 @@ const Languages = {
         investSuccess: 'Đầu tư thành công',
         changePercent: 'Thay đổi tích luỹ phần trăm',
         availableBalance: 'Số dư hiện có',
-        policy:'Điều khoản sử dụng và chính sách',
+        policy: 'Điều khoản sử dụng và chính sách',
         updateBankInfo:
-        'Bạn chưa cập nhật hình thức nhận tiền lãi đầu tư. Bạn có muốn cập nhật ngay bây giờ không?',
+            'Bạn chưa cập nhật hình thức nhận tiền lãi đầu tư. Bạn có muốn cập nhật ngay bây giờ không?',
         payFinished:
         '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>',
         error:'Không lấy được dữ liệu'
@@ -298,7 +298,13 @@ const Languages = {
         sentOtp1: 'Gửi lại mã sau: ',
         sentOtp2: 'Gửi lại mã',
         title: 'Xác thực OTP',
-        completionOtp: 'Hãy xác nhận mã OTP của chúng tôi đã gửi cho bạn để hoàn thành đầu tư'
+        completionOtp: 'Hãy xác nhận mã OTP của chúng tôi đã gửi cho bạn để hoàn thành đầu tư',
+        otp1: 'otp1',
+        otp2: 'otp2',
+        otp3: 'otp3',
+        otp4: 'otp4',
+        otp5: 'otp5',
+        otp6: 'otp6'
     },
     location: {
         PermissionAlert: 'PermissionAlert',
@@ -416,7 +422,7 @@ const Languages = {
         popupOtpErrorTitle: 'Thông báo OTP',
         popupOtpErrorDescription: 'OTP không chính xác'
     },
-    msgNotify:{
+    msgNotify: {
         successCancelLinkVimo: 'Bạn đã hủy liên kết với Vimo',
         failCancelLinkVimo: 'Hủy liên kết với Vimo thất bại',
         successSendLinkVimo: 'Investor đang gửi mã OTP',

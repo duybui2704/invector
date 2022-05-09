@@ -553,19 +553,19 @@ const styles = StyleSheet.create({
     wrapPin: {
         flex: 1
     },
-    containerAllBtnPopup:{
+    containerAllBtnPopup: {
         flexDirection: 'row-reverse'
     },
-    containerItemBtnPopup:{
+    containerItemBtnPopup: {
         backgroundColor: COLORS.RED_2,
-        borderColor : COLORS.RED_2,
+        borderColor: COLORS.RED_2,
         borderRadius: 20
     },
-    containerCancelBtnPopup:{
-        borderColor : COLORS.GRAY_13,
+    containerCancelBtnPopup: {
+        borderColor: COLORS.GRAY_13,
         borderRadius: 20
     },
-    textCancel:{
+    textCancel: {
         color: COLORS.GRAY_12
     }
 });

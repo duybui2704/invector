@@ -68,16 +68,16 @@ const ConfirmPhone = observer(() => {
         if (onValidation()) {
             setIsLoading(true);
             const res = await apiServices.paymentMethod.requestSendLinkVimo(phone);
-            const data = res?.data as DataSendLinkVimoModal;
-            setDataSend(data);
             if (res.success) {
+                const data = res?.data as DataSendLinkVimoModal;
+                setDataSend(data);
                 ToastUtils.showSuccessToast(Languages.msgNotify.successSendLinkVimo);
-                Navigator.pushScreen(ScreenName.verifyOTP, { linked_code: dataSend?.linked_id, phoneNumber: phone});
+                Navigator.pushScreen(ScreenName.verifyOTP, { linked_code: data.linked_id, phoneNumber: phone });
                 setIsLoading(false);
             }
             setIsLoading(false);
         }
-    }, [apiServices.paymentMethod, dataSend?.linked_id, onValidation, phone]);
+    }, [apiServices.paymentMethod, onValidation, phone]);
 
     return (
         <HideKeyboard style={styles.container}>
@@ -98,7 +98,6 @@ const ConfirmPhone = observer(() => {
                         onPress={onSendOTP}
                     />
                     {isLoading && <Loading isOverview />}
-                    <Text>{JSON.stringify(dataSend?.linked_id)}</Text>
                 </View>
             </View>
         </HideKeyboard >
