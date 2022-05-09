@@ -12,12 +12,10 @@ export class ReportServices extends BaseService {
         year
     }));
 
-    getYear =async ( type:number ) => this.api().post(API_CONFIG.GET_YEARS, this.buildFormData({
-        type
-    }));
+    getYear =async () => this.api().post(API_CONFIG.GET_YEARS, this.buildFormData({}));
+   
 
-    getQuarters =async ( type:number ) => this.api().post(API_CONFIG.GET_QUARTERS, this.buildFormData({
-        type
-    }));
+    getQuarters =async () => this.api().post(API_CONFIG.GET_QUARTERS, this.buildFormData({}));
+   
 }
 

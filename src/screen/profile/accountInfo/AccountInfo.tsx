@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import KYCVerifyIcon from '@/assets/image/ic_acc_verified.svg';
@@ -9,30 +9,15 @@ import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
-import KeyValue from '@/components/KeyValue';
 import Navigator from '@/routers/Navigator';
 import { MyStylesAccountInfo } from './styles';
 import { useAppStore } from '@/hooks';
-import { UserInfoModal } from '@/models/user-models';
 import { STATE_VERIFY_ACC } from '@/common/constants';
+import KeyValueReport from '@/components/KeyValueReport';
 
 const AccountInfo = observer(() => {
-    const { apiServices } = useAppStore();
+    const { userManager } = useAppStore();
     const styles = MyStylesAccountInfo();
-    const [dataUsers, setDataUser] =  useState<UserInfoModal>();
-
-    useEffect(() => {
-        fetchUserInfo();
-    }, []);
-
-
-    const fetchUserInfo = useCallback(async () => {
-        const res = await apiServices.auth.getUserInfo(3);
-        if(res.success){
-            const data = res.data as UserInfoModal;
-            setDataUser(data);
-        }
-    }, [apiServices.auth]);
 
     const onNavigateKYC = useCallback(() => {
         return Navigator.pushScreen(ScreenName.accountIdentify);
@@ -55,7 +40,7 @@ const AccountInfo = observer(() => {
     }, [onNavigateKYC, styles.txtContentKYC]);
 
     const renderAccuracy = useMemo(() => {
-        switch (dataUsers?.tinh_trang?.status) {
+        switch (userManager.userInfo?.tinh_trang?.status) {
             case STATE_VERIFY_ACC.VERIFIED:
                 return <>{renderTopAcc(<KYCVerifyIcon />, '', Languages.account.accVerified, styles.accuracyWrap, styles.txtAccuracy)}</>;
             case STATE_VERIFY_ACC.NO_VERIFIED:
@@ -65,11 +50,11 @@ const AccountInfo = observer(() => {
             default:
                 return <>{renderTopAcc(<KYCIcon />, Languages.accountInfo.content, Languages.account.accuracyNow, styles.notAccuracyWrap, styles.txtNotAccuracy)}</>;
         }
-    }, [dataUsers?.tinh_trang?.status, renderTopAcc, styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy, styles.txtWaitAccuracy, styles.waitAccuracyWrap]);
+    }, [renderTopAcc, styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy, styles.txtWaitAccuracy, styles.waitAccuracyWrap, userManager.userInfo?.tinh_trang?.status]);
 
     const renderKeyFeature = useCallback((title: string, content?: string) => {
         return (
-            <KeyValue title={title}
+            <KeyValueReport title={title}
                 content={content || undefined}
                 styleTouchable={styles.wrapAllItemInfo}
                 containerContent={content ? styles.wrapCheckedInfo : styles.wrapUnCheckedInfo}
@@ -85,13 +70,13 @@ const AccountInfo = observer(() => {
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
-                {renderKeyFeature(Languages.accountInfo.phoneNumber, dataUsers?.phone_number)}
-                {renderKeyFeature(Languages.accountInfo.email, dataUsers?.email)}
-                {renderKeyFeature(Languages.accountInfo.fullName, dataUsers?.full_name)}
-                {renderKeyFeature(Languages.accountInfo.gender, dataUsers?.gender)}
-                {renderKeyFeature(Languages.accountInfo.birthday, dataUsers?.birth_date)}
-                {renderKeyFeature(Languages.accountInfo.address, dataUsers?.address)}
-                {renderKeyFeature(Languages.accountInfo.job,dataUsers?.job)}
+                {renderKeyFeature(Languages.accountInfo.phoneNumber, userManager.userInfo?.phone_number)}
+                {renderKeyFeature(Languages.accountInfo.email, userManager.userInfo?.email)}
+                {renderKeyFeature(Languages.accountInfo.fullName, userManager.userInfo?.full_name)}
+                {renderKeyFeature(Languages.accountInfo.gender, userManager.userInfo?.gender)}
+                {renderKeyFeature(Languages.accountInfo.birthday, userManager.userInfo?.birth_date)}
+                {renderKeyFeature(Languages.accountInfo.address, userManager.userInfo?.address)}
+                {renderKeyFeature(Languages.accountInfo.job, userManager.userInfo?.job)}
                 <View style={styles.wrapEdit}>
                     <Touchable style={styles.accuracyWrap} onPress={onNavigateEdit}>
                         <Text style={styles.txtAccuracy}>{Languages.accountInfo.edit}</Text>
@@ -99,7 +84,7 @@ const AccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [dataUsers?.address, dataUsers?.birth_date, dataUsers?.email, dataUsers?.full_name, dataUsers?.gender, dataUsers?.job, dataUsers?.phone_number, onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit]);
+    }, [onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.address, userManager.userInfo?.birth_date, userManager.userInfo?.email, userManager.userInfo?.full_name, userManager.userInfo?.gender, userManager.userInfo?.job, userManager.userInfo?.phone_number]);
 
     return (
         <View style={styles.container}>

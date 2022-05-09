@@ -1,22 +1,21 @@
-import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
-import {View, Text} from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Text, View } from 'react-native';
 
-import Validate from '@/utils/Validate';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
-import {Touchable} from '@/components/elements/touchable';
-import {useAppStore} from '@/hooks';
-import {ActiveAccountSocialModel} from '@/models/auth';
-import {MyStylesOtp} from '@/screen/auth/otpSignIn/styles';
-import { TextFieldActions } from '@/components/elements/textfield/types';
-import { COLORS } from '@/theme';
-import { MyTextInput } from '@/components/elements/textfield';
 import Languages from '@/common/Languages';
-import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
-import FormValidate from '@/utils/FormValidate';
-import ChangePass from '../changePass';
+import { MyTextInput } from '@/components/elements/textfield';
+import { TextFieldActions } from '@/components/elements/textfield/types';
+import { Touchable } from '@/components/elements/touchable';
 import Loading from '@/components/loading';
+import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
+import { UserInfoModal } from '@/models/user-models';
+import Navigator from '@/routers/Navigator';
+import { MyStylesOtp } from '@/screen/auth/otpSignIn/styles';
+import { COLORS } from '@/theme';
+import Validate from '@/utils/Validate';
+import ChangePass from '../changePass';
 
 const OtpSignIn = (props: any) => {
     let timer = 0;
@@ -41,7 +40,7 @@ const OtpSignIn = (props: any) => {
     const otp4Ref = useRef<TextFieldActions>();
     const otp5Ref = useRef<TextFieldActions>();
     const otp6Ref = useRef<TextFieldActions>();
-    const {apiServices, userManager} = useAppStore();
+    const { apiServices, userManager } = useAppStore();
 
     useEffect(() => {
         setCheck(true);
@@ -133,21 +132,10 @@ const OtpSignIn = (props: any) => {
         const OTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         setToken(OTP);
         if (props?.isChangePass) {
-            // const res = await apiServices.auth.activeAccountSocial(
-            //     OTP,
-            //     phone
-            // );
             setIsNavigate(true);
-            // if (res.success) {
-            //     const temp = res?.data as ActiveAccountSocialModel;
-            //     if (temp?.token_app) {
-            //         userManager.updateUserInfo(temp);
-            //         setToken(temp?.token_app);
-            //     }
-            // }
         } else {
             setIsLoading(true);
-            const res = await apiServices.auth.activeAccountSocial(
+            const res = await apiServices.auth.activeAccount(
                 OTP,
                 phone
             );
@@ -160,16 +148,19 @@ const OtpSignIn = (props: any) => {
                     SessionManager.setSavePhoneLogin(phone);
                     SessionManager.setSavePassLogin(pass);
                 }
-                const temp = res?.data as ActiveAccountSocialModel;
-                if (temp?.token_app) {
-                    userManager.updateUserInfo(temp);
+                const temp = res?.data as UserInfoModal;
+                if (temp?.token) {
+                    SessionManager.setAccessToken(temp?.token);
+                    const resInfoAcc = await apiServices.auth.getUserInfo();
+                    if (resInfoAcc.success) {
+                        const resData = resInfoAcc.data as UserInfoModal;
+                        userManager.updateUserInfo(resData);
+                    }
                 }
                 Navigator.navigateScreen(ScreenName.success);
             }
         }
-
     };
-
 
     const sendOTP = useCallback(async () => {
         setIsLoading(true);

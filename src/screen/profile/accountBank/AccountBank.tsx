@@ -24,7 +24,6 @@ import FormValidate from '@/utils/FormValidate';
 import { MyStylesAccountBank } from './styles';
 import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
 import { useAppStore } from '@/hooks';
-import SessionManager from '@/manager/SessionManager';
 import { ItemProps } from '@/models/common-model';
 import ToastUtils from '@/utils/ToastUtils';
 import Loading from '@/components/loading';
@@ -32,17 +31,17 @@ import { UserInfoModal } from '@/models/user-models';
 import { DataBanksModal } from '@/models/payment-link-models';
 
 const AccountBank = observer(() => {
-    const { apiServices } = useAppStore();
+    const { apiServices, userManager } = useAppStore();
     const styles = MyStylesAccountBank();
     const [dataBanks, setDataBanks] = useState<ItemProps[]>([]);
     const [banks, setBanks] = useState<string>('');
-    const [accountNumber, setAccountNumber] = useState<string>(SessionManager.userInfo?.tra_lai?.interest_receiving_account || '');
-    const [ATMNumber, setATMNumber] = useState<string>(SessionManager.userInfo?.tra_lai?.interest_receiving_account || '');
-    const [accountProvider, setAccountProvider] = useState<string>(SessionManager.userInfo?.tra_lai?.name_bank_account || '');
+    const [accountNumber, setAccountNumber] = useState<string>(userManager.userInfo?.tra_lai?.interest_receiving_account || '');
+    const [ATMNumber, setATMNumber] = useState<string>(userManager.userInfo?.tra_lai?.interest_receiving_account || '');
+    const [accountProvider, setAccountProvider] = useState<string>(userManager.userInfo?.tra_lai?.name_bank_account || '');
     const [active, setActive] = useState<boolean>(true);
-    const [type, setType] = useState<string>( ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER || '');
+    const [type, setType] = useState<string>(ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER || '');
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [nameBank, setNamebank] = useState<string>(SessionManager.userInfo?.tra_lai?.bank_name || '');
+    const [nameBank, setNamebank] = useState<string>(userManager.userInfo?.tra_lai?.bank_name || '');
     const accountNumberRef = useRef<TextFieldActions>(null);
     const ATMNumberRef = useRef<TextFieldActions>(null);
     const accountProviderRef = useRef<TextFieldActions>(null);
@@ -102,7 +101,7 @@ const AccountBank = observer(() => {
     const renderAccBank = useCallback((title?: string, status?: boolean) => {
 
         const onType = () => {
-            setActive( title === ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER);
+            setActive(title === ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER);
             switch (title) {
                 case ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER:
                     setType(ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER);
@@ -116,7 +115,7 @@ const AccountBank = observer(() => {
         };
         return (
             <Touchable style={styles.rowContainerItemInputChoose} onPress={onType} >
-                {status?
+                {status ?
                     <LinkIC width={24} height={24} /> :
                     <NotLinkIC width={24} height={24} />
                 }
@@ -149,22 +148,23 @@ const AccountBank = observer(() => {
         return false;
     }, [ATMNumber, accountNumber, accountProvider, banks]);
 
-    const onAddAccount = useCallback(async() => {
+    const onAddAccount = useCallback(async () => {
         setIsLoading(true);
         if (onValidate()) {
-            const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest(TYPE_INTEREST_RECEIVE_ACC.BANK, banks ,accountNumber, accountProvider, 2);
-            if(res.success){
+            const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest(TYPE_INTEREST_RECEIVE_ACC.BANK, banks, accountNumber, accountProvider, 2);
+            if (res.success) {
                 ToastUtils.showSuccessToast(Languages.msgNotify.successAccountLinkBank);
                 setIsLoading(false);
-                const resUser = await apiServices.auth.getUserInfo(3);
+                const resUser = await apiServices.auth.getUserInfo();
                 const user = resUser.data as UserInfoModal;
-                SessionManager.setUserInfo(
-                    user
-                );
+                userManager.updateUserInfo({
+                    ...userManager.userInfo,
+                    ...user
+                });
             }
         }
         setIsLoading(false);
-    }, [accountNumber, accountProvider, apiServices.auth, apiServices.paymentMethod, banks, onValidate]);
+    }, [accountNumber, accountProvider, apiServices.auth, apiServices.paymentMethod, banks, onValidate, userManager]);
 
     return (
         <BottomSheetModalProvider>
@@ -205,11 +205,11 @@ const AccountBank = observer(() => {
                                 buttonStyle={nameBank && accountNumber && accountProvider && ATMNumber ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
                                 isLowerCase
                                 onPress={onAddAccount}
-                                disabled={!nameBank || !accountNumber || !accountProvider || !ATMNumber }
+                                disabled={!nameBank || !accountNumber || !accountProvider || !ATMNumber}
                             />
                         </View>
                     </ScrollViewWithKeyboard>
-                    {isLoading && <Loading isOverview/>}
+                    {isLoading && <Loading isOverview />}
                 </View >
             </HideKeyboard>
         </BottomSheetModalProvider>

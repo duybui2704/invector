@@ -18,7 +18,8 @@ export const MyStylesVerifyOTP = () => {
                 flex: 2,
                 paddingHorizontal: 16,
                 paddingTop: 10,
-                marginBottom: 140
+                marginBottom: 140,
+                alignItems:'center'
             },
             logo: {
                 flex: 1,
@@ -27,9 +28,9 @@ export const MyStylesVerifyOTP = () => {
             },
             reSendCodeText: {
                 ...Styles.typography.regular,
-                marginBottom: 24,
                 color: COLORS.RED_4,
-                textAlign: 'center'
+                textAlign: 'center',
+                paddingVertical: 20
             },
             underlineStyleBase: {
                 width: 50,
@@ -50,7 +51,19 @@ export const MyStylesVerifyOTP = () => {
                 color: COLORS.GREEN
             },
             wrapOTp: {
-                height: SCREEN_HEIGHT * 0.12
+                height: SCREEN_HEIGHT * 0.02,
+                width: '90%',
+                marginVertical: 20,
+                alignItems: 'center'
+            },
+            wrapReSendOtp:{
+                paddingVertical: 20,
+                width: '40%'
+            },
+            reSendOtpTXT:{
+                ...Styles.typography.regular,
+                color: COLORS.RED_4,
+                textAlign: 'center'
             }
         });
     }, []);

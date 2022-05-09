@@ -48,8 +48,8 @@ const Report = observer(() => {
     }, [quarter, year]);
 
     const fetchDataSearch = useCallback(async () => {
-        const resQuarters = await apiServices.report.getQuarters(3);
-        const resYear = await apiServices.report.getYear(3);
+        const resQuarters = await apiServices.report.getQuarters();
+        const resYear = await apiServices.report.getYear();
         if (resQuarters.success) {
             const dataQuarter = Utils.formatObjectToKeyLabel(resQuarters.data);
             setQuarterList(dataQuarter);
@@ -176,7 +176,7 @@ const Report = observer(() => {
                         <VictoryLabel x={30} y={25} style={styles.labelAxis}
                             text={Languages.report.month}
                         />
-                        <VictoryLabel x={320} y={230} style={styles.labelAxis}
+                        <VictoryLabel x={SCREEN_WIDTH *0.8} y={SCREEN_HEIGHT *0.28} style={styles.labelAxis}
                             text={Languages.common.VND}
                         />
                     </VictoryChart>

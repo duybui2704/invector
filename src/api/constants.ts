@@ -36,7 +36,7 @@ export enum API_CONFIG {
     REGISTER = 'auth/investor_register',
     CHANEL = '/contract/get_utm_source', // list danh sách kênh đăng kí
     UPDATE_USER_INFO = 'user/update_profile_investor', // update user account
-    ACTIVE_ACCOUNT_SOCIAL = '/auth/active_account',
+    ACTIVE_ACCOUNT = '/auth/active_account',    // kich hoat OTP dang ki
     OTP_RESET_PWD = '/auth/reset_password',
     UPDATE_PWD = 'auth/new_password',
     IDENTITY_VERIFY = 'user/identity_verification', //  xac thuc CCCD/CMT

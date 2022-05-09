@@ -1,6 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
 import { PushNotification } from 'react-native-push-notification';
 import { Linking, Platform, Share } from 'react-native';
+import AndroidOpenSettings from 'react-native-android-open-settings';
 
 import Validate from './Validate';
 
@@ -127,6 +128,20 @@ function formatObjectToKeyLabel(data: any) {
     return [];
 }
 
+function getFileName(file?: any) {
+    if (file?.name !== undefined) {
+        return file.name;
+    } if (file?.filename !== undefined && file?.filename !== null) {
+        return file?.filename;
+    } 
+    const type = file?.mime || file?.type;
+    return (
+        `${Math.floor(Math.random() * Math.floor(999999999)) 
+        }.${ 
+            type?.split('/')[1]}`
+    );
+    
+}
 async function getFcmToken() {
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
@@ -202,6 +217,7 @@ export default {
     covertSecondAndGetSecond,
     formatObjectToKeyLabel,
     convertMoney,
+    getFileName,
     configNotification,
     getFcmToken
 };

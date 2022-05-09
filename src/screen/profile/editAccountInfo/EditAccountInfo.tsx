@@ -1,10 +1,11 @@
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import AvatarIC from '@/assets/image/ic_edit_avatar_large.svg';
+import { isIOS } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
@@ -12,24 +13,31 @@ import { MyTextInput } from '@/components/elements/textfield';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
-import SessionManager from '@/manager/SessionManager';
-import FormValidate from '@/utils/FormValidate';
-import { MyStylesEditAccountInfo } from './styles';
+import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
 import { useAppStore } from '@/hooks';
+import SessionManager from '@/manager/SessionManager';
+import { typePhoto } from '@/mocks/data';
+import { UpLoadImage } from '@/models/common-model';
+import FormValidate from '@/utils/FormValidate';
+import ImageUtils from '@/utils/ImageUtils';
 import ToastUtils from '@/utils/ToastUtils';
+import Utils from '@/utils/Utils';
+import { MyStylesEditAccountInfo } from './styles';
+import { UpdateInfoModal } from '@/models/user-models';
 
 const EditAccountInfo = observer(() => {
-    const {apiServices, userManager} = useAppStore();
+    const { apiServices, userManager } = useAppStore();
     const styles = MyStylesEditAccountInfo();
-    const [name, setName] = useState<string>(SessionManager.userInfo?.full_name || '');
-    const [emailUser, setEmail] = useState<string>(SessionManager.userInfo?.email || '');
-    const [phone, setPhone] = useState<string>(SessionManager.userInfo?.phone_number || '');
-    const [genderUser, setGender] = useState<string>(SessionManager.userInfo?.gender || '');
-    const [addressUser, setAddress] = useState<string>(SessionManager.userInfo?.address || '');
-    const [jobUser, setJob] = useState<string>(SessionManager.userInfo?.job || '');
-    const [birthday, setBirthday] = useState<string>(SessionManager.userInfo?.birth_date || '');
-    const [avatarAcc, setAvatarAcc] = useState<any>(SessionManager.userInfo?.avatar_user || '');
+    const [name, setName] = useState<string>(userManager.userInfo?.full_name || '');
+    const [emailUser, setEmail] = useState<string>(userManager.userInfo?.email || '');
+    const [phone, setPhone] = useState<string>(userManager.userInfo?.phone_number || '');
+    const [genderUser, setGender] = useState<string>(userManager.userInfo?.gender || '');
+    const [addressUser, setAddress] = useState<string>(userManager.userInfo?.address || '');
+    const [jobUser, setJob] = useState<string>(userManager.userInfo?.job || '');
+    const [birthday, setBirthday] = useState<string>(userManager.userInfo?.birth_date || '');
+    const [avatarAcc, setAvatarAcc] = useState<UpLoadImage>();
 
+    const avatarRef = useRef<BottomSheetModal>();
     const nameRef = useRef<TextFieldActions>();
     const emailRef = useRef<TextFieldActions>();
     const phoneRef = useRef<TextFieldActions>();
@@ -85,6 +93,28 @@ const EditAccountInfo = observer(() => {
         );
     }, [onChangeText, styles.inputStyle, styles.labelStyle, styles.wrapInput]);
 
+    const onPressItemFrontPhoto = useCallback((item: any) => {
+        if (item?.value === 'Camera') {
+            ImageUtils.openCamera(setAvatarAcc);
+        } else {
+            ImageUtils.openLibrary(setAvatarAcc, 1);
+        }
+    }, []);
+
+    const renderPhotoPicker = useCallback((ref: any, image: any, icon: any, imageSource?: string) => {
+        return <PhotoPickerBottomSheet
+            ref={ref}
+            data={typePhoto}
+            image={image}
+            icon={icon}
+            onPressItem={onPressItemFrontPhoto}
+            containerStyle={icon ? styles.circleWrap : styles.noCircleWrap}
+            containerImage={styles.noCircleWrap}
+            hasDash
+            imageSource={imageSource}
+        />;
+    }, [onPressItemFrontPhoto, styles.circleWrap, styles.noCircleWrap]);
+
     const onValidate = useCallback(() => {
         const errMsgName = FormValidate.userNameValidate(name);
         const errMsgGender = FormValidate.genderValidate(genderUser);
@@ -106,14 +136,30 @@ const EditAccountInfo = observer(() => {
         } return false;
     }, [addressUser, birthday, emailUser, genderUser, jobUser, name, phone]);
 
-    const onSaveInfo = useCallback(async() => {
+    const onSaveInfo = useCallback(async () => {
         if (onValidate()) {
-            const res = await apiServices.auth.updateUserInf(name, avatarAcc, genderUser,birthday, phone, emailUser, addressUser, jobUser);
-            if(res.success){
+            const res = await apiServices.auth.updateUserInf(
+                name,
+                genderUser,
+                birthday,
+                phone,
+                emailUser,
+                addressUser,
+                jobUser,
+                avatarAcc ? {
+                    ...avatarAcc?.images?.[0],
+                    uri: isIOS ? avatarAcc?.images?.[0]?.path?.replace('file://', '') : avatarAcc?.images?.[0]?.path,
+                    type: avatarAcc?.images?.[0]?.mime,
+                    name: Utils.getFileName(avatarAcc?.images?.[0])
+                } : null
+            );
+            if (res.success) {
+                const resData = res.data as UpdateInfoModal;
+                ToastUtils.showSuccessToast(Languages.accountInfo.successEdit);
                 userManager.updateUserInfo({
                     ...userManager.userInfo,
                     full_name: name,
-                    avatar: avatarAcc,
+                    avatar_user: resData?.url_avatar,
                     gender: genderUser,
                     birth_date: birthday,
                     phone_number: phone,
@@ -121,9 +167,7 @@ const EditAccountInfo = observer(() => {
                     address: addressUser,
                     job: jobUser
                 });
-                ToastUtils.showSuccessToast(Languages.accountInfo.successEdit);
             }
-            
         }
     }, [addressUser, apiServices.auth, avatarAcc, birthday, emailUser, genderUser, jobUser, name, onValidate, phone, userManager]);
 
@@ -157,17 +201,10 @@ const EditAccountInfo = observer(() => {
                 <HideKeyboard>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.topContainer}>
-                            {!avatarAcc?
-                                <AvatarIC style={styles.circleWrap} />
-                                :
-                                <FastImage
-                                    style={styles.circleWrap}
-                                    source={{
-                                        uri: avatarAcc
-                                    }}
-                                    resizeMode={FastImage.resizeMode.cover}
-                                />
-                            }
+                            {renderPhotoPicker(avatarRef,
+                                avatarAcc,
+                                <AvatarIC />,
+                                SessionManager.userInfo?.avatar_user)}
                         </View>
                         {renderInfoAcc}
                     </ScrollView>

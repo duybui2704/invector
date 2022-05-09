@@ -11,15 +11,14 @@ export const MyStylesAccountIdentify = () => {
                 flex: 1,
                 backgroundColor: COLORS.GRAY_5
             },
-            wrapEdit: {
+            wrapAll: {
                 paddingHorizontal: 16,
-                width: '100%',
-                paddingTop: 10,
-                paddingBottom: 16
+                width: '100%'
             },
             contentContainer: {
                 paddingHorizontal: 16,
                 paddingBottom: 24,
+                marginVertical: 16,
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 16,
                 borderWidth: 1,
@@ -29,21 +28,15 @@ export const MyStylesAccountIdentify = () => {
                 marginBottom: -40
             },
             wrapInput: {
-                justifyContent: 'space-between',
-                width: '100%',
-                paddingHorizontal: 16,
-                paddingBottom: 5
-            },
-            wrapTopHtml: {
-                alignSelf: 'center',
-                paddingHorizontal: 16
+                paddingTop: 10
             },
             accuracyWrap: {
                 width: '100%',
                 borderRadius: 70,
                 alignItems: 'center',
-                marginTop: 5,
-                paddingVertical: 8
+                marginTop: 16,
+                paddingVertical: 8,
+                marginBottom: 30
             },
             inputStyle: {
                 borderWidth: 1,
@@ -65,11 +58,6 @@ export const MyStylesAccountIdentify = () => {
                 color: COLORS.GRAY_12,
                 fontSize: Configs.FontSize.size12,
                 paddingVertical: 4
-            },
-            wrapBottom:{
-                paddingHorizontal: 16,
-                width: '100%',
-                marginBottom: 30
             }
         });
     }, []);

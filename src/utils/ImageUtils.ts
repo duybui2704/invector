@@ -67,7 +67,7 @@ async function openLibrary(callback: any, max: number) {
     });
 };
 
-function onImageSelected(images: any) {
+function onImageSelected(images?: any) {
     const response = {
         images: [],
         code: ErrorCodes.SUCCESS

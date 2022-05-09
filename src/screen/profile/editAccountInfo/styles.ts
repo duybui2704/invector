@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
-import { Configs } from '@/common/Configs';
 import { COLORS, Styles } from '@/theme';
 
 export const MyStylesEditAccountInfo = () => {
@@ -45,8 +44,17 @@ export const MyStylesEditAccountInfo = () => {
                 color: COLORS.GREEN,
                 paddingHorizontal: 40
             },
-        
             circleWrap: {
+                width: SCREEN_WIDTH * 0.4 - 25,
+                height: SCREEN_WIDTH * 0.4 - 25,
+                borderRadius: 70,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderWidth: 0,
+                borderColor: COLORS.GREEN,
+                flex:1
+            },
+            noCircleWrap: {
                 width: SCREEN_WIDTH * 0.4 - 25,
                 height: SCREEN_WIDTH * 0.4 - 25,
                 borderRadius: 70,

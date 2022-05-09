@@ -1,10 +1,8 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { Text, View, ScrollView } from 'react-native';
 import HTMLView from 'react-native-htmlview';
-import { ImageOrVideo } from 'react-native-image-crop-picker';
 
 import AfterIC from '@/assets/image/ic_identify_after.svg';
 import BeforeIC from '@/assets/image/ic_identify_before.svg';
@@ -29,14 +27,18 @@ import { MyStylesAccountIdentify } from './styles';
 import SessionManager from '@/manager/SessionManager';
 import { useAppStore } from '@/hooks';
 import ToastUtils from '@/utils/ToastUtils';
+import Utils from '@/utils/Utils';
+import { isIOS } from '@/common/Configs';
+import { UpLoadImage } from '@/models/common-model';
+import { UserInfoModal } from '@/models/user-models';
 
 const AccountIdentify = observer(() => {
-    const { apiServices } = useAppStore();
+    const { apiServices, userManager } = useAppStore();
     const styles = MyStylesAccountIdentify();
-    const [identity, setIdentity] = useState<string>(SessionManager.userInfo?.identity || '');
-    const [avatar, setAvatar] = useState<ImageOrVideo>();
-    const [frontIdentify, setFrontIdentify] = useState<ImageOrVideo>();
-    const [afterIdentify, setBehindIdentify] = useState<ImageOrVideo>();
+    const [identityAcc, setIdentity] = useState<string>(SessionManager.userInfo?.identity || '');
+    const [avatar, setAvatar] = useState<UpLoadImage>();
+    const [frontIdentify, setFrontIdentify] = useState<UpLoadImage>();
+    const [afterIdentify, setBehindIdentify] = useState<UpLoadImage>();
 
     const identifyRef = useRef<TextFieldActions>();
     const avatarRef = useRef<BottomSheetModal>();
@@ -45,22 +47,51 @@ const AccountIdentify = observer(() => {
 
     const popupConfirmRef = useRef<PopupActionTypes>();
 
-    const onChangeText = useCallback((value?: any) => {
-        setIdentity(value);
+    const onChangeText = useCallback((value?: string) => {
+        setIdentity(value || '');
     }, []);
 
-    // <Text>{JSON.stringify(avatar?.images[0]?.path)}</Text>   // file duong dan image after photograph // Api can update sau
-
     const fetchIdentityVerify = useCallback(async () => {
-        const res = await apiServices.auth.identityVerify(3, identity, frontIdentify?.images[0]?.path, afterIdentify?.images[0]?.path, avatar?.images[0]?.path);
+        const res = await apiServices.auth.identityVerify(
+            identityAcc,
+            {
+                ...frontIdentify?.images?.[0],
+                uri: isIOS ? frontIdentify?.images?.[0]?.path?.replace('file://', '') : frontIdentify?.images?.[0]?.path,
+                type: frontIdentify?.images?.[0]?.mime,
+                name: Utils.getFileName(frontIdentify?.images?.[0])
+            },
+            {
+                ...afterIdentify?.images?.[0],
+                uri: isIOS ? afterIdentify?.images?.[0]?.path?.replace('file://', '') : afterIdentify?.images?.[0]?.path,
+                type: afterIdentify?.images?.[0]?.mime,
+                name: Utils.getFileName(afterIdentify?.images?.[0])
+            },
+            {
+                ...avatar?.images?.[0],
+                uri: isIOS ? avatar?.images?.[0]?.path?.replace('file://', '') : avatar?.images?.[0]?.path,
+                type: avatar?.images?.[0]?.mime,
+                name: Utils.getFileName(avatar?.images?.[0])
+            }
+        );
         if (res.success) {
             popupConfirmRef.current?.show();
-        }else {
-            // ToastUtils.showErrorToast(Languages.msgNotify.failPostIdentity);
-        }
-    }, [afterIdentify, apiServices.auth, avatar, frontIdentify, identity]);
+            const resUser = await apiServices.auth.getUserInfo();
+            if (resUser.success) {
+                const data = resUser.data as UserInfoModal;
+                userManager.updateUserInfo({
+                    ...userManager.userInfo,
+                    ...data,
+                    identity: identityAcc,
+                    avatar: avatar?.images?.[0]?.path,
+                    front_facing_card: frontIdentify?.images?.[0]?.path,
+                    card_back: afterIdentify?.images?.[0]?.path
+                });
+            }
 
-    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, length?:number) => {
+        }
+    }, [afterIdentify?.images, apiServices.auth, avatar?.images, frontIdentify?.images, identityAcc, userManager]);
+
+    const renderInput = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, length?: number) => {
         return (
             <View style={styles.wrapInput}>
                 <Text style={styles.labelStyle}>{label}</Text>
@@ -80,14 +111,14 @@ const AccountIdentify = observer(() => {
     }, [onChangeText, styles.inputStyle, styles.labelStyle, styles.wrapInput]);
 
     const onValidate = useCallback(() => {
-        const errMsgIdentify = FormValidate.cardValidate(identity);
+        const errMsgIdentify = FormValidate.cardValidate(identityAcc);
 
         identifyRef.current?.setErrorMsg(errMsgIdentify);
 
         if (`${errMsgIdentify}`.length === 0) {
             return true;
         } return false;
-    }, [identity]);
+    }, [identityAcc]);
 
     const renderPopupConfirm = useCallback((ref?: any) => {
         return <PopupNotifyNoAction
@@ -98,16 +129,16 @@ const AccountIdentify = observer(() => {
         />;
     }, []);
 
-    const onVerify = useCallback(() => {
+    const onVerify = useCallback(async () => {
         if (onValidate() && avatar && frontIdentify && afterIdentify) {
             fetchIdentityVerify();
         }
-        else{
-            ToastUtils.showMsgToast(Languages.errorMsg.errEmptyAvatarIdentity);
+        else {
+            ToastUtils.showMsgToast(Languages.errorMsg.errEmptyIdentity);
         }
     }, [afterIdentify, avatar, fetchIdentityVerify, frontIdentify, onValidate]);
 
-    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, hasImage?: boolean, imageSource?: string, disable?: boolean) => {
+    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, imageSource?: string, disable?: boolean) => {
         return <PhotoPickerBottomSheet
             ref={ref}
             label={label}
@@ -117,9 +148,8 @@ const AccountIdentify = observer(() => {
             onPressItem={onPressItem}
             containerStyle={styles.pickerContainer}
             hasDash
-            hasImage={hasImage}
             imageSource={imageSource}
-            disable={hasImage}
+            disable={disable}
         />;
     }, [styles.pickerContainer]);
 
@@ -130,6 +160,7 @@ const AccountIdentify = observer(() => {
             ImageUtils.openLibrary(setFrontIdentify, 1);
         }
     }, []);
+
     const onPressItemBehindPhoto = useCallback((item: any) => {
         if (item?.value === 'Camera') {
             ImageUtils.openCamera(setBehindIdentify);
@@ -137,6 +168,7 @@ const AccountIdentify = observer(() => {
             ImageUtils.openLibrary(setBehindIdentify, 1);
         }
     }, []);
+
     const onPressItemAvatar = useCallback((item: any) => {
         if (item?.value === 'Camera') {
             ImageUtils.openCamera(setAvatar);
@@ -148,61 +180,82 @@ const AccountIdentify = observer(() => {
 
     const renderPhoto = useMemo(() => {
         return (
-            <View style={styles.wrapEdit}>
+            <HideKeyboard>
                 <View style={styles.contentContainer}>
                     <Text style={styles.titlePhoto}>{Languages.accountIdentify.imageIdentify}</Text>
                     <Text style={styles.txtNotePhoto}>{noteKYC[0]}</Text>
                     <Text style={styles.txtNotePhoto}>{noteKYC[1]}</Text>
-                    {renderPhotoPicker(frontIdentifyRef, Languages.accountIdentify.frontKYC, frontIdentify, <BeforeIC />, onPressItemFrontPhoto, !!SessionManager.userInfo?.front_facing_card, SessionManager.userInfo?.front_facing_card)}
-                    {renderPhotoPicker(afterIdentifyRef, Languages.accountIdentify.behindKYC, afterIdentify, <AfterIC />, onPressItemBehindPhoto, !!SessionManager.userInfo?.card_back, SessionManager.userInfo?.card_back)}
+                    {renderPhotoPicker(frontIdentifyRef,
+                        Languages.accountIdentify.frontKYC,
+                        frontIdentify,
+                        <BeforeIC />,
+                        onPressItemFrontPhoto,
+                        SessionManager.userInfo?.front_facing_card,
+                        SessionManager.userInfo?.front_facing_card ? !!SessionManager.userInfo?.front_facing_card : !!frontIdentify?.images?.[0]?.path
+                    )}
+                    {renderPhotoPicker(afterIdentifyRef,
+                        Languages.accountIdentify.behindKYC,
+                        afterIdentify,
+                        <AfterIC />,
+                        onPressItemBehindPhoto,
+                        SessionManager.userInfo?.card_back,
+                        SessionManager.userInfo?.card_back ? !!SessionManager.userInfo?.card_back : !!afterIdentify?.images?.[0]?.path
+                    )}
                     <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[1]}</Text>
-                    {renderPhotoPicker(avatarRef, Languages.accountIdentify.avatar, avatar, <AvatarIC />, onPressItemAvatar, !!SessionManager.userInfo?.avatar, SessionManager.userInfo?.avatar)}
+                    {renderPhotoPicker(avatarRef,
+                        Languages.accountIdentify.avatar,
+                        avatar,
+                        <AvatarIC />,
+                        onPressItemAvatar,
+                        SessionManager.userInfo?.avatar,
+                        SessionManager.userInfo?.avatar ? !!SessionManager.userInfo?.avatar : !!avatar?.images?.[0]?.path
+                    )}
                 </View>
-            </View>
+            </HideKeyboard>
         );
-    }, [afterIdentify, avatar, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhoto, renderPhotoPicker, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto, styles.wrapEdit]);
+    }, [afterIdentify, avatar, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhoto, renderPhotoPicker, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto]);
+
+    const renderTop = useMemo(() => {
+        return (
+            <HTMLView
+                value={Languages.accountIdentify.noteTopIdentify}
+                stylesheet={HtmlStyles || undefined}
+            />
+        );
+    }, []);
 
     const renderBottom = useMemo(() => {
         return (
-            <View  style={styles.wrapBottom}>
-                {SessionManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED &&
-                    <>
-                        <HTMLView
-                            value={Languages.accountIdentify.note}
-                            stylesheet={HtmlStyles || undefined}
-                        />
-                        <Button
-                            style={styles.accuracyWrap}
-                            onPress={onVerify}
-                            label={Languages.accountIdentify.confirmKYC}
-                            buttonStyle={BUTTON_STYLES.GREEN_1}
-                            isLowerCase />
-                    </>}
-            </View>
+            <>
+                <HTMLView
+                    value={Languages.accountIdentify.note}
+                    stylesheet={HtmlStyles || undefined}
+                />
+                <Button
+                    style={styles.accuracyWrap}
+                    onPress={onVerify}
+                    label={Languages.accountIdentify.confirmKYC}
+                    buttonStyle={BUTTON_STYLES.GREEN_1}
+                    isLowerCase />
+            </>
         );
-    }, [onVerify, styles.accuracyWrap, styles.wrapBottom]);
+    }, [onVerify, styles.accuracyWrap]);
 
     return (
-        <HideKeyboard style={styles.container}>
-            <View style={styles.container}>
-                <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack />
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    {SessionManager.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.VERIFIED &&
-                        <View style={styles.wrapTopHtml}>
-                            <HTMLView
-                                value={Languages.accountIdentify.noteTopIdentify}
-                                stylesheet={HtmlStyles || undefined}
-                            />
-                        </View>}
-                    {renderKeyFeature(identifyRef, Languages.accountIdentify.KYC, SessionManager.userInfo?.identity, 'NUMBER', !!SessionManager.userInfo?.identity, 12)}
-                    {renderPhoto}
-                    {renderBottom}
-                    {renderPopupConfirm(popupConfirmRef)}
-                </ScrollView>
-            </View>
-        </HideKeyboard>
+        <View style={styles.container}>
+            <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack />
+            <ScrollView style={styles.wrapAll}>
+
+                {SessionManager.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.VERIFIED && renderTop}
+                {renderInput(identifyRef, Languages.accountIdentify.KYC, SessionManager.userInfo?.identity, 'NUMBER', !!SessionManager.userInfo?.identity, 12)}
+                {renderPhoto}
+                {SessionManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED && renderBottom}
+                {renderPopupConfirm(popupConfirmRef)}
+            </ScrollView>
+        </View >
+
     );
 });
 

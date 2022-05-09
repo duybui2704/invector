@@ -224,7 +224,7 @@ const Transaction = observer(() => {
                     maximumDate={new Date()}
                 />
             </View>
-            {dataHistory ? renderTransaction : <NoData description='NoData' />}
+            {dataHistory.length !== 0 ? renderTransaction : <NoData description='NoData' />}
         </View>
     );
 });
