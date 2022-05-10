@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import BankIC from '@/assets/image/ic_bank.svg';
 import LinkIC from '@/assets/image/ic_ischecked_save_acc.svg';
@@ -28,10 +29,13 @@ const PaymentMethod = observer(() => {
     const [dataInfoVimo, setDataInfoVimo] = useState<InfoLinkVimoModal>();
     const [paymentReceive, setpaymentReceive] = useState<string>(userManager.userInfo?.tra_lai?.type_interest_receiving_account || '');
     const [isLoading, setLoading] = useState<boolean>(false);
+    const isFocus = useIsFocused();
 
     useEffect(() => {
-        fetchInfoVimoLink();
-    }, []);
+        if (isFocus === true) {
+            fetchInfoVimoLink();
+        }
+    }, [isFocus]);
 
     const fetchInfoVimoLink = useCallback(async () => {
         setLoading(true);
@@ -49,15 +53,17 @@ const PaymentMethod = observer(() => {
     }, [apiServices.paymentMethod, userManager]);
 
     const onPopupVimoAgree = useCallback(async () => {
+        setLoading(true);
         const res = await apiServices.paymentMethod.requestCancelLinkVimo();
         if (res.success) {
+            setLoading(false);
             ToastUtils.showSuccessToast(Languages.msgNotify.successCancelLinkVimo);
             vimoRef.current?.hide();
             fetchInfoVimoLink();
         } else {
             vimoRef.current?.hide();
         }
-
+        setLoading(false);
     }, [apiServices.paymentMethod, fetchInfoVimoLink]);
 
     const popupVimo = useCallback((ref?: any, icon?: any) => {
@@ -113,10 +119,13 @@ const PaymentMethod = observer(() => {
     }, []);
 
     const onChangeMethodVimo = useCallback(async () => {
+        setLoading(true);
         const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest(TYPE_INTEREST_RECEIVE_ACC.VIMO);
         if (res.success) {
+            setLoading(false);
             ToastUtils.showSuccessToast(Languages.msgNotify.successChangeMethod);
         }
+        setLoading(false);
     }, [apiServices.paymentMethod]);
 
     const renderItemMethod = useCallback((leftIcon?: any, title?: string, activeLink?: boolean, activeMethod?: boolean) => {
@@ -151,7 +160,6 @@ const PaymentMethod = observer(() => {
                     <Touchable onPress={_onPressToLink}>
                         <Text style={styles.titleItemLink}>{`${title}`}</Text>
                         {renderStateLink(activeLink)}
-                        {isLoading && <Loading/>}
                     </Touchable>
                     <Touchable onPress={_onPressToChooseMethod} disabled={activeMethod}>
                         {renderRightIcon(activeMethod)}
@@ -159,7 +167,7 @@ const PaymentMethod = observer(() => {
                 </View>
             </View>
         );
-    }, [isLoading, onBank, onChangeMethodVimo, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapRightItemPayment]);
+    }, [onBank, onChangeMethodVimo, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapRightItemPayment]);
 
     return (
         <View style={styles.container}>
@@ -178,6 +186,7 @@ const PaymentMethod = observer(() => {
                 )}
             </View>
             {popupVimo(vimoRef, <WarnIC />)}
+            {isLoading && <Loading isOverview />}
         </View >
     );
 });

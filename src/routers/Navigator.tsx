@@ -20,6 +20,10 @@ const replaceScreen = debounce((destination: string, data?: any) => {
     navigationRef.current?.dispatch(StackActions.replace(destination, data));
 }, DELAY_TIMER, { leading: true, trailing: false });
 
+const popScreen = debounce(( number: number) => {
+    navigationRef.current?.dispatch(StackActions.pop(number));
+}, DELAY_TIMER, { leading: true, trailing: false });
+
 const resetScreen = debounce((stacks: string[], params?: any) => {
     const routes = [{ name: stacks[0] }] as any;
 
@@ -61,5 +65,6 @@ export default {
     navigateScreen,
     replaceScreen,
     resetScreen,
-    navigateToDeepScreen
+    navigateToDeepScreen,
+    popScreen
 };
