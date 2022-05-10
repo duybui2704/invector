@@ -1,20 +1,19 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import TouchID from 'react-native-touch-id';
 import { Platform } from 'react-native';
+import TouchID from 'react-native-touch-id';
 
-import Auth from '@/screen/auth';
-import { ScreenName } from '../common/screenNames';
-import Login from '../screen/auth/login';
-import Home from '@/screen/home';
-import MyBottomTabs from './MyBottomBar';
-import SessionManager, { DeviceInfos } from '@/manager/SessionManager';
+import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC, Events } from '@/common/constants';
 import { useAppStore } from '@/hooks';
-import { ENUM_BIOMETRIC_TYPE, ERROR_BIOMETRIC } from '@/common/constants';
+import SessionManager, { DeviceInfos } from '@/manager/SessionManager';
+import Auth from '@/screen/auth';
 import { SuccessSignUp } from '@/screen/auth/signUp/successSignUp';
-import Broadening from '@/screen/broadening';
 import Splash from '@/screen/splash';
+import { ScreenName } from '../common/screenNames';
+import MyBottomTabs from './MyBottomBar';
+import { EventEmitter } from '@/utils/EventEmitter';
+
 
 
 const screenOptions = { headerShown: false };
@@ -23,7 +22,7 @@ const Stack = createNativeStackNavigator();
 export const isIOS = Platform.OS === 'ios';
 
 const RootStack = observer(() => {
-    const { fastAuthInfoManager } = useAppStore();
+    const { fastAuthInfoManager,userManager } = useAppStore();
 
     const getSupportedBiometry = useCallback(() => {
 
@@ -57,9 +56,16 @@ const RootStack = observer(() => {
         getSupportedBiometry();
     }, []);
 
+    const forceLogout = useCallback(() => {
+        SessionManager.logout();
+        userManager.updateUserInfo(null);
+    }, [userManager]);
+
     useEffect(() => {
-        console.log('support', fastAuthInfoManager?.supportedBiometry);
-    }, [fastAuthInfoManager?.supportedBiometry]);
+        EventEmitter.addListener(Events.LOGOUT, forceLogout);
+        return () => EventEmitter.removeListener(Events.LOGOUT, forceLogout);
+    }, [forceLogout]);
+
 
     const AuthStack = useCallback(() => {
         return (

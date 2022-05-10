@@ -12,7 +12,7 @@ export const MyStylesInvest = () => {
                 marginHorizontal: 16
             },
             scroll: {
-                paddingBottom: 100
+                paddingBottom: 200
             },
             title: {
                 ...Styles.typography.regular,
