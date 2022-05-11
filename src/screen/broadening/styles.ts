@@ -18,11 +18,11 @@ export const MyStylesBoar = () => {
         iconBig: {
             position: 'absolute',
             top: DimensionUtils.SCREEN_HEIGHT * 0.15,
-            left: DimensionUtils.SCREEN_WIDTH * 0.05
+            left: DimensionUtils.SCREEN_WIDTH * 0.01
         },
         iconSmall: {
             position: 'absolute',
-            bottom: DimensionUtils.SCREEN_HEIGHT * 0.1,
+            bottom: DimensionUtils.SCREEN_HEIGHT * 0.085,
             right: DimensionUtils.SCREEN_WIDTH * 0.2
         }
     }), []);

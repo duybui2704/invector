@@ -64,8 +64,9 @@ const Home = observer(() => {
     }, []);
 
     const fetchDataInvest = useCallback(async () => {
-
+        setIsLoading(true);
         const resInvest = await apiServices.common.getListInvest();
+        setIsLoading(false);
         if (resInvest.success) {
             setDataArr(resInvest.data as PackageInvest[]);
         }
@@ -73,16 +74,18 @@ const Home = observer(() => {
 
 
     const fetchContractsDash = useCallback(async () => {
-
+        setIsLoading(true);
         const resContractsDash = await apiServices.common.getContractsDash();
+        setIsLoading(false);
         if (resContractsDash.success) {
             setDataDash(resContractsDash.data as DashBroad);
         }
     }, [apiServices.common]);
 
     const fetchDataBanner = useCallback(async () => {
+        setIsLoading(true);
         const resBanner = await apiServices.common.getBanners();
-
+        setIsLoading(false);
         if (resBanner.success) {
             setBanners(
                 (resBanner.data as BannerModel[]).filter((item) => item.image_mobile)
@@ -138,7 +141,9 @@ const Home = observer(() => {
     }, [btnInvest]);
 
     const gotoLogin = useCallback((titleAuth: string) => {
-        Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth });
+        setTimeout(() => {
+            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth });
+        }, 1000);
     }, []);
 
     const onNotifyInvest = useCallback(() => {

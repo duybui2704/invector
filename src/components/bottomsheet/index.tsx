@@ -23,26 +23,16 @@ import Languages from '@/common/Languages';
 import IcFindingContract from '@/assets/image/common/ic_search.svg';
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import DimensionUtils from '../../utils/DimensionUtils';
-import MyStyleBottomSheet from '@/components/bottomsheet/styles';
+import MyStyleBottomSheet from '@/components/bottomSheet/styles';
+import { BottomSheetAction, BottomSheetProps } from './types';
 
 const styles = MyStyleBottomSheet();
+
 export type ItemProps = {
     value?: string;
     id?: string;
     selected?: boolean;
     price?: string;
-};
-
-type BottomSheetProps = {
-    data?: Array<ItemProps>;
-    onPressItem?: (item: any) => void;
-    isCheckboxList?: boolean;
-};
-
-export type BottomSheetAction = {
-    show: (content?: string) => any;
-    hide?: (content?: string) => any;
-    setContent?: (message: string) => void;
 };
 
 const CustomBackdrop = (props: BottomSheetBackdropProps) => {

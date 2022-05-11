@@ -22,6 +22,7 @@ type BottomSheetProps = {
     hasDash?: boolean,
     leftIcon?: any,
     rightIcon?: any,
+    title?: string
 };
 
 export type BottomSheetAction = {
@@ -38,7 +39,8 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             onOpen,
             hasDash,
             leftIcon,
-            rightIcon
+            rightIcon,
+            title
         }: BottomSheetProps,
 
         ref: any
@@ -55,10 +57,6 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
 
             return [`${ratio}%`, `${ratio}%`];
         }, [data]);
-
-        useEffect(() => {
-            console.log('data', data);
-        }, []);
 
         const hide = useCallback(() => {
             bottomSheetRef?.current?.dismiss();
@@ -86,7 +84,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                         <Touchable onPress={onPress} style={styles.valueContainer}>
                             <View style={styles.row}>
                                 {leftIcon}
-                                <Text style={!leftIcon ? styles.value : styles.noLeftIconvalue}>{item.value}</Text>
+                                <Text style={!leftIcon ? styles.value : styles.noLeftIconValue}>{item.value}</Text>
                                 {rightIcon}
                             </View>
                         </Touchable>
@@ -122,6 +120,20 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             // bottomSheetRef.current?.snapToIndex(0);
         }, []);
 
+        const renderHeader = useCallback(() => {
+            return (
+                <>
+                    <Text style={styles.txtTitle}>{title}</Text>
+                    <Dash
+                        dashThickness={1}
+                        dashLength={10}
+                        dashGap={5}
+                        dashColor={COLORS.GRAY_13}
+                    />
+                </>
+            );
+        }, []);
+
         return (
             <View style={styles.container}>
                 <BottomSheetModal
@@ -135,6 +147,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                 >
                     <BottomSheetFlatList
                         data={data}
+                        ListHeaderComponent={renderHeader}
                         renderItem={renderItem}
                         style={styles.flatList}
                         keyExtractor={keyExtractor}
@@ -143,6 +156,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             </View>
         );
     });
+
 export default BottomSheetComponent;
 const ITEM_HEIGHT = Configs.FontSize.size40;
 const HEADER_HEIGHT = Configs.FontSize.size40 + 30;
@@ -171,7 +185,7 @@ const styles = StyleSheet.create({
         marginTop: 0,
         paddingHorizontal: 16
     },
-    noLeftIconvalue: {
+    noLeftIconValue: {
         flex: 1,
         ...Styles.typography.regular,
         fontSize: Configs.FontSize.size16,
@@ -180,5 +194,11 @@ const styles = StyleSheet.create({
     backdropStyle:{
         flex: 1,
         height: SCREEN_HEIGHT
+    },
+    txtTitle: {
+        fontFamily: Configs.FontFamily.bold,
+        fontSize: Configs.FontSize.size16,
+        textAlign: 'center',
+        marginVertical: 8
     }
 });

@@ -3,7 +3,7 @@ import { Modal, Text, View } from 'react-native';
 
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
-import { ItemProps } from '@/components/bottomsheet';
+import { ItemProps } from '@/components/bottomSheet';
 import { MyTextInput } from '@/components/elements/textfield';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import { Touchable } from '@/components/elements/touchable';

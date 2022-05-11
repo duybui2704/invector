@@ -101,7 +101,7 @@ export default function Broadening() {
                 swipe={swipe}
                 tiltSign={tiltSign}
                 txt={item.txt}
-                handleChoice={() => { handleChoice(item.title, 0); }}
+                handleChoice={() => { handleChoice(item.title, -1.5); }}
             />
         );
     }, []);
@@ -118,6 +118,7 @@ export default function Broadening() {
                 <FlatList
                     data={data}
                     horizontal
+                    showsHorizontalScrollIndicator={false}
                     keyExtractor={keyExtractor}
                     renderItem={renderItemFlatList}
                 />

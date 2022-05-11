@@ -10,7 +10,7 @@ import Languages from '@/common/Languages';
 import arrayIcon from '@/common/arrayIcon';
 import FormValidate from '@/utils/FormValidate';
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
-import { ItemProps } from '@/components/bottomsheet';
+import { ItemProps } from '@/components/bottomSheet';
 import { useAppStore } from '@/hooks';
 import { ChannelModal } from '@/models/ChannelModal';
 import { TextFieldActions } from '@/components/elements/textfield/types';

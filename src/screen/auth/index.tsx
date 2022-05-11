@@ -2,6 +2,7 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
 
 import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
 import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';
@@ -16,7 +17,7 @@ import { COLORS } from '@/theme';
 import Images from '@/assets/Images';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
-import { loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
+import { loginWithApple, loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
 import ForgotPass from './forgotPass';
 import DimensionUtils from '@/utils/DimensionUtils';
 import LogoAuth from '@/assets/image/auth/logo_auth.svg';
@@ -30,12 +31,19 @@ const Auth = observer(({ route }: any) => {
     const ratio = DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH;
     const [wid, setWid] = useState<number>(0);
     const [isNavigate, setIsNavigate] = useState<string>(Languages.auth.txtLogin);
+    const isFocused = useIsFocused();
     const {
         apiServices,
         userManager,
         fastAuthInfoManager: fastAuthInfo,
         appManager
     } = useAppStore();
+
+    useEffect(() => {
+        setTimeout(() => {
+            StatusBar.setBarStyle(isFocused ? 'light-content' : 'dark-content', true);
+        }, 100);
+    }, [isFocused]);
 
     useEffect(() => {
         if (route?.params) {
@@ -87,6 +95,10 @@ const Auth = observer(({ route }: any) => {
         // if (userInfo) initUser(ENUM_PROVIDER.GOOGLE, userInfo?.user?.id);
     }, []);
 
+    const onLoginApple = useCallback(async () => {
+        const data = await loginWithApple();
+    }, []);
+
     const renderContent = useMemo(() => {
         switch (isNavigate) {
             case Languages.auth.txtLogin:
@@ -103,7 +115,7 @@ const Auth = observer(({ route }: any) => {
     return (
         <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
             <StatusBar
-                barStyle={'light-content'}
+                // barStyle={'light-content'}
                 animated
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
@@ -130,7 +142,7 @@ const Auth = observer(({ route }: any) => {
                     <Touchable style={styles.icon} onPress={onLoginGoogle}>
                         <IcGoogleAuth />
                     </Touchable>
-                    <Touchable style={styles.icon}>
+                    <Touchable style={styles.icon} onPress={onLoginApple}>
                         <IcInsAuth />
                     </Touchable>
                     <Touchable style={styles.icon}>
