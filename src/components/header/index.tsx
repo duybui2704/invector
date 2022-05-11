@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { Image, ImageBackground, StatusBar, Text, View, BackHandler } from 'react-native';
+import { ImageBackground, StatusBar, Text, View } from 'react-native';
 
 import IcBack from '../../assets/image/header/ic_back_header.svg';
 import IcNotifyInvest from '../../assets/image/header/ic_header_invest.svg';
@@ -8,11 +8,9 @@ import { isIOS } from '../../common/Configs';
 import Navigator from '../../routers/Navigator';
 import { Touchable } from '../elements/touchable';
 import { HeaderProps } from './types';
-import { styles } from './styles';
 import { COLORS } from '../../theme';
 import Languages from '@/common/Languages';
-import ScreenName from '@/common/screenNames';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { MyStylesHeader } from './styles';
 
 export const HeaderBar = ({
     onBackPressed,
@@ -26,6 +24,7 @@ export const HeaderBar = ({
     exitApp
 }: HeaderProps) => {
 
+    const styles = MyStylesHeader();
     const _onBackPressed = useCallback(() => {
         if (!exitApp) {
             if (hasBack && onBackPressed) {

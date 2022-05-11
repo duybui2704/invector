@@ -98,6 +98,8 @@ const PickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
                     ref={bottomSheetRef}
                     data={data}
                     onPressItem={onPressItem}
+                    hasDash
+                    title={placeholder}
                 />
             </View>
         );

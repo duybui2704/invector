@@ -12,13 +12,10 @@ import {
 import { Configs } from '@/common/Configs';
 import { COLORS, Styles } from '@/theme';
 import Utils from '@/utils/Utils';
-import BottomSheetComponent, { ItemProps } from '@/components/bottomsheet';
-
+import BottomSheetComponent, { ItemProps } from '@/components/bottomSheet';
 import { Touchable } from '../../components/elements/touchable';
 import Validate from '@/utils/Validate';
-import Languages from '@/common/Languages';
-import { PopupActionTypes } from '@/components/PickerValuation/types';
-
+import { PopupActionTypes } from '@/models/typesPopup';
 
 export type PickerAction = {
     setErrorMsg: (msg?: string) => void;
@@ -148,7 +145,7 @@ export const PickerValuation = forwardRef<PickerAction, PickerProps>(
                 >
                     {renderValue}
                     <View style={styles.rightIcon}>
-                        {/*<SelectIcon />*/}
+                        {/* <SelectIcon /> */}
                     </View>
                 </Touchable>
                 {errorMessage}
