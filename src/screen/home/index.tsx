@@ -1,10 +1,9 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { ImageBackground, StatusBar, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { StatusBar, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import Animated from 'react-native-reanimated';
 
 import { LINKS } from '@/api/constants';
 import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
@@ -13,8 +12,6 @@ import IcDollar from '@/assets/image/home/ic_dollar.svg';
 import IcLine from '@/assets/image/home/ic_line_home.svg';
 import IcSmartPhone from '@/assets/image/home/ic_smartphone.svg';
 import IcWallet from '@/assets/image/home/ic_wallet.svg';
-import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
-import LogoHome from '../../assets/image/header/logo_home.svg';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
 import { Configs } from '@/common/Configs';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
@@ -26,18 +23,20 @@ import HeaderBar from '@/components/header';
 import ItemInvest from '@/components/ItemInvest';
 import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
+import SessionManager from '@/manager/SessionManager';
 import { BannerModel } from '@/models/banner';
 import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
 import { NewsModel } from '@/models/news';
 import Navigator from '@/routers/Navigator';
-import { COLORS, Styles } from '@/theme';
-import Utils from '@/utils/Utils';
-import { MyStylesHome } from './styles';
-import SessionManager from '@/manager/SessionManager';
-import NotificationListening from './NotificationListening';
+import { COLORS } from '@/theme';
 import DimensionUtils from '@/utils/DimensionUtils';
-import Images from '@/assets/Images';
+import Utils from '@/utils/Utils';
+import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
+import LogoHome from '../../assets/image/header/logo_home.svg';
+import NotificationListening from './NotificationListening';
+import { MyStylesHome } from './styles';
+
 
 const Home = observer(() => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -67,7 +66,9 @@ const Home = observer(() => {
 
         const resInvest = await apiServices.common.getListInvest();
         if (resInvest.success) {
-            setDataArr(resInvest.data as PackageInvest[]);
+            const data = resInvest?.data as PackageInvest[];
+            const temp = data.slice(0, 3);
+            setDataArr(temp);
         }
     }, [apiServices.common]);
 
@@ -76,27 +77,30 @@ const Home = observer(() => {
 
         const resContractsDash = await apiServices.common.getContractsDash();
         if (resContractsDash.success) {
-            setDataDash(resContractsDash.data as DashBroad);
+            const data = resContractsDash?.data as DashBroad;
+            setDataDash(data);
         }
     }, [apiServices.common]);
 
     const fetchDataBanner = useCallback(async () => {
         const resBanner = await apiServices.common.getBanners();
-
         if (resBanner.success) {
+            const data = resBanner?.data as BannerModel[];
             setBanners(
-                (resBanner.data as BannerModel[]).filter((item) => item.image_mobile)
+                (data).filter((item) => item.image_mobile)
             );
         }
 
         const resNews = await apiServices.common.getNews();
         if (resNews.success) {
-            setNews(resNews.data as NewsModel[]);
+            const data = resNews?.data as NewsModel[];
+            setNews(data);
         }
 
         const resInsurances = await apiServices.common.getInsurances();
         if (resInsurances.success) {
-            setInsurances(resInsurances.data as NewsModel[]);
+            const data = resInsurances?.data as NewsModel[];
+            setInsurances(data);
         }
     }, [apiServices.common]);
 
@@ -228,7 +232,7 @@ const Home = observer(() => {
         );
     }, [banners, dataArr, onOpenVPS, renderTobBottom, styles.logoVfs, styles.more, styles.txt, styles.txt4, styles.txt5, styles.txtQuestionTop, styles.txtVfs, styles.viewBottom, styles.viewVfs]);
 
-    const renderViewFooter = () => {
+    const renderViewFooter = useMemo(() => {
         return (
             <View style={styles.viewForeground}>
                 <View style={styles.viewTopLogo}>
@@ -304,7 +308,24 @@ const Home = observer(() => {
 
             </View>
         );
-    };
+    }, []);
+
+    const renderContent = useMemo(() => {
+        return (
+            <View style={styles.viewCenter}>
+                <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
+                <FlatList
+                    style={styles.viewFlatList}
+                    data={dataArr}
+                    renderItem={(item) => renderItem(item.item)}
+                    ListFooterComponent={renderFooter}
+                    ListFooterComponentStyle={styles.viewFlatList}
+                    keyExtractor={keyExtractor}
+                    nestedScrollEnabled
+                />
+            </View>
+        );
+    }, [dataArr, keyExtractor, renderFooter, renderItem, styles.txtCenter, styles.viewCenter, styles.viewFlatList]);
 
     return (
         <NotificationListening>
@@ -323,18 +344,8 @@ const Home = observer(() => {
                     renderBackground={() => (
                         <HeaderBar exitApp imageBackground />
                     )}
-                    renderForeground={() => renderViewFooter()}>
-                    <Animated.View style={styles.viewCenter}>
-                        <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
-                        <FlatList
-                            style={styles.viewFlatList}
-                            data={dataArr}
-                            renderItem={(item) => renderItem(item.item)}
-                            ListFooterComponent={renderFooter}
-                            ListFooterComponentStyle={styles.viewFlatList}
-                            keyExtractor={keyExtractor}
-                        />
-                    </Animated.View>
+                    renderForeground={() => renderViewFooter}>
+                    {renderContent}
                 </ParallaxScrollView>
                 {isLoading && <Loading isOverview />}
             </View >

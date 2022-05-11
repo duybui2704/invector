@@ -63,7 +63,7 @@ const ChangePwd = observer(() => {
                     inputStyle={styles.inputStyle}
                     isPassword={true}
                     inputStylePwDIcon={styles.pwd}
-                    maxLength={15}
+                    maxLength={50}
                     value={_text}
                     keyboardType={'DEFAULT'}
                     onChangeText={onChange}

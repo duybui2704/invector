@@ -35,6 +35,17 @@ export const MyStylesPaymentMethod = () => {
                 paddingHorizontal: 16,
                 marginTop: 16
             },
+            wrapItemPaymentChooser: {
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexDirection: 'row',
+                paddingVertical: 10,
+                borderWidth: 1,
+                borderColor: COLORS.GREEN,
+                borderRadius: 18,
+                paddingHorizontal: 16,
+                marginTop: 16
+            },
             wrapRightItemPayment: {
                 justifyContent: 'space-between',
                 alignItems: 'center',

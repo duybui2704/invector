@@ -18,6 +18,7 @@ import { TransactionModel } from '@/models/transaction-model';
 import { styles } from './styles';
 import NoData from '@/components/NoData';
 import DateUtils from '@/utils/DateUtils';
+import Loading from '@/components/loading';
 
 const Transaction = observer(() => {
     const { apiServices } = useAppStore();
@@ -25,11 +26,12 @@ const Transaction = observer(() => {
     const [isFreshing, setIsFreshing] = useState<boolean>(true);
     const [dataHistory, setDataHistory] = useState<TransactionModel[]>([]);
     const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState<boolean>(true);
+
     const { common } = useAppStore();
 
     const condition = useRef<PagingConditionTypes>({
-        isLoading: true,
-        canLoadMore: true,
+        isLoading: false,
+        canLoadMore: false,
         offset: 0,
         startDate: '',
         endDate: '',
@@ -46,15 +48,16 @@ const Transaction = observer(() => {
         } else {
             common.setIsFocus(false);
         }
-    }, [isFocused, common.isFocused]);
+    }, [isFocused, common.isFocused, common]);
 
-    const fetchHistory = useCallback(async (fDate?: string, tDate?: string, option?: string) => {
+    const fetchHistory = useCallback(async (fDate?: string, tDate?: string, option?: string ) => {
+        condition.current.isLoading = true;
         const res = await apiServices.history.getHistory(
             fDate || '',
             tDate || '',
             option || ''
         );
-
+        condition.current.isLoading = false;
         if (res.success) {
             const data = res.data as TransactionModel[];
             setDataHistory(data);
@@ -64,30 +67,29 @@ const Transaction = observer(() => {
 
     }, [apiServices.history]);
 
-    const onRefresh = useCallback((startDate?: Date, endDate?: Date, isRefreshDate?: boolean, option?: string) => {
+    const onRefresh = useCallback((startDate?: Date, endDate?: Date, option?: string, isRefreshDate?: boolean) => {
         setIsFreshing(true);
-        condition.current.canLoadMore = true;
+        condition.current.canLoadMore = false;
         condition.current.offset = 0;
         condition.current.startDate = startDate || '';
         condition.current.endDate = endDate || '';
-        condition.current.option = option || TransactionTypes[0].type;
+        condition.current.option =  option ;
         setSelectedFilter(condition.current.option || '');
         if (isRefreshDate) {
             common.setRefresh(true);
             fetchHistory(
                 '',
                 '',
-                condition.current.option
+                condition.current.option || option
             );
         } else {
             fetchHistory(
                 `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}`,
                 `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}`,
-                condition.current.option
+                condition.current.option || option
             );
         }
-
-    }, [fetchHistory, condition.current.option]);
+    }, [common, fetchHistory]);
 
 
 
@@ -100,7 +102,7 @@ const Transaction = observer(() => {
 
             const _onPress = () => {
                 condition.current.option = item.type;
-                condition.current.isLoading = false;
+                condition.current.isLoading = true;
                 setSelectedFilter(item.type || TransactionTypes[0].type);
                 if (condition.current.startDate && condition.current.endDate) {
                     fetchHistory(
@@ -115,6 +117,7 @@ const Transaction = observer(() => {
                         condition.current.option
                     );
                 }
+                condition.current.isLoading = false;
             };
 
             return (
@@ -127,7 +130,7 @@ const Transaction = observer(() => {
                 />
             );
         },
-        [selectedFilter, condition]
+        [selectedFilter, fetchHistory]
     );
     const renderFilter = useMemo(() => {
         return (
@@ -145,9 +148,9 @@ const Transaction = observer(() => {
 
     const onEndReached = useCallback(() => {
         if (!onEndReachedCalledDuringMomentum) {
-            fetchHistory();
+            // fetchHistory();
         }
-    }, [fetchHistory]);
+    }, [onEndReachedCalledDuringMomentum]);
 
     const renderItem = useCallback(({ item }: { item: TransactionModel }) => {
         const _onPress = () => {
@@ -164,33 +167,49 @@ const Transaction = observer(() => {
         </Touchable>);
     }, []);
 
+    const renderEmptyData = useMemo(() => {
+        return (
+            <View style={styles.wrapNoData}>
+                <NoData description='NoData' />
+            </View>
+        );
+    }, []);
+
     const renderTransaction = useMemo(() => {
+        const onFreshing = () => {
+            onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
+        };
+        const onMomentScroll = () => {
+            setOnEndReachedCalledDuringMomentum(false);
+        };
         return (
             <FlatList
                 data={dataHistory}
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
                 refreshing={isFreshing}
-                onRefresh={() => onRefresh(condition.current.startDate, condition.current.endDate, true, condition.current.option)}
+                onRefresh={onFreshing}
                 onEndReached={onEndReached}
                 onEndReachedThreshold={0.5}
-                onMomentumScrollBegin={() => setOnEndReachedCalledDuringMomentum(false)}
+                onMomentumScrollBegin={onMomentScroll}
+                style={styles.wrapFlatList}
+                ListEmptyComponent={renderEmptyData}
             />
         );
-    }, [dataHistory, isFreshing, keyExtractor, onEndReached, onRefresh, renderItem]);
+    }, [dataHistory, renderEmptyData, isFreshing, keyExtractor, onEndReached, onRefresh, renderItem]);
 
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
             case Languages?.transaction?.fromDate:
                 condition.current.startDate = date;
-                if (condition.current.endDate && condition.current.endDate) {
-                    onRefresh(date, condition.current.endDate, false, condition.current.option);
+                if (condition.current.startDate && condition.current.endDate) {
+                    onRefresh(date, condition.current.endDate,condition.current.option, false );
                 }
                 break;
             case Languages?.transaction?.toDate:
                 condition.current.endDate = date;
                 if (condition.current.startDate && condition.current.endDate) {
-                    onRefresh(condition.current.startDate, date, false, condition.current.option);
+                    onRefresh(condition.current.startDate, date,condition.current.option, false );
                 }
                 break;
             default:
@@ -211,8 +230,8 @@ const Transaction = observer(() => {
                     title={Languages.transaction.fromDate}
                     onConfirmDatePicker={onConfirmValue}
                     onDateChangeDatePicker={onChange}
-                    date={condition.current.startDate || new Date()}
-                    maximumDate={new Date()}
+                    date={ condition.current.startDate || new Date()}
+                    maximumDate={condition.current.endDate || new Date() }
                 />
                 <ICCalender style={styles.arrow} />
                 <DatePickerTransaction
@@ -220,11 +239,12 @@ const Transaction = observer(() => {
                     onConfirmDatePicker={onConfirmValue}
                     onDateChangeDatePicker={onChange}
                     date={condition.current.endDate || new Date()}
-                    minimumDate={condition.current.startDate}
+                    minimumDate={condition.current.startDate || new Date()}
                     maximumDate={new Date()}
                 />
             </View>
-            {dataHistory.length !== 0 ? renderTransaction : <NoData description='NoData' />}
+            {renderTransaction}
+            {condition.current.isLoading && isFreshing === false&& <Loading isOverview/>}
         </View>
     );
 });

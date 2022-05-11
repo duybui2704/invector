@@ -19,7 +19,6 @@ import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
 import { MyStylesVerifyOTP } from './styles';
 import Navigator from '@/routers/Navigator';
-import ScreenName from '@/common/screenNames';
 
 const VerifyOTP = observer(({ route }: { route: any }) => {
     const { apiServices } = useAppStore();
@@ -58,7 +57,7 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
             if (res.success) {
                 ToastUtils.showSuccessToast(Languages.msgNotify.successVimoLink);
                 setIsLoading(false);
-                Navigator.pushScreen(ScreenName.paymentMethod);
+                Navigator.popScreen(2); // back to paymentMethod screen
             }
             setIsLoading(false);
         }
