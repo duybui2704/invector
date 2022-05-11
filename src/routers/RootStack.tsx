@@ -13,6 +13,7 @@ import Splash from '@/screen/splash';
 import { ScreenName } from '../common/screenNames';
 import MyBottomTabs from './MyBottomBar';
 import { EventEmitter } from '@/utils/EventEmitter';
+import Broadening from '@/screen/broadening';
 
 
 
