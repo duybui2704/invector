@@ -175,13 +175,13 @@ const EditAccountInfo = observer(() => {
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
-                {renderKeyFeature(nameRef, Languages.accountInfo.fullName, name)}
-                {renderKeyFeature(genderRef, Languages.accountInfo.gender, genderUser, 'DEFAULT', false, 3)}
-                {renderKeyFeature(birthdayRef, Languages.accountInfo.birthday, birthday)}
-                {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', true)}
-                {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL')}
-                {renderKeyFeature(addressRef, Languages.accountInfo.address, addressUser)}
-                {renderKeyFeature(jobRef, Languages.accountInfo.job, jobUser)}
+                {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', false, 50)}
+                {renderKeyFeature(genderRef, Languages.accountInfo.gender, Utils.formatForEachWordCase(genderUser), 'DEFAULT', false, 3)}
+                {renderKeyFeature(birthdayRef, Languages.accountInfo.birthday, birthday, 'DEFAULT', false, 10)}
+                {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', true, 10)}
+                {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL', false, 50)}
+                {renderKeyFeature(addressRef, Languages.accountInfo.address, Utils.formatForEachWordCase(addressUser), 'DEFAULT', false, 100)}
+                {renderKeyFeature(jobRef, Languages.accountInfo.job, Utils.formatForEachWordCase(jobUser), 'DEFAULT', false, 50)}
                 <View style={styles.wrapEdit}>
                     <Button
                         style={styles.accuracyWrap}

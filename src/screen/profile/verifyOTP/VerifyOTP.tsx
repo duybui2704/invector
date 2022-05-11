@@ -57,7 +57,7 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
             if (res.success) {
                 ToastUtils.showSuccessToast(Languages.msgNotify.successVimoLink);
                 setIsLoading(false);
-                Navigator.popScreen(2);
+                Navigator.popScreen(2); // back to paymentMethod screen
             }
             setIsLoading(false);
         }

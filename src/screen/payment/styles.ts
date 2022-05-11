@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
 
 import { COLORS } from '@/theme';
 
@@ -26,5 +27,14 @@ export const styles = StyleSheet.create({
     },
     arrow: {
         marginTop: 6
+    },
+    wrapFlatList: {
+        marginBottom: 10
+    },
+    wrapNoData: {
+        flex: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: SCREEN_HEIGHT / 2
     }
 });

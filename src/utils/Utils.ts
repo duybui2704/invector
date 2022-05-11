@@ -133,14 +133,13 @@ function getFileName(file?: any) {
         return file.name;
     } if (file?.filename !== undefined && file?.filename !== null) {
         return file?.filename;
-    } 
+    }
     const type = file?.mime || file?.type;
     return (
-        `${Math.floor(Math.random() * Math.floor(999999999)) 
-        }.${ 
-            type?.split('/')[1]}`
+        `${Math.floor(Math.random() * Math.floor(999999999))
+        }.${type?.split('/')[1]}`
     );
-    
+
 }
 async function getFcmToken() {
     const fcmToken = await messaging().getToken();
@@ -201,11 +200,17 @@ async function configNotification(onNotification: () => void) {
         requestPermissions: true
     });
 }
-function convertSecondToMinutes(value:number) {
-    return `${Math.floor(value / 60)  }:${  value % 60 ? value % 60 : '00'}`;
+function convertSecondToMinutes(value: number) {
+    return `${Math.floor(value / 60)}:${value % 60 ? value % 60 : '00'}`;
 }
 
-
+function formatForEachWordCase(str: string) {
+    const splitStr = str.toLowerCase().split(' ');
+    for (let i = 0; i < splitStr.length; i++) {
+        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+    }
+    return splitStr.join(' ');
+}
 
 export default {
     formatTextToNumber,
@@ -223,5 +228,6 @@ export default {
     getFileName,
     configNotification,
     getFcmToken,
-    convertSecondToMinutes
+    convertSecondToMinutes,
+    formatForEachWordCase
 };

@@ -24,53 +24,60 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
     } as TextStyle;
     return (
         <View style={styles.item}>
-            <Touchable onPress={onPress} style={styles.rowTop}>
-                <Text style={[styles.txtMoney, styleText]}>{Utils.formatMoney(data?.so_tien_dau_tu)}</Text>
-                <View style={styles.wrapText}>
-                    <Text style={styles.txtInterest}>{Languages.invest.interest}</Text>
-                    <Text style={styles.txtPercent}>{data?.ti_le_lai_suat_hang_thang}</Text>
-                </View>
-            </Touchable>
-            <Dash
-                dashThickness={1}
-                dashLength={10}
-                dashGap={5}
-                dashColor={COLORS.GRAY_13} />
-            <Touchable onPress={onPress} style={styles.rowCenter}>
-                <View>
-                    <Text style={styles.txtInterest}>{Languages.invest.time}</Text>
-                    <Text style={styles.txtFormality}>{data?.thoi_gian_dau_tu}</Text>
-                </View>
-                {title === ENUM_INVEST_STATUS.HISTORY ?
+            <Touchable onPress={onPress}>
+                <Touchable style={styles.rowTop}>
+                    <Text style={[styles.txtMoney, styleText]}>{Utils.formatMoney(data?.so_tien_dau_tu)}</Text>
                     <View style={styles.wrapText}>
-                        <Text style={styles.txtInterest}>{Languages.invest.sumMoney}</Text>
-                        <Text style={styles.greenText}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
-                    </View> :
-                    <View style={styles.wrapText}>
-                        <Text style={styles.txtInterest}>{Languages.invest.intent}</Text>
-                        <Text style={styles.greenText}>{Utils.formatMoney(data?.lai_hang_thang)}</Text>
+                        <Text style={styles.txtInterest}>{Languages.invest.interest}</Text>
+                        <Text style={styles.txtPercent}>{data?.ti_le_lai_suat_hang_thang}</Text>
                     </View>
-                }
-            </Touchable>
-            <Dash
-                dashThickness={1}
-                dashLength={10}
-                dashGap={5}
-                dashColor={COLORS.GRAY_13} />
-            <Touchable onPress={title === ENUM_INVEST_STATUS.INVEST_NOW ? onPressInvestNow : onPress} style={styles.rowBottom}>
-                <View>
-                    <Text style={styles.txtInterest} >{Languages.invest.formalPayment}</Text>
-                    <Text style={styles.txtFormality}>{data?.hinh_thuc_tra_lai}</Text>
+                </Touchable>
+                <Dash
+                    dashThickness={1}
+                    dashLength={10}
+                    dashGap={5}
+                    dashColor={COLORS.GRAY_13} />
+                <View style={styles.rowCenter}>
+                    <View>
+                        <Text style={styles.txtInterest}>{Languages.invest.time}</Text>
+                        <Text style={styles.txtFormality}>{data?.thoi_gian_dau_tu}</Text>
+                    </View>
+                    {title === ENUM_INVEST_STATUS.HISTORY ?
+                        <View style={styles.wrapText}>
+                            <Text style={styles.txtInterest}>{Languages.invest.sumMoney}</Text>
+                            <Text style={styles.greenText}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
+                        </View> :
+                        <View style={styles.wrapText}>
+                            <Text style={styles.txtInterest}>{Languages.invest.intent}</Text>
+                            <Text style={styles.greenText}>{Utils.formatMoney(data?.lai_hang_thang)}</Text>
+                        </View>
+                    }
                 </View>
-                {title === ENUM_INVEST_STATUS.INVEST_NOW ? <View style={styles.btInvestNow}>
-                    <Text style={styles.txtInvestNow}>{Languages.invest.investNow}</Text>
-                    <IcBtnInvest />
-                </View > :
-                    <View style={styles.wrapText}>
-                        <Text style={styles.txtInterest} >{Languages.invest.getMoney}</Text>
-                        <Text style={styles.txtYellow}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
-                    </View>}
+                <Dash
+                    dashThickness={1}
+                    dashLength={10}
+                    dashGap={5}
+                    dashColor={COLORS.GRAY_13} />
+                <View style={styles.rowBottom}>
+                    <View>
+                        <Text style={styles.txtInterest} >{Languages.invest.formalPayment}</Text>
+                        <Text style={styles.txtFormality}>{data?.hinh_thuc_tra_lai}</Text>
+                    </View>
+                    {title !== ENUM_INVEST_STATUS.INVEST_NOW &&
+                        <View style={styles.wrapText}>
+                            <Text style={styles.txtInterest} >{Languages.invest.getMoney}</Text>
+                            <Text style={styles.txtYellow}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
+                        </View>}
+                </View>
             </Touchable>
+            {title === ENUM_INVEST_STATUS.INVEST_NOW &&
+                <View style={styles.wrapBtn}>
+                    <Touchable style={styles.btInvestNow} onPress={title === ENUM_INVEST_STATUS.INVEST_NOW ? onPressInvestNow : onPress}>
+                        <Text style={styles.txtInvestNow}>{Languages.invest.investNow}</Text>
+                        <IcBtnInvest />
+                    </Touchable >
+                </View>
+            }
         </View>
     );
 };
@@ -139,11 +146,16 @@ const styles = StyleSheet.create({
     },
     txtFormality: {
         ...Styles.typography.medium,
-        fontSize:Configs.FontSize.size13
+        fontSize: Configs.FontSize.size13
     },
     txtYellow: {
         ...Styles.typography.medium,
         color: COLORS.YELLOW_2
+    },
+    wrapBtn: {
+        position: 'absolute',
+        bottom: 12,
+        right: 16
     }
 });
 export default ItemInvest;

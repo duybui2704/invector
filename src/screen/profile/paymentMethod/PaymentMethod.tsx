@@ -154,7 +154,7 @@ const PaymentMethod = observer(() => {
             }
         };
         return (
-            <View style={styles.wrapItemPayment} >
+            <View style={activeMethod ? styles.wrapItemPaymentChooser : styles.wrapItemPayment} >
                 {leftIcon}
                 <View style={styles.wrapRightItemPayment}>
                     <Touchable onPress={_onPressToLink}>
@@ -167,7 +167,7 @@ const PaymentMethod = observer(() => {
                 </View>
             </View>
         );
-    }, [onBank, onChangeMethodVimo, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapRightItemPayment]);
+    }, [onBank, onChangeMethodVimo, onVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapItemPaymentChooser, styles.wrapRightItemPayment]);
 
     return (
         <View style={styles.container}>
