@@ -15,8 +15,8 @@ import Dash from 'react-native-dash';
 import FastImage from 'react-native-fast-image';
 
 import { COLORS, Styles } from '@/theme';
-import BottomSheetComponent from './BottomSheetComponent';
 import { ItemProps } from '@/models/common-model';
+import BottomSheetComponent from './BottomSheetComponent';
 
 type PickerProps = {
     containerStyle?: ViewStyle;

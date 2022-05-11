@@ -27,7 +27,12 @@ export const MyStylesCard = () => {
                 fontSize: Configs.FontSize.size20,
                 color: COLORS.WHITE,
                 fontFamily: Configs.FontFamily.regular,
-                paddingVertical: 10
+                marginVertical: 10
+            },
+            txtContinue: {
+                fontSize: Configs.FontSize.size16,
+                color: COLORS.WHITE,
+                fontFamily: Configs.FontFamily.regular
             },
             txt: {
                 fontSize: Configs.FontSize.size14,
@@ -36,7 +41,7 @@ export const MyStylesCard = () => {
                 lineHeight: 24
             },
             viewBottom: {
-                marginTop: DimensionUtils.SCREEN_HEIGHT / 1.7,
+                marginTop: DimensionUtils.SCREEN_HEIGHT / 1.8,
                 position: 'absolute',
                 width: '80%',
                 marginHorizontal: 10
@@ -47,12 +52,12 @@ export const MyStylesCard = () => {
             },
             tob: {
                 width: '40%',
-                height: 45,
-                borderRadius: 20,
+                height: '6%',
+                borderRadius: 25,
                 borderWidth: 1,
                 borderColor: COLORS.WHITE,
                 position: 'absolute',
-                bottom: DimensionUtils.SCREEN_HEIGHT * 0.08,
+                bottom: DimensionUtils.SCREEN_HEIGHT * 0.06,
                 left: 10,
                 justifyContent: 'center',
                 alignItems: 'center'
@@ -60,7 +65,7 @@ export const MyStylesCard = () => {
             logo: {
                 position: 'absolute',
                 top: DimensionUtils.SCREEN_HEIGHT * 0.05,
-                left: DimensionUtils.SCREEN_WIDTH * 0.1
+                left: DimensionUtils.SCREEN_WIDTH * 0.08
             }
         }), []);
 };

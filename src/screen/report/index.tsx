@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryTheme, VictoryZoomContainer } from 'victory-native';
+import { useIsFocused } from '@react-navigation/core';
 
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
 import Languages from '@/common/Languages';
@@ -30,7 +31,7 @@ const Report = observer(() => {
     const quarterRef = useRef<BottomSheetModal>(null);
     const yearRef = useRef<BottomSheetModal>(null);
     const [total, setTotal] =  useState<TotalOfQuarterModal>();
-
+    const isFocused = useIsFocused();
     const [reportList, setReportList] = useState<OverviewMonthOfQuarterModal[]>();
 
     const keyExtractor = useCallback((item?: OverviewMonthOfQuarterModal, index?: any) => {
@@ -38,8 +39,12 @@ const Report = observer(() => {
     }, []);
 
     useEffect(() => {
-        fetchDataSearch();
-    }, []);
+        if (isFocused) {
+            setQuarter(DateUtils.getCurrentQuarter().toString());
+            setYear(DateUtils.getCurrentYear().toString());
+            fetchDataSearch();
+        }
+    }, [isFocused]);
 
     useEffect(() => {
         if (year && quarter) {
@@ -176,7 +181,7 @@ const Report = observer(() => {
                         <VictoryLabel x={30} y={25} style={styles.labelAxis}
                             text={Languages.report.month}
                         />
-                        <VictoryLabel x={SCREEN_WIDTH *0.8} y={SCREEN_HEIGHT *0.28} style={styles.labelAxis}
+                        <VictoryLabel x={SCREEN_WIDTH - 70} y={SCREEN_HEIGHT * 0.35 - 50} style={styles.labelAxis}
                             text={Languages.common.VND}
                         />
                     </VictoryChart>
