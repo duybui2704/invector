@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StatusBar, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import Animated from 'react-native-reanimated';
 
 import { LINKS } from '@/api/constants';
 import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
@@ -37,6 +36,7 @@ import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import LogoHome from '../../assets/image/header/logo_home.svg';
 import NotificationListening from './NotificationListening';
 import { MyStylesHome } from './styles';
+
 
 const Home = observer(() => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);

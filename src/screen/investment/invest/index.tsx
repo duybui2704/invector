@@ -8,7 +8,7 @@ import IcVimo from '@/assets/image/ic_vimo.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
 import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
 import { Configs } from '@/common/Configs';
-import { ENUM_METHOD_PAYMENT } from '@/common/constants';
+import { ENUM_METHOD_PAYMENT, STATE_LINK } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import { Button } from '@/components/elements/button';
@@ -25,6 +25,7 @@ import Navigator from '@/routers/Navigator';
 import { MyStylesInvest } from '@/screen/investment/invest/styles';
 import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
+import { InfoLinkVimoModal } from '@/models/user-models';
 
 
 
@@ -37,10 +38,22 @@ const Invest = observer(({ route }: any) => {
     const refModal = useRef<PopupActionTypes>(null);
     const refPopupPolicy = useRef<PopupActionTypes>(null);
     const { apiServices } = useAppStore();
+    const [statusVimo, setStatusVimo] = useState<boolean>(false);
 
     useEffect(() => {
         fetchDetailInvestNow();
+        fetchInfoVimoLink();
     }, []);
+
+    const fetchInfoVimoLink = useCallback(async () => {
+        const res = await apiServices.paymentMethod.requestInfoLinkVimo();
+        if (res.success) {
+            const data = res.data as InfoLinkVimoModal;
+            if (data?.trang_thai === STATE_LINK.LINKING) {
+                setStatusVimo(true);
+            }
+        }
+    }, [apiServices.paymentMethod]);
 
     const fetchDetailInvestNow = useCallback(async () => {
         setIsLoading(true);
@@ -114,19 +127,6 @@ const Invest = observer(({ route }: any) => {
         refPopupPolicy.current?.hide();
     }, []);
 
-
-    const onConfirmOTP = useCallback(async (otp: string) => {
-        const res = await apiServices.invest.confirmInvest(csdl?.id?.toString() || '', otp);
-        if (res?.success) {
-            const data = res?.data as CheckVimoWalletModel;
-            if (data?.status === 200 || data?.status === 201) {
-                Alert.alert(data.message || '');
-            }
-            return data;
-        }
-        return false;
-    }, [apiServices.invest, csdl?.id]);
-
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string) => {
         return (
             <ItemInfoContract label={label} value={value} colorText={colorText} />
@@ -179,7 +179,7 @@ const Invest = observer(({ route }: any) => {
                 <Text style={styles.labelMoney}>{Languages.detailInvest.money}</Text>
                 <Text style={styles.money}>{Utils.formatMoney(csdl?.so_tien_dau_tu)}</Text>
                 <Text style={styles.headerText}>{Languages.detailInvest.method}</Text>
-                {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, true)}
+                {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, statusVimo)}
                 {renderMethod(<IcNganLuong />, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
                 <View style={styles.viewBottom}>
                     <Touchable onPress={checkBox}>

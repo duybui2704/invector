@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Animated, ImageBackground, PanResponder, StatusBar, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
 import Images from '@/assets/Images';
 import Languages from '@/common/Languages';
@@ -15,6 +16,7 @@ import IcBroad3 from '@/assets/image/broadening/ic_broad3.svg';
 import IcIndex1 from '@/assets/image/broadening/ic_index1.svg';
 import IcIndex2 from '@/assets/image/broadening/ic_index2.svg';
 import IcIndex3 from '@/assets/image/broadening/ic_index3.svg';
+import SessionManager from '@/manager/SessionManager';
 
 
 export default function Broadening() {
@@ -24,8 +26,8 @@ export default function Broadening() {
             title: Languages.board.title1,
             images: <IcBroad1
                 style={styles.iconBig}
-                width={DimensionUtils.SCREEN_WIDTH * 0.44}
-                height={DimensionUtils.SCREEN_WIDTH * 0.44}
+                width={DimensionUtils.SCREEN_WIDTH * 0.6}
+                height={DimensionUtils.SCREEN_WIDTH * 0.6}
             />,
             icon: <IcIndex1 style={styles.iconSmall} />,
             txt: Languages.board.txt1
@@ -34,8 +36,9 @@ export default function Broadening() {
             title: Languages.board.title2,
             images: <IcBroad2
                 style={styles.iconBig}
-                width={DimensionUtils.SCREEN_WIDTH * 0.44}
-                height={DimensionUtils.SCREEN_WIDTH * 0.44} />,
+                width={DimensionUtils.SCREEN_WIDTH * 0.6}
+                height={DimensionUtils.SCREEN_WIDTH * 0.6}
+            />,
             icon: <IcIndex2 style={styles.iconSmall} />,
             txt: Languages.board.txt2
         },
@@ -43,8 +46,9 @@ export default function Broadening() {
             title: Languages.board.title3,
             images: <IcBroad3
                 style={styles.iconBig}
-                width={DimensionUtils.SCREEN_WIDTH * 0.44}
-                height={DimensionUtils.SCREEN_WIDTH * 0.44} />,
+                width={DimensionUtils.SCREEN_WIDTH * 0.6}
+                height={DimensionUtils.SCREEN_WIDTH * 0.6}
+            />,
             icon: <IcIndex3 style={styles.iconSmall} />,
             txt: Languages.board.txt3
         }
@@ -53,7 +57,6 @@ export default function Broadening() {
     const swipe = useRef(new Animated.ValueXY()).current;
     const tiltSign = useRef(new Animated.Value(1)).current;
     const [data, setData] = useState(arr);
-    let dem = 0;
 
     useEffect(() => {
         if (data.length === 0) {
@@ -61,59 +64,47 @@ export default function Broadening() {
         }
     }, [data]);
 
-    const panResponder = useRef(
-        PanResponder.create({
-            onMoveShouldSetPanResponder: () => true,
-            onPanResponderRelease: (e, { dx, dy }) => {
-                const direction = Math.sign(dx);
-                const userAction = Math.abs(dx) > ACTION_OFFSET;
-
-                if (userAction) {
-                    Animated.timing(swipe, {
-                        duration: 200,
-                        toValue: {
-                            x: direction * CARD.CARD_OUT_WIDTH,
-                            y: dy
-                        },
-                        useNativeDriver: true
-                    }).start(transitionNext);
-                } else {
-                    Animated.spring(swipe, {
-                        friction: 5,
-                        toValue: {
-                            x: 0,
-                            y: 0
-                        },
-                        useNativeDriver: true
-                    }).start();
-                }
-            }
-        })
-    ).current;
-
     const transitionNext = useCallback(() => {
-        dem++;
-        if (dem < 2) {
-            setData((prevState) => prevState.slice(1));
-            swipe.setValue({ x: 0, y: 0 });
-        }
-    }, [dem, swipe]);
+        setData((prevState) => prevState.slice(1));
+        swipe.setValue({ x: 0, y: 0 });
+    }, [swipe]);
 
-    const handleChoise = useCallback(
-        (name: string, isFirst: boolean, sign: number) => {
-            console.log(name, isFirst);
-            if ((name !== Languages.board.title3 && isFirst)) {
+    const handleChoice = useCallback(
+        (name: string, sign: number) => {
+            if ((name !== Languages.board.title3)) {
                 Animated.timing(swipe.x, {
                     duration: 500,
                     toValue: sign * CARD.CARD_OUT_WIDTH,
                     useNativeDriver: true
                 }).start(transitionNext);
             } else {
-                Navigator.replaceScreen(ScreenName.auth);
+                SessionManager.setSkipOnboarding();
+                Navigator.replaceScreen(ScreenName.authStack);
             }
         },
         [swipe.x, transitionNext]
     );
+
+    const keyExtractor = useCallback((item: any, index: number) => {
+        return `${index}${item.id}`;
+    }, []);
+
+    const renderItemFlatList = useCallback(({ item, index }) => {
+        return (
+
+            <Card
+                key={item.title}
+                name={item.title}
+                source={item.images}
+                icons={item.icon}
+                isFirst={index > 0}
+                swipe={swipe}
+                tiltSign={tiltSign}
+                txt={item.txt}
+                handleChoice={() => { handleChoice(item.title, 0); }}
+            />
+        );
+    }, []);
 
     return (
         <ImageBackground style={styles.main} source={Images.bg_board} resizeMode='stretch'>
@@ -124,26 +115,12 @@ export default function Broadening() {
                 backgroundColor={COLORS.TRANSPARENT}
             />
             <Animated.View style={styles.container}>
-                {data
-                    .map(({ title, images, txt, icon }, index) => {
-                        const isFirst = index === 0;
-                        const panHandlers = isFirst ? panResponder.panHandlers : {};
-                        return (
-                            <Card
-                                key={title}
-                                name={title}
-                                source={images}
-                                icons={icon}
-                                isFirst={isFirst}
-                                swipe={swipe}
-                                tiltSign={tiltSign}
-                                txt={txt}
-                                handleChoise={() => { handleChoise(title, isFirst, -1); }}
-                                {...panHandlers}
-                            />
-                        );
-                    })
-                    .reverse()}
+                <FlatList
+                    data={data}
+                    horizontal
+                    keyExtractor={keyExtractor}
+                    renderItem={renderItemFlatList}
+                />
             </Animated.View>
         </ImageBackground>
     );

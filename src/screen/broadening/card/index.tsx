@@ -18,7 +18,7 @@ type ItemProps = {
     swipe?: any
     tiltSign?: any
     txt: string
-    handleChoise?: () => any,
+    handleChoice?: () => any,
     rest?: any
 
 };
@@ -31,19 +31,14 @@ export default function Card({
     tiltSign,
     txt,
     icons,
-    handleChoise,
-    ...rest
+    handleChoice
 }: ItemProps) {
 
     const styles = MyStylesCard();
 
-    useEffect(() => {
-        console.log(DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH, DimensionUtils.SCREEN_WIDTH);
-    }, []);
-
     const rotate = Animated.multiply(swipe.x, tiltSign).interpolate({
         inputRange: [-ACTION_OFFSET, 0, ACTION_OFFSET],
-        outputRange: ['8deg', '0deg', '8deg']
+        outputRange: ['8deg', '0deg', '-8deg']
     });
 
     const animatedCardStyle = {
@@ -53,28 +48,25 @@ export default function Card({
     return (
         <Animated.View
             style={isFirst && [animatedCardStyle, styles.gradient]}
-            {...rest}
         >
-            <View>
-                <ImageBackground style={styles.image} source={Images.bg_board} resizeMode={'stretch'} >
-                    <View style={styles.viewTop}>
-                    </View>
-                    <LogoBroadening
-                        style={styles.logo}
-                    />
-                    {source}
-                    {icons}
-                </ImageBackground>
+            <ImageBackground style={styles.image} source={Images.bg_board} resizeMode={'stretch'} >
+                <LogoBroadening
+                    style={styles.logo}
+                    width={DimensionUtils.SCREEN_WIDTH * 0.5}
+                    height={DimensionUtils.SCREEN_WIDTH * 0.14}
+                />
+                {source}
+                {icons}
                 <View style={styles.viewBottom}>
                     <View style={styles.viewText}>
                         <Text style={styles.title}>{name}</Text>
                         <Text style={styles.txt}>{txt}</Text>
                     </View>
                 </View>
-                <Touchable style={styles.tob} onPress={handleChoise}>
+                <Touchable style={styles.tob} onPress={handleChoice}>
                     <Text style={[styles.title, { fontSize: Configs.FontSize.size16 }]}>{Languages.common.continue}</Text>
                 </Touchable>
-            </View>
+            </ImageBackground>
         </Animated.View>
     );
 }

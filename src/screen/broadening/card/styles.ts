@@ -21,9 +21,7 @@ export const MyStylesCard = () => {
             gradient: {
                 color: COLORS.TRANSPARENT,
                 position: 'absolute',
-                width: '100%',
-                bottom: DimensionUtils.SCREEN_HEIGHT / 1.2,
-                height: DimensionUtils.SCREEN_HEIGHT / 6
+                width: '100%'
             },
             title: {
                 fontSize: Configs.FontSize.size20,
@@ -38,7 +36,7 @@ export const MyStylesCard = () => {
                 lineHeight: 24
             },
             viewBottom: {
-                marginTop: DimensionUtils.SCREEN_HEIGHT / 2,
+                marginTop: DimensionUtils.SCREEN_HEIGHT / 1.7,
                 position: 'absolute',
                 width: '80%',
                 marginHorizontal: 10
@@ -63,15 +61,6 @@ export const MyStylesCard = () => {
                 position: 'absolute',
                 top: DimensionUtils.SCREEN_HEIGHT * 0.05,
                 left: DimensionUtils.SCREEN_WIDTH * 0.1
-            },
-            viewTop: {
-                width: DimensionUtils.SCREEN_WIDTH,
-                height: DimensionUtils.SCREEN_WIDTH,
-                backgroundColor: COLORS.WHITE,
-                borderRadius: DimensionUtils.SCREEN_WIDTH * 0.5,
-                position: 'absolute',
-                top: -DimensionUtils.SCREEN_HEIGHT * 0.08,
-                left: -DimensionUtils.SCREEN_WIDTH * 0.2
             }
         }), []);
 };

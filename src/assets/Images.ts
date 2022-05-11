@@ -1,5 +1,5 @@
 // login
-const bg_login = require('./image/auth/bg_auth.jpg');
+const bg_login = require('./image/auth/back_auth.jpg');
 const bg_successSignUp = require('./image/auth/bg_success.jpg');
 
 // Tabs

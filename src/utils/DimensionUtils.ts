@@ -33,14 +33,14 @@ function getPaddingBottomByDevice() {
 };
 
 export const CARD = {
-    CARD_WIDTH: width * 0.9,
-    CARD_HEIGHT: height * 0.78,
+    CARD_WIDTH: width,
+    CARD_HEIGHT: height,
     CARD_OUT_WIDTH: width + width * 0.9
-  };
+};
 
-  export const VERTICAL_MARGIN = height * 0.022;
+export const VERTICAL_MARGIN = height * 0.022;
 
-  export const ACTION_OFFSET = 100;
+export const ACTION_OFFSET = 100;
 export default {
     SCREEN_WIDTH: width,
     SCREEN_HEIGHT: height,

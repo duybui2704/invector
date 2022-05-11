@@ -360,7 +360,8 @@ const Languages = {
         agreeTermsWith: 'Tôi đã đọc và đồng ý với ',
         rules: 'Điều khoản sử dụng và chính sách ',
         tienngay: 'của Tienngay.vn',
-        error:'Không lấy được dữ liệu, vui lòng thử lại sau'
+        error:'Không lấy được dữ liệu, vui lòng thử lại sau',
+        notLinked:'Chưa liên kết'
     },
     changePwd: {
         title: 'Đổi mật khẩu',
