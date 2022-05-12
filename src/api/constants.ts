@@ -24,8 +24,6 @@ export enum API_CONFIG {
 
     // common
     GET_BANNERS = '/banner/get_all_home', // banner app
-    GET_NEWS = '/banner/news', // tin tức truyền thông
-    GET_INSURANCES = '/banner/handbook', // danh sách bảo hiểm
     ENCRYPT = '/api/Encrypt',
     CHECK_APP_REVIEW = '/app/review',
 
