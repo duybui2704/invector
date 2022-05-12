@@ -6,7 +6,10 @@ export class InvestServices extends BaseService {
 
     getInvestHaveContract = async (id: string) => this.api().post(API_CONFIG.CONTRACT_HAVE_INVESTED, this.buildFormData({ id }));
 
-    getAllContractInvest = async (uriSegment: number, per_page: number) => this.api().post(API_CONFIG.CONTRACTS_HOT, this.buildFormData({
+    getAllContractInvest = async (textSearch: string, timeInvestment: string, moneyInvestment: string, uriSegment: number, per_page: number) => this.api().post(API_CONFIG.CONTRACTS_HOT, this.buildFormData({
+        text:textSearch,
+        loan:timeInvestment,
+        money:moneyInvestment,
         per_page,
         uriSegment
     }));

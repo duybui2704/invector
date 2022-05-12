@@ -35,8 +35,13 @@ const Investment = observer(({ route }: { route: any }) => {
     const [dataFilter, setDataFilter] = useState<PackageInvest[]>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const [dataTime, setDataTime] = useState<any>([]);
-    const [dataMoney,setDataMoney] =useState<any>([]);
+    const [timeValue, setTimeValue] = useState<ItemProps>();
+
+    const [dataMoney, setDataMoney] = useState<any>([]);
+    const [moneyValue, setMoneyValue] = useState<ItemProps>();
+
     const popupInvestRef = useRef<any>();
 
     const [dataPicker, setDataPicker] = useState<ItemProps[]>(arrMonth);
@@ -46,14 +51,15 @@ const Investment = observer(({ route }: { route: any }) => {
         isLoading: true,
         offset: 0,
         canLoadMore: true,
-        timeInvestment: ''
+        timeInvestment: '',
+        moneyInvestment: '',
+        textSearch: ''
     });
 
     const {
         common, apiServices
     } = useAppStore();
 
-    console.log(condition?.current.offset);
 
     useEffect(() => {
         setBtnInvest(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -94,13 +100,17 @@ const Investment = observer(({ route }: { route: any }) => {
     const fetchAllDataInvest = useCallback(async (isLoadMore?: boolean) => {
         setIsLoading(true);
         condition.current.isLoading = true;
-        const resInvest = await apiServices.invest.getAllContractInvest(isLoadMore ? condition.current.offset : 0, PAGE_SZIE);
+        const resInvest = await apiServices.invest.getAllContractInvest(
+            condition.current.textSearch,
+            condition.current.timeInvestment,
+            condition.current.moneyInvestment,
+            isLoadMore ? condition.current.offset : 0,
+            PAGE_SZIE);
         const newData = resInvest.data as PackageInvest[];
         const newSize = newData?.length;
 
         if (newSize > 0) {
             if (isLoadMore) {
-
                 setListStore((data) => [...data || [], ...newData]);
             }
             else {
@@ -139,7 +149,12 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [btnInvest, fetchData]);
 
     const onRefresh = useCallback(() => {
+        setTimeValue(null);
+        setMoneyValue(null);
         condition.current.offset = 1;
+        condition.current.timeInvestment='';
+        condition.current.moneyInvestment='';
+        condition.current.textSearch='';
         setIsRefreshing(true);
         fetchData(btnInvest);
         setIsRefreshing(false);
@@ -176,115 +191,6 @@ const Investment = observer(({ route }: { route: any }) => {
         }
     }, [apiServices.invest]);
 
-
-
-    const searchItem = useCallback(
-        (text: string) => {
-            if (text) {
-                setDataFilter(
-                    listStore?.filter((item: any) =>
-                        Utils.convertMoney(item?.so_tien_dau_tu).includes(text)
-                    )
-                );
-            } else {
-                setDataFilter(listStore);
-            }
-        },
-        [listStore]
-    );
-
-    const search = useCallback((money: string, month: string) => {
-        switch (money) {
-            case ENUM_INVEST_MONEY.BELOW_10:
-                return setDataFilter(
-                    listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) < 10000000 && item?.thoi_gian_dau_tu.includes(month))
-                );
-
-            case ENUM_INVEST_MONEY.ABOUT_10_50:
-                return setDataFilter(
-                    listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) >= 10000000 && parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) < 50000000 && item?.thoi_gian_dau_tu.includes(month)
-                    )
-                );
-            case ENUM_INVEST_MONEY.ABOUT_50_100:
-                return setDataFilter(
-                    listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) < 100000000 && parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) >= 50000000 && item?.thoi_gian_dau_tu.includes(month)
-                    )
-                );
-            case ENUM_INVEST_MONEY.ABOVE_100:
-                return setDataFilter(
-                    listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) >= 100000000 && item?.thoi_gian_dau_tu.includes(month)
-                    )
-                );
-            default:
-                return setDataFilter(undefined);
-        }
-    }, [listStore]);
-
-    const searchMoneyOrMonth = useCallback((money: string, month: string) => {
-        switch (money) {
-            case ENUM_INVEST_MONEY.BELOW_10:
-                setDataFilter(
-                    listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) < 10000000)
-                );
-                return;
-            case ENUM_INVEST_MONEY.ABOUT_10_50:
-                setDataFilter(
-                    listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) >= 10000000 && item.amountMoney < parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10)
-                    )
-                );
-                return;
-            case ENUM_INVEST_MONEY.ABOUT_50_100:
-                setDataFilter(
-                    listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) < 100000000 && parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) >= 50000000
-                    )
-                );
-                return;
-            case ENUM_INVEST_MONEY.ABOVE_100:
-                setDataFilter(
-                    listStore?.filter((item: any) => parseInt(Utils.convertMoney(item?.so_tien_dau_tu), 10) >= 100000000
-                    )
-                );
-                return;
-            default:
-                break;
-        }
-        setDataFilter(
-            listStore?.filter((item: any) => item?.thoi_gian_dau_tu.includes(month)
-            )
-        );
-
-
-    }, [listStore]);
-
-    const searchItemPicker = useCallback(
-        (month: string, money: string) => {
-            if (money && month) {
-                search(money, month);
-
-            } else if (month || money) {
-                searchMoneyOrMonth(money, month);
-
-            }
-            else {
-                setDataFilter(listStore);
-
-            }
-        },
-        [listStore, search, searchMoneyOrMonth]
-    );
-
-    const debounceSearchItem = useCallback(
-        debounce((text: string) => searchItem(text), 300),
-        [searchItem]
-    );
-
-    const handleInputOnchange = useCallback(
-        (value: string) => {
-            debounceSearchItem(value);
-        },
-        [debounceSearchItem]
-    );
-
     const navigateToDetail = useCallback((item: any) => {
         if (item) {
             Navigator.pushScreen(ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
@@ -302,7 +208,45 @@ const Investment = observer(({ route }: { route: any }) => {
             refBottomSheetMoney.current.show();
     }, []);
 
+    const onPressItem = useCallback((item?: any, title?: string) => {
+        if (title === Languages.invest.monthInvest) {
+            setTimeValue(item);
+            condition.current.timeInvestment = item.id;
+        }
+        if (title === Languages.invest.chooseMoney) {
+            setMoneyValue(item);
+            condition.current.moneyInvestment = item.id;
+        }
+        popupInvestRef.current?.show();
+    }, []);
 
+    const searchItem = useCallback(
+        (text: string) => {
+            if (text) {
+                setDataFilter(
+                    listStore?.filter((item: any) =>
+                        Utils.convertMoney(item?.so_tien_dau_tu).includes(text)
+                    )
+                );
+            } else {
+                setDataFilter(listStore);
+            }
+        },
+        [listStore]
+    );
+
+    const debounceSearchItem = useCallback(() => {
+        debounce(() => fetchData(btnInvest), 300);
+    }, [btnInvest, fetchData]);
+
+    const handleInputOnchange = useCallback(
+        (value: string) => {
+            setTextSearch(value);
+            condition.current.textSearch = value;
+            debounceSearchItem();
+        },
+        [debounceSearchItem]
+    );
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
     }, []);
@@ -357,6 +301,10 @@ const Investment = observer(({ route }: { route: any }) => {
         );
     }, [btnInvest, fetchData]);
 
+    const onConfirmFilter = useCallback(() => {
+        fetchData(btnInvest);
+    }, [btnInvest, fetchData]);
+
     const onPopupInvest = useCallback(() => {
         popupInvestRef.current.show();
         common.setIsFocus(true);
@@ -375,13 +323,12 @@ const Investment = observer(({ route }: { route: any }) => {
                 <Touchable
                     style={styles.iconFilter}
                     onPress={onPopupInvest}
-                    disabled={!!textSearch}
                 >
                     <IcBtnFilter />
                 </Touchable>
             </View>
         );
-    }, [handleInputOnchange, onPopupInvest, textSearch]);
+    }, [handleInputOnchange, onPopupInvest]);
 
     return (
         <View style={styles.main}>
@@ -407,18 +354,22 @@ const Investment = observer(({ route }: { route: any }) => {
             <PopupInvest
                 ref={popupInvestRef}
                 title={Languages.invest.packageInvest}
-                onConfirm={searchItemPicker}
+                onConfirm={onConfirmFilter}
                 openBottomSheet={openBottomSheet}
+                timeInvestment={timeValue}
+                moneyInvestment={moneyValue}
             />
             <BottomSheetComponentInvest
                 ref={refBottomSheetMoney}
                 data={dataMoney}
                 title={Languages.invest.chooseMoney}
+                onPressItem={onPressItem}
             />
             <BottomSheetComponentInvest
                 ref={refBottomSheetMonth}
                 data={dataTime}
                 title={Languages.invest.monthInvest}
+                onPressItem={onPressItem}
             />
             {isLoading && <Loading isOverview />}
         </View>

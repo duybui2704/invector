@@ -63,7 +63,7 @@ export enum API_CONFIG {
     CONFIRM_INVEST = '/contract/financial_investment_new',
     LIST_CONTRACT_INVESTING = '/contract/contract_investor_disbursement',
     LIST_TIME_INVESTMENT = '/contract/loan_cycle',
-    LIST_MONEY_INVESTMENT = 'contract/dashboard_investor',
+    LIST_MONEY_INVESTMENT = '/contract/select_money_investor',
 
     // link account with payment method
     REQUEST_SEND_VIMO_LINK = 'vimo_link/send_link_vimo',    // gui lien ket vimo
