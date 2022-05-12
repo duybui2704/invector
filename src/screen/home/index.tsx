@@ -27,16 +27,14 @@ import SessionManager from '@/manager/SessionManager';
 import { BannerModel } from '@/models/banner';
 import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
-import { NewsModel } from '@/models/news';
 import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import Utils from '@/utils/Utils';
 import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import LogoHome from '../../assets/image/header/logo_home.svg';
 import NotificationListening from './NotificationListening';
 import { MyStylesHome } from './styles';
-
 
 const Home = observer(() => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -44,10 +42,8 @@ const Home = observer(() => {
     const styles = MyStylesHome();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [banners, setBanners] = useState<BannerModel[]>();
-    const [news, setNews] = useState<NewsModel[]>();
     const [dataArr, setDataArr] = useState<PackageInvest[]>();
     const [dataDash, setDataDash] = useState<DashBroad>();
-    const [insurances, setInsurances] = useState<NewsModel[]>();
     const { apiServices } = useAppStore();
 
     useEffect(() => {
@@ -92,18 +88,6 @@ const Home = observer(() => {
             setBanners(
                 (data).filter((item) => item.image_mobile)
             );
-        }
-
-        const resNews = await apiServices.common.getNews();
-        if (resNews.success) {
-            const data = resNews?.data as NewsModel[];
-            setNews(data);
-        }
-
-        const resInsurances = await apiServices.common.getInsurances();
-        if (resInsurances.success) {
-            const data = resInsurances?.data as NewsModel[];
-            setInsurances(data);
         }
     }, [apiServices.common]);
 
@@ -242,8 +226,8 @@ const Home = observer(() => {
             <View style={styles.viewForeground}>
                 <View style={styles.viewTopLogo}>
                     <LogoHome
-                        width={DimensionUtils.SCREEN_HEIGHT * 0.18}
-                        height={DimensionUtils.SCREEN_HEIGHT * 0.18}
+                        width={SCREEN_HEIGHT * 0.18}
+                        height={SCREEN_HEIGHT * 0.18}
                         style={styles.logo}
                     />
                     <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
@@ -284,9 +268,7 @@ const Home = observer(() => {
                                     </Text>
                                 </View>
                             </View>
-
                         </View>
-
                     </View>
                     :
                     <View style={styles.viewTopCenter}>
@@ -310,7 +292,6 @@ const Home = observer(() => {
                             <Text style={styles.txtLogin}>{Languages.auth.txtSignUp}</Text>
                         </Touchable>
                     </View>}
-
             </View>
         );
     }, [dataDash?.so_du, dataDash?.tong_goc_da_tra, dataDash?.tong_lai_con_lai, gotoLogin, onNotifyInvest, renderIconTob, styles.imgNotify, styles.logo, styles.tobAuth, styles.txt1, styles.txt2, styles.txt3, styles.txt4, styles.txt6, styles.txt7, styles.txtHello, styles.txtInvest, styles.txtLeft, styles.txtLogin, styles.txtName, styles.txtRight, styles.viewForeground, styles.viewRightTop, styles.viewTob, styles.viewTop, styles.viewTop1, styles.viewTop2, styles.viewTop3, styles.viewTopCenter, styles.viewTopLogo]);
@@ -327,10 +308,18 @@ const Home = observer(() => {
                     ListFooterComponentStyle={styles.viewFlatList}
                     keyExtractor={keyExtractor}
                     nestedScrollEnabled
-                />
+                /> 
             </View>
         );
     }, [dataArr, keyExtractor, renderFooter, renderItem, styles.txtCenter, styles.viewCenter, styles.viewFlatList]);
+
+    const renderBackground = () => {
+        return (<HeaderBar exitApp imageBackground />);
+    };
+
+    const renderForeground = () => {
+        return (renderViewFooter);
+    };
 
     return (
         <NotificationListening>
@@ -344,12 +333,10 @@ const Home = observer(() => {
                 <ParallaxScrollView
                     contentBackgroundColor={COLORS.TRANSPARENT}
                     backgroundColor={COLORS.TRANSPARENT}
-                    parallaxHeaderHeight={DimensionUtils.SCREEN_HEIGHT * 0.38}
-                    stickyHeaderHeight={DimensionUtils.SCREEN_HEIGHT * 0.12}
-                    renderBackground={() => (
-                        <HeaderBar exitApp imageBackground />
-                    )}
-                    renderForeground={() => renderViewFooter}>
+                    parallaxHeaderHeight={SCREEN_HEIGHT * 0.38}
+                    stickyHeaderHeight={SCREEN_HEIGHT * 0.12}
+                    renderBackground={renderBackground}
+                    renderForeground={renderForeground}>
                     {renderContent}
                 </ParallaxScrollView>
                 {isLoading && <Loading isOverview />}
