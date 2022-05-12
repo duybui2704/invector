@@ -22,6 +22,7 @@ import { MyStylesSign } from './styles';
 import OtpSignIn from '../otpSignIn';
 import { UserInfoModal } from '@/models/user-models';
 import Loading from '@/components/loading';
+import HideKeyboard from '@/components/HideKeyboard';
 
 const SignUp = observer(() => {
     const { apiServices } = useAppStore();
@@ -157,55 +158,59 @@ const SignUp = observer(() => {
         }
 
         return (
-            <View style={styles.content}>
-                <View style={styles.wrapLoginTxt}>
-                    <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
-                    <IcLine width={'50%'} height={'10%'} />
-                </View>
-                <ScrollView style={styles.scrollView}>
-                    {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 50, false)}
-                    {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER')}
-                    {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL')}
-                    {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true)}
-                    {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true)}
-                    <View style={styles.inputPass}>
-                        <PickerBottomSheet
-                            ref={refChannel}
-                            containerStyle={styles.containerOverViewPicker}
-                            rightIcon={<ICUnderArrow />}
-                            placeholder={Languages.auth.knowChannel}
-                            onPressItem={onChangeChanel}
-                            value={channel?.value}
-                            data={dataChannel}
-                            valueText={styles.valuePicker}
-                            btnContainer={styles.containerPicker}
-                            placeholderStyle={styles.containerPlaceholderPicker}
-                        />
+            <HideKeyboard>
+                <View style={styles.content}>
+                    <View style={styles.wrapLoginTxt}>
+                        <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
+                        <IcLine width={'50%'} height={'10%'} />
                     </View>
-                    <View style={styles.rowInfo}>
-                        <View style={styles.row}>
-                            <Touchable style={styles.checkbox} onPress={onChangeChecked}>
-                                {checkbox}
-                            </Touchable>
-                            <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
+                    <ScrollView style={styles.scrollView}>
+                        {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 50, false)}
+                        {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER')}
+                        {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL')}
+                        {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true)}
+                        {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true)}
+                        <View style={styles.inputPass}>
+                            <PickerBottomSheet
+                                ref={refChannel}
+                                containerStyle={styles.containerOverViewPicker}
+                                rightIcon={<ICUnderArrow />}
+                                placeholder={Languages.auth.knowChannel}
+                                onPressItem={onChangeChanel}
+                                value={channel?.value}
+                                data={dataChannel}
+                                valueText={styles.valuePicker}
+                                btnContainer={styles.containerPicker}
+                                placeholderStyle={styles.containerPlaceholderPicker}
+                            />
                         </View>
-                        <Touchable onPress={onSignIn} disabled={!isDisTouchable}
-                            style={isDisTouchable ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
-                            <Text style={isDisTouchable ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                                {Languages.auth.txtSignUp}
-                            </Text>
-                        </Touchable>
-                    </View>
-                </ScrollView>
-                {isLoading && <Loading isOverview />}
-            </View>
+                        <View style={styles.rowInfo}>
+                            <View style={styles.row}>
+                                <Touchable style={styles.checkbox} onPress={onChangeChecked}>
+                                    {checkbox}
+                                </Touchable>
+                                <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
+                            </View>
+                            <Touchable onPress={onSignIn} disabled={!isDisTouchable}
+                                style={isDisTouchable ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                                <Text style={isDisTouchable ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                                    {Languages.auth.txtSignUp}
+                                </Text>
+                            </Touchable>
+                        </View>
+                    </ScrollView>
+                    {isLoading && <Loading isOverview />}
+                </View>
+            </HideKeyboard>
         );
     };
 
     return (
-        <View style={styles.container}>
-            {isNavigate ? <OtpSignIn phone={phone} isChecked={checked} pass={pass} /> : renderView()}
-        </View>
+        <HideKeyboard>
+            <View style={styles.container}>
+                {isNavigate ? <OtpSignIn phone={phone} isChecked={checked} pass={pass} /> : renderView()}
+            </View>
+        </HideKeyboard>
     );
 });
 

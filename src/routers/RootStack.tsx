@@ -16,8 +16,6 @@ import { EventEmitter } from '@/utils/EventEmitter';
 import Broadening from '@/screen/broadening';
 import Navigator from './Navigator';
 
-
-
 const screenOptions = { headerShown: false };
 const Stack = createNativeStackNavigator();
 
