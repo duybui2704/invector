@@ -214,9 +214,7 @@ const Home = observer(() => {
                 </Touchable>
                 }
                 <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
-                    <View style={styles.logoVfs}>
-                        <LogoVfs width={90} height={90} />
-                    </View>
+                    <LogoVfs width={90} height={90} />
                     <View style={styles.txtVfs}>
                         <Text style={[styles.txt4, { color: COLORS.RED_2 }]}>{Languages.home.stockVfs}</Text>
                         <Text style={styles.txt5}>{Languages.home.signFree}</Text>
@@ -324,7 +322,7 @@ const Home = observer(() => {
                     data={dataArr}
                     renderItem={(item) => renderItem(item.item)}
                     ListFooterComponent={renderFooter}
-                    ListFooterComponentStyle={styles.viewFlatList}
+                    ListFooterComponentStyle={styles.footerFlatList}
                     keyExtractor={keyExtractor}
                     nestedScrollEnabled
                 />
