@@ -85,7 +85,6 @@ export const MyStylesLogin = () => {
             txtTitle: {
                 ...Styles.typography.medium,
                 fontSize: Configs.FontSize.size20,
-                fontWeight: '600',
                 color: COLORS.GRAY_7,
                 padding: 5
             },

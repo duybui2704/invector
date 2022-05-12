@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
     txt1: {
         color: COLORS.WHITE,
         marginVertical: 15,
-        fontSize: Configs.FontSize.size16
+        fontSize: Configs.FontSize.size16,
+        fontFamily: Configs.FontFamily.regular,
     },
     txt2: {
         fontSize: Configs.FontSize.size14,

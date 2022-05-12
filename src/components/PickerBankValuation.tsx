@@ -211,11 +211,13 @@ const styles = StyleSheet.create({
         paddingVertical: 1
     },
     leftIcon: {
+        ...Styles.typography.regular,
         fontSize: Configs.IconSize.size18,
         color: COLORS.LIGHT_GRAY,
         marginRight: 10
     },
     errorMessage: {
+        ...Styles.typography.regular,
         fontSize: Configs.FontSize.size12,
         fontFamily: Configs.FontFamily.medium,
         color: COLORS.RED

@@ -27,6 +27,7 @@ export const useStyleButton = () => {
                     paddingLeft: 10
                 },
                 lefIconFont: { 
+                    ...Styles.typography.regular,
                     paddingRight: 20,
                     fontSize: Configs.IconSize.size30
                 },

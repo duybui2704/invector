@@ -16,7 +16,7 @@ import {
     ViewStyle
 } from 'react-native';
 
-import { COLORS } from '@/theme';
+import { COLORS, Styles } from '@/theme';
 import PinButton from './PinButton';
 import { DEFAULT, PinCodeT } from './types';
 import Languages from '@/common/Languages';
@@ -464,10 +464,10 @@ const defaultStyles = StyleSheet.create({
         textAlign: 'center'
     },
     title: {
+        ...Styles.typography.bold,
         color: COLORS.WHITE,
         textAlign: 'center',
-        fontWeight: Configs.FontFamily.bold,
-        fontSize: 20,
+        fontSize: Configs.FontSize.size20,
         marginBottom: 20
     },
     pinContainer: {

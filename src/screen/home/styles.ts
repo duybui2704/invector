@@ -150,8 +150,8 @@ export const MyStylesHome = () => {
                 alignItems: 'center'
             },
             txtTob: {
-                fontSize: 10,
-                fontWeight: '600',
+                ...Styles.typography.medium,
+                fontSize: Configs.FontSize.size10,
                 color: COLORS.GRAY
             },
             viewCenter: {

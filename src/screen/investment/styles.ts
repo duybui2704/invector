@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 16
     },
     txt: {
-        fontSize: 15,
+        ...Styles.typography.regular,
+        fontSize: Configs.FontSize.size15,
         color: COLORS.BLACK
     },
     investTab: {
@@ -94,6 +95,7 @@ const styles = StyleSheet.create({
         color: COLORS.GREEN
     },
     txtInterest: {
+        ...Styles.typography.regular,
         fontSize: Configs.FontSize.size12,
         color: COLORS.GRAY_12
     },

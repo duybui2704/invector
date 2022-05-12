@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
         backgroundColor: COLORS.GRAY_13
     },
     txt: {
+        ...Styles.typography.regular,
         fontSize: 15,
         color: COLORS.BLACK
     }

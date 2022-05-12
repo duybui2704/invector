@@ -133,14 +133,15 @@ export const MyStylesInvest = () => {
                 marginBottom: 10
             },
             txtTob: {
+                ...Styles.typography.regular,
                 color: COLORS.WHITE,
                 fontSize: Configs.FontSize.size14,
                 fontFamily: Configs.FontFamily.regular
             },
             txtCheckBox: {
+                ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size14,
                 color: COLORS.BLACK
-                
             },
             policy:{
                 width: '90%',
