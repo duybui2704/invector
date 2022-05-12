@@ -182,8 +182,8 @@ export const myStylesAuth = () => {
                 fontSize: Configs.FontSize.size12
             },
             txtTitle: {
+                ...Styles.typography.medium,
                 fontSize: Configs.FontSize.size24,
-                fontWeight: '600',
                 color: COLORS.BLACK,
                 padding: 20
             },

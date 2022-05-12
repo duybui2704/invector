@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
 
     },
     inputOtp: {
+        ...Styles.typography.regular,
         color: COLORS.GRAY_7,
         justifyContent: 'center',
         alignItems: 'center',
@@ -240,6 +241,7 @@ const styles = StyleSheet.create({
 
     },
     underlineStyleBase: {
+        ...Styles.typography.regular,
         width: DimensionUtils.SCREEN_WIDTH * 0.13,
         height: DimensionUtils.SCREEN_WIDTH * 0.13,
         borderWidth: 1,

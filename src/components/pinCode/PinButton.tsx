@@ -7,8 +7,9 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import { COLORS } from '@/theme';
+import { COLORS, Styles } from '@/theme';
 import { DEFAULT } from './types';
+import { Configs } from '@/common/Configs';
 
 const PinButton = ({
     value,
@@ -19,13 +20,13 @@ const PinButton = ({
     backSpaceText,
     onPress
 }: {
-  value: string;
-  disabled?: boolean;
-  backSpace?: any;
-  backSpaceText?: string;
-  onPress: (number: string) => void;
-  style?: ViewStyle | Array<ViewStyle | undefined>;
-  textStyle?: TextStyle | TextStyle[];
+    value: string;
+    disabled?: boolean;
+    backSpace?: any;
+    backSpaceText?: string;
+    onPress: (number: string) => void;
+    style?: ViewStyle | Array<ViewStyle | undefined>;
+    textStyle?: TextStyle | TextStyle[];
 }) => {
     if (value === 'delete') {
         return (
@@ -66,7 +67,10 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         backgroundColor: COLORS.WHITE
     },
-    number: { fontSize: 20 }
+    number: {
+        ...Styles.typography.regular,
+        fontSize: Configs.FontSize.size20
+    }
 });
 
 export default PinButton;

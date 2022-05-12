@@ -576,8 +576,8 @@ const customStyles = StyleSheet.create({
         paddingHorizontal: 20,
         backgroundColor: COLORS.TRANSPARENT
     },
-
     title: {
+        ...Styles.typography.regular,
         fontSize: Configs.FontSize.size16,
         fontFamily: Configs.FontFamily.medium,
         color: COLORS.GREEN
@@ -586,6 +586,7 @@ const customStyles = StyleSheet.create({
         color: COLORS.BLACK
     },
     buttonText: {
+        ...Styles.typography.regular,
         color: COLORS.GREEN,
         fontSize: Configs.FontSize.size32,
         fontFamily: Configs.FontFamily.medium

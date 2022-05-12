@@ -69,11 +69,13 @@ export const myTextFieldStyle = () => {
                     height: Configs.IconSize.size16
                 },
                 leftIcon: {
+                    ...Styles.typography.regular,
                     fontSize: Configs.IconSize.size14,
                     color: COLORS.GRAY,
                     marginRight: 10
                 },
                 rightIcon: {
+                    ...Styles.typography.regular,
                     fontSize: Configs.IconSize.size14,
                     color: COLORS.GRAY,
                     marginLeft: 10

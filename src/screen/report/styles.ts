@@ -64,11 +64,13 @@ export const MyStylesReport = () => {
                 marginLeft: 10
             },
             txtContractNumber: {
+                ...Styles.typography.regular,
                 color: COLORS.GREEN,
                 fontSize: Configs.FontSize.size16,
                 paddingVertical: 8
             },
             txtInvestNumber: {
+                ...Styles.typography.regular,
                 color: COLORS.RED_2,
                 fontSize: Configs.FontSize.size16,
                 paddingVertical: 8

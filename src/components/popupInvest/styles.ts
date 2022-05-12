@@ -4,13 +4,13 @@ import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
 import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
-import DimensionUtils from '@/utils/DimensionUtils';
 
 export const MyStylePupUp = () => {
     return useMemo(() =>
         StyleSheet.create({
 
             textModel: {
+                ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size20,
                 textAlign: 'center',
                 color: COLORS.GREEN

@@ -151,10 +151,12 @@ const styles = StyleSheet.create({
         marginLeft: 15
     },
     txtVerify: {
+        ...Styles.typography.regular,
         color: COLORS.WHITE,
         fontSize: Configs.FontSize.size14
     },
     txtCancel: {
+        ...Styles.typography.regular,
         color: COLORS.BLACK,
         fontSize: Configs.FontSize.size14
     }

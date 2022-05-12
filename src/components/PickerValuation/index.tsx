@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
         color: COLORS.BLACK
     },
     leftIcon: {
+        ...Styles.typography.regular,
         fontSize: Configs.IconSize.size18,
         color: COLORS.LIGHT_GRAY,
         marginRight: 10

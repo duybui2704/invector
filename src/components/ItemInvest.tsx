@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
         color: COLORS.GREEN
     },
     txtInterest: {
+        ...Styles.typography.regular,
         fontSize: Configs.FontSize.size10,
         color: COLORS.GRAY_12
     },

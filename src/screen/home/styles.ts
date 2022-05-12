@@ -14,14 +14,15 @@ export const MyStylesHome = () => {
                 backgroundColor: COLORS.WHITE_GRAY1
             },
             txt: {
-                ...Styles.typography.bold,
-                fontSize: Configs.FontSize.size18
+                ...Styles.typography.medium,
+                fontSize: Configs.FontSize.size16
             },
             txtCenter: {
-                ...Styles.typography.bold,
+                ...Styles.typography.medium,
                 fontSize: Configs.FontSize.size16,
                 color: COLORS.BLACK,
-                marginVertical: 5
+                marginTop: 10,
+                marginBottom: 5
             },
             viewTop: {
                 position: 'absolute',
@@ -149,12 +150,12 @@ export const MyStylesHome = () => {
                 alignItems: 'center'
             },
             txtTob: {
-                fontSize: 10,
-                fontWeight: '600',
+                ...Styles.typography.medium,
+                fontSize: Configs.FontSize.size10,
                 color: COLORS.GRAY
             },
             viewCenter: {
-                marginHorizontal: 10,
+                paddingHorizontal: 10,
                 marginBottom: 20
             },
             item: {
@@ -209,32 +210,30 @@ export const MyStylesHome = () => {
             viewVfs: {
                 ...Styles.shadow,
                 flexDirection: 'row',
-                width: '100%',
-                height: DimensionUtils.SCREEN_HEIGHT * 0.12,
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 15,
-                justifyContent: 'center',
-                alignItems: 'center'
+                paddingHorizontal: 20,
+                justifyContent: 'space-between',
+                alignItems:'center'
             },
             logoVfs: {
                 padding: 20,
-                position: 'absolute',
                 left: 10
             },
             txtVfs: {
+                flex: 1,
                 flexDirection: 'column',
-                marginLeft: DimensionUtils.SCREEN_WIDTH * 0.3
+                paddingLeft: 20
             },
             viewBottom: {
                 ...Styles.shadow,
                 flexDirection: 'column',
                 width: '100%',
-                height: DimensionUtils.SCREEN_HEIGHT * 0.28,
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 15,
                 justifyContent: 'flex-start',
                 alignItems: 'flex-start',
-                marginVertical: 20,
+                marginVertical: 10,
                 padding: 10
             },
             icon: {
@@ -244,7 +243,7 @@ export const MyStylesHome = () => {
             txtQuestion: {
                 flex: 1,
                 flexDirection: 'row',
-                paddingVertical: 5,
+                paddingVertical: 8,
                 alignItems: 'center'
             },
             txtQuestionTop: {
@@ -257,7 +256,10 @@ export const MyStylesHome = () => {
                 width: '95%'
             },
             viewFlatList: {
-                marginBottom: 0
+                marginBottom: 0,
+            },
+            footerFlatList: {
+                marginHorizontal: 5
             },
             txtLogin: {
                 fontSize: Configs.FontSize.size16,
