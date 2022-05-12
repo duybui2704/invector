@@ -62,7 +62,7 @@ const Languages = {
         sumMoney: 'Tổng tiền đã nhận',
         monthInvest: 'Thời gian đầu tư',
         chooseMoney: 'Số tiền đầu tư',
-        packageInvest: 'Chọn gói đầu tư',
+        packageInvest: 'Tìm kiếm gói đầu tư',
         search: 'Tìm kiếm',
         cancel: 'Hủy',
         notify: 'Thông báo',

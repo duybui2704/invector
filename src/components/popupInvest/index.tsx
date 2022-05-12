@@ -1,5 +1,6 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
-import { Modal, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import Modal from 'react-native-modal';
 
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
@@ -15,13 +16,15 @@ import { COLORS } from '@/theme';
 import { PopupActions, PopupProps } from './types';
 
 
+
 const PopupStatus = forwardRef<PopupActions, PopupProps>(
     ({
         onConfirm,
         onClose,
         title,
         description,
-        data
+        data,
+        openBottomSheet
     }: PopupProps, ref) => {
 
         const styles = MyStylePupUp();
@@ -51,12 +54,6 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
             setVisible(false);
         }, []);
 
-        const closePicker = useCallback(() => {
-            refBottomSheetMoney.current.hide();
-            refBottomSheetMonth.current.hide();
-            setVisible(true);
-        }, []);
-
         useImperativeHandle(ref, () => ({
             show,
             hide
@@ -67,26 +64,13 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
         }, [hide]);
 
         const actionYes = () => {
-            onConfirm(month, money);
+            onConfirm?.(month, money);
             hide();
         };
 
-        const onChange = useCallback((value: string, title: string) => {
-            switch (title) {
-                case Languages.invest.monthInvest:
-                    return setMonth(value);
-
-                case Languages.invest.chooseMoney:
-                    return setMoney(value);
-
-                default:
-                    return null;
-            }
-        }, []);
-
-        const showPicker = useCallback((title: string) => {
+        const showPicker = useCallback((label: string) => {
             hide();
-            if (title === Languages.invest.monthInvest) {
+            if (label === Languages.invest.monthInvest) {
                 setDataPicker(arrMonth);
                 setPicker(true);
                 refBottomSheetMonth.current.show();
@@ -96,68 +80,59 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
                 refBottomSheetMoney.current.show();
             }
 
-        }, []);
+        }, [hide]);
+
+        const onOpenBottomSheet = useCallback((type:string) => {
+            hide();
+
+            openBottomSheet?.(type);
+
+        }, [hide, openBottomSheet]);
+
+        const renderItem = useCallback((refItem: any, value: any, palaceholder: string) => {
+            const onPress = ()=>{
+                onOpenBottomSheet(palaceholder);
+            };
+            return (
+                <Touchable onPress={onPress}>
+                    <MyTextInput
+                        ref={refItem}
+                        value={value}
+                        rightIcon={arrayIcon.login.channel}
+                        placeHolder={palaceholder}
+                        containerInput={styles.inputPhone}
+                    />
+                </Touchable>
+            );
+        }, [onOpenBottomSheet, styles.inputPhone]);
 
         return (
-            <View>
-                <View style={{ height: '100%', width: '100%' }}>
-                    <Modal
-                        visible={visible}
-                        animationType={'slide'}
-                        transparent={true}
-                    >
-                        <View style={styles.modal}>
-                            <View style={styles.tobModal}>
-                                <View style={styles.viewFL}>
-                                    <Text style={styles.textModel}>{title}</Text>
-                                    <Touchable onPress={() => showPicker(Languages.invest.monthInvest)}>
-                                        <MyTextInput
-                                            ref={refMonth}
-                                            value={month}
-                                            rightIcon={arrayIcon.login.channel}
-                                            placeHolder={Languages.invest.monthInvest}
-                                            containerInput={styles.inputPhone}
-                                        />
-                                    </Touchable>
-                                    <Touchable onPress={() => showPicker(Languages.invest.chooseMoney)}>
-                                        <MyTextInput
-                                            ref={refMoney}
-                                            value={money}
-                                            rightIcon={arrayIcon.login.channel}
-                                            placeHolder={Languages.invest.chooseMoney}
-                                            containerInput={styles.inputPhone}
-                                        />
-                                    </Touchable>
-                                    <View style={styles.viewBottom}>
-                                        <Touchable style={styles.tobConfirm} onPress={actionYes}>
-                                            <Text style={styles.textConfirm}>{Languages.invest.search}</Text>
-                                        </Touchable>
-                                        <Touchable style={[styles.tobConfirm, { backgroundColor: COLORS.GRAY }]}
-                                            onPress={_onClose}>
-                                            <Text
-                                                style={[styles.textConfirm, { color: COLORS.BLACK }]}>{Languages.invest.cancel}</Text>
-                                        </Touchable>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
+            <Modal
+                isVisible={visible}
+                animationIn="slideInUp"
+                useNativeDriver={true}
+                onBackdropPress={hide}
+                avoidKeyboard={true}
+                hideModalContentWhileAnimating
+            >
+                <View style={styles.viewFL}>
+                    <Text style={styles.textModel}>{title}</Text>
+                    {renderItem(refMonth, month, Languages.invest.monthInvest)}
+                    {renderItem(refMoney, money, Languages.invest.chooseMoney)}
+                    <View style={styles.viewBottom}>
+                        <Touchable style={styles.tobConfirm} onPress={actionYes}>
+                            <Text style={styles.textConfirm}>{Languages.invest.search}</Text>
+                        </Touchable>
+                        <Touchable style={[styles.tobConfirm, { backgroundColor: COLORS.GRAY_2 }]}
+                            onPress={_onClose}>
+                            <Text
+                                style={[styles.textConfirm, { color: COLORS.GRAY_12 }]}>{Languages.invest.cancel}</Text>
+                        </Touchable>
+                    </View>
                 </View>
-                <BottomSheetComponentInvest
-                    ref={refBottomSheetMonth}
-                    data={dataPicker}
-                    onPressItem={onChange}
-                    onClose={closePicker}
-                    title={Languages.invest.monthInvest}
-                />
-                <BottomSheetComponentInvest
-                    ref={refBottomSheetMoney}
-                    data={dataPicker}
-                    onPressItem={onChange}
-                    onClose={closePicker}
-                    title={Languages.invest.chooseMoney}
-                />
-            </View>
+
+            </Modal>
+
         );
     }
 )

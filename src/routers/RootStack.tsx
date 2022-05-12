@@ -14,6 +14,7 @@ import { ScreenName } from '../common/screenNames';
 import MyBottomTabs from './MyBottomBar';
 import { EventEmitter } from '@/utils/EventEmitter';
 import Broadening from '@/screen/broadening';
+import Navigator from './Navigator';
 
 
 
@@ -23,7 +24,7 @@ const Stack = createNativeStackNavigator();
 export const isIOS = Platform.OS === 'ios';
 
 const RootStack = observer(() => {
-    const { fastAuthInfoManager,userManager } = useAppStore();
+    const { fastAuthInfoManager, userManager } = useAppStore();
 
     const getSupportedBiometry = useCallback(() => {
 
@@ -59,7 +60,8 @@ const RootStack = observer(() => {
 
     const forceLogout = useCallback(() => {
         SessionManager.logout();
-        userManager.updateUserInfo(null);
+        userManager.updateUserInfo({});
+        Navigator.pushScreen(ScreenName.login);
     }, [userManager]);
 
     useEffect(() => {

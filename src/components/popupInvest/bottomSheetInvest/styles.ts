@@ -14,34 +14,28 @@ export const MyStylesBottomSheetInvest = () => {
                 alignItems: 'center'
             },
             valueContainer: {
-                marginBottom: 5,
-                justifyContent: 'flex-end',
-                alignItems: 'flex-start',
-                height: 40
+                paddingTop: 10
             },
             value: {
-                flex: 1,
                 ...Styles.typography.regular,
-                fontSize: Configs.FontSize.size16
+                fontSize: Configs.FontSize.size14,
+                marginHorizontal: 16,
+                paddingBottom: 10
             },
             row: {
-                flexDirection: 'row',
-                marginHorizontal: 16
             },
             flatList: {
                 flex: 1,
-                marginTop: 0,
-                paddingHorizontal: 16
+                marginTop: 0
             },
             txtTitle: {
+                ...Styles.typography.medium,
                 color: COLORS.BLACK,
                 textAlign: 'center',
-                marginVertical: 20,
                 fontSize: Configs.FontSize.size16,
-                fontFamily: Configs.FontFamily.bold
+                marginVertical: 5
             },
             dash: {
-                marginHorizontal: '5%'
             },
             topDash: {
                 marginHorizontal: '8%'

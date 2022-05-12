@@ -63,15 +63,16 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
         }, [data]);
 
         const hide = useCallback(() => {
-            bottomSheetRef?.current?.close();
+            bottomSheetRef.current?.dismiss();
         }, []);
 
-        const close = useCallback(() => {
-
-            onClose?.();
-        }, [onClose]);
+        // const close = useCallback(() => {
+        //     bottomSheetRef?.current?.onClose();
+        //     // onClose?.();
+        // }, [onClose]);
 
         const show = useCallback(() => {
+            
             onOpen?.();
             bottomSheetRef?.current?.present();
         }, [onOpen]);
@@ -84,63 +85,59 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
         const renderItem = useCallback(
             ({ item }: any) => {
                 const onPress = () => {
-                    onPressItem?.(item.value, title);
-                    close();
+                    // alert('11');
+                    // console.log('dđ');
+                    // onPressItem?.(item.value, title);
+                    bottomSheetRef?.current?.dismiss();
+                    // hide();
                 };
                 return (
-                    <>
-                        <Touchable onPress={onPress} style={styles.valueContainer}>
-                            <View style={styles.row}>
-                                <Text style={styles.value}>
-                                    {item.value}
-                                </Text>
-                            </View>
-                        </Touchable>
+                    <Touchable onPress={hide} style={styles.valueContainer}>
+                        <View style={styles.row}>
+                            <Text style={styles.value}>
+                                {item.value}
+                            </Text>
+                        </View>
                         <View style={styles.dash}>
                             <Dash
-                                dashThickness={1}
+                                dashThickness={0.5}
                                 dashLength={10}
                                 dashGap={5}
-                                dashColor={COLORS.GRAY} />
+                                dashColor={COLORS.GRAY_4} />
                         </View>
-                    </>
+                    </Touchable>
                 );
             },
-            [close, onPressItem, styles.dash, styles.row, styles.value, styles.valueContainer, title]
+            [hide, onPressItem, title]
         );
 
         const keyExtractor = useCallback((index: any) => {
             return `${index.id}`;
         }, []);
+        const handleSheetChanges = useCallback(() => { }, []);
 
         return (
-            <View style={styles.container}>
-                <BottomSheetModal
-                    ref={bottomSheetRef}
-                    index={1}
-                    snapPoints={snapPoints}
-                    backdropComponent={CustomBackdrop}
-                    keyboardBehavior={'interactive'}
-                    enablePanDownToClose={true}
-                >
-                    <Text style={styles.txtTitle}>{title}</Text>
-                    <View style={styles.topDash}>
-                        <Dash
-                            dashThickness={1}
-                            dashLength={10}
-                            dashGap={5}
-                            dashColor={COLORS.GRAY} />
-                    </View>
+            <BottomSheetModal
+                ref={bottomSheetRef}
+                index={1}
+                snapPoints={snapPoints}
+                backdropComponent={CustomBackdrop}
+                keyboardBehavior={'interactive'}
+                enablePanDownToClose={true}
+                onChange={handleSheetChanges}
+            >
+                <View style={{flex:1}}>
+                    <Text style={styles.txtTitle}>{title?.toString().toUpperCase()}</Text>
                     <BottomSheetFlatList
                         data={data}
                         testID={title}
-                        renderItem={(item) => renderItem(item)}
+                        renderItem={renderItem}
                         style={styles.flatList}
                         keyExtractor={keyExtractor}
                     />
+                </View>
 
-                </BottomSheetModal>
-            </View>
+            </BottomSheetModal>
         );
     });
 export default BottomSheetComponentInvest;
