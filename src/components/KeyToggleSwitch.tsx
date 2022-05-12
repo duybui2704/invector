@@ -20,8 +20,8 @@ const KeyToggleValue = ({ leftIcon, label, isEnabledSwitch, onToggleSwitch, hasD
                     <Switch
                         value={isEnabledSwitch}
                         onValueChange={onToggleSwitch}
-                        circleSize={Configs.FontSize.size28}
-                        barHeight={Configs.FontSize.size28}
+                        circleSize={Configs.FontSize.size22}
+                        barHeight={Configs.FontSize.size22}
                         circleBorderWidth={1}
                         backgroundActive={COLORS.GREEN}
                         backgroundInactive={COLORS.BACKDROP}

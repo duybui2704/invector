@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import LinkIC from '@/assets/image/ic_ischecked_save_acc.svg';
 import ViettinIC from '@/assets/image/ic_logo_viettin_bank.svg';
@@ -41,7 +42,7 @@ const AccountBank = observer(() => {
     const [active, setActive] = useState<boolean>(true);
     const [type, setType] = useState<string>(ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER || '');
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [nameBank, setNamebank] = useState<string>(userManager.userInfo?.tra_lai?.bank_name || '');
+    const [nameBank, setNameBank] = useState<string>(userManager.userInfo?.tra_lai?.bank_name || '');
     const accountNumberRef = useRef<TextFieldActions>(null);
     const ATMNumberRef = useRef<TextFieldActions>(null);
     const accountProviderRef = useRef<TextFieldActions>(null);
@@ -52,11 +53,15 @@ const AccountBank = observer(() => {
         if (res.success) {
             const data = res.data as DataBanksModal[];
             const temp = data?.map((item) => {
-                return { id: item?.bank_code, value: item?.short_name, text: item?.name };
+                return { id: item?.bank_code, value: item?.name, text: item?.short_name };
             }) as ItemProps[];
+            const firstName = temp?.filter((item) => {
+                return item?.id === nameBank;
+            }) as ItemProps[];
+            setNameBank(firstName?.[0]?.value || '');
             setDataBanks(temp);
         }
-    }, [apiServices.paymentMethod]);
+    }, [apiServices.paymentMethod, nameBank]);
 
     useEffect(() => {
         fetchBankList();
@@ -126,7 +131,7 @@ const AccountBank = observer(() => {
 
     const onBanksChoose = useCallback((item?: ItemProps) => {
         setBanks(item?.id || '');
-        setNamebank(item?.text || '');
+        setNameBank(item?.value || '');
     }, []);
 
     const onValidate = useCallback(() => {
@@ -167,52 +172,55 @@ const AccountBank = observer(() => {
     }, [accountNumber, accountProvider, apiServices.auth, apiServices.paymentMethod, banks, onValidate, userManager]);
 
     return (
-        <BottomSheetModalProvider>
-            <HideKeyboard style={styles.container}>
-                <View style={styles.container}>
-                    <HeaderBar isLight={false} title={Languages.paymentMethod.bank} hasBack />
-                    <ScrollViewWithKeyboard showsVerticalScrollIndicator={false}>
-                        <View style={styles.wrapAllContent}>
-                            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-                                <Text style={styles.txtBankChoose}>{Languages.accountBank.bankChoose}</Text>
-                                <PickerBankValuation
-                                    ref={bankRef}
-                                    data={dataBanks}
-                                    value={nameBank}
-                                    placeholder={Languages.accountBank.bankChoose}
-                                    onPressItem={onBanksChoose}
-                                    btnContainer={styles.rowItemFilter}
-                                    containerStyle={styles.containerItemFilter}
-                                    hasDash
-                                    styleText={styles.valuePicker}
-                                    stylePlaceholder={styles.placeHolderPicker}
-                                    leftIcon={<ViettinIC />}
-                                    rightIcon={<ArrowIC />}
-                                />
-                                <View style={styles.rowContainerAllInputChoose}>
-                                    {renderAccBank(Languages.accountBank.accountNumber, type === ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER)}
-                                    {renderAccBank(Languages.accountBank.ATMNumber, type === ENUM_TYPE_CARD_BANK.ATM_NUMBER)}
-                                </View>
-                                {active ? renderInput(Languages.accountBank.accountNumber, Languages.accountBank.accountNumber, accountNumber, accountNumberRef, 'NUMBER', 16) :
-                                    renderInput(Languages.accountBank.ATMNumber, Languages.accountBank.ATMNumber, ATMNumber, ATMNumberRef, 'NUMBER', 16)}
-                                {renderInput(Languages.accountBank.accountProvider, Languages.accountBank.accountProviderName, accountProvider, accountProviderRef)}
-                            </KeyboardAvoidingView>
-                            <HTMLView
-                                value={Languages.accountBank.noteAccountBank}
-                                stylesheet={HtmlStyles || undefined} />
+        <GestureHandlerRootView style={styles.container}>
+            <BottomSheetModalProvider>
+                <HideKeyboard style={styles.container}>
+                    <View style={styles.container}>
+                        <HeaderBar isLight={false} title={Languages.paymentMethod.bank} hasBack />
+                        <ScrollViewWithKeyboard showsVerticalScrollIndicator={false}>
+                            <View style={styles.wrapAllContent}>
+                                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                                    <Text style={styles.txtBankChoose}>{Languages.accountBank.bankChoose}</Text>
+                                    <PickerBankValuation
+                                        ref={bankRef}
+                                        data={dataBanks}
+                                        value={nameBank}
+                                        placeholder={Languages.accountBank.bankChoose}
+                                        onPressItem={onBanksChoose}
+                                        btnContainer={styles.rowItemFilter}
+                                        containerStyle={styles.containerItemFilter}
+                                        hasDash
+                                        hasInput                                      
+                                        styleText={styles.valuePicker}
+                                        stylePlaceholder={styles.placeHolderPicker}
+                                        leftIcon={<ViettinIC />}
+                                        rightIcon={<ArrowIC />}
+                                    />
+                                    <View style={styles.rowContainerAllInputChoose}>
+                                        {renderAccBank(Languages.accountBank.accountNumber, type === ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER)}
+                                        {renderAccBank(Languages.accountBank.ATMNumber, type === ENUM_TYPE_CARD_BANK.ATM_NUMBER)}
+                                    </View>
+                                    {active ? renderInput(Languages.accountBank.accountNumber, Languages.accountBank.accountNumber, accountNumber, accountNumberRef, 'NUMBER', 16) :
+                                        renderInput(Languages.accountBank.ATMNumber, Languages.accountBank.ATMNumber, ATMNumber, ATMNumberRef, 'NUMBER', 16)}
+                                    {renderInput(Languages.accountBank.accountProvider, Languages.accountBank.accountProviderName, accountProvider, accountProviderRef)}
+                                </KeyboardAvoidingView>
+                                <HTMLView
+                                    value={Languages.accountBank.noteAccountBank}
+                                    stylesheet={HtmlStyles || undefined} />
 
-                            <Button label={Languages.accountBank.addAccount}
-                                buttonStyle={nameBank && accountNumber && accountProvider && ATMNumber ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
-                                isLowerCase
-                                onPress={onAddAccount}
-                                disabled={!nameBank || !accountNumber || !accountProvider || !ATMNumber}
-                            />
-                        </View>
-                    </ScrollViewWithKeyboard>
-                    {isLoading && <Loading isOverview />}
-                </View >
-            </HideKeyboard>
-        </BottomSheetModalProvider>
+                                <Button label={Languages.accountBank.addAccount}
+                                    buttonStyle={nameBank && accountNumber && accountProvider && ATMNumber ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
+                                    isLowerCase
+                                    onPress={onAddAccount}
+                                    disabled={!nameBank || !accountNumber || !accountProvider || !ATMNumber}
+                                />
+                            </View>
+                        </ScrollViewWithKeyboard>
+                        {isLoading && <Loading isOverview />}
+                    </View >
+                </HideKeyboard>
+            </BottomSheetModalProvider>
+        </GestureHandlerRootView>
     );
 });
 

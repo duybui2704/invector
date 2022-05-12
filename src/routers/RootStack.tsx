@@ -15,8 +15,6 @@ import MyBottomTabs from './MyBottomBar';
 import { EventEmitter } from '@/utils/EventEmitter';
 import Broadening from '@/screen/broadening';
 
-
-
 const screenOptions = { headerShown: false };
 const Stack = createNativeStackNavigator();
 

@@ -18,6 +18,7 @@ import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import { MyStylesLogin } from './styles';
 import { UserInfoModal } from '@/models/user-models';
+import HideKeyboard from '@/components/HideKeyboard';
 
 const Login = observer(() => {
     const {
@@ -61,7 +62,7 @@ const Login = observer(() => {
             default:
                 break;
         }
-    },[]);
+    }, []);
 
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
@@ -98,7 +99,7 @@ const Login = observer(() => {
 
         if (res.success) {
             setLoading(false);
-            const resData =  res.data as UserInfoModal;
+            const resData = res.data as UserInfoModal;
             SessionManager.setAccessToken(resData?.token);
             const resInfoAcc = await apiServices.auth.getUserInfo();
             if (resInfoAcc.success) {
@@ -130,28 +131,31 @@ const Login = observer(() => {
     }, [isLoading, userData, checked]);
 
     return (
-        <View style={styles.content}>
-            <View style={styles.wrapLoginTxt}>
-                <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
-                <IcLine width={'40%'} height={'20%'} />
-            </View>
-            {renderInput(refPhone, phone, true, Languages.auth.txtPhone, arrayIcon.login.phone, 'PHONE', 10)}
-            {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true)}
-            <View style={styles.rowInfo}>
-                <Touchable style={styles.checkbox} onPress={onChangeChecked}>
-                    {checkbox}
-                    <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
-                </Touchable>
+        <HideKeyboard>
+            <View style={styles.content}>
 
-                <Touchable onPress={onLoginPhone} disabled={!(phone !== '' && pass !== '')}
-                    style={(phone !== '' && pass !== '') ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
-                    <Text style={(phone !== '' && pass !== '') ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                        {Languages.auth.txtLogin}
-                    </Text>
-                </Touchable>
+                <View style={styles.wrapLoginTxt}>
+                    <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
+                    <IcLine width={'40%'} height={'20%'} />
+                </View>
+                {renderInput(refPhone, phone, true, Languages.auth.txtPhone, arrayIcon.login.phone, 'PHONE', 10)}
+                {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true)}
+                <View style={styles.rowInfo}>
+                    <Touchable style={styles.checkbox} onPress={onChangeChecked}>
+                        {checkbox}
+                        <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
+                    </Touchable>
+
+                    <Touchable onPress={onLoginPhone} disabled={!(phone !== '' && pass !== '')}
+                        style={(phone !== '' && pass !== '') ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                        <Text style={(phone !== '' && pass !== '') ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                            {Languages.auth.txtLogin}
+                        </Text>
+                    </Touchable>
+                </View>
+                {isLoading && <Loading isOverview />}
             </View>
-            {isLoading && <Loading isOverview />}
-        </View>
+        </HideKeyboard>
     );
 });
 

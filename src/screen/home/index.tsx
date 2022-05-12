@@ -313,7 +313,7 @@ const Home = observer(() => {
 
             </View>
         );
-    }, []);
+    }, [dataDash?.so_du, dataDash?.tong_goc_da_tra, dataDash?.tong_lai_con_lai, gotoLogin, onNotifyInvest, renderIconTob, styles.imgNotify, styles.logo, styles.tobAuth, styles.txt1, styles.txt2, styles.txt3, styles.txt4, styles.txt6, styles.txt7, styles.txtHello, styles.txtInvest, styles.txtLeft, styles.txtLogin, styles.txtName, styles.txtRight, styles.viewForeground, styles.viewRightTop, styles.viewTob, styles.viewTop, styles.viewTop1, styles.viewTop2, styles.viewTop3, styles.viewTopCenter, styles.viewTopLogo]);
 
     const renderContent = useMemo(() => {
         return (

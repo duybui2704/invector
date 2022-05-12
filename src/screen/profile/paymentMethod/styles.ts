@@ -44,7 +44,8 @@ export const MyStylesPaymentMethod = () => {
                 borderColor: COLORS.GREEN,
                 borderRadius: 18,
                 paddingHorizontal: 16,
-                marginTop: 16
+                marginTop: 16,
+                backgroundColor: COLORS.WHITE
             },
             wrapRightItemPayment: {
                 justifyContent: 'space-between',

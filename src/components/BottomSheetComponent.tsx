@@ -1,18 +1,24 @@
-import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal, SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { debounce } from 'lodash';
 import React, {
     forwardRef,
     useCallback, useEffect,
     useImperativeHandle,
     useMemo,
-    useRef
+    useRef,
+    useState
 } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import Dash from 'react-native-dash';
+import { useIsFocused } from '@react-navigation/native';
 
-import { Configs, PADDING_BOTTOM } from '@/common/Configs';
-import { COLORS, Styles } from '@/theme';
+import { Configs, isIOS, PADDING_BOTTOM } from '@/common/Configs';
+import Languages from '@/common/Languages';
 import { ItemProps } from '@/models/common-model';
+import { COLORS, Styles } from '@/theme';
+import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { Touchable } from './elements/touchable';
+import HideKeyboard from './HideKeyboard';
 
 type BottomSheetProps = {
     data?: ItemProps[],
@@ -22,7 +28,8 @@ type BottomSheetProps = {
     hasDash?: boolean,
     leftIcon?: any,
     rightIcon?: any,
-    title?: string
+    title?: string,
+    hasInputSearch?: boolean
 };
 
 export type BottomSheetAction = {
@@ -40,21 +47,32 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             hasDash,
             leftIcon,
             rightIcon,
-            title
+            title,
+            hasInputSearch
         }: BottomSheetProps,
 
         ref: any
     ) => {
 
         const bottomSheetRef = useRef<BottomSheetModal>(null);
+        const [textSearch, setTextSearch] = useState('');
+        const [dataFilter, setDataFilter] = useState<ItemProps[]>();
+        const [focus, setFocus] = useState<boolean>(false);
+        const isFocus = useIsFocused();
+
+        useEffect(() => {
+            setDataFilter(data);
+            if (isFocus) {
+                setTextSearch('');
+            }
+        }, [data, isFocus]);
 
         const snapPoints = useMemo(() => {
             const num = data?.length as number;
             const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
             let ratio = contentHeight * 100 / SCREEN_HEIGHT;
-            ratio = Math.max(ratio, 15);
+            ratio = Math.max(ratio, 35);
             ratio = Math.min(ratio, 70);
-
             return [`${ratio}%`, `${ratio}%`];
         }, [data]);
 
@@ -72,6 +90,32 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             show,
             hide
         }));
+
+        const searchItem = useCallback(
+            (text: string) => {
+                if (text) {
+                    setDataFilter(
+                        data?.filter((item) =>
+                            item.value?.toUpperCase().includes(text.toUpperCase())
+                        )
+                    );
+                }
+                if (text === '') {
+                    setDataFilter(data);
+                }
+            },
+            [data]
+        );
+
+        const debounceSearchItem = debounce((text: string) => searchItem(text), 0);
+
+        const handleInputOnchange = useCallback(
+            (value: string) => {
+                setTextSearch(`${value}`);
+                debounceSearchItem(value);
+            },
+            [debounceSearchItem]
+        );
 
         const renderItem = useCallback(
             ({ item }) => {
@@ -100,6 +144,14 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             [hasDash, hide, leftIcon, onPressItem, rightIcon]
         );
 
+        const onFocus = useCallback(() => {
+            setFocus(true);
+        }, []);
+
+        const onBlur = useCallback(() => {
+            setFocus(false);
+        }, []);
+
         const keyExtractor = useCallback((item, index) => {
             return `${item.id}${index}`;
         }, []);
@@ -108,16 +160,14 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             return (
                 <BottomSheetBackdrop
                     {...props}
-                >
-                    <Touchable style={styles.backdropStyle}
-                        onPress={hide}>
-                    </Touchable>
-                </BottomSheetBackdrop>
+                    disappearsOnIndex={-1}
+                    appearsOnIndex={1}
+                />
             );
-        }, [hide]);
+        }, []);
 
-        const handleSheetChanges = useCallback(() => {
-            // bottomSheetRef.current?.snapToIndex(0);
+        const handleSheetChanges = useCallback((index: number) => {
+            setTimeout(() => bottomSheetRef.current?.snapToIndex(index), 0);
         }, []);
 
         const renderHeader = useCallback(() => {
@@ -132,28 +182,47 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                     />
                 </>
             );
-        }, []);
+        }, [title]);
+
 
         return (
             <View style={styles.container}>
-                <BottomSheetModal
-                    ref={bottomSheetRef}
-                    index={1}
-                    snapPoints={snapPoints}
-                    backdropComponent={renderBackdrop}
-                    keyboardBehavior={'fillParent'}
-                    enablePanDownToClose={true}
-                    onChange={handleSheetChanges}
-                >
-                    <BottomSheetFlatList
-                        data={data}
-                        ListHeaderComponent={renderHeader}
-                        renderItem={renderItem}
-                        style={styles.flatList}
-                        keyExtractor={keyExtractor}
-                    />
-                </BottomSheetModal>
-            </View>
+                <HideKeyboard>
+                    <BottomSheetModal
+                        ref={bottomSheetRef}
+                        index={1}
+                        snapPoints={snapPoints}
+                        backdropComponent={renderBackdrop}
+                        keyboardBehavior={'extend'}
+                        keyboardBlurBehavior={'restore'}
+                        enablePanDownToClose={true}
+                        onChange={handleSheetChanges}
+                        enableOverDrag={true}
+                    >
+                        {hasInputSearch && data?.length as number >= MIN_SIZE_HAS_INPUT &&
+                            < BottomSheetTextInput
+                                placeholder={Languages.common.search}
+                                placeholderTextColor={COLORS.BACKDROP}
+                                value={textSearch}
+                                style={[
+                                    styles.input,
+                                    { borderColor: focus ? COLORS.GREEN : COLORS.GRAY }
+                                ]}
+                                onChangeText={handleInputOnchange}
+                                onFocus={onFocus}
+                                onBlur={onBlur}
+                            />
+                        }
+                        <BottomSheetFlatList
+                            data={dataFilter}
+                            ListHeaderComponent={renderHeader}
+                            renderItem={renderItem}
+                            style={styles.flatList}
+                            keyExtractor={keyExtractor}
+                        />
+                    </BottomSheetModal>
+                </HideKeyboard>
+            </View >
         );
     });
 
@@ -191,7 +260,7 @@ const styles = StyleSheet.create({
         fontSize: Configs.FontSize.size16,
         paddingLeft: 25
     },
-    backdropStyle:{
+    backdropStyle: {
         flex: 1,
         height: SCREEN_HEIGHT
     },
@@ -200,5 +269,17 @@ const styles = StyleSheet.create({
         fontSize: Configs.FontSize.size16,
         textAlign: 'center',
         marginVertical: 8
+    },
+    input: {
+        ...Styles.typography.regular,
+        marginTop: 8,
+        marginBottom: 10,
+        borderRadius: 12,
+        padding: 8,
+        borderWidth: 1,
+        borderColor: COLORS.GRAY_11,
+        backgroundColor: COLORS.TRANSPARENT,
+        color: COLORS.GREEN,
+        marginHorizontal: 16
     }
 });
