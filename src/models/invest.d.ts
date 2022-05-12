@@ -56,10 +56,16 @@ export interface InterestPaymentModel {
     type_card: string
 }
 export interface CheckVimoWalletModel {
-    data:any
-    message:string
-    status:number
+    data: any
+    message: string
+    status: number
 
+}
+export interface PagingCoditionTypes {
+    offset: number
+    isLoading: boolean,
+    canLoadMore: boolean,
+    timeInvestment: string
 }
 
 

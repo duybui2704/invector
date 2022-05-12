@@ -19,7 +19,7 @@ export enum CONTACT {
 export const STORE_APP_LINK = isIOS ? LINKS.STORE_IOS : LINKS.STORE_ANDROID;
 
 export enum API_CONFIG {
-    BASE_URL = 'https://sandboxappndt.tienngay.vn/',
+    BASE_URL = 'https://sandboxappndt.tienngay.vn/V2/',
     // BASE_URL = 'https://appndt.tienngay.vn/',
 
     // common
@@ -62,7 +62,10 @@ export enum API_CONFIG {
     CONTRACT_DETAIL_INVEST_NOW = '/contract/detail_contract_investor',
     GET_INFOR_INVESTOR = 'user/info_investor',
     REQUEST_NGAN_LUONG = 'V2/contract/investment_ngan_luong',
-    CONFIRM_INVEST ='/contract/financial_investment_new',
+    CONFIRM_INVEST = '/contract/financial_investment_new',
+    LIST_CONTRACT_INVESTING = '/contract/contract_investor_disbursement',
+    LIST_TIME_INVESTMENT = '/contract/loan_cycle',
+    LIST_MONEY_INVESTMENT = 'contract/dashboard_investor',
 
     // link account with payment method
     REQUEST_SEND_VIMO_LINK = 'vimo_link/send_link_vimo',    // gui lien ket vimo
@@ -78,10 +81,10 @@ export enum API_CONFIG {
     REQUEST_FINANCE_REPORT = 'investor/financial_report', // bao cao tai chinh investor
 
     // investor
-    
-    
+
+
 }
 export const PAYMENT_URL = {
-    NL_SUCCESSFULLY: `${API_CONFIG.BASE_URL}contract/success_nl_android`,
-    NL_FAILED: 'http://sandboxappndt.tienngay.vn/V2/contract/cancel'
+    NL_SUCCESSFULLY: `${API_CONFIG.BASE_URL}V2/contract/success_nl_`,
+    NL_FAILED: `${API_CONFIG.BASE_URL}V2/contract/cancel?bill=`
 };

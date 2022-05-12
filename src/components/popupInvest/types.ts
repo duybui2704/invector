@@ -5,10 +5,12 @@ export type PopupProps = {
     onBackdropPress?: () => any;
     content?: string;
     btnText?: string;
-    description?:string;
-    title?:string,
+    description?: string;
+    title?: string,
     data?: [],
-    value?: string
+    value?: string,
+    openBottomSheet?: (type: string) => void
+
 };
 
 export type PopupActions = {

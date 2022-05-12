@@ -20,8 +20,13 @@ import { HeaderBar } from '../../components/header';
 import styles from './styles';
 import Utils from '@/utils/Utils';
 import { useAppStore } from '@/hooks';
-import { PackageInvest } from '@/models/invest';
+import { PackageInvest, PagingCoditionTypes } from '@/models/invest';
 import Loading from '@/components/loading';
+import BottomSheetComponentInvest from '@/components/popupInvest/bottomSheetInvest';
+import { ItemProps } from '@/components/bottomsheet';
+import { arrMonth } from '@/mocks/data';
+
+const PAGE_SZIE = 5;
 
 const Investment = observer(({ route }: { route: any }) => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -30,80 +35,148 @@ const Investment = observer(({ route }: { route: any }) => {
     const [dataFilter, setDataFilter] = useState<PackageInvest[]>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const isFocus = useIsFocused();
+    const [dataTime, setDataTime] = useState<any>([]);
+    const [dataMoney,setDataMoney] =useState<any>([]);
     const popupInvestRef = useRef<any>();
+
+    const [dataPicker, setDataPicker] = useState<ItemProps[]>(arrMonth);
+    const refBottomSheetMonth = useRef<any>(null);
+    const refBottomSheetMoney = useRef<any>(null);
+    const condition = useRef<PagingCoditionTypes>({
+        isLoading: true,
+        offset: 0,
+        canLoadMore: true,
+        timeInvestment: ''
+    });
+
     const {
         common, apiServices
     } = useAppStore();
 
-    useEffect(() => {
-        if (isFocus) {
-            setBtnInvest(route?.params?.types || ENUM_INVEST_STATUS.INVEST_NOW);
-            fetchData(btnInvest);
-        } else {
-            common.setIsFocus(false);
-        }
-    }, [common, common.isFocused, isFocus, route?.params?.types]);
+    console.log(condition?.current.offset);
 
-    const fetchData = useCallback((type: string) => {
+    useEffect(() => {
+        setBtnInvest(ENUM_INVEST_STATUS.INVEST_NOW);
+        fetchData(ENUM_INVEST_STATUS.INVEST_NOW, false);
+        fetchDataTimeInvestment();
+        fetchDataMoney();
+    }, []);
+
+    useEffect(() => {
+        console.log('listStore', listStore);
+    }, [listStore]);
+
+    const fetchDataInvested = useCallback(async (isLoadMore?: boolean) => {
+        setIsLoading(true);
+        condition.current.isLoading = true;
+        const resInvest = await apiServices.invest.getListContractInvesting(isLoadMore ? condition.current.offset : 0, PAGE_SZIE);
+        const newData = resInvest.data as PackageInvest[];
+        const newSize = newData?.length;
+
+        if (newSize > 0) {
+            if (isLoadMore) {
+
+                setListStore((data) => [...data || [], ...newData]);
+            }
+            else {
+                setListStore(newData);
+            }
+            condition.current.offset = isLoadMore ? condition.current.offset + newSize : newSize;
+        }
+        else if (!resInvest?.success || !isLoadMore) {
+            setListStore([]);
+        }
+        condition.current.isLoading = false;
+        condition.current.canLoadMore = newSize >= PAGE_SZIE;
+        setIsLoading(false);
+    }, [apiServices.invest]);
+
+    const fetchAllDataInvest = useCallback(async (isLoadMore?: boolean) => {
+        setIsLoading(true);
+        condition.current.isLoading = true;
+        const resInvest = await apiServices.invest.getAllContractInvest(isLoadMore ? condition.current.offset : 0, PAGE_SZIE);
+        const newData = resInvest.data as PackageInvest[];
+        const newSize = newData?.length;
+
+        if (newSize > 0) {
+            if (isLoadMore) {
+
+                setListStore((data) => [...data || [], ...newData]);
+            }
+            else {
+                setListStore(newData);
+            }
+            condition.current.offset = isLoadMore ? condition.current.offset + newSize : newSize;
+        }
+        else if (!resInvest?.success || !isLoadMore) {
+            setListStore([]);
+        }
+        condition.current.isLoading = false;
+        condition.current.canLoadMore = newSize >= PAGE_SZIE;
+        setIsLoading(false);
+    }, [apiServices.invest]);
+
+
+    const fetchData = useCallback((type: string, isLoadMore?: boolean) => {
         switch (type) {
             case ENUM_INVEST_STATUS.INVEST_NOW:
-                fetchDataInvestAll();
+                fetchAllDataInvest(isLoadMore);
                 break;
             case ENUM_INVEST_STATUS.INVESTING:
-                fetchDataInvesting();
+                fetchDataInvested(isLoadMore);
                 break;
             case ENUM_INVEST_STATUS.HISTORY:
-                fetchDataInvestHistory();
                 break;
             default:
                 break;
         }
-    }, []);
+    }, [fetchAllDataInvest, fetchDataInvested]);
 
-    const fetchDataInvestAll = useCallback(async () => {
-        console.log('invest_all');
-        setIsLoading(true);
-        const resInvest = await apiServices.invest.getInvestAll();
-        setIsLoading(false);
-        if (resInvest.success) {
-            setListStore(resInvest.data as PackageInvest[]);
-            setDataFilter(resInvest.data as PackageInvest[]);
+    const onEndReached = useCallback(() => {
+        if (!condition.current.isLoading && condition.current.canLoadMore) {
+            fetchData(btnInvest, true);
         }
-    }, [apiServices.invest]);
-
-    const fetchDataInvesting = useCallback(async () => {
-        console.log('investing');
-        setIsLoading(true);
-        const resInvest = await apiServices.invest.getInvestAll();
-        setIsLoading(false);
-        if (resInvest.success) {
-            setListStore(resInvest.data as PackageInvest[]);
-            setDataFilter(resInvest.data as PackageInvest[]);
-        }
-    }, []);
-
-    const fetchDataInvestHistory = useCallback(async () => {
-        console.log('invest_history');
-        setIsLoading(true);
-        const resInvest = await apiServices.invest.getInvestAll();
-        setIsLoading(false);
-        if (resInvest.success) {
-            setListStore(resInvest.data as PackageInvest[]);
-            setDataFilter(resInvest.data as PackageInvest[]);
-        }
-    }, []);
+    }, [btnInvest, fetchData]);
 
     const onRefresh = useCallback(() => {
+        condition.current.offset = 1;
         setIsRefreshing(true);
         fetchData(btnInvest);
         setIsRefreshing(false);
         setTextSearch(undefined);
     }, [btnInvest, fetchData]);
 
-    const onChangeText = useCallback((text: string) => {
-        setTextSearch(text);
-    }, []);
+    const fetchDataTimeInvestment = useCallback(async () => {
+        const res = await apiServices.invest.getListTimeInvestment();
+        if (res.success) {
+            const data = res.data as [];
+            const temp = Object.entries(data);
+            setDataTime(temp.map((item) => {
+                return {
+                    id: item[0],
+                    value: item[1]
+
+                };
+            }));
+        }
+    }, [apiServices.invest]);
+
+    const fetchDataMoney = useCallback(async () => {
+        const res = await apiServices.invest.getListMoneyInvestment();
+        if (res.success) {
+            const data = res.data as [];
+            const temp = Object.entries(data);
+            setDataMoney(temp.map((item) => {
+                return {
+                    id: item[0],
+                    value: item[1]
+
+                };
+            }));
+        }
+    }, [apiServices.invest]);
+
+
 
     const searchItem = useCallback(
         (text: string) => {
@@ -222,6 +295,13 @@ const Investment = observer(({ route }: { route: any }) => {
         Navigator.pushScreen(ScreenName.invest, { status: btnInvest, id: item?.id });
     }, [btnInvest]);
 
+    const openBottomSheet = useCallback((type: string) => {
+        if (type === Languages.invest.monthInvest)
+            refBottomSheetMonth.current.show();
+        if (type === Languages.invest.chooseMoney)
+            refBottomSheetMoney.current.show();
+    }, []);
+
 
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
@@ -253,6 +333,8 @@ const Investment = observer(({ route }: { route: any }) => {
         const onPress = () => {
             setBtnInvest(type);
             fetchData(type);
+            condition.current.offset = 0;
+            setListStore([]);
         };
 
         const getTitle = () => {
@@ -269,7 +351,7 @@ const Investment = observer(({ route }: { route: any }) => {
         };
 
         return (
-            <Touchable onPress={onPress} style={[styles.btInvest, styleBt]}>
+            <Touchable disabled={btnInvest === type} onPress={onPress} style={[styles.btInvest, styleBt]}>
                 <Text style={[styles.txtBtInvest, styleTxt]}>{getTitle()}</Text>
             </Touchable>
         );
@@ -313,18 +395,30 @@ const Investment = observer(({ route }: { route: any }) => {
                 <MyFlatList
                     contentContainerStyle={styles.flatList}
                     showsVerticalScrollIndicator={false}
-                    data={dataFilter}
+                    data={listStore}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
                     ListHeaderComponent={renderSearchBar}
                     refreshing={isRefreshing}
                     onRefresh={onRefresh}
+                    onEndReached={onEndReached}
                 />
             </View>
             <PopupInvest
                 ref={popupInvestRef}
                 title={Languages.invest.packageInvest}
                 onConfirm={searchItemPicker}
+                openBottomSheet={openBottomSheet}
+            />
+            <BottomSheetComponentInvest
+                ref={refBottomSheetMoney}
+                data={dataMoney}
+                title={Languages.invest.chooseMoney}
+            />
+            <BottomSheetComponentInvest
+                ref={refBottomSheetMonth}
+                data={dataTime}
+                title={Languages.invest.monthInvest}
             />
             {isLoading && <Loading isOverview />}
         </View>
