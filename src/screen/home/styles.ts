@@ -1,98 +1,107 @@
-import {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 
-import DimensionUtils from '@/utils/DimensionUtils';
-import {COLORS, Styles} from '@/theme';
-import {Configs} from '@/common/Configs';
-
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
+import { COLORS, Styles } from '@/theme';
+import { Configs } from '@/common/Configs';
 
 export const MyStylesHome = () => {
     return useMemo(() =>
         StyleSheet.create({
-            main: {
+            container: {
                 flex: 1,
                 backgroundColor: COLORS.WHITE_GRAY1
-            },
-            txt: {
-                ...Styles.typography.medium,
-                fontSize: Configs.FontSize.size16
             },
             txtCenter: {
                 ...Styles.typography.medium,
                 fontSize: Configs.FontSize.size16,
-                color: COLORS.BLACK,
+                color: COLORS.GRAY_7,
                 marginTop: 10,
-                marginBottom: 5
+                marginBottom: 8
             },
             viewTop: {
                 position: 'absolute',
                 left: '-2%',
-                top: DimensionUtils.SCREEN_HEIGHT * 0.12,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.3,
+                top: SCREEN_HEIGHT * 0.12,
                 width: '100%',
                 alignItems: 'center',
-                marginHorizontal: 10,
-                marginTop: 10
+                marginHorizontal: 10
             },
             viewTopLogo: {
                 flexDirection: 'row',
                 width: '100%',
                 alignItems: 'center',
                 marginHorizontal: 10,
-                marginTop: 10,
+                marginTop: 45,
                 position: 'absolute',
                 top: 0
             },
             viewTopCenter: {
                 position: 'absolute',
                 left: '-2%',
-                top: DimensionUtils.SCREEN_HEIGHT * 0.12,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.18,
+                top: SCREEN_HEIGHT * 0.12,
                 width: '100%',
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginHorizontal: 10
             },
-            txt1: {
+            txtSumInvest: {
                 ...Styles.typography.medium,
-                color: COLORS.WHITE
-            },
-            txt2: {
-                ...Styles.typography.regular,
-                fontSize: Configs.FontSize.size24,
-                color: COLORS.WHITE
-            },
-            txt3: {
-                ...Styles.typography.regular,
                 color: COLORS.WHITE,
-                fontSize: Configs.FontSize.size12
+                fontSize: Configs.FontSize.size16
             },
-            txt4: {
+            txtSumInvestValue: {
                 ...Styles.typography.regular,
-                fontSize: Configs.FontSize.size16,
+                fontSize: Configs.FontSize.size32,
+                color: COLORS.WHITE
+            },
+            txtSumProfit: {
+                ...Styles.typography.regular,
+                color: COLORS.WHITE
+            },
+            txtVND: {
+                ...Styles.typography.regular,
+                fontSize: Configs.FontSize.size20,
                 color: COLORS.WHITE,
                 marginHorizontal: 2
             },
-            txt5: {
+            txtVNDSmall: {
                 ...Styles.typography.regular,
-                color: COLORS.BLACK,
-                fontSize: Configs.FontSize.size12
+                fontSize: Configs.FontSize.size10,
+                color: COLORS.WHITE,
+                marginHorizontal: 2
             },
-            txt7: {
-                ...Styles.typography.regular,
+            txtVPS: {
+                ...Styles.typography.medium,
                 fontSize: Configs.FontSize.size16,
+                color: COLORS.RED_2
+            },
+            txtForEachTitleQuestion: {
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_7,
+                marginRight: 8
+            },
+            txtTotalInterestReceived: {
+                ...Styles.typography.regular,
+                fontSize: Configs.FontSize.size20,
                 color: COLORS.WHITE,
                 marginHorizontal: 2,
                 marginRight: 5,
                 marginTop: 5
             },
-            txt6: {
+            txtTotalInterestExtant: {
                 ...Styles.typography.regular,
-                fontSize: Configs.FontSize.size16,
+                fontSize: Configs.FontSize.size20,
                 color: COLORS.WHITE,
                 marginHorizontal: 2,
                 marginLeft: 5,
                 marginTop: 5
+            },
+            txtTitleQuestion: {
+                ...Styles.typography.medium,
+                fontSize: Configs.FontSize.size16,
+                color: COLORS.GRAY_7,
+                paddingHorizontal: 16
             },
             txtLeft: {
                 marginLeft: '30%',
@@ -104,103 +113,56 @@ export const MyStylesHome = () => {
                 justifyContent: 'center',
                 alignItems: 'center'
             },
-            viewTop1: {
-                flexDirection: 'row',
-                height: DimensionUtils.SCREEN_HEIGHT * 0.08
+            wrapRow: {
+                flexDirection: 'row'
             },
-            viewTop2: {
+            viewSumInvestValue: {
                 flexDirection: 'row',
                 alignItems: 'flex-end',
                 justifyContent: 'center',
-                marginBottom: 5,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.045,
                 marginHorizontal: 30
             },
-            viewTop3: {
-                flexDirection: 'column',
+            wrapTotalInterest: {
                 alignItems: 'center',
-                marginHorizontal: 10,
-                marginVertical: 10,
+                marginVertical: 8,
                 width: '60%'
             },
-            viewTxt: {
-                paddingTop: 4
-                // alignItems: 'flex-end'
-            },
-            viewTxt1: {
-                paddingVertical: 5,
-                marginLeft: -35
-            },
-            viewTob: {
+            viewSmallMenu: {
                 ...Styles.shadow,
                 flexDirection: 'row',
-                width: '90%',
-                marginHorizontal: '5%',
-                height: DimensionUtils.SCREEN_HEIGHT * 0.08,
+                width: '92%',
+                paddingVertical: 8,
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 25,
-                justifyContent: 'center',
+                justifyContent: 'space-around',
                 alignItems: 'center',
                 position: 'absolute',
-                top: DimensionUtils.SCREEN_HEIGHT / 3.4
+                top: SCREEN_HEIGHT / 3.4
             },
-            tob: {
+            viewSmallMenuLogin: {
+                ...Styles.shadow,
+                flexDirection: 'row',
+                width: '92%',
+                backgroundColor: COLORS.WHITE,
+                borderRadius: 25,
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                position: 'absolute',
+                top: SCREEN_HEIGHT / 3.4
+            },
+            tab: {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center'
             },
-            txtTob: {
+            txtTab: {
                 ...Styles.typography.medium,
-                fontSize: Configs.FontSize.size10,
-                color: COLORS.GRAY
+                color: COLORS.GRAY_12,
+                paddingTop: 3
             },
             viewCenter: {
-                paddingHorizontal: 10,
+                paddingHorizontal: 16,
                 marginBottom: 20
-            },
-            item: {
-                width: '100%',
-                height: DimensionUtils.SCREEN_HEIGHT * 0.2,
-                borderRadius: 10,
-                backgroundColor: COLORS.WHITE,
-                marginVertical: 5,
-                padding: 5
-            },
-            itemChild: {
-                flex: 1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                padding: 5
-            },
-            itemRight: {
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-                position: 'absolute',
-                right: 5
-            },
-            itemLeft: {
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-                position: 'absolute',
-                left: 5
-            },
-            viewTobRight: {
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-                right: 8
-            },
-            tobItem: {
-                width: DimensionUtils.SCREEN_WIDTH * 0.3,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.04,
-                backgroundColor: COLORS.GREEN,
-                borderRadius: 15,
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row'
             },
             more: {
                 width: '100%',
@@ -212,33 +174,23 @@ export const MyStylesHome = () => {
                 flexDirection: 'row',
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 15,
-                paddingHorizontal: 20,
+                paddingHorizontal: 16,
                 justifyContent: 'space-between',
-                alignItems:'center'
-            },
-            logoVfs: {
-                padding: 20,
-                left: 10
+                alignItems: 'center',
+                paddingVertical: 8
             },
             txtVfs: {
                 flex: 1,
                 flexDirection: 'column',
                 paddingLeft: 20
             },
-            viewBottom: {
+            wrapManualQuestion: {
                 ...Styles.shadow,
-                flexDirection: 'column',
                 width: '100%',
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 15,
-                justifyContent: 'flex-start',
-                alignItems: 'flex-start',
-                marginVertical: 10,
-                padding: 10
-            },
-            icon: {
-                justifyContent: 'flex-end',
-                alignItems: 'center'
+                marginVertical: 20,
+                paddingVertical: 10
             },
             txtQuestion: {
                 flex: 1,
@@ -247,19 +199,14 @@ export const MyStylesHome = () => {
                 alignItems: 'center'
             },
             txtQuestionTop: {
-                flex: 1.2,
+                flex: 1,
                 flexDirection: 'row',
                 paddingVertical: 5,
                 alignItems: 'center'
             },
             viewTxtBottom: {
-                width: '95%'
-            },
-            viewFlatList: {
-                marginBottom: 0,
-            },
-            footerFlatList: {
-                marginHorizontal: 5
+                width: '100%',
+                paddingHorizontal: 16
             },
             txtLogin: {
                 fontSize: Configs.FontSize.size16,
@@ -270,21 +217,22 @@ export const MyStylesHome = () => {
             tobAuth: {
                 flex: 1,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingVertical: 20
             },
             txtHello: {
-                fontFamily: Configs.FontFamily.bold,
+                fontFamily: Configs.FontFamily.medium,
                 fontSize: Configs.FontSize.size20,
                 color: COLORS.WHITE
             },
             txtName: {
-                fontFamily: Configs.FontFamily.bold,
-                fontSize: Configs.FontSize.size24,
+                fontFamily: Configs.FontFamily.medium,
+                fontSize: Configs.FontSize.size32,
                 color: COLORS.WHITE
             },
             txtInvest: {
-                fontFamily: Configs.FontFamily.bold,
-                fontSize: Configs.FontSize.size18,
+                fontFamily: Configs.FontFamily.medium,
+                fontSize: Configs.FontSize.size20,
                 color: COLORS.WHITE
             },
             viewForeground: {
@@ -297,11 +245,14 @@ export const MyStylesHome = () => {
                 right: 10
             },
             logo: {
-                marginLeft: DimensionUtils.SCREEN_WIDTH * 0.05
+                marginLeft: SCREEN_WIDTH * 0.05
             },
             imgNotify: {
-                width: DimensionUtils.SCREEN_WIDTH * 0.08,
-                height: DimensionUtils.SCREEN_WIDTH * 0.08
+                width: SCREEN_WIDTH * 0.08
+            },
+            featureContainer: {
+                width: '100%',
+                paddingVertical: 6
             }
         }
         ), []);

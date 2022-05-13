@@ -25,7 +25,7 @@ function formatDatePicker(date: number) { return Moment(date * 1000).utc(true).f
 
 function formatDateSecondPicker(date: number) { return Moment(date).utc(true).format(DEFAULT_DATE_FORMAT); }
 
-function formatMMDDYYYYPicker(date: number) { return Moment(date).utc(true).format(FULL_DATE_FORMAT_MM_BEFORE); }
+function formatMMDDYYYYPicker(date: any) { return Moment(date).utc(true).format(FULL_DATE_FORMAT_MM_BEFORE); }
 
 function getCurrentDateTime() { return Moment(Moment().valueOf()).utc(true).format(FULL_DATE_FORMAT); }
 

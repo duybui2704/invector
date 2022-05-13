@@ -19,9 +19,13 @@ import { styles } from './styles';
 import NoData from '@/components/NoData';
 import DateUtils from '@/utils/DateUtils';
 import Loading from '@/components/loading';
+import SessionManager from '@/manager/SessionManager';
+import Navigator from '@/routers/Navigator';
+import ScreenName from '@/common/screenNames';
 
 const Transaction = observer(() => {
-    const { apiServices } = useAppStore();
+    const { apiServices, fastAuthInfoManager} = useAppStore();
+    const { supportedBiometry } = fastAuthInfoManager;
     const isFocused = useIsFocused();
     const [isFreshing, setIsFreshing] = useState<boolean>(true);
     const [dataHistory, setDataHistory] = useState<TransactionModel[]>([]);
@@ -38,7 +42,12 @@ const Transaction = observer(() => {
         option: TransactionTypes[0].type
     });
     const [selectedFilter, setSelectedFilter] = useState<string>(condition.current.option || '');
-
+    
+    useEffect(() => {
+        if (!SessionManager.accessToken || !supportedBiometry) {
+            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
+        }
+    }, [supportedBiometry]);
 
     useEffect(() => {
         if (isFocused) {

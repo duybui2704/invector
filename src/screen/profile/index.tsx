@@ -70,8 +70,8 @@ const Profile = observer(() => {
     const popupLogout = useRef<PopupActionTypes>();
 
     useEffect(() => {
-        if (!supportedBiometry || !SessionManager.accessToken) {
-            Navigator.pushScreen(ScreenName.auth);
+        if (!SessionManager.accessToken || !supportedBiometry) {
+            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
     }, [supportedBiometry]);
 

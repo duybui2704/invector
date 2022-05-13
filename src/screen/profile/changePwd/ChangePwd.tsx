@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
 
 import { Events } from '@/common/constants';
 import Languages from '@/common/Languages';
@@ -18,7 +18,7 @@ import FormValidate from '@/utils/FormValidate';
 import ToastUtils from '@/utils/ToastUtils';
 import { MyStylesChangePwd } from './styles';
 import arrayIcon from '@/common/arrayIcon';
-
+import { isIOS } from '@/common/Configs';
 
 const ChangePwd = observer(() => {
     const styles = MyStylesChangePwd();
@@ -59,7 +59,7 @@ const ChangePwd = observer(() => {
                 <MyTextInput
                     ref={_ref}
                     placeHolder={_placeHolder}
-                    containerInput={disabled ? styles.containerStyle : styles.containerDisableStyle}
+                    containerInput={!disabled ? styles.containerStyle : styles.containerDisableStyle}
                     inputStyle={styles.inputStyle}
                     isPassword={true}
                     inputStylePwDIcon={styles.pwd}
@@ -69,6 +69,7 @@ const ChangePwd = observer(() => {
                     onChangeText={onChange}
                     hasUnderline={false}
                     rightIcon={arrayIcon.login.pass}
+                    disabled={disabled}
                 />
             </View>;
         }
@@ -109,12 +110,12 @@ const ChangePwd = observer(() => {
             <View style={styles.container}>
                 <HeaderBar
                     title={hasPass ? Languages.changePwd.title : Languages.changePwd.title} hasBack />
-                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'}>
                     <ScrollView>
                         <View style={styles.group}>
-                            {renderInput(Languages.changePwd.oldPass, Languages.changePwd.placeOldPass, oldPwd, oldRef, !hasPass, true)}
-                            {renderInput(Languages.changePwd.newPass, Languages.changePwd.placeNewPass, newPwd, newRef, true, true)}
-                            {renderInput(Languages.changePwd.currentNewPass, Languages.changePwd.currentNewPass, currentNewPwd, currentRef, true, !!newPwd)}
+                            {renderInput(Languages.changePwd.oldPass, Languages.changePwd.placeOldPass, oldPwd, oldRef, !hasPass, false)}
+                            {renderInput(Languages.changePwd.newPass, Languages.changePwd.placeNewPass, newPwd, newRef, true, false)}
+                            {renderInput(Languages.changePwd.currentNewPass, Languages.changePwd.currentNewPass, currentNewPwd, currentRef, true, !newPwd)}
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>

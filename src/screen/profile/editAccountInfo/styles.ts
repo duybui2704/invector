@@ -31,7 +31,12 @@ export const MyStylesEditAccountInfo = () => {
                 paddingHorizontal: 16,
                 paddingBottom: 5
             },
-        
+            wrapBirthday: {
+                justifyContent: 'space-between',
+                width: '100%',
+                paddingHorizontal: 16,
+                paddingBottom: 7
+            },
             accuracyWrap: {
                 width: '100%',
                 borderRadius: 70,
@@ -72,6 +77,20 @@ export const MyStylesEditAccountInfo = () => {
             labelStyle: {
                 ...Styles.typography.regular,
                 color: COLORS.GRAY_7
+            },
+            labelBirthdayStyle: {
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_7,
+                paddingBottom: 8
+            },
+            placeHolderBirthday:{
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_6,
+                paddingVertical: 4
+            },
+            placeHolderValueBirthday:{
+                ...Styles.typography.regular,
+                paddingVertical: 4
             }
         });
     }, []);

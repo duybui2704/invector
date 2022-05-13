@@ -1,19 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import Dash from 'react-native-dash';
-import { useIsFocused } from '@react-navigation/core';
-import { join } from 'lodash';
+import { useIsFocused } from '@react-navigation/native';
 
 import { ENUM_INVEST_NOTIFY } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import MyFlatList from '@/components/MyFlatList';
-import { COLORS, Styles } from '@/theme';
-import { MyStylesNotifyInvest } from './styles';
 import { useAppStore } from '@/hooks';
 import { Notify } from '@/models/invest';
-import MyStyleLoading from '@/components/loading/styles';
+import { COLORS, Styles } from '@/theme';
+import { MyStylesNotifyInvest } from './styles';
 
 export const NotifyInvest = () => {
     const styles = MyStylesNotifyInvest();
@@ -57,13 +55,13 @@ export const NotifyInvest = () => {
 
             }
         }
-    }, [btnInvest]);
+    }, [apiServices.invest]);
 
     const onRefresh = useCallback(() => {
         setIsRefreshing(true);
         setIsRefreshing(false);
         fetchData(btnInvest);
-    }, []);
+    }, [btnInvest, fetchData]);
 
     const renderInvest = useCallback((type: string) => {
 
@@ -97,7 +95,7 @@ export const NotifyInvest = () => {
             </Touchable>
         );
 
-    }, [btnInvest]);
+    }, [btnInvest, fetchData, styles.btInvest, styles.txtBtInvest]);
 
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
@@ -140,7 +138,7 @@ export const NotifyInvest = () => {
 
             </Touchable >
         );
-    }, []);
+    }, [apiServices.invest, styles.item, styles.rowTop, styles.title, styles.txtNote, styles.txtRight, styles.txtTimeDate, styles.viewLeft]);
 
     const onNotifyDetail = () => {
         console.log('detail');
@@ -155,10 +153,10 @@ export const NotifyInvest = () => {
             default:
                 return null;
         }
-    }, [btnInvest]);
+    }, [ItemNotify, btnInvest]);
 
     return (
-        <View style={styles.main}>
+        <View style={styles.container}>
             <HeaderBar title={Languages.invest.notify} hasBack />
             <View style={styles.wrapContent}>
                 <View style={styles.investTab}>

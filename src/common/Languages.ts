@@ -32,7 +32,7 @@ const Languages = {
         investNow: 'Đầu tư ngay',
         more: 'Xem thêm',
         stockVfs: 'Chứng khoán VFS',
-        question: 'Các câu hỏi thường gặp',
+        question: 'Câu hỏi thường gặp',
         signFree: 'Đăng ký mở tài khoản miễn phí',
         todoInvest: 'Làm thế nào để đầu tư vào Tienngay.vn?',
         todoWithDrawMoney: 'Làm thế nào để rút tiền từ Tienngay.vn?',
@@ -269,7 +269,8 @@ const Languages = {
         edit: 'Chỉnh sửa',
         save: 'Lưu lại',
         editAcc: 'Chỉnh sửa thông tin',
-        successEdit: 'Chỉnh sửa thông tin thành công'
+        successEdit: 'Chỉnh sửa thông tin thành công',
+        chooseAvatarUser: 'Chọn hình đại diện ứng dụng'
     },
     accountIdentify: {
         accountIdentify: 'Xác thực tài khoản',

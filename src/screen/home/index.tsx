@@ -9,11 +9,9 @@ import { LINKS } from '@/api/constants';
 import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
 import IcChevronRight from '@/assets/image/home/ic_chevron_right.svg';
 import IcDollar from '@/assets/image/home/ic_dollar.svg';
-import IcLine from '@/assets/image/home/ic_line_home.svg';
 import IcSmartPhone from '@/assets/image/home/ic_smartphone.svg';
 import IcWallet from '@/assets/image/home/ic_wallet.svg';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
-import { Configs } from '@/common/Configs';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
@@ -35,16 +33,19 @@ import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import LogoHome from '../../assets/image/header/logo_home.svg';
 import NotificationListening from './NotificationListening';
 import { MyStylesHome } from './styles';
+import KeyValue from '@/components/KeyValue';
 
 const Home = observer(() => {
+    const { apiServices, fastAuthInfoManager } = useAppStore();
+    const {supportedBiometry} = fastAuthInfoManager;
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
+    const [hasUserInfo, setHasuserInfo] = useState<boolean>(!!SessionManager.accessToken);
     const isFocused = useIsFocused();
     const styles = MyStylesHome();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [banners, setBanners] = useState<BannerModel[]>();
     const [dataArr, setDataArr] = useState<PackageInvest[]>();
     const [dataDash, setDataDash] = useState<DashBroad>();
-    const { apiServices } = useAppStore();
 
     useEffect(() => {
         setTimeout(() => {
@@ -58,6 +59,10 @@ const Home = observer(() => {
         fetchDataBanner();
     }, []);
 
+    const onOpenVPS = useCallback(() => {
+        Utils.openURL(LINKS.VPS);
+    }, []);
+
     const fetchDataInvest = useCallback(async () => {
         setIsLoading(true);
         const resInvest = await apiServices.common.getListInvest();
@@ -68,7 +73,6 @@ const Home = observer(() => {
             setDataArr(temp);
         }
     }, [apiServices.common]);
-
 
     const fetchContractsDash = useCallback(async () => {
         setIsLoading(true);
@@ -91,42 +95,25 @@ const Home = observer(() => {
         }
     }, [apiServices.common]);
 
-    const gotoInvestHistory = () => {
-
-        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVESTING });
-    };
-
     const gotoInvest = () => {
         Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVEST_NOW });
     };
 
-    const gotoReport = () => {
-        Navigator.navigateScreen(TabsName.reportTabs);
-    };
-
-    const gotoPayment = () => {
-        Navigator.navigateScreen(TabsName.paymentTabs);
-    };
-
-    const onOpenVPS = useCallback(() => {
-        Utils.openURL(LINKS.VPS);
-    }, []);
-
-    const navigateToDetail = useCallback((item: any) => {
-        if (SessionManager.accessToken) {
+    const navigateToDetail = useCallback((item: PackageInvest) => {
+        if (hasUserInfo || !supportedBiometry) {
             Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, [btnInvest]);
+    }, [btnInvest, hasUserInfo, supportedBiometry]);
 
-    const navigateToInvestNow = useCallback((item: any) => {
-        if (SessionManager.accessToken) {
+    const navigateToInvestNow = useCallback((item: PackageInvest) => {
+        if (hasUserInfo || !supportedBiometry) {
             Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.invest, { status: btnInvest, id: item?.id });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, [btnInvest]);
+    }, [btnInvest, hasUserInfo, supportedBiometry]);
 
     const gotoLogin = useCallback((titleAuth: string) => {
         setTimeout(() => {
@@ -134,20 +121,20 @@ const Home = observer(() => {
         }, 1000);
     }, []);
 
+    const renderNavigateScreen = useCallback((title: string) => {
+        const onPress = () => {
+            return gotoLogin(title);
+        };
+        return (
+            <Touchable style={styles.tobAuth} onPress={onPress}>
+                <Text style={styles.txtLogin}>{title}</Text>
+            </Touchable>
+        );
+    }, [gotoLogin, styles.tobAuth, styles.txtLogin]);
+
     const onNotifyInvest = useCallback(() => {
         Navigator.navigateScreen(ScreenName.notifyInvest);
     }, []);
-
-    const renderItem = useCallback((item: any) => {
-        return (
-            <ItemInvest
-                onPress={() => navigateToDetail(item)}
-                onPressInvestNow={() => navigateToInvestNow(item)}
-                data={item}
-                title={ENUM_INVEST_STATUS.INVEST_NOW}
-            />
-        );
-    }, [navigateToDetail, navigateToInvestNow]);
 
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
@@ -156,113 +143,90 @@ const Home = observer(() => {
     const iconTouchable = useCallback((title: string) => {
         switch (title) {
             case Languages.home.have:
-                return <IcWallet width={20} height={20} />;
+                return <IcWallet />;
             case Languages.home.invest:
-                return <IcDollar width={20} height={20} />;
+                return <IcDollar />;
             case Languages.home.report:
-                return <IcChartUp width={20} height={20} />;
+                return <IcChartUp />;
             case Languages.home.payment:
-                return <IcSmartPhone width={20} height={20} />;
+                return <IcSmartPhone />;
             default:
                 return null;
         }
     }, []);
 
-    const renderIconTob = useCallback((gotoScreen: any, title: string) => {
+    const renderIconTab = useCallback((title: string) => {
+        const onPress = () => {
+            switch (title) {
+                case Languages.home.have:
+                    return Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVESTING });
+                case Languages.home.invest:
+                    return gotoInvest();
+                case Languages.home.report:
+                    return Navigator.navigateScreen(TabsName.reportTabs);
+                case Languages.home.payment:
+                    return Navigator.navigateScreen(TabsName.paymentTabs);
+                default:
+                    return null;
+            }
+        };
         return (
-            <Touchable style={styles.tob} onPress={gotoScreen}>
+            <Touchable style={styles.tab} onPress={onPress}>
                 {iconTouchable(title)}
-                <Text style={styles.txtTob}>{title}</Text>
+                <Text style={styles.txtTab}>{title}</Text>
             </Touchable>
         );
-    }, [iconTouchable, styles.tob, styles.txtTob]);
+    }, [iconTouchable, styles.tab, styles.txtTab]);
 
-    const renderTobBottom = useCallback((text: string) => {
+    const renderTabBottom = useCallback((text: string, hasDash?: boolean) => {
         return (
-            <Touchable style={styles.txtQuestion}>
-                <View style={styles.viewTxtBottom}>
-                    <Text style={styles.txt5}>{text}</Text>
-                </View>
-                <Touchable style={styles.icon}>
-                    <IcChevronRight width={20} height={20} />
-                </Touchable>
-            </Touchable>
+            <KeyValue
+                title={text}
+                noIndicator
+                hasDashBottom={hasDash}
+                rightIcon={<IcChevronRight />}
+                styleTitle={styles.txtForEachTitleQuestion}
+                containerContent={styles.featureContainer}
+                disable={true}
+            />
         );
-    }, [styles.icon, styles.txt5, styles.txtQuestion, styles.viewTxtBottom]);
+    }, [styles.featureContainer, styles.txtForEachTitleQuestion]);
 
-    const renderFooter = useCallback(() => {
-        return (
-            <>
-                {dataArr && <Touchable style={styles.more} onPress={gotoInvest}>
-                    <Text style={[styles.txt5, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
-                </Touchable>
-                }
-                <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
-                    <LogoVfs width={90} height={90} />
-                    <View style={styles.txtVfs}>
-                        <Text style={[styles.txt4, { color: COLORS.RED_2 }]}>{Languages.home.stockVfs}</Text>
-                        <Text style={styles.txt5}>{Languages.home.signFree}</Text>
-                    </View>
-                </Touchable>
-                {banners && <Banner banners={banners} />}
-                <View style={styles.viewBottom}>
-                    <View style={styles.txtQuestionTop}><Text
-                        style={styles.txt}>{Languages.home.question}</Text></View>
-                    {renderTobBottom(Languages.home.todoInvest)}
-                    <IcLine width={'100%'} />
-                    {renderTobBottom(Languages.home.investNow)}
-                    <IcLine width={'100%'} />
-                    {renderTobBottom(Languages.home.percentCalculated)}
-                    <IcLine width={'100%'} />
-                    {renderTobBottom(Languages.home.paymentMethod)}
-                </View></>
-        );
-    }, [banners, dataArr, onOpenVPS, renderTobBottom, styles.logoVfs, styles.more, styles.txt, styles.txt4, styles.txt5, styles.txtQuestionTop, styles.txtVfs, styles.viewBottom, styles.viewVfs]);
-
-    const renderViewFooter = useMemo(() => {
+    const renderTop = useMemo(() => {
         return (
             <View style={styles.viewForeground}>
                 <View style={styles.viewTopLogo}>
-                    <LogoHome
-                        width={SCREEN_HEIGHT * 0.18}
-                        height={SCREEN_HEIGHT * 0.18}
-                        style={styles.logo}
-                    />
+                    <LogoHome style={styles.logo} />
                     <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
-                        <IcNotify style={styles.imgNotify} width={30} height={30} />
+                        <IcNotify style={styles.imgNotify} />
                     </Touchable>
                 </View>
-                {SessionManager.accessToken ?
+                {hasUserInfo || !supportedBiometry?
                     <View style={styles.viewTop}>
-                        <Text style={styles.txt1}>{Languages.home.sumInvest}</Text>
-                        <View style={styles.viewTop2}>
-                            <Text style={styles.txt2} numberOfLines={1}>
+                        <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
+                        <View style={styles.viewSumInvestValue}>
+                            <Text style={styles.txtSumInvestValue} numberOfLines={1}>
                                 {Utils.formatMoney(dataDash?.so_du)}
-                                <Text style={styles.txt4}> {Languages.home.vnd}</Text>
+                                <Text style={styles.txtVND}> {Languages.home.vnd}</Text>
                             </Text>
                         </View>
-                        <View style={styles.viewTop1}>
-                            <View style={styles.viewTop3}>
+                        <View style={styles.wrapRow}>
+                            <View style={styles.wrapTotalInterest}>
                                 <View style={styles.txtLeft}>
-                                    <Text style={styles.txt3}>{Languages.home.sumpProfit}</Text>
-                                    <Text style={styles.txt7} numberOfLines={1}
-                                    >
-                                        {Utils.formatMoney(dataDash?.tong_goc_da_tra)}{ }
-                                        <Text style={
-                                            [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
-                                        >{Languages.home.vnd}</Text>
+                                    <Text style={styles.txtSumProfit}>{Languages.home.sumpProfit}</Text>
+                                    <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+
+                                        {Utils.formatMoney(dataDash?.tong_goc_da_tra)}
+                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
                                     </Text>
                                 </View>
                             </View>
-                            <View style={styles.viewTop3}>
+                            <View style={styles.wrapTotalInterest}>
                                 <View style={styles.txtRight}>
-                                    <Text style={styles.txt3}>{Languages.home.sumResidualProfit}</Text>
-                                    <Text style={styles.txt6} numberOfLines={1}>
+                                    <Text style={styles.txtSumProfit}>{Languages.home.sumResidualProfit}</Text>
+                                    <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
                                         {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
-                                        <Text style={
-                                            [styles.txt4, { fontSize: Configs.FontSize.size10 }]}
-                                        >{Languages.home.vnd}</Text>
-
+                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
                                     </Text>
                                 </View>
                             </View>
@@ -274,54 +238,97 @@ const Home = observer(() => {
                         <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
                         <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
                     </View>}
-                {SessionManager.accessToken ?
-                    <View style={styles.viewTob}>
-                        {renderIconTob(gotoInvestHistory, Languages.home.have)}
-                        {renderIconTob(gotoInvest, Languages.home.invest)}
-                        {renderIconTob(gotoReport, Languages.home.report)}
-                        {renderIconTob(gotoPayment, Languages.home.payment)}
+                {hasUserInfo || !supportedBiometry?
+                    <View style={styles.viewSmallMenu}>
+                        {renderIconTab(Languages.home.have)}
+                        {renderIconTab(Languages.home.invest)}
+                        {renderIconTab(Languages.home.report)}
+                        {renderIconTab(Languages.home.payment)}
                     </View>
                     :
-                    <View style={styles.viewTob}>
-                        <Touchable style={styles.tobAuth} onPress={() => gotoLogin(Languages.auth.txtLogin)}>
-                            <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
-                        </Touchable>
-                        <Touchable style={styles.tobAuth} onPress={() => gotoLogin(Languages.auth.txtSignUp)}>
-                            <Text style={styles.txtLogin}>{Languages.auth.txtSignUp}</Text>
-                        </Touchable>
+                    <View style={styles.viewSmallMenuLogin}>
+                        {renderNavigateScreen(Languages.auth.txtLogin)}
+                        {renderNavigateScreen(Languages.auth.txtSignUp)}
                     </View>}
             </View>
         );
-    }, [dataDash?.so_du, dataDash?.tong_goc_da_tra, dataDash?.tong_lai_con_lai, gotoLogin, onNotifyInvest, renderIconTob, styles.imgNotify, styles.logo, styles.tobAuth, styles.txt1, styles.txt2, styles.txt3, styles.txt4, styles.txt6, styles.txt7, styles.txtHello, styles.txtInvest, styles.txtLeft, styles.txtLogin, styles.txtName, styles.txtRight, styles.viewForeground, styles.viewRightTop, styles.viewTob, styles.viewTop, styles.viewTop1, styles.viewTop2, styles.viewTop3, styles.viewTopCenter, styles.viewTopLogo]);
+    }, [styles.viewForeground, styles.viewTopLogo, styles.logo, styles.viewRightTop, styles.imgNotify, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValue, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenu, styles.viewSmallMenuLogin, onNotifyInvest, hasUserInfo, supportedBiometry, dataDash?.so_du, dataDash?.tong_goc_da_tra, dataDash?.tong_lai_con_lai, renderIconTab, renderNavigateScreen]);
+
+    const renderFooter = useMemo(() => {
+        return (
+            <>
+                {dataArr && <Touchable style={styles.more} onPress={gotoInvest}>
+                    <Text style={[styles.txtForEachTitleQuestion, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
+                </Touchable>
+                }
+                <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
+                    <LogoVfs />
+                    <View style={styles.txtVfs}>
+                        <Text style={styles.txtVPS}>{Languages.home.stockVfs}</Text>
+                        <Text style={styles.txtForEachTitleQuestion}>{Languages.home.signFree}</Text>
+                    </View>
+                </Touchable>
+                {banners && <Banner banners={banners} />}
+                <View style={styles.wrapManualQuestion}>
+                    <Text style={styles.txtTitleQuestion}>{Languages.home.question}</Text>
+                    {renderTabBottom(Languages.home.todoInvest, true)}
+                    {renderTabBottom(Languages.home.investNow, true)}
+                    {renderTabBottom(Languages.home.percentCalculated, true)}
+                    {renderTabBottom(Languages.home.paymentMethod, false)}
+                </View>
+            </>
+        );
+    }, [dataArr, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.wrapManualQuestion, styles.txtTitleQuestion, onOpenVPS, banners, renderTabBottom]);
+
+
+    const renderItem = useCallback((item: any) => {
+        const onPressToInvestNow = () => {
+            return navigateToInvestNow(item);
+        };
+        const onPressToDetail = () => {
+            return navigateToDetail(item);
+        };
+        return (
+            <ItemInvest
+                onPress={onPressToDetail}
+                onPressInvestNow={onPressToInvestNow}
+                data={item}
+                title={ENUM_INVEST_STATUS.INVEST_NOW}
+            />
+        );
+    }, [navigateToDetail, navigateToInvestNow]);
+
+    const renderItemInvestPackage = useCallback((item: any) => {
+        return renderItem(item?.item);
+    }, [renderItem]);
 
     const renderContent = useMemo(() => {
         return (
             <View style={styles.viewCenter}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
                 <FlatList
-                    style={styles.viewFlatList}
                     data={dataArr}
-                    renderItem={(item) => renderItem(item.item)}
+                    renderItem={renderItemInvestPackage}
                     ListFooterComponent={renderFooter}
-                    ListFooterComponentStyle={styles.footerFlatList}
                     keyExtractor={keyExtractor}
                     nestedScrollEnabled
-                /> 
+                />
             </View>
         );
-    }, [dataArr, keyExtractor, renderFooter, renderItem, styles.txtCenter, styles.viewCenter, styles.viewFlatList]);
+    }, [dataArr, keyExtractor, renderFooter, renderItemInvestPackage, styles.txtCenter, styles.viewCenter]);
+
 
     const renderBackground = () => {
         return (<HeaderBar exitApp imageBackground />);
     };
 
     const renderForeground = () => {
-        return (renderViewFooter);
+        return (renderTop);
     };
 
     return (
         <NotificationListening>
-            <View style={styles.main}>
+            <View style={styles.container}>
                 <StatusBar
                     barStyle={'light-content'}
                     animated

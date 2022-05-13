@@ -22,7 +22,8 @@ type PickerProps = {
     containerStyle?: ViewStyle;
     onPressItem?: (item: any) => void;
     data?: ItemProps[];
-    label?:string;
+    label?: string;
+    title?: string;
     disable?: boolean;
     image?: any;
     icon?: any;
@@ -46,6 +47,7 @@ const PhotoPickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
             label,
             hasDash,
             icon,
+            title,
             imageSource,
             containerImage
         }: PickerProps,
@@ -91,6 +93,8 @@ const PhotoPickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
                     ref={bottomSheetRef}
                     data={data}
                     onPressItem={onPressItem}
+                    title={label || title}
+                    hasDash={true}
                 />
             </View>
         );
