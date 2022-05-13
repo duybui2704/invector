@@ -85,14 +85,12 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
         const renderItem = useCallback(
             ({ item }: any) => {
                 const onPress = () => {
-                    // alert('11');
-                    // console.log('dđ');
-                    // onPressItem?.(item.value, title);
-                    bottomSheetRef?.current?.dismiss();
-                    // hide();
+                    console.log('fdfdfd');
+                    hide();
+                    onPressItem?.(item, title);
                 };
                 return (
-                    <Touchable onPress={hide} style={styles.valueContainer}>
+                    <Touchable onPress={onPress} style={styles.valueContainer}>
                         <View style={styles.row}>
                             <Text style={styles.value}>
                                 {item.value}

@@ -1,3 +1,5 @@
+import { ItemProps } from '../bottomSheet';
+
 export type PopupProps = {
     onClose?: () => any;
     onConfirm?: (txt1: string, txt2: string) => any;
@@ -9,8 +11,9 @@ export type PopupProps = {
     title?: string,
     data?: [],
     value?: string,
-    openBottomSheet?: (type: string) => void
-
+    openBottomSheet?: (type: string) => void,
+    timeInvestment?:ItemProps,
+    moneyInvestment?:ItemProps
 };
 
 export type PopupActions = {

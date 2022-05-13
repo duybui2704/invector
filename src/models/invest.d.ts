@@ -65,7 +65,9 @@ export interface PagingCoditionTypes {
     offset: number
     isLoading: boolean,
     canLoadMore: boolean,
-    timeInvestment: string
+    timeInvestment: string,
+    moneyInvestment: string,
+    textSearch: string
 }
 
 

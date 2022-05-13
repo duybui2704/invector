@@ -13,19 +13,36 @@ import { MyStylePupUp } from '@/components/popupInvest/styles';
 import { useAppStore } from '@/hooks';
 import { arrMoney, arrMonth } from '@/mocks/data';
 import { COLORS } from '@/theme';
-import { PopupActions, PopupProps } from './types';
+import { PopupActions } from './types';
+
+export type PopupFilterProps = {
+    onClose?: () => any;
+    onConfirm?: (txt1: string, txt2: string) => any;
+    onChange?: (value: string, title: string) => any;
+    onBackdropPress?: () => any;
+    content?: string;
+    btnText?: string;
+    description?: string;
+    title?: string,
+    data?: [],
+    value?: string,
+    openBottomSheet?: (type: string) => void,
+    timeInvestment?:ItemProps,
+    moneyInvestment?:ItemProps
+};
 
 
-
-const PopupStatus = forwardRef<PopupActions, PopupProps>(
+const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
     ({
         onConfirm,
         onClose,
         title,
         description,
         data,
-        openBottomSheet
-    }: PopupProps, ref) => {
+        openBottomSheet,
+        timeInvestment,
+        moneyInvestment
+    }: PopupFilterProps, ref) => {
 
         const styles = MyStylePupUp();
         const [visible, setVisible] = useState<boolean>(false);
@@ -37,6 +54,7 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
         const refBottomSheetMoney = useRef<any>(null);
         const refBottomSheetMonth = useRef<any>(null);
         const [picker, setPicker] = useState<boolean>(false);
+        console.log('timeInvestment',timeInvestment);
         const {
             common
         } = useAppStore();
@@ -117,8 +135,8 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
             >
                 <View style={styles.viewFL}>
                     <Text style={styles.textModel}>{title}</Text>
-                    {renderItem(refMonth, month, Languages.invest.monthInvest)}
-                    {renderItem(refMoney, money, Languages.invest.chooseMoney)}
+                    {renderItem(refMonth, timeInvestment?.value, Languages.invest.monthInvest)}
+                    {renderItem(refMoney, moneyInvestment?.value, Languages.invest.chooseMoney)}
                     <View style={styles.viewBottom}>
                         <Touchable style={styles.tobConfirm} onPress={actionYes}>
                             <Text style={styles.textConfirm}>{Languages.invest.search}</Text>
@@ -130,7 +148,6 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
                         </Touchable>
                     </View>
                 </View>
-
             </Modal>
 
         );
@@ -138,5 +155,5 @@ const PopupStatus = forwardRef<PopupActions, PopupProps>(
 )
     ;
 
-export default PopupStatus;
+export default PopupFilter;
 
