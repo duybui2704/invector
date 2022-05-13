@@ -6,9 +6,9 @@ import React, {
     useImperativeHandle,
     useState
 } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
 import DatePicker, { DatePickerProps } from 'react-native-date-picker';
-import { useIsFocused } from '@react-navigation/core';
+import { useIsFocused } from '@react-navigation/native';
 
 import ICCalender from '@/assets/image/ic_calender.svg';
 import { Configs } from '@/common/Configs';
@@ -23,6 +23,9 @@ interface DatePickerTransactionProps extends DatePickerProps {
   onConfirmDatePicker?: (date: Date,tag?:string) => void;
   onCancelDatePicker?: () => void;
   onDateChangeDatePicker?: (date: Date, tag?: string) => void;
+  placeHolderStyle?: TextStyle;
+  containerDate?: ViewStyle;
+  errMessage?: string;
 }
 
 type DatePickerTransactionActions = {
@@ -40,7 +43,10 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
             maximumDate,
             minimumDate,
             onCancel,
-            date
+            date,
+            placeHolderStyle,
+            containerDate,
+            errMessage
         }: DatePickerTransactionProps,
         ref
     ) => {
@@ -90,8 +96,8 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
 
         return (
             <>
-                <Touchable style={styles.itemPicker} onPress={show}>
-                    <Text style={styles.placeholderDate}>
+                <Touchable style={[styles.itemPicker, containerDate]} onPress={show}>
+                    <Text style={[styles.placeholderDate, placeHolderStyle]}>
                         {dateValue && !common.refresh ? DateUtils.formatMMDDYYYYPicker(dateValue) : title}
                     </Text>
                     <ICCalender/>
@@ -112,6 +118,7 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
                         cancelText={Languages.common.cancel}
                     />
                 </Touchable>
+                {!!errMessage && <Text style={styles.errText}>{errMessage}</Text>}
             </>
         );
     }
@@ -136,5 +143,12 @@ const styles = StyleSheet.create({
         ...Styles.typography.regular,
         color: COLORS.GRAY_6,
         fontSize: Configs.FontSize.size12
+    },
+    errText:{
+        ...Styles.typography.medium,
+        color: COLORS.RED,
+        fontSize: Configs.FontSize.size12,
+        paddingLeft: 10,
+        marginTop:4
     }
 });

@@ -18,10 +18,14 @@ import { OverviewMonthOfQuarterModal, TotalOfQuarterModal } from '@/models/month
 import DateUtils from '@/utils/DateUtils';
 import Utils from '@/utils/Utils';
 import { MyStylesReport } from './styles';
+import ScreenName from '@/common/screenNames';
+import Navigator from '@/routers/Navigator';
+import SessionManager from '@/manager/SessionManager';
 
 const Report = observer(() => {
     const styles = MyStylesReport();
-    const { apiServices } = useAppStore();
+    const { apiServices, fastAuthInfoManager } = useAppStore();
+    const { supportedBiometry } = fastAuthInfoManager;
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [quarter, setQuarter] = useState<string>(DateUtils.getCurrentQuarter().toString());
     const [quarterList, setQuarterList] = useState<ItemProps[]>([]);
@@ -30,13 +34,19 @@ const Report = observer(() => {
     const [dataChart, setDataChart] = useState<OverviewMonthOfQuarterModal[]>([]);
     const quarterRef = useRef<BottomSheetModal>(null);
     const yearRef = useRef<BottomSheetModal>(null);
-    const [total, setTotal] =  useState<TotalOfQuarterModal>();
+    const [total, setTotal] = useState<TotalOfQuarterModal>();
     const isFocused = useIsFocused();
     const [reportList, setReportList] = useState<OverviewMonthOfQuarterModal[]>();
 
     const keyExtractor = useCallback((item?: OverviewMonthOfQuarterModal, index?: any) => {
         return `${item?.month}${index}`;
     }, []);
+
+    useEffect(() => {
+        if (!SessionManager.accessToken || !supportedBiometry) {
+            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
+        }
+    }, [supportedBiometry]);
 
     useEffect(() => {
         if (isFocused) {
@@ -71,14 +81,14 @@ const Report = observer(() => {
         const res = await apiServices.report.requestFinanceReport(quarter.substring(4), year);
         if (res.success) {
             setIsLoading(false);
-            const dataMonths =  res?.data as OverviewMonthOfQuarterModal[];
+            const dataMonths = res?.data as OverviewMonthOfQuarterModal[];
             setReportList(dataMonths);
 
             const dataTotal = res?.total as TotalOfQuarterModal;
             setTotal(dataTotal);
-            const temp =  dataMonths.map((item) => {
+            const temp = dataMonths.map((item) => {
                 return {
-                    month: `T${`${item?.month}`.slice(6,8).replace('/','')}`,
+                    month: `T${`${item?.month}`.slice(6, 8).replace('/', '')}`,
                     year: item?.year,
                     so_hop_dong_dau_tu: item?.so_hop_dong_dau_tu,
                     tong_tien_dau_tu: item?.tong_tien_dau_tu,
@@ -95,12 +105,12 @@ const Report = observer(() => {
 
     const renderItem = useCallback(({ item, isOverview }:
         { isOverview?: boolean, item?: OverviewMonthOfQuarterModal }) => {
-    
+
         return (
             <View style={!isOverview ? styles.containerItem : styles.containerItemOverview}>
                 <Text style={isOverview ? styles.overviewQuarterTxt : styles.monthTxt}>
                     {isOverview ? `${Languages.report.overview}${' '}${quarter}` || 0 :
-                        `${item?.month}`.slice(0, 8).replace('/','') || 0}
+                        `${item?.month}`.slice(0, 8).replace('/', '') || 0}
                 </Text>
                 <KeyValueReport
                     styleTitle={styles.textLeftMonth}

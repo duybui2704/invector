@@ -24,6 +24,9 @@ import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
 import { MyStylesEditAccountInfo } from './styles';
 import { UpdateInfoModal } from '@/models/user-models';
+import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
+import DatePickerTransaction from '@/components/DatePicker';
+import DateUtils from '@/utils/DateUtils';
 
 const EditAccountInfo = observer(() => {
     const { apiServices, userManager } = useAppStore();
@@ -34,8 +37,10 @@ const EditAccountInfo = observer(() => {
     const [genderUser, setGender] = useState<string>(userManager.userInfo?.gender || '');
     const [addressUser, setAddress] = useState<string>(userManager.userInfo?.address || '');
     const [jobUser, setJob] = useState<string>(userManager.userInfo?.job || '');
-    const [birthday, setBirthday] = useState<string>(userManager.userInfo?.birth_date || '');
+    const [birthday, setBirthday] = useState<any>(userManager.userInfo?.birth_date || '');
+    const [birthdayValue, setBirthdayValue] = useState<string>(userManager.userInfo?.birth_date || '');
     const [avatarAcc, setAvatarAcc] = useState<UpLoadImage>();
+    const [errText, setErrText] = useState<string>('');
 
     const avatarRef = useRef<BottomSheetModal>();
     const nameRef = useRef<TextFieldActions>();
@@ -53,9 +58,6 @@ const EditAccountInfo = observer(() => {
                 break;
             case Languages.accountInfo.gender:
                 setGender(value);
-                break;
-            case Languages.accountInfo.birthday:
-                setBirthday(value);
                 break;
             case Languages.accountInfo.phoneNumber:
                 setPhone(value);
@@ -107,6 +109,7 @@ const EditAccountInfo = observer(() => {
             data={typePhoto}
             image={image}
             icon={icon}
+            title={Languages.accountInfo.chooseAvatarUser}
             onPressItem={onPressItemFrontPhoto}
             containerStyle={icon ? styles.circleWrap : styles.noCircleWrap}
             containerImage={styles.noCircleWrap}
@@ -115,10 +118,31 @@ const EditAccountInfo = observer(() => {
         />;
     }, [onPressItemFrontPhoto, styles.circleWrap, styles.noCircleWrap]);
 
+    const renderBirthday = useMemo(() => {
+        const onConfirmValue = async (date: Date) => {
+            setBirthday(date);
+            setBirthdayValue(`${DateUtils.formatMMDDYYYYPicker(date?.toDateString())}`);
+        };
+        return (
+            <View style={styles.wrapBirthday}>
+                <Text style={styles.labelBirthdayStyle}>{Languages.accountInfo.birthday}</Text>
+                <DatePickerTransaction
+                    title={Languages.accountInfo.birthday}
+                    onConfirmDatePicker={onConfirmValue}
+                    onDateChangeDatePicker={setBirthday}
+                    date={birthday || new Date()}
+                    maximumDate={new Date()}
+                    errMessage={errText}
+                    placeHolderStyle={!birthdayValue ?styles.placeHolderBirthday : styles.placeHolderValueBirthday}
+                />
+            </View>
+        );
+    }, [birthday, birthdayValue, errText, styles.labelBirthdayStyle, styles.placeHolderBirthday, styles.placeHolderValueBirthday, styles.wrapBirthday]);
+
     const onValidate = useCallback(() => {
         const errMsgName = FormValidate.userNameValidate(name);
         const errMsgGender = FormValidate.genderValidate(genderUser);
-        const errMsgBirthday = FormValidate.birthdayValidate(birthday);
+        const errMsgBirthday = FormValidate.birthdayValidate(birthdayValue);
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
         const errMsgPwdEmail = FormValidate.emailValidate(emailUser);
         const errMsgAddress = FormValidate.addressValidate(addressUser);
@@ -126,7 +150,7 @@ const EditAccountInfo = observer(() => {
 
         nameRef.current?.setErrorMsg(errMsgName);
         genderRef.current?.setErrorMsg(errMsgGender);
-        birthdayRef.current?.setErrorMsg(errMsgBirthday);
+        setErrText(errMsgBirthday);
         phoneRef.current?.setErrorMsg(errMsgPhone);
         emailRef.current?.setErrorMsg(errMsgPwdEmail);
         addressRef.current?.setErrorMsg(errMsgAddress);
@@ -134,14 +158,14 @@ const EditAccountInfo = observer(() => {
         if (`${errMsgName}${errMsgGender}${errMsgBirthday}${errMsgPhone}${errMsgPwdEmail}${errMsgAddress}${errMsgJob}`.length === 0) {
             return true;
         } return false;
-    }, [addressUser, birthday, emailUser, genderUser, jobUser, name, phone]);
+    }, [addressUser, birthdayValue, emailUser, genderUser, jobUser, name, phone]);
 
     const onSaveInfo = useCallback(async () => {
         if (onValidate()) {
             const res = await apiServices.auth.updateUserInf(
                 name,
                 genderUser,
-                birthday,
+                birthdayValue,
                 phone,
                 emailUser,
                 addressUser,
@@ -161,7 +185,7 @@ const EditAccountInfo = observer(() => {
                     full_name: name,
                     avatar_user: resData?.url_avatar,
                     gender: genderUser,
-                    birth_date: birthday,
+                    birth_date: birthdayValue,
                     phone_number: phone,
                     email: emailUser,
                     address: addressUser,
@@ -169,15 +193,14 @@ const EditAccountInfo = observer(() => {
                 });
             }
         }
-    }, [addressUser, apiServices.auth, avatarAcc, birthday, emailUser, genderUser, jobUser, name, onValidate, phone, userManager]);
-
+    }, [addressUser, apiServices.auth, avatarAcc, birthdayValue, emailUser, genderUser, jobUser, name, onValidate, phone, userManager]);
 
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
                 {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', false, 50)}
                 {renderKeyFeature(genderRef, Languages.accountInfo.gender, Utils.formatForEachWordCase(genderUser), 'DEFAULT', false, 3)}
-                {renderKeyFeature(birthdayRef, Languages.accountInfo.birthday, birthday, 'DEFAULT', false, 10)}
+                {renderBirthday}
                 {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', true, 10)}
                 {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL', false, 50)}
                 {renderKeyFeature(addressRef, Languages.accountInfo.address, Utils.formatForEachWordCase(addressUser), 'DEFAULT', false, 100)}
@@ -192,14 +215,14 @@ const EditAccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [addressUser, birthday, emailUser, genderUser, jobUser, name, onSaveInfo, phone, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit]);
+    }, [addressUser, emailUser, genderUser, jobUser, name, onSaveInfo, phone, renderBirthday, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit]);
 
     return (
         <View style={styles.container}>
             <View style={styles.container}>
                 <HeaderBar isLight={false} title={Languages.accountInfo.editAcc} hasBack />
                 <HideKeyboard>
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollViewWithKeyboard>
                         <View style={styles.topContainer}>
                             {renderPhotoPicker(avatarRef,
                                 avatarAcc,
@@ -207,7 +230,7 @@ const EditAccountInfo = observer(() => {
                                 SessionManager.userInfo?.avatar_user)}
                         </View>
                         {renderInfoAcc}
-                    </ScrollView>
+                    </ScrollViewWithKeyboard>
                 </HideKeyboard>
             </View>
         </View>

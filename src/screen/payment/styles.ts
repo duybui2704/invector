@@ -13,7 +13,8 @@ export const styles = StyleSheet.create({
         borderRadius: 26,
         marginHorizontal: 16,
         flexDirection: 'row',
-        marginTop: 10
+        marginTop: 10,
+        justifyContent: 'space-between'
     },
     filterItem: {
         paddingHorizontal: 2

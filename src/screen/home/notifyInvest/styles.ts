@@ -9,7 +9,7 @@ import { Styles } from '@/theme';
 export const MyStylesNotifyInvest = () => {
     return useMemo(() =>
         StyleSheet.create({
-            main: {
+            container: {
                 flex: 1,
                 backgroundColor: COLORS.WHITE_GRAY1
             },
