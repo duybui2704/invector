@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { Animated, Image, ImageBackground, StatusBar, Text, View } from 'react-native';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import Svg, { Circle, G } from 'react-native-svg';
 
-import DimensionUtils, { ACTION_OFFSET } from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { MyStylesCard } from './styles';
 import { COLORS } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';
@@ -55,17 +54,17 @@ export default function Card({
                 <Svg height="100%" width="100%"  >
                     <G id="circle">
                         <Circle
-                            r={DimensionUtils.SCREEN_WIDTH * 0.6}
-                            x={DimensionUtils.SCREEN_WIDTH * 0.2}
-                            y={DimensionUtils.SCREEN_HEIGHT / 5}
+                            r={SCREEN_WIDTH * 0.6}
+                            x={SCREEN_WIDTH * 0.2}
+                            y={SCREEN_HEIGHT / 5}
                             fill={COLORS.WHITE}
                         />
                     </G>
                 </Svg>
                 <LogoBroadening
                     style={styles.logo}
-                    width={DimensionUtils.SCREEN_WIDTH * 0.5}
-                    height={DimensionUtils.SCREEN_WIDTH * 0.14}
+                    width={SCREEN_WIDTH * 0.5}
+                    height={SCREEN_WIDTH * 0.14}
                 />
                 {source}
                 {icons}

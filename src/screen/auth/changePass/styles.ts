@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { Configs, PADDING_TOP } from '../../../common/Configs';
 import { COLORS, Styles } from '../../../theme';
-import DimensionUtils from '../../../utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 export const MyStylesChangePass = () => {
     return useMemo(() => {
@@ -18,7 +18,7 @@ export const MyStylesChangePass = () => {
                 height: Configs.FontSize.size40
             },
             rowInfo: {
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.02,
+                marginTop: SCREEN_HEIGHT * 0.02,
                 flexDirection: 'column',
                 alignItems: 'flex-start'
             },
@@ -36,7 +36,7 @@ export const MyStylesChangePass = () => {
             },
             content: {
                 flex: 1,
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.06,
+                marginTop: SCREEN_HEIGHT * 0.06,
                 marginLeft: 10,
                 width: '90%'
             },
@@ -44,7 +44,7 @@ export const MyStylesChangePass = () => {
                 ...Styles.typography.regular,
                 color: COLORS.GRAY_12,
                 fontSize: Configs.FontSize.size12,
-                marginLeft: DimensionUtils.SCREEN_WIDTH * 0.01
+                marginLeft: SCREEN_WIDTH * 0.01
             },
             txtSubmit: {
                 ...Styles.typography.medium,
@@ -59,7 +59,7 @@ export const MyStylesChangePass = () => {
             },
             tobLogin: {
                 marginTop: 10,
-                width: DimensionUtils.SCREEN_WIDTH * 0.4,
+                width: SCREEN_WIDTH * 0.4,
                 height: Configs.FontSize.size40,
                 backgroundColor: COLORS.GREEN,
                 borderRadius: 25,

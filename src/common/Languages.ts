@@ -124,7 +124,8 @@ const Languages = {
         agree: 'Đồng ý',
         cancel: 'Hủy',
         continue: 'Tiếp tục',
-        VND: 'VNĐ',
+        vnd: 'VNĐ',
+        million: '(Triệu)',
         hotline: '18006907',
         notice: 'Thông báo'
     },

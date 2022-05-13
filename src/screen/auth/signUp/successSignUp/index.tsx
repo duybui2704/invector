@@ -5,7 +5,7 @@ import Images from '@/assets/Images';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { COLORS } from '@/theme';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { Touchable } from '@/components/elements/touchable';
 import Navigator from '@/routers/Navigator';
 import ScreenName, { TabNamesArray, TabsName } from '@/common/screenNames';
@@ -33,7 +33,7 @@ export const SuccessSignUp = () => {
 
 const styles = StyleSheet.create({
     main: {
-        marginTop: DimensionUtils.SCREEN_HEIGHT * 0.6,
+        marginTop: SCREEN_HEIGHT * 0.6,
         padding: 10,
         width: '80%'
     },

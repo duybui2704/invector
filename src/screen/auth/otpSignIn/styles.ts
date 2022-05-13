@@ -3,20 +3,20 @@ import { StyleSheet } from 'react-native';
 
 import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 
 export const MyStylesOtp = () => {
     return useMemo(() =>
         StyleSheet.create({
             container: {
                 flex: 1,
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.06,
+                marginTop: SCREEN_HEIGHT * 0.06,
                 marginHorizontal: 15
             },
             viewTop: {
                 flexDirection: 'row',
                 alignItems: 'center'
-                // marginTop: DimensionUtils.SCREEN_HEIGHT * 0.1
+                // marginTop: SCREEN_HEIGHT * 0.1
             },
             containerBox: {
                 paddingVertical: 16
@@ -31,19 +31,9 @@ export const MyStylesOtp = () => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginTop: DimensionUtils.SCREEN_WIDTH * 0.02,
-                marginBottom: DimensionUtils.SCREEN_WIDTH * 0.01,
-                marginLeft: 8
-            },
-            viewOtp: {
-                width: DimensionUtils.SCREEN_WIDTH * 0.12,
-                height: DimensionUtils.SCREEN_WIDTH * 0.12,
-                marginVertical: 10,
-                marginHorizontal: 2,
-                borderWidth: 1,
-                borderRadius: DimensionUtils.SCREEN_WIDTH * 0.06,
-                justifyContent: 'center',
-                alignItems: 'center'
+                marginTop: SCREEN_WIDTH * 0.02,
+                marginBottom: SCREEN_WIDTH * 0.01,
+                marginLeft: 10
             },
             inputOtp: {
                 ...Styles.typography.mediumSmall,
@@ -67,7 +57,7 @@ export const MyStylesOtp = () => {
             },
             tobConfirm: {
                 marginTop: 10,
-                width: DimensionUtils.SCREEN_WIDTH * 0.4,
+                width: SCREEN_WIDTH * 0.4,
                 height: Configs.FontSize.size40,
                 backgroundColor: COLORS.GREEN,
                 borderRadius: 25,
@@ -79,14 +69,34 @@ export const MyStylesOtp = () => {
                 color: COLORS.WHITE
             },
             sentOtp: {
-                width: DimensionUtils.SCREEN_WIDTH * 0.5,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.05,
+                width: SCREEN_WIDTH * 0.5,
+                height: SCREEN_HEIGHT * 0.05,
                 marginVertical: 20,
                 marginHorizontal: 5
             },
             txtOtp: {
                 ...Styles.typography.regular,
                 color: COLORS.RED
+            },
+            wrapOTP: {
+                backgroundColor: COLORS.WHITE,
+                height: SCREEN_WIDTH * 0.14,
+                paddingHorizontal: 10,
+                flexDirection: 'row',
+                marginBottom: 10
+            },
+            viewOtp: {
+                ...Styles.typography.medium,
+                width: SCREEN_WIDTH * 0.12,
+                height: SCREEN_WIDTH * 0.12,
+                marginVertical: 10,
+                marginHorizontal: 2,
+                borderWidth: 1,
+                borderRadius: ((SCREEN_WIDTH - 64 - 5 * 5) / 6) / 2,
+                borderColor: COLORS.GRAY_6,
+                color: COLORS.BLACK,
+                fontSize: Configs.FontSize.size18,
+                textAlign: 'center'
             }
         }), []);
 };

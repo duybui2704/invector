@@ -2,7 +2,7 @@ import {
     PixelRatio, Platform, StatusBar
 } from 'react-native';
 
-import DimensionUtils from '../utils/DimensionUtils';
+import DimensionUtils, { SCREEN_WIDTH } from '../utils/DimensionUtils';
 
 export const isIOS = Platform.OS === 'ios';
 
@@ -14,7 +14,7 @@ export const HEADER_PADDING = STATUSBAR_HEIGHT + PADDING_TOP;
 export const TAB_BAR_HEIGHT = 50;
 
 // based on design scale
-const scale = DimensionUtils.SCREEN_WIDTH / 375;
+const scale = SCREEN_WIDTH / 375;
 
 export function actuatedNormalize(size: number) {
     const newSize = size * scale;

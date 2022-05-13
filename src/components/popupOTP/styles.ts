@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 export const MyStylesOtpInvest = () => {
     return useMemo(() =>
@@ -40,12 +40,12 @@ export const MyStylesOtpInvest = () => {
                 textAlign: 'center'
             },
             viewOtp: {
-                width: DimensionUtils.SCREEN_WIDTH * 0.12,
-                height: DimensionUtils.SCREEN_WIDTH * 0.12,
+                width: SCREEN_WIDTH * 0.12,
+                height: SCREEN_WIDTH * 0.12,
                 marginVertical: 10,
                 marginHorizontal: 2,
                 borderWidth: 1,
-                borderRadius: DimensionUtils.SCREEN_WIDTH * 0.07,
+                borderRadius: SCREEN_WIDTH * 0.07,
                 justifyContent: 'center',
                 alignItems: 'center'
             },
@@ -53,14 +53,14 @@ export const MyStylesOtpInvest = () => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginTop: DimensionUtils.SCREEN_WIDTH * 0.01,
-                marginBottom: DimensionUtils.SCREEN_WIDTH * 0.01,
+                marginTop: SCREEN_WIDTH * 0.01,
+                marginBottom: SCREEN_WIDTH * 0.01,
                 marginLeft: 8
             },
             tobModal: {
                 flexDirection: 'column',
                 // width: '100%',
-                height: DimensionUtils.SCREEN_HEIGHT / 2.5,
+                height: SCREEN_HEIGHT / 2.5,
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 10,
                 justifyContent: 'center',

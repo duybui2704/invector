@@ -4,7 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 
 import Images from '@/assets/Images';
 import Languages from '@/common/Languages';
-import DimensionUtils, { ACTION_OFFSET, CARD } from '@/utils/DimensionUtils';
+import { ACTION_OFFSET, CARD, SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import Card from './card';
 import { MyStylesBoar } from './styles';
 import { COLORS, Styles } from '@/theme';
@@ -26,8 +26,8 @@ export default function Broadening() {
             title: Languages.board.title1,
             images: <IcBroad1
                 style={styles.iconBig}
-                width={DimensionUtils.SCREEN_WIDTH * 0.6}
-                height={DimensionUtils.SCREEN_WIDTH * 0.6}
+                width={SCREEN_WIDTH * 0.6}
+                height={SCREEN_WIDTH * 0.6}
             />,
             icon: <IcIndex1 style={styles.iconSmall} />,
             txt: Languages.board.txt1
@@ -36,8 +36,8 @@ export default function Broadening() {
             title: Languages.board.title2,
             images: <IcBroad2
                 style={styles.iconBig}
-                width={DimensionUtils.SCREEN_WIDTH * 0.6}
-                height={DimensionUtils.SCREEN_WIDTH * 0.6}
+                width={SCREEN_WIDTH * 0.6}
+                height={SCREEN_WIDTH * 0.6}
             />,
             icon: <IcIndex2 style={styles.iconSmall} />,
             txt: Languages.board.txt2
@@ -46,8 +46,8 @@ export default function Broadening() {
             title: Languages.board.title3,
             images: <IcBroad3
                 style={styles.iconBig}
-                width={DimensionUtils.SCREEN_WIDTH * 0.6}
-                height={DimensionUtils.SCREEN_WIDTH * 0.6}
+                width={SCREEN_WIDTH * 0.6}
+                height={SCREEN_WIDTH * 0.6}
             />,
             icon: <IcIndex3 style={styles.iconSmall} />,
             txt: Languages.board.txt3

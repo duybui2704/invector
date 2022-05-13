@@ -7,12 +7,14 @@ import { Circle, G, Svg, Text, TextPath, TSpan } from 'react-native-svg';
 import { COLORS } from '@/theme';
 import Languages from '@/common/Languages';
 import { Configs } from '@/common/Configs';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import { useAppStore } from '@/hooks';
 import HideKeyboard from '@/components/HideKeyboard';
 
-const ratio = DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH;
+const ratio = SCREEN_HEIGHT / SCREEN_WIDTH;
 
 const SvgComponent = observer((props: any) => {
+    const { common } = useAppStore();
     const [login, setLogin] = useState<boolean>(true);
     const [signUp, setSignUp] = useState<boolean>(false);
     const [forgotPwd, setForgotPwd] = useState<boolean>(false);
@@ -25,7 +27,7 @@ const SvgComponent = observer((props: any) => {
     const [dx1, setDx1] = useState<number>(0);
 
     useEffect(() => {
-        console.log(props);
+        console.log('props: ', props);
         if (props.title) {
             if (props.title === Languages.auth.txtLogin) {
                 setSignUp(false);
@@ -47,21 +49,31 @@ const SvgComponent = observer((props: any) => {
         }
     }, [props.onNavigate, key]);
 
+    useEffect(() => {
+        if (common.successChangPass) {
+            setSignUp(false);
+            setLogin(true);
+            setForgotPwd(false);
+            setKey(Languages.auth.txtLogin);
+            common.setSuccessChangPass(false);
+        }
+    }, [common.successChangPass]);
+
     useLayoutEffect(() => {
         if (ratio < 1.662) {
-            setR(DimensionUtils.SCREEN_WIDTH * 0.54);
-            setX(DimensionUtils.SCREEN_WIDTH * 0.2);
-            setDx1(DimensionUtils.SCREEN_WIDTH * 0.54 * 5.96);
-            setDx2(DimensionUtils.SCREEN_WIDTH * 0.54 * 5.06);
-            setDx3(DimensionUtils.SCREEN_WIDTH * 0.54 * 0.46);
+            setR(SCREEN_WIDTH * 0.54);
+            setX(SCREEN_WIDTH * 0.2);
+            setDx1(SCREEN_WIDTH * 0.54 * 5.96);
+            setDx2(SCREEN_WIDTH * 0.54 * 5.06);
+            setDx3(SCREEN_WIDTH * 0.54 * 0.46);
             setDx(0);
         } else {
-            setR(DimensionUtils.SCREEN_WIDTH * 0.6);
-            setX(DimensionUtils.SCREEN_WIDTH * 0.22);
-            setDx(DimensionUtils.SCREEN_WIDTH * 0.6 * 0.035);
-            setDx1(DimensionUtils.SCREEN_WIDTH * 0.6 * 6.05);
-            setDx2(DimensionUtils.SCREEN_WIDTH * 0.6 * 5.17);
-            setDx3(DimensionUtils.SCREEN_WIDTH * 0.6 * 0.55);
+            setR(SCREEN_WIDTH * 0.6);
+            setX(SCREEN_WIDTH * 0.22);
+            setDx(SCREEN_WIDTH * 0.6 * 0.035);
+            setDx1(SCREEN_WIDTH * 0.6 * 6.05);
+            setDx2(SCREEN_WIDTH * 0.6 * 5.17);
+            setDx3(SCREEN_WIDTH * 0.6 * 0.55);
         }
     }, []);
 
@@ -94,7 +106,7 @@ const SvgComponent = observer((props: any) => {
                         <Circle
                             r={r}
                             x={x}
-                            y={DimensionUtils.SCREEN_HEIGHT / 2}
+                            y={SCREEN_HEIGHT / 2}
                             fill={COLORS.WHITE}
                         />
                     </G>

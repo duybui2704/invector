@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { Configs, PADDING_TOP } from '@/common/Configs';
 import { COLORS, Styles } from '@/theme';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 
 export const MyStylesLogin = () => {
@@ -12,8 +12,8 @@ export const MyStylesLogin = () => {
             main: {
                 flex: 1,
                 backgroundColor: COLORS.GREEN,
-                width: DimensionUtils.SCREEN_WIDTH,
-                height: DimensionUtils.SCREEN_HEIGHT,
+                width: SCREEN_WIDTH,
+                height: SCREEN_HEIGHT,
                 justifyContent: 'center'
             },
             inputPhone: {
@@ -48,8 +48,8 @@ export const MyStylesLogin = () => {
             wrapAll: {
                 flex: 1,
                 paddingBottom: PADDING_TOP,
-                marginTop: DimensionUtils.SCREEN_HEIGHT / 3,
-                height: DimensionUtils.SCREEN_HEIGHT / 3,
+                marginTop: SCREEN_HEIGHT / 3,
+                height: SCREEN_HEIGHT / 3,
                 width: '80%',
                 position: 'absolute',
                 top: -20
@@ -69,7 +69,7 @@ export const MyStylesLogin = () => {
             content: {
                 justifyContent: 'center',
                 marginHorizontal: 10,
-                marginVertical: DimensionUtils.SCREEN_HEIGHT * 0.06
+                marginVertical: SCREEN_HEIGHT * 0.06
             },
             txtSave: {
                 ...Styles.typography.regular,
@@ -90,7 +90,7 @@ export const MyStylesLogin = () => {
             },
             tobLogin: {
                 marginTop: 10,
-                width: DimensionUtils.SCREEN_WIDTH * 0.4,
+                width: SCREEN_WIDTH * 0.4,
                 height: Configs.FontSize.size40,
                 backgroundColor: COLORS.GREEN,
                 borderRadius: 25,

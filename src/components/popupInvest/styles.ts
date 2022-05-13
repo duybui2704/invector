@@ -1,19 +1,66 @@
 import { StyleSheet } from 'react-native';
 import { useMemo } from 'react';
-import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
-import { COLORS, Styles } from '@/theme';
-import { Configs } from '@/common/Configs';
+import {COLORS, Styles} from '@/theme';
+import {Configs} from '@/common/Configs';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 export const MyStylePupUp = () => {
     return useMemo(() =>
         StyleSheet.create({
-
+            popup: {
+                flex: 1,
+                backgroundColor: COLORS.TRANSPARENT,
+                borderColor: COLORS.TRANSPARENT,
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
+            modal: {
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: COLORS.MODAL,
+                width: '100%',
+                height: '100%',
+                flexDirection: 'column'
+            },
+            tobModal: {
+                flexDirection: 'column',
+                width: '85%',
+                height: SCREEN_HEIGHT * 0.4,
+                backgroundColor: COLORS.WHITE,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
+            tobView: {
+                marginTop: SCREEN_HEIGHT * 0.2,
+                marginBottom: 5
+            },
             textModel: {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size20,
                 textAlign: 'center',
-                color: COLORS.GREEN
+                color: COLORS.BLACK
+            },
+            smallButton: {
+                borderWidth: 1,
+                borderRadius: 12,
+                borderColor: COLORS.GREEN,
+                backgroundColor: COLORS.WHITE,
+                width: SCREEN_WIDTH * 0.5,
+                height: SCREEN_HEIGHT * 0.05,
+                marginVertical: 5,
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
+            smallButtonText: {
+                fontFamily: Configs.FontFamily.bold,
+                fontSize: 12
+            },
+            tob: {
+                width: '50%',
+                justifyContent: 'center',
+                alignItems: 'center'
             },
             viewFL: {
                 backgroundColor: COLORS.WHITE,
@@ -23,7 +70,9 @@ export const MyStylePupUp = () => {
                 paddingBottom: 10,
                 paddingTop: 10,
                 width: '100%',
-                paddingHorizontal: 16
+                height: SCREEN_HEIGHT * 0.4,
+                justifyContent: 'center',
+                alignItems: 'center'
             },
             inputPhone: {
                 marginTop: 15,
@@ -72,6 +121,5 @@ export const MyStylePupUp = () => {
                 marginVertical: 20,
                 alignItems: 'center'
             }
-        })
-    , []);
+        }), []);
 };

@@ -3,8 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { Configs, PADDING_TOP } from '@/common/Configs';
 import { COLORS, Styles } from '@/theme';
-import DimensionUtils from '@/utils/DimensionUtils';
-import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 
 export const MyStylesLogin = () => {
@@ -13,8 +12,8 @@ export const MyStylesLogin = () => {
             main: {
                 flex: 1,
                 backgroundColor: COLORS.GREEN,
-                width: DimensionUtils.SCREEN_WIDTH,
-                height: DimensionUtils.SCREEN_HEIGHT
+                width: SCREEN_WIDTH,
+                height: SCREEN_HEIGHT
             },
             inputPhone: {
                 marginTop: 15,
@@ -48,8 +47,8 @@ export const MyStylesLogin = () => {
             wrapAll: {
                 flex: 1,
                 paddingBottom: PADDING_TOP,
-                marginTop: DimensionUtils.SCREEN_HEIGHT / 3,
-                height: DimensionUtils.SCREEN_HEIGHT / 3,
+                marginTop: SCREEN_HEIGHT / 3,
+                height: SCREEN_HEIGHT / 3,
                 width: '80%',
                 position: 'absolute',
                 top: -20
@@ -67,7 +66,7 @@ export const MyStylesLogin = () => {
             },
             content: {
                 justifyContent: 'center',
-                marginHorizontal: 10,
+                marginHorizontal: 10
                 // backgroundColor: COLORS.RED,
             },
             txtSave: {
@@ -88,7 +87,7 @@ export const MyStylesLogin = () => {
                 padding: 5
             },
             tobLogin: {
-                width: DimensionUtils.SCREEN_WIDTH * 0.4,
+                width: SCREEN_WIDTH * 0.4,
                 height: Configs.FontSize.size40,
                 backgroundColor: COLORS.GREEN,
                 borderRadius: 25,
@@ -102,7 +101,7 @@ export const MyStylesLogin = () => {
             wrapLoginTxt: {
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginTop: DimensionUtils.SCREEN_HEIGHT * 0.1
+                marginTop: SCREEN_HEIGHT * 0.1
             },
             wrapAvatar: {
                 width: 60,

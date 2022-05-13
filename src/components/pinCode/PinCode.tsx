@@ -21,7 +21,7 @@ import PinButton from './PinButton';
 import { DEFAULT, PinCodeT } from './types';
 import Languages from '@/common/Languages';
 import { Configs } from '@/common/Configs';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 const ONE_SECOND_IN_MS = 50;
 
@@ -162,7 +162,7 @@ const PinCode = ({
 
             if (status === PinCodeT.Statuses.Initial) {
                 scrollRef.current?.scrollTo({
-                    x: DimensionUtils.SCREEN_WIDTH,
+                    x: SCREEN_WIDTH,
                     animated: true
                 });
                 setDisable(true);
@@ -213,7 +213,7 @@ const PinCode = ({
                         }
                         if (curMode === PinCodeT.Modes.Set) {
                             scrollRef.current?.scrollTo({
-                                x: DimensionUtils.SCREEN_WIDTH,
+                                x: SCREEN_WIDTH,
                                 animated: true
                             });
                             setTimeForStatus();
@@ -256,7 +256,7 @@ const PinCode = ({
         setLastPin('');
         setError('');
         scrollRef.current?.scrollTo({
-            x: -DimensionUtils.SCREEN_WIDTH,
+            x: -SCREEN_WIDTH,
             animated: true
         });
         setDisable(true);
@@ -509,11 +509,11 @@ const defaultStyles = StyleSheet.create({
     },
     wrapTitle: {
         flexDirection: 'row',
-        width: DimensionUtils.SCREEN_WIDTH,
+        width: SCREEN_WIDTH,
         justifyContent: 'center'
     },
     wrapScroll: {
-        width: DimensionUtils.SCREEN_WIDTH,
+        width: SCREEN_WIDTH,
         justifyContent: 'center',
         alignItems: 'center'
     }

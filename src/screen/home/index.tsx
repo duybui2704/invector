@@ -27,7 +27,7 @@ import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
 import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
-import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import Utils from '@/utils/Utils';
 import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import LogoHome from '../../assets/image/header/logo_home.svg';

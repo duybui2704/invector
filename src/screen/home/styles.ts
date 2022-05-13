@@ -1,9 +1,10 @@
-import { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import {useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
-import { COLORS, Styles } from '@/theme';
-import { Configs } from '@/common/Configs';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import {COLORS, Styles } from '@/theme';
+import {Configs } from '@/common/Configs';
+
 
 export const MyStylesHome = () => {
     return useMemo(() =>

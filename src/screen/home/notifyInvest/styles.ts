@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { COLORS } from '../../../theme/colors';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { Configs } from '@/common/Configs';
 import { Styles } from '@/theme';
 
@@ -16,7 +16,7 @@ export const MyStylesNotifyInvest = () => {
             investTab: {
                 flexDirection: 'row',
                 width: '100%',
-                height: DimensionUtils.SCREEN_HEIGHT * 0.05,
+                height: SCREEN_HEIGHT * 0.05,
                 backgroundColor: COLORS.GRAY_13,
                 padding: 4,
                 borderRadius: 26,
@@ -27,7 +27,7 @@ export const MyStylesNotifyInvest = () => {
                 marginHorizontal: 16
             },
             btInvest: {
-                width: (DimensionUtils.SCREEN_WIDTH - 40) / 3,
+                width: (SCREEN_WIDTH - 40) / 3,
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingVertical: 4,
