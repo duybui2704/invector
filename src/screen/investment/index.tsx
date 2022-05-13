@@ -270,7 +270,7 @@ const Investment = observer(({ route }: { route: any }) => {
         } as ViewStyle;
 
         const styleTxt = {
-            fontFamily: Styles.typography.regular.fontFamily,
+            ...Styles.typography.medium,
             color: btnInvest === type ? COLORS.GREEN : COLORS.GRAY_7
         } as TextStyle;
 

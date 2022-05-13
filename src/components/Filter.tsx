@@ -34,13 +34,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16
     },
     filterTxtSelected: {
-        ...Styles.typography.regular,
+        ...Styles.typography.medium,
         color: COLORS.GREEN,
         paddingVertical: 3,
         alignSelf: 'center'
     },
     filterTxtUnSelected: {
-        ...Styles.typography.regular,
+        ...Styles.typography.medium,
         color: COLORS.GRAY_7,
         paddingVertical: 3,
         alignSelf: 'center'
