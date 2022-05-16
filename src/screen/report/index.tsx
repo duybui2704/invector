@@ -57,10 +57,10 @@ const Report = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
-        if (year && quarter) {
+        if (year && quarter && isFocused) {
             fetchReport();
         }
-    }, [quarter, year]);
+    }, [quarter, year, isFocused]);
 
     const fetchDataSearch = useCallback(async () => {
         const resQuarters = await apiServices.report.getQuarters();

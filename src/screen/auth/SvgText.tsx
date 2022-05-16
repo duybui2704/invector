@@ -99,63 +99,64 @@ const SvgComponent = observer((props: any) => {
                         />
                     </G>
                     <Text fill={login ? COLORS.WHITE : COLORS.GRAY}
-                        fontSize={Configs.FontSize.size20}
+                        fontSize={Configs.FontSize.size22}
                         onPress={onNavigateLogin}
                         key='1'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}
-                        strokeWidth={Configs.FontSize.size28}
+                        strokeWidth={70}
                         stroke={COLORS.NO_BACKDROP}
+
                     >
                         <TextPath href="#circle" >
-                            <TSpan dx={dx2} dy={-15}>
+                            <TSpan dx={dx2} dy={-15} fontStyle='oblique'>
                                 {Languages.auth.txtLogin}
                             </TSpan>
                         </TextPath>
                     </Text>
                     <Text fill={signUp ? COLORS.WHITE : COLORS.GRAY}
-                        fontSize={Configs.FontSize.size20}
+                        fontSize={Configs.FontSize.size22}
                         onPress={onNavigateSignUp}
                         key='2'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}
-                        strokeWidth={Configs.FontSize.size28}
+                        strokeWidth={70}
                         stroke={COLORS.NO_BACKDROP}
                     >
                         <TextPath href="#circle" >
-                            <TSpan dx={dx1} dy={-15}>
+                            <TSpan dx={dx1} dy={-15} fontStyle='oblique'>
                                 {Languages.auth.txtD}
                             </TSpan>
                         </TextPath>
                     </Text>
 
                     <Text fill={signUp ? COLORS.WHITE : COLORS.GRAY}
-                        fontSize={Configs.FontSize.size20}
+                        fontSize={Configs.FontSize.size22}
                         onPress={onNavigateSignUp}
                         key='3'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}
-                        strokeWidth={Configs.FontSize.size28}
+                        strokeWidth={70}
                         stroke={COLORS.NO_BACKDROP}
                     >
                         <TextPath href="#circle" >
-                            <TSpan dx={dx} dy={-15} >
+                            <TSpan dx={dx} dy={-15} fontStyle='oblique'>
                                 {Languages.auth.txtK}
                             </TSpan>
                         </TextPath>
                     </Text>
-
+                
                     <Text fill={forgotPwd ? COLORS.WHITE : COLORS.GRAY}
-                        fontSize={Configs.FontSize.size20}
+                        fontSize={Configs.FontSize.size22}
                         onPress={onNavigateForgotPwd}
                         key='4'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}
-                        strokeWidth={Configs.FontSize.size28}
+                        strokeWidth={70}
                         stroke={COLORS.NO_BACKDROP}
                     >
                         <TextPath href="#circle" >
-                            <TSpan dx={dx3} dy={-15} >
+                            <TSpan dx={dx3} dy={-15} fontStyle='oblique' >
                                 {Languages.auth.forgotPwd}
                             </TSpan>
                         </TextPath>

@@ -48,6 +48,7 @@ const Home = observer(() => {
     const [dataDash, setDataDash] = useState<DashBroad>();
 
     useEffect(() => {
+        console.log('token:', SessionManager.userInfo);
         setTimeout(() => {
             StatusBar.setBarStyle(isFocused ? 'light-content' : 'dark-content', true);
         }, 10);
@@ -93,6 +94,18 @@ const Home = observer(() => {
                 (data).filter((item) => item.image_mobile)
             );
         }
+
+        // const resNews = await apiServices.common.getNews();
+        // if (resNews.success) {
+        //     const data = resNews?.data as NewsModel[];
+        //     setNews(data);
+        // }
+
+        // const resInsurances = await apiServices.common.getInsurances();
+        // if (resInsurances.success) {
+        //     const data = resInsurances?.data as NewsModel[];
+        //     setInsurances(data);
+        // }
     }, [apiServices.common]);
 
     const gotoInvest = () => {
