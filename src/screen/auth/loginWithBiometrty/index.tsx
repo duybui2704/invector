@@ -186,7 +186,6 @@ const LoginWithBiometry = observer(() => {
                 index={1}
                 snapPoints={['20%', '82%']}
                 keyboardBehavior={'interactive'}
-                enablePanDownToClose={true}
                 backdropComponent={CustomBackdrop}
                 animationConfigs={animationConfigs}
             >

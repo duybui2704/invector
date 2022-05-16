@@ -8,7 +8,6 @@ import { ItemProps } from '@/components/bottomSheet';
 import { MyTextInput } from '@/components/elements/textfield';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import { Touchable } from '@/components/elements/touchable';
-import BottomSheetComponentInvest from '@/components/popupInvest/bottomSheetInvest';
 import { MyStylePupUp } from '@/components/popupInvest/styles';
 import { useAppStore } from '@/hooks';
 import { arrMoney, arrMonth } from '@/mocks/data';

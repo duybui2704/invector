@@ -51,7 +51,7 @@ const Languages = {
     invest: {
         title: 'Đầu tư',
         investing: 'Đang đầu tư',
-        history: 'Lịch sử',
+        history: 'Đã đáo hạn',
         enter: 'Nhập số tiền mà bạn muốn tìm kiếm',
         time: 'Thời gian đầu tư',
         formalPayment: 'Hình thức trả lại',
@@ -80,7 +80,9 @@ const Languages = {
         payFinished:
         '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>',
         error:'Không lấy được dữ liệu',
-        emptyData: 'Bạn chưa có gói đầu tư nào, cùng đầu tư ngay nào !!!'
+        emptyData: 'Bạn chưa có gói đầu tư nào, cùng đầu tư ngay nào !!!',
+        fromDate:'Từ ngày',
+        toDate:'Đến ngày'
     },
     account: {
         title: 'Tài khoản',

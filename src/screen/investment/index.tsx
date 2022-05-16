@@ -1,32 +1,31 @@
+import { debounce } from 'lodash';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
-import { debounce } from 'lodash';
-import { useIsFocused } from '@react-navigation/core';
 
 import IMGNoData from '@/assets/image/img_no_data_invest.svg';
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
 import arrayIcon from '@/common/arrayIcon';
-import { ENUM_INVEST_STATUS, ENUM_INVEST_MONEY } from '@/common/constants';
+import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
+import { ItemProps } from '@/components/bottomsheet';
+import BottomSheetComponentInvest from '@/components/BottomSheetInvest';
 import { MyTextInput } from '@/components/elements/textfield';
 import { Touchable } from '@/components/elements/touchable';
 import ItemInvest from '@/components/ItemInvest';
+import Loading from '@/components/loading';
 import MyFlatList from '@/components/MyFlatList';
+import PopupFilterInvested from '@/components/PopupFilterInvested';
 import PopupInvest from '@/components/popupInvest';
-import Navigator from '@/routers/Navigator';
-import { COLORS, Styles } from '@/theme';
-import { HeaderBar } from '../../components/header';
-import styles from './styles';
-import Utils from '@/utils/Utils';
 import { useAppStore } from '@/hooks';
 import { PackageInvest, PagingCoditionTypes } from '@/models/invest';
-import Loading from '@/components/loading';
-import BottomSheetComponentInvest from '@/components/popupInvest/bottomSheetInvest';
-import { ItemProps } from '@/components/bottomsheet';
-import { arrMonth } from '@/mocks/data';
 import NoData from '@/components/NoData';
+import Navigator from '@/routers/Navigator';
+import { COLORS } from '@/theme';
+import Utils from '@/utils/Utils';
+import { HeaderBar } from '../../components/header';
+import styles from './styles';
 
 const PAGE_SZIE = 5;
 
@@ -34,7 +33,6 @@ const Investment = observer(({ route }: { route: any }) => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
     const [textSearch, setTextSearch] = useState<string>();
     const [listStore, setListStore] = useState<PackageInvest[]>();
-    const [dataFilter, setDataFilter] = useState<PackageInvest[]>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -42,20 +40,25 @@ const Investment = observer(({ route }: { route: any }) => {
     const [timeValue, setTimeValue] = useState<ItemProps>();
 
     const [dataMoney, setDataMoney] = useState<any>([]);
-    const [moneyValue, setMoneyValue] = useState<ItemProps>();
+    const [moneyValueInvest, setMoneyValueInvest] = useState<ItemProps>();
+    const [moneyValueInvested, setMoneyValueInvested] = useState<ItemProps>();
 
     const popupInvestRef = useRef<any>();
+    const popupInvestedRef = useRef<any>();
 
-    const [dataPicker, setDataPicker] = useState<ItemProps[]>(arrMonth);
     const refBottomSheetMonth = useRef<any>(null);
     const refBottomSheetMoney = useRef<any>(null);
+    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(false);
     const condition = useRef<PagingCoditionTypes>({
         isLoading: true,
         offset: 0,
         canLoadMore: true,
         timeInvestment: '',
-        moneyInvestment: '',
-        textSearch: ''
+        moneyInvest: '',
+        textSearch: '',
+        fromDate: '',
+        toDate: '',
+        moneyInvested: ''
     });
 
     const {
@@ -70,20 +73,22 @@ const Investment = observer(({ route }: { route: any }) => {
         fetchDataMoney();
     }, []);
 
-    useEffect(() => {
-        console.log('listStore', listStore);
-    }, [listStore]);
 
     const fetchDataInvested = useCallback(async (isLoadMore?: boolean) => {
         setIsLoading(true);
         condition.current.isLoading = true;
-        const resInvest = await apiServices.invest.getListContractInvesting(isLoadMore ? condition.current.offset : 0, PAGE_SZIE);
+        const resInvest = await apiServices.invest.getListContractInvesting(
+            condition.current.textSearch,
+            condition.current.moneyInvest,
+            condition.current.fromDate,
+            condition.current.toDate,
+            isLoadMore ? condition.current.offset : 0,
+            PAGE_SZIE);
         const newData = resInvest.data as PackageInvest[];
         const newSize = newData?.length;
 
         if (newSize > 0) {
             if (isLoadMore) {
-
                 setListStore((data) => [...data || [], ...newData]);
             }
             else {
@@ -105,7 +110,7 @@ const Investment = observer(({ route }: { route: any }) => {
         const resInvest = await apiServices.invest.getAllContractInvest(
             condition.current.textSearch,
             condition.current.timeInvestment,
-            condition.current.moneyInvestment,
+            condition.current.moneyInvest,
             isLoadMore ? condition.current.offset : 0,
             PAGE_SZIE);
         const newData = resInvest.data as PackageInvest[];
@@ -126,6 +131,7 @@ const Investment = observer(({ route }: { route: any }) => {
         condition.current.isLoading = false;
         condition.current.canLoadMore = newSize >= PAGE_SZIE;
         setIsLoading(false);
+        setCanLoadMoreUI(condition.current.canLoadMore);
     }, [apiServices.invest]);
 
 
@@ -151,11 +157,11 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [btnInvest, fetchData]);
 
     const onRefresh = useCallback(() => {
-        setTimeValue(null);
-        setMoneyValue(null);
+        setTimeValue({});
+        setMoneyValueInvest({});
         condition.current.offset = 1;
         condition.current.timeInvestment = '';
-        condition.current.moneyInvestment = '';
+        condition.current.moneyInvest = '';
         condition.current.textSearch = '';
         setIsRefreshing(true);
         fetchData(btnInvest);
@@ -211,40 +217,34 @@ const Investment = observer(({ route }: { route: any }) => {
     }, []);
 
     const onPressItem = useCallback((item?: any, title?: string) => {
-        if (title === Languages.invest.monthInvest) {
+        console.log('tt', item);
+        if (title === Languages.invest.monthInvest && btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
             setTimeValue(item);
             condition.current.timeInvestment = item.id;
         }
-        if (title === Languages.invest.chooseMoney) {
-            setMoneyValue(item);
-            condition.current.moneyInvestment = item.id;
+        else if (title === Languages.invest.chooseMoney && btnInvest === ENUM_INVEST_STATUS.INVESTING) {
+            setMoneyValueInvest(item);
+            condition.current.moneyInvest = item.id;
         }
-        popupInvestRef.current?.show();
-    }, []);
+        else if (title === Languages.invest.chooseMoney && btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
+            setMoneyValueInvested(item);
+            condition.current.moneyInvested = item.id;
+        }
 
-    const searchItem = useCallback(
-        (text: string) => {
-            if (text) {
-                setDataFilter(
-                    listStore?.filter((item: any) =>
-                        Utils.convertMoney(item?.so_tien_dau_tu).includes(text)
-                    )
-                );
-            } else {
-                setDataFilter(listStore);
-            }
-        },
-        [listStore]
-    );
+        if (btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
+            popupInvestRef.current?.show();
+        }
+        else {
+            popupInvestedRef.current?.show();
+        }
+    }, [btnInvest]);
 
-    const debounceSearchItem = useCallback(() => {
-        debounce(() => fetchData(btnInvest), 300);
-    }, [btnInvest, fetchData]);
+    const debounceSearchItem = useCallback(debounce(() => fetchData(btnInvest), 500), [btnInvest]);
 
     const handleInputOnchange = useCallback(
         (value: string) => {
-            setTextSearch(value);
-            condition.current.textSearch = value;
+            setTextSearch(Utils.formatMoney(value));
+            condition.current.textSearch = Utils.formatTextToNumber(value);
             debounceSearchItem();
         },
         [debounceSearchItem]
@@ -272,7 +272,6 @@ const Investment = observer(({ route }: { route: any }) => {
         } as ViewStyle;
 
         const styleTxt = {
-            ...Styles.typography.medium,
             color: btnInvest === type ? COLORS.GREEN : COLORS.GRAY_7
         } as TextStyle;
 
@@ -298,7 +297,7 @@ const Investment = observer(({ route }: { route: any }) => {
 
         return (
             <Touchable disabled={btnInvest === type} onPress={onPress} style={[styles.btInvest, styleBt]}>
-                <Text style={[styles.txtBtInvest, styleTxt]}>{getTitle()}</Text>
+                <Text style={[styles.txtBtnStatus, styleTxt]}>{getTitle()}</Text>
             </Touchable>
         );
     }, [btnInvest, fetchData]);
@@ -307,10 +306,29 @@ const Investment = observer(({ route }: { route: any }) => {
         fetchData(btnInvest);
     }, [btnInvest, fetchData]);
 
+    const onConfirmFilterInvested = useCallback((fromDate: string, toDate: string) => {
+        condition.current.fromDate = fromDate;
+        condition.current.toDate = toDate;
+        condition.current.moneyInvested = moneyValueInvested?.value || '';
+        console.log(toDate, fromDate, moneyValueInvested);
+    }, [moneyValueInvested]);
+
     const onPopupInvest = useCallback(() => {
-        popupInvestRef.current.show();
-        common.setIsFocus(true);
-    }, [common]);
+        switch (btnInvest) {
+            case ENUM_INVEST_STATUS.INVEST_NOW:
+                popupInvestRef.current.show();
+                break;
+            case ENUM_INVEST_STATUS.INVESTING:
+                popupInvestedRef.current.show();
+                break;
+            default:
+                break;
+        }
+
+    }, [btnInvest]);
+    const opentTimeInvestment = useCallback(() => {
+        refBottomSheetMoney.current.show();
+    }, []);
 
     const renderSearchBar = useMemo(() => {
         return (
@@ -321,6 +339,7 @@ const Investment = observer(({ route }: { route: any }) => {
                     containerInput={styles.input}
                     placeHolder={Languages.invest.enter}
                     keyboardType={'NUMBER'}
+                    value={textSearch}
                 />
                 <Touchable
                     style={styles.iconFilter}
@@ -330,7 +349,11 @@ const Investment = observer(({ route }: { route: any }) => {
                 </Touchable>
             </View>
         );
-    }, [handleInputOnchange, onPopupInvest]);
+    }, [handleInputOnchange, onPopupInvest, textSearch]);
+
+    const renderLoading = useMemo(() => {
+        return <View>{canLoadMoreUI && <Loading />}</View>;
+    }, [canLoadMoreUI]);
 
     const renderEmptyData = useMemo(() => {
         return (
@@ -354,6 +377,7 @@ const Investment = observer(({ route }: { route: any }) => {
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
                     ListHeaderComponent={renderSearchBar}
+                    ListFooterComponent={renderLoading}
                     refreshing={isRefreshing}
                     onRefresh={onRefresh}
                     onEndReached={onEndReached}
@@ -366,7 +390,14 @@ const Investment = observer(({ route }: { route: any }) => {
                 onConfirm={onConfirmFilter}
                 openBottomSheet={openBottomSheet}
                 timeInvestment={timeValue}
-                moneyInvestment={moneyValue}
+                moneyInvestment={moneyValueInvest}
+            />
+            <PopupFilterInvested
+                ref={popupInvestedRef}
+                title={Languages.invest.packageInvest}
+                onConfirm={onConfirmFilterInvested}
+                openTimeInvestment={opentTimeInvestment}
+                money={moneyValueInvested?.value}
             />
             <BottomSheetComponentInvest
                 ref={refBottomSheetMoney}

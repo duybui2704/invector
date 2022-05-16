@@ -11,7 +11,7 @@ const MyFlatList = ({ ...props }: FlatListProps<any>) =>
     <FlatList
         {...props}
         refreshControl={<RefreshControl
-            tintColor={COLORS.RED}
+            tintColor={COLORS.GREEN}
             colors={[COLORS.RED, COLORS.GREEN, COLORS.GRAY_1]}
             refreshing={props?.refreshing || false}
             onRefresh={props?.onRefresh || undefined}

@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
         ...Styles.typography.medium,
         fontSize: Configs.FontSize.size12
     },
+    txtBtnStatus: {
+        ...Styles.typography.medium,
+        fontSize: Configs.FontSize.size11
+    },
     input: {
         borderRadius: 26,
         borderWidth: 1,

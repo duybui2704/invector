@@ -71,7 +71,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             const num = data?.length as number;
             const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
             let ratio = contentHeight * 100 / SCREEN_HEIGHT;
-            ratio = Math.max(ratio, 35);
+            ratio = Math.max(ratio, 20);
             ratio = Math.min(ratio, 70);
             return [`${ratio}%`, `${ratio}%`];
         }, [data]);
@@ -195,7 +195,6 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                         backdropComponent={renderBackdrop}
                         keyboardBehavior={'extend'}
                         keyboardBlurBehavior={'restore'}
-                        enablePanDownToClose={true}
                         onChange={handleSheetChanges}
                         enableOverDrag={true}
                     >

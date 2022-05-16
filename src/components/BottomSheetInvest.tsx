@@ -11,14 +11,13 @@ import React, {
     useMemo,
     useRef
 } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View,StyleSheet } from 'react-native';
 import Dash from 'react-native-dash';
 
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import { Touchable } from '@/components/elements/touchable';
 import { ItemProps } from '@/models/common-model';
-import { COLORS } from '@/theme';
-import { MyStylesBottomSheetInvest } from './styles';
+import { COLORS, Styles } from '@/theme';
 
 
 type BottomSheetProps = {
@@ -51,12 +50,11 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
     ) => {
 
         const bottomSheetRef = useRef<BottomSheetModal>(null);
-        const styles = MyStylesBottomSheetInvest();
         const snapPoints = useMemo(() => {
             const num = data?.length as number;
             const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
             let ratio = contentHeight * 100 / SCREEN_HEIGHT;
-            ratio = Math.max(ratio, 35);
+            ratio = Math.max(ratio, 30);
             ratio = Math.min(ratio, 70);
 
             return [`${ratio}%`, `${ratio}%`];
@@ -121,10 +119,9 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
                 snapPoints={snapPoints}
                 backdropComponent={CustomBackdrop}
                 keyboardBehavior={'interactive'}
-                enablePanDownToClose={true}
                 onChange={handleSheetChanges}
             >
-                <View style={{flex:1}}>
+                <View style={styles.container}>
                     <Text style={styles.txtTitle}>{title?.toString().toUpperCase()}</Text>
                     <BottomSheetFlatList
                         data={data}
@@ -142,3 +139,35 @@ export default BottomSheetComponentInvest;
 const ITEM_HEIGHT = Configs.FontSize.size40;
 const HEADER_HEIGHT = Configs.FontSize.size40 + 30;
 const MIN_SIZE_HAS_INPUT = 10;
+const styles = StyleSheet.create({
+    container:{
+        flex:1
+    },
+   
+    valueContainer: {
+        paddingTop: 10
+    },
+    value: {
+        ...Styles.typography.regular,
+        fontSize: Configs.FontSize.size14,
+        marginHorizontal: 16,
+        paddingBottom: 10
+    },
+    row: {
+    },
+    flatList: {
+        flex: 1,
+        marginTop: 0
+    },
+    txtTitle: {
+        ...Styles.typography.medium,
+        color: COLORS.BLACK,
+        textAlign: 'center',
+        fontSize: Configs.FontSize.size16,
+        marginVertical: 5
+    },
+    dash: {
+    }
+   
+}
+);
