@@ -10,7 +10,7 @@ function formatMoney(number: string | number | undefined) {
     number = `${number}`.replace(/[^0-9]/g, '');
 
     if (!number || Number.isNaN(number) || Number(number) === 0) {
-        return '0';
+        return '';
     }
     return `${hasMinus ? '-' : ''}${Math.ceil(Number(number))
         .toString()

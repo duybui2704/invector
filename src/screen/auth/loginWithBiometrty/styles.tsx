@@ -56,7 +56,8 @@ export const MyStylesLogin = () => {
             checkbox: {
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                flexDirection: 'row'
+                flexDirection: 'row',
+                marginBottom:5
             },
             row: {
                 flexDirection: 'row',
@@ -66,8 +67,10 @@ export const MyStylesLogin = () => {
             },
             content: {
                 justifyContent: 'center',
-                marginHorizontal: 10
-                // backgroundColor: COLORS.RED,
+                marginHorizontal: 10,
+                position:'absolute',
+                top:-80
+                // backgroundColor: COLORS.RED
             },
             txtSave: {
                 ...Styles.typography.regular,
@@ -118,6 +121,15 @@ export const MyStylesLogin = () => {
             },
             wrapPin: {
                 flex: 1
+            },
+            circleWrap: {
+                width: SCREEN_WIDTH * 0.2 - 10,
+                height: SCREEN_WIDTH * 0.2 - 10,
+                borderRadius: 70,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderWidth: 2,
+                borderColor: COLORS.GREEN
             }
         });
     }, []);

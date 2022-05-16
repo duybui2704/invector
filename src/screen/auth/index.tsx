@@ -2,6 +2,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import LogoAuth from '@/assets/image/auth/logo_auth.svg';
 import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
@@ -105,7 +106,7 @@ const Auth = observer(({ route }: any) => {
         }
     }, [isNavigate, fastAuthInfo?.isEnableFastAuth, fastAuthInfo.isFocusLogin]);
     return (
-        <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
+        <ImageBackground  style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
             <StatusBar
                 animated
                 translucent
@@ -119,10 +120,8 @@ const Auth = observer(({ route }: any) => {
             <View style={styles.viewSvg}>
                 <SvgComponent onNavigate={onNavigate} title={isNavigate} />
             </View>
-            <View style={[styles.wrapAll, { width: wid }]}>
-                {isNavigate === Languages.auth.txtLogin ? <Login /> :
-                    isNavigate === Languages.auth.txtSignUp ? <SignUp /> : <ForgotPass />
-                }
+            <View  style={[styles.wrapAll, { width: wid }]}>
+                {renderContent}
             </View>
             <View style={styles.viewBottom}>
                 <Text style={styles.txtLogin}>{Languages.auth.txtLoginWith}</Text>

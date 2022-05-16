@@ -218,18 +218,23 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const onPressItem = useCallback((item?: any, title?: string) => {
         console.log('tt', item);
-        if (title === Languages.invest.monthInvest && btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
+        if (title === Languages.invest.monthInvest) {
             setTimeValue(item);
             condition.current.timeInvestment = item.id;
         }
-        else if (title === Languages.invest.chooseMoney && btnInvest === ENUM_INVEST_STATUS.INVESTING) {
-            setMoneyValueInvest(item);
-            condition.current.moneyInvest = item.id;
+        if (title === Languages.invest.chooseMoney) {
+            if(btnInvest===ENUM_INVEST_STATUS.INVEST_NOW)
+            {
+                setMoneyValueInvest(item);
+                condition.current.moneyInvest = item.id;
+            }
+            if(btnInvest===ENUM_INVEST_STATUS.INVESTING)
+            {
+                setMoneyValueInvested(item);
+                condition.current.moneyInvested = item.id;
+            }
         }
-        else if (title === Languages.invest.chooseMoney && btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
-            setMoneyValueInvested(item);
-            condition.current.moneyInvested = item.id;
-        }
+       
 
         if (btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
             popupInvestRef.current?.show();

@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, TextStyle, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import arrayIcon from '@/common/arrayIcon';
@@ -26,8 +26,8 @@ export type PopupFilterProps = {
     data?: [],
     value?: string,
     openBottomSheet?: (type: string) => void,
-    timeInvestment?:ItemProps,
-    moneyInvestment?:ItemProps
+    timeInvestment?: ItemProps,
+    moneyInvestment?: ItemProps
 };
 
 
@@ -53,7 +53,7 @@ const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
         const refBottomSheetMoney = useRef<any>(null);
         const refBottomSheetMonth = useRef<any>(null);
         const [picker, setPicker] = useState<boolean>(false);
-        console.log('timeInvestment',timeInvestment);
+        console.log('timeInvestment', timeInvestment);
         const {
             common
         } = useAppStore();
@@ -99,7 +99,7 @@ const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
 
         }, [hide]);
 
-        const onOpenBottomSheet = useCallback((type:string) => {
+        const onOpenBottomSheet = useCallback((type: string) => {
             hide();
 
             openBottomSheet?.(type);
@@ -107,21 +107,18 @@ const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
         }, [hide, openBottomSheet]);
 
         const renderItem = useCallback((refItem: any, value: any, palaceholder: string) => {
-            const onPress = ()=>{
+            const onPress = () => {
                 onOpenBottomSheet(palaceholder);
             };
+            const styleTxt = {
+                color: value ? COLORS.BLACK : COLORS.GRAY_16
+            } as TextStyle;
             return (
-                <Touchable onPress={onPress}>
-                    <MyTextInput
-                        ref={refItem}
-                        value={value}
-                        rightIcon={arrayIcon.login.channel}
-                        placeHolder={palaceholder}
-                        containerInput={styles.inputPhone}
-                    />
+                <Touchable style={styles.inputPhone} onPress={onPress}>
+                    <Text style={[styles.txtPalaceholder, styleTxt]}>{value || palaceholder}</Text>
                 </Touchable>
             );
-        }, [onOpenBottomSheet, styles.inputPhone]);
+        }, [onOpenBottomSheet, styles.inputPhone, styles.txtPalaceholder]);
 
         return (
             <Modal

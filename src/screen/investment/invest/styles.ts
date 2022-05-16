@@ -1,8 +1,8 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useMemo } from 'react';
 
-import {Configs} from '@/common/Configs';
-import {Styles} from '@/theme';
+import { Configs } from '@/common/Configs';
+import { Styles } from '@/theme';
 import { COLORS } from '@/theme/colors';
 
 export const MyStylesInvest = () => {
@@ -115,11 +115,12 @@ export const MyStylesInvest = () => {
                 marginTop: 24
             },
             viewBottom: {
-                marginVertical: 10,
+                marginVertical: 25,
                 width: '100%',
                 flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingLeft: 5
             },
             tobBottom: {
                 marginVertical: 10,
@@ -143,7 +144,7 @@ export const MyStylesInvest = () => {
                 fontSize: Configs.FontSize.size14,
                 color: COLORS.BLACK
             },
-            policy:{
+            policy: {
                 width: '90%',
                 height: '100%',
                 marginLeft: 10
