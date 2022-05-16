@@ -21,7 +21,6 @@ import HeaderBar from '@/components/header';
 import ItemInvest from '@/components/ItemInvest';
 import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
-import SessionManager from '@/manager/SessionManager';
 import { BannerModel } from '@/models/banner';
 import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
@@ -36,10 +35,10 @@ import { MyStylesHome } from './styles';
 import KeyValue from '@/components/KeyValue';
 
 const Home = observer(() => {
-    const { apiServices, fastAuthInfoManager } = useAppStore();
+    const { apiServices, fastAuthInfoManager, userManager } = useAppStore();
     const {supportedBiometry} = fastAuthInfoManager;
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
-    const [hasUserInfo, setHasuserInfo] = useState<boolean>(!!SessionManager.accessToken);
+    const [hasUserInfo, setHasUserInfo] = useState<boolean>(userManager.userInfo!==undefined);
     const isFocused = useIsFocused();
     const styles = MyStylesHome();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -201,7 +200,7 @@ const Home = observer(() => {
                         <IcNotify style={styles.imgNotify} />
                     </Touchable>
                 </View>
-                {hasUserInfo || !supportedBiometry?
+                {hasUserInfo || supportedBiometry?
                     <View style={styles.viewTop}>
                         <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
                         <View style={styles.viewSumInvestValue}>
@@ -238,7 +237,7 @@ const Home = observer(() => {
                         <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
                         <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
                     </View>}
-                {hasUserInfo || !supportedBiometry?
+                {userManager.userInfo || !supportedBiometry?
                     <View style={styles.viewSmallMenu}>
                         {renderIconTab(Languages.home.have)}
                         {renderIconTab(Languages.home.invest)}

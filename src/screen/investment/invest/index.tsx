@@ -27,8 +27,6 @@ import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
 import { InfoLinkVimoModal } from '@/models/user-models';
 
-
-
 const Invest = observer(({ route }: any) => {
     const styles = MyStylesInvest();
     const [csdl, setCsdl] = useState<PackageInvest>();
