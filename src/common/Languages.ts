@@ -88,7 +88,7 @@ const Languages = {
         loginWithFinger: 'Xác thực nhanh vân tay',
         loginWithFaceId: 'Xác thực nhanh Face ID',
         accountLink: 'Tài khoản liên kết',
-        policy: 'Điều kiện và tài khoản',
+        policy: 'Điều kiện và điều khoản',
         shareFriends: 'Mời bạn bè',
         web: 'TienNgay.vn trên website',
         facebook: 'TienNgay.vn trên Facebook',

@@ -162,7 +162,7 @@ export const MyStylesHome = () => {
                 paddingTop: 3
             },
             viewCenter: {
-                paddingHorizontal: 16,
+                paddingHorizontal: 15,
                 marginBottom: 20
             },
             more: {

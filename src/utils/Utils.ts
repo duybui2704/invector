@@ -150,14 +150,16 @@ async function getFcmToken() {
 }
 
 const createChannel = () => {
-    PushNotification.createChannel(
-        {
-            channelId: 'noti', // (required)
-            channelName: 'TienNgay.vn', // (required)
-            channelDescription: 'A channel to categorise your notifications' // (optional) default: undefined.
-        },
-        (created: any) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-    );
+    if(Platform.OS === 'android'){
+        PushNotification.createChannel(
+            {
+                channelId: 'noti', // (required)
+                channelName: 'TienNgay.vn', // (required)
+                channelDescription: 'A channel to categorise your notifications' // (optional) default: undefined.
+            },
+            (created: any) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
+        );
+    }
 };
 
 async function requestUserPermissionNotify() {

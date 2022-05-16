@@ -71,7 +71,7 @@ export const MyStylesAccountInfo = () => {
             },
             accuracyWrap: {
                 width: '100%',
-                backgroundColor: COLORS.WHITE_GREEN,
+                backgroundColor: COLORS.WHITE_BLUE,
                 borderRadius: 70,
                 alignItems: 'center',
                 marginTop: 5,
