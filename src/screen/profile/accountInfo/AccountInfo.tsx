@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useMemo } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import KYCVerifyIcon from '@/assets/image/ic_acc_verified.svg';
 import KYCIcon from '@/assets/image/ic_KYC_account.svg';
@@ -52,16 +53,16 @@ const AccountInfo = observer(() => {
         }
     }, [renderTopAcc, styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy, styles.txtWaitAccuracy, styles.waitAccuracyWrap, userManager.userInfo?.tinh_trang?.status]);
 
-    const renderKeyFeature = useCallback((title: string, content?: string) => {
+    const renderKeyFeature = useCallback((title: string, content?: string, isTicked?: boolean) => {
         return (
             <KeyValueReport title={title}
                 content={content || undefined}
                 styleTouchable={styles.wrapAllItemInfo}
-                containerContent={content ? styles.wrapCheckedInfo : styles.wrapUnCheckedInfo}
+                containerContent={content && isTicked ? styles.wrapCheckedInfo : styles.wrapUnCheckedInfo}
                 styleTitle={styles.styleTextInfo}
-                styleColor={content ? styles.styleValueCheckedInfo : styles.styleValueUnCheckedInfo}
+                styleColor={content && isTicked ? styles.styleValueCheckedInfo : styles.styleValueUnCheckedInfo}
                 noIndicator
-                rightIcon={content ? <TickedIcon width={20} height={20} /> : null}
+                rightIcon={content && isTicked ? <TickedIcon /> : null}
                 hasDashBottom
             />
         );
@@ -70,8 +71,8 @@ const AccountInfo = observer(() => {
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
-                {renderKeyFeature(Languages.accountInfo.phoneNumber, userManager.userInfo?.phone_number)}
-                {renderKeyFeature(Languages.accountInfo.email, userManager.userInfo?.email)}
+                {renderKeyFeature(Languages.accountInfo.phoneNumber, userManager.userInfo?.phone_number, true)}
+                {renderKeyFeature(Languages.accountInfo.email, userManager.userInfo?.email, true)}
                 {renderKeyFeature(Languages.accountInfo.fullName, userManager.userInfo?.full_name)}
                 {renderKeyFeature(Languages.accountInfo.gender, userManager.userInfo?.gender)}
                 {renderKeyFeature(Languages.accountInfo.birthday, userManager.userInfo?.birth_date)}
@@ -89,12 +90,12 @@ const AccountInfo = observer(() => {
     return (
         <View style={styles.container}>
             <HeaderBar isLight={false} title={Languages.accountInfo.accountInfo} hasBack />
-            <View style={styles.mainContainer}>
+            <ScrollView style={styles.mainContainer}>
                 <View style={styles.topContainer}>
                     {renderAccuracy}
                 </View>
                 {renderInfoAcc}
-            </View>
+            </ScrollView>
         </View>
     );
 });

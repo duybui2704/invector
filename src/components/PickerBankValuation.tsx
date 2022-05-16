@@ -12,11 +12,11 @@ import { COLORS, Styles } from '@/theme';
 import Utils from '@/utils/Utils';
 import Validate from '@/utils/Validate';
 import BottomSheetComponent from './BottomSheetComponent';
-import { PopupActions } from './popupStatus/types';
 import { Configs } from '@/common/Configs';
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
 import { Touchable } from './elements/touchable';
 import { ItemProps } from '@/models/common-model';
+import { PopupActionTypes } from '@/models/typesPopup';
 
 type PickerProps = {
     leftIcon?: any,
@@ -38,9 +38,10 @@ type PickerProps = {
     btnContainer?: any,
     hasDash?:boolean,
     stylePlaceholder?: TextStyle,
-    hasInput?: boolean
+    hasInput?: boolean,
+    wrapErrText?: ViewStyle
 };
-const PickerBankValuation = forwardRef<PopupActions, PickerProps>(({
+const PickerBankValuation = forwardRef<PopupActionTypes, PickerProps>(({
     leftIcon,
     label,
     placeholder,
@@ -60,12 +61,13 @@ const PickerBankValuation = forwardRef<PopupActions, PickerProps>(({
     btnContainer,
     hasDash,
     leftIconPicker,
-    hasInput
+    hasInput,
+    wrapErrText
 }: PickerProps, ref: any) => {
     useImperativeHandle(ref, () => ({
         setErrorMsg
     }));
-    const bottomSheetRef = useRef<PopupActions>(null);
+    const bottomSheetRef = useRef<PopupActionTypes>(null);
 
     const [errMsg, setErrMsg] = useState<string>('');
     const [animation] = useState(new Animated.Value(0));
@@ -107,7 +109,7 @@ const PickerBankValuation = forwardRef<PopupActions, PickerProps>(({
     const errorMessage = useMemo(() => {
         const paddingText = { paddingVertical: 5 };
         if (!Validate.isStringEmpty(errMsg)) {
-            return <View style={paddingText}>
+            return <View style={[paddingText, wrapErrText]}>
                 <Text
                     style={styles.errorMessage}>{errMsg}</Text>
             </View>;

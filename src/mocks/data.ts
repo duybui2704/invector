@@ -53,8 +53,8 @@ export const arrayData = [
 ];
 
 export const typePhoto = [
-    { id: '1', value: 'Camera' },
-    { id: '2', value: 'Library' }
+    { id: '1', value: 'Máy ảnh', text: 'Camera' },
+    { id: '2', value: 'Thư viện', text: 'Library' }
 ];
 
 export const investData = [
@@ -110,4 +110,9 @@ export const arrMonth = [
     { id: '5', value: '12 tháng' },
     { id: '6', value: '18 tháng' },
     { id: '7', value: '24 tháng' }
+];
+
+export const typeGender = [
+    { id: '1', value: 'Nam' },
+    { id: '2', value: 'Nữ' }
 ];

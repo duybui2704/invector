@@ -154,7 +154,7 @@ const AccountIdentify = observer(() => {
     }, [styles.pickerContainer]);
 
     const onPressItemFrontPhoto = useCallback((item: any) => {
-        if (item?.value === 'Camera') {
+        if (item?.text === 'Camera') {
             ImageUtils.openCamera(setFrontIdentify);
         } else {
             ImageUtils.openLibrary(setFrontIdentify, 1);
@@ -162,7 +162,7 @@ const AccountIdentify = observer(() => {
     }, []);
 
     const onPressItemBehindPhoto = useCallback((item: any) => {
-        if (item?.value === 'Camera') {
+        if (item?.text === 'Camera') {
             ImageUtils.openCamera(setBehindIdentify);
         } else {
             ImageUtils.openLibrary(setBehindIdentify, 1);
@@ -170,7 +170,7 @@ const AccountIdentify = observer(() => {
     }, []);
 
     const onPressItemAvatar = useCallback((item: any) => {
-        if (item?.value === 'Camera') {
+        if (item?.text === 'Camera') {
             ImageUtils.openCamera(setAvatar);
         } else {
             ImageUtils.openLibrary(setAvatar, 1);

@@ -4,6 +4,7 @@ import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import { debounce } from 'lodash';
 import { useIsFocused } from '@react-navigation/core';
 
+import IMGNoData from '@/assets/image/img_no_data_invest.svg';
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
 import arrayIcon from '@/common/arrayIcon';
 import { ENUM_INVEST_STATUS, ENUM_INVEST_MONEY } from '@/common/constants';
@@ -25,6 +26,7 @@ import Loading from '@/components/loading';
 import BottomSheetComponentInvest from '@/components/popupInvest/bottomSheetInvest';
 import { ItemProps } from '@/components/bottomsheet';
 import { arrMonth } from '@/mocks/data';
+import NoData from '@/components/NoData';
 
 const PAGE_SZIE = 5;
 
@@ -152,9 +154,9 @@ const Investment = observer(({ route }: { route: any }) => {
         setTimeValue(null);
         setMoneyValue(null);
         condition.current.offset = 1;
-        condition.current.timeInvestment='';
-        condition.current.moneyInvestment='';
-        condition.current.textSearch='';
+        condition.current.timeInvestment = '';
+        condition.current.moneyInvestment = '';
+        condition.current.textSearch = '';
         setIsRefreshing(true);
         fetchData(btnInvest);
         setIsRefreshing(false);
@@ -330,6 +332,12 @@ const Investment = observer(({ route }: { route: any }) => {
         );
     }, [handleInputOnchange, onPopupInvest]);
 
+    const renderEmptyData = useMemo(() => {
+        return (
+            <NoData img={<IMGNoData/>} description={ Languages.invest.emptyData} />
+        );
+    }, []);
+
     return (
         <View style={styles.main}>
             <HeaderBar title={Languages.invest.title} isLight={false} />
@@ -349,6 +357,7 @@ const Investment = observer(({ route }: { route: any }) => {
                     refreshing={isRefreshing}
                     onRefresh={onRefresh}
                     onEndReached={onEndReached}
+                    ListEmptyComponent={renderEmptyData}
                 />
             </View>
             <PopupInvest

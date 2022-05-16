@@ -22,9 +22,10 @@ import Loading from '@/components/loading';
 import SessionManager from '@/manager/SessionManager';
 import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
+import IMGNoDataTransaction from '@/assets/image/img_no_data_transaction.svg';
 
 const Transaction = observer(() => {
-    const { apiServices, fastAuthInfoManager} = useAppStore();
+    const { apiServices, fastAuthInfoManager } = useAppStore();
     const { supportedBiometry } = fastAuthInfoManager;
     const isFocused = useIsFocused();
     const [isFreshing, setIsFreshing] = useState<boolean>(true);
@@ -42,7 +43,7 @@ const Transaction = observer(() => {
         option: TransactionTypes[0].type
     });
     const [selectedFilter, setSelectedFilter] = useState<string>(condition.current.option || '');
-    
+
     useEffect(() => {
         if (!SessionManager.accessToken || !supportedBiometry) {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
@@ -59,7 +60,7 @@ const Transaction = observer(() => {
         }
     }, [isFocused, common.isFocused, common]);
 
-    const fetchHistory = useCallback(async (fDate?: string, tDate?: string, option?: string ) => {
+    const fetchHistory = useCallback(async (fDate?: string, tDate?: string, option?: string) => {
         condition.current.isLoading = true;
         const res = await apiServices.history.getHistory(
             fDate || '',
@@ -82,7 +83,7 @@ const Transaction = observer(() => {
         condition.current.offset = 0;
         condition.current.startDate = startDate || '';
         condition.current.endDate = endDate || '';
-        condition.current.option =  option ;
+        condition.current.option = option;
         setSelectedFilter(condition.current.option || '');
         if (isRefreshDate) {
             common.setRefresh(true);
@@ -181,18 +182,21 @@ const Transaction = observer(() => {
     const renderEmptyData = useMemo(() => {
         return (
             <View style={styles.wrapNoData}>
-                <NoData description='NoData' />
+                <NoData description={Languages.transaction.noDataTransaction} img={<IMGNoDataTransaction/>}/>
             </View>
         );
     }, []);
 
-    const onFreshing = () => {
-        onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
-    };
-
     const renderFooter = () => {
         return <ActivityIndicator size="large" color="red" />;
     };
+
+    const renderRefreshControl = useMemo(() => {
+        const onFreshing = () => {
+            onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
+        };
+        return (<RefreshControl refreshing={false} onRefresh={onFreshing} />);
+    }, [onRefresh]);
 
     const renderTransaction = useMemo(() => {
 
@@ -201,9 +205,7 @@ const Transaction = observer(() => {
                 data={dataHistory}
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
-                refreshControl={
-                    <RefreshControl refreshing={false} onRefresh={onFreshing} />
-                }
+                refreshControl={renderRefreshControl}
                 onEndReachedThreshold={0.999}
                 onEndReached={handleLoadMore}
                 style={styles.wrapFlatList}
@@ -212,20 +214,20 @@ const Transaction = observer(() => {
                 ListFooterComponent={renderFooter}
             />
         );
-    }, [dataHistory, renderEmptyData, isFreshing, keyExtractor, onRefresh, renderItem, handleLoadMore]);
+    }, [dataHistory, keyExtractor, renderItem, renderRefreshControl, handleLoadMore, renderEmptyData]);
 
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
             case Languages?.transaction?.fromDate:
                 condition.current.startDate = date;
                 if (condition.current.startDate && condition.current.endDate) {
-                    onRefresh(date, condition.current.endDate,condition.current.option, false );
+                    onRefresh(date, condition.current.endDate, condition.current.option, false);
                 }
                 break;
             case Languages?.transaction?.toDate:
                 condition.current.endDate = date;
                 if (condition.current.startDate && condition.current.endDate) {
-                    onRefresh(condition.current.startDate, date,condition.current.option, false );
+                    onRefresh(condition.current.startDate, date, condition.current.option, false);
                 }
                 break;
             default:
@@ -246,8 +248,8 @@ const Transaction = observer(() => {
                     title={Languages.transaction.fromDate}
                     onConfirmDatePicker={onConfirmValue}
                     onDateChangeDatePicker={onChange}
-                    date={ condition.current.startDate || new Date()}
-                    maximumDate={condition.current.endDate || new Date() }
+                    date={condition.current.startDate || new Date()}
+                    maximumDate={condition.current.endDate || new Date()}
                 />
                 <ICCalender style={styles.arrow} />
                 <DatePickerTransaction

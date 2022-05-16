@@ -16,7 +16,8 @@ const Languages = {
         transaction: 'Giao dịch',
         fromDate: 'Từ ngày',
         toDate: 'Tới ngày',
-        allInvestNow: 'Tổng đầu tư hiện tại'
+        allInvestNow: 'Tổng đầu tư hiện tại',
+        noDataTransaction: 'Bạn thực hiện giao dịch nào !'
     },
     home: {
         title: 'Trang chủ',
@@ -78,8 +79,8 @@ const Languages = {
             'Bạn chưa cập nhật hình thức nhận tiền lãi đầu tư. Bạn có muốn cập nhật ngay bây giờ không?',
         payFinished:
         '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>',
-        error:'Không lấy được dữ liệu'
-
+        error:'Không lấy được dữ liệu',
+        emptyData: 'Bạn chưa có gói đầu tư nào, cùng đầu tư ngay nào !!!'
     },
     account: {
         title: 'Tài khoản',
