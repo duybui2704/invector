@@ -11,16 +11,18 @@ const Loading = ({ isOverview }: { isOverview?: boolean }) => {
 
     const styles = MyStyleLoading();
     return (
-        isOverview ?
-            <View style={styles.overlay}>
-                <ActivityIndicator
-                    size="large"
-                    color={COLORS.WHITE}
-                    style={styles.activityIndicator} />
-            </View> :
-            <View style={styles.inline} >
-                <ActivityIndicator size="small" color={COLORS.RED} />
-            </View >
+        <>
+            { isOverview ?
+                <View style={styles.overlay}>
+                    <ActivityIndicator
+                        size="large"
+                        color={COLORS.WHITE}
+                        style={styles.activityIndicator} />
+                </View> :
+                <View style={styles.inline} >
+                    <ActivityIndicator size="small" color={COLORS.RED} />
+                </View>}
+        </>
     );
 
 };

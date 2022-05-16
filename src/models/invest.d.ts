@@ -67,7 +67,9 @@ export interface PagingCoditionTypes {
     canLoadMore: boolean,
     timeInvestment: string,
     moneyInvestment: string,
-    textSearch: string
+    textSearch: string,
+    fromDate:string,
+    toDate:string
 }
 
 

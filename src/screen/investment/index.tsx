@@ -25,6 +25,7 @@ import Loading from '@/components/loading';
 import BottomSheetComponentInvest from '@/components/popupInvest/bottomSheetInvest';
 import { ItemProps } from '@/components/bottomsheet';
 import { arrMonth } from '@/mocks/data';
+import PopupFilterInvested from '@/components/PopupFilterInvested';
 
 const PAGE_SZIE = 5;
 
@@ -32,7 +33,6 @@ const Investment = observer(({ route }: { route: any }) => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
     const [textSearch, setTextSearch] = useState<string>();
     const [listStore, setListStore] = useState<PackageInvest[]>();
-    const [dataFilter, setDataFilter] = useState<PackageInvest[]>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -43,17 +43,20 @@ const Investment = observer(({ route }: { route: any }) => {
     const [moneyValue, setMoneyValue] = useState<ItemProps>();
 
     const popupInvestRef = useRef<any>();
+    const popupInvestedRef = useRef<any>();
 
-    const [dataPicker, setDataPicker] = useState<ItemProps[]>(arrMonth);
     const refBottomSheetMonth = useRef<any>(null);
     const refBottomSheetMoney = useRef<any>(null);
+    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(false);
     const condition = useRef<PagingCoditionTypes>({
         isLoading: true,
         offset: 0,
         canLoadMore: true,
         timeInvestment: '',
         moneyInvestment: '',
-        textSearch: ''
+        textSearch: '',
+        fromDate: '',
+        toDate: ''
     });
 
     const {
@@ -68,20 +71,22 @@ const Investment = observer(({ route }: { route: any }) => {
         fetchDataMoney();
     }, []);
 
-    useEffect(() => {
-        console.log('listStore', listStore);
-    }, [listStore]);
 
     const fetchDataInvested = useCallback(async (isLoadMore?: boolean) => {
         setIsLoading(true);
         condition.current.isLoading = true;
-        const resInvest = await apiServices.invest.getListContractInvesting(isLoadMore ? condition.current.offset : 0, PAGE_SZIE);
+        const resInvest = await apiServices.invest.getListContractInvesting(
+            condition.current.textSearch,
+            condition.current.moneyInvestment,
+            condition.current.fromDate,
+            condition.current.toDate,
+            isLoadMore ? condition.current.offset : 0,
+            PAGE_SZIE);
         const newData = resInvest.data as PackageInvest[];
         const newSize = newData?.length;
 
         if (newSize > 0) {
             if (isLoadMore) {
-
                 setListStore((data) => [...data || [], ...newData]);
             }
             else {
@@ -124,6 +129,7 @@ const Investment = observer(({ route }: { route: any }) => {
         condition.current.isLoading = false;
         condition.current.canLoadMore = newSize >= PAGE_SZIE;
         setIsLoading(false);
+        setCanLoadMoreUI(condition.current.canLoadMore);
     }, [apiServices.invest]);
 
 
@@ -149,12 +155,12 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [btnInvest, fetchData]);
 
     const onRefresh = useCallback(() => {
-        setTimeValue(null);
-        setMoneyValue(null);
+        setTimeValue({});
+        setMoneyValue({});
         condition.current.offset = 1;
-        condition.current.timeInvestment='';
-        condition.current.moneyInvestment='';
-        condition.current.textSearch='';
+        condition.current.timeInvestment = '';
+        condition.current.moneyInvestment = '';
+        condition.current.textSearch = '';
         setIsRefreshing(true);
         fetchData(btnInvest);
         setIsRefreshing(false);
@@ -220,29 +226,12 @@ const Investment = observer(({ route }: { route: any }) => {
         popupInvestRef.current?.show();
     }, []);
 
-    const searchItem = useCallback(
-        (text: string) => {
-            if (text) {
-                setDataFilter(
-                    listStore?.filter((item: any) =>
-                        Utils.convertMoney(item?.so_tien_dau_tu).includes(text)
-                    )
-                );
-            } else {
-                setDataFilter(listStore);
-            }
-        },
-        [listStore]
-    );
-
-    const debounceSearchItem = useCallback(() => {
-        debounce(() => fetchData(btnInvest), 300);
-    }, [btnInvest, fetchData]);
+    const debounceSearchItem = useCallback(debounce(() => fetchData(btnInvest), 500), [btnInvest]);
 
     const handleInputOnchange = useCallback(
         (value: string) => {
-            setTextSearch(value);
-            condition.current.textSearch = value;
+            setTextSearch(Utils.formatMoney(value));
+            condition.current.textSearch = Utils.formatTextToNumber(value);
             debounceSearchItem();
         },
         [debounceSearchItem]
@@ -306,9 +295,18 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [btnInvest, fetchData]);
 
     const onPopupInvest = useCallback(() => {
-        popupInvestRef.current.show();
-        common.setIsFocus(true);
-    }, [common]);
+        switch (btnInvest) {
+            case ENUM_INVEST_STATUS.INVEST_NOW:
+                popupInvestRef.current.show();
+                break;
+            case ENUM_INVEST_STATUS.INVESTING:
+                popupInvestedRef.current.show();
+                break;
+            default:
+                break;
+        }
+
+    }, [btnInvest]);
 
     const renderSearchBar = useMemo(() => {
         return (
@@ -319,6 +317,7 @@ const Investment = observer(({ route }: { route: any }) => {
                     containerInput={styles.input}
                     placeHolder={Languages.invest.enter}
                     keyboardType={'NUMBER'}
+                    value={textSearch}
                 />
                 <Touchable
                     style={styles.iconFilter}
@@ -328,7 +327,11 @@ const Investment = observer(({ route }: { route: any }) => {
                 </Touchable>
             </View>
         );
-    }, [handleInputOnchange, onPopupInvest]);
+    }, [handleInputOnchange, onPopupInvest, textSearch]);
+
+    const renderLoading = useMemo(() => {
+        return <View>{canLoadMoreUI && <Loading />}</View>;
+    }, [canLoadMoreUI]);
 
     return (
         <View style={styles.main}>
@@ -346,6 +349,7 @@ const Investment = observer(({ route }: { route: any }) => {
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
                     ListHeaderComponent={renderSearchBar}
+                    ListFooterComponent={renderLoading}
                     refreshing={isRefreshing}
                     onRefresh={onRefresh}
                     onEndReached={onEndReached}
@@ -358,6 +362,12 @@ const Investment = observer(({ route }: { route: any }) => {
                 openBottomSheet={openBottomSheet}
                 timeInvestment={timeValue}
                 moneyInvestment={moneyValue}
+            />
+            <PopupFilterInvested
+                ref={popupInvestedRef}
+                title={Languages.invest.packageInvest}
+                onConfirm={onConfirmFilter}
+                openBottomSheet={openBottomSheet}
             />
             <BottomSheetComponentInvest
                 ref={refBottomSheetMoney}

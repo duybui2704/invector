@@ -214,6 +214,7 @@ function formatForEachWordCase(str: string) {
     return splitStr.join(' ');
 }
 
+
 export default {
     formatTextToNumber,
     capitalizeFirstLetter,
