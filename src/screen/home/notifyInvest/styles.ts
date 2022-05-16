@@ -47,7 +47,18 @@ export const MyStylesNotifyInvest = () => {
                 borderRadius: 16,
                 borderWidth: 1,
                 borderColor: COLORS.GRAY_11,
-                marginBottom: 8
+                marginBottom: 8,
+                opacity: 1
+            },
+            itemBlur: {
+                paddingTop: 8,
+                backgroundColor: COLORS.WHITE,
+                paddingHorizontal: 16,
+                borderRadius: 16,
+                borderWidth: 1,
+                borderColor: COLORS.GRAY_11,
+                marginBottom: 8,
+                opacity: 0.5
             },
             rowTop: {
                 flexDirection: 'row',
@@ -83,6 +94,12 @@ export const MyStylesNotifyInvest = () => {
                 fontFamily: Configs.FontFamily.medium,
                 color: COLORS.BLACK,
                 marginVertical: 5
+            },
+            wrapNoData: {
+                flex: 12,
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: SCREEN_HEIGHT / 2
             }
 
         }), []);

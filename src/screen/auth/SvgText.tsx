@@ -50,14 +50,14 @@ const SvgComponent = observer((props: any) => {
     }, [props.onNavigate, key]);
 
     useEffect(() => {
-        if (common.successChangPass) {
+        if (common.successChangePass) {
             setSignUp(false);
             setLogin(true);
             setForgotPwd(false);
             setKey(Languages.auth.txtLogin);
-            common.setSuccessChangPass(false);
+            common.setSuccessChangePass(false);
         }
-    }, [common.successChangPass]);
+    }, [common.successChangePass]);
 
     useLayoutEffect(() => {
         if (ratio < 1.662) {

@@ -68,7 +68,7 @@ const ChangePass = observer((props: any) => {
             setLoading(true);
             const resChangePass = await apiServices.auth.updateNewPwd(props?.phone, props?.token, newPass, confirmPass);
             setLoading(false);
-            common.setSuccessChangPass(true);
+            common.setSuccessChangePass(true);
             if (resChangePass.success) {
                 setTimeout(() => {
                     setIsNavigate(true);

@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, RefreshControl, Text, TextStyle, View, ViewStyle } from 'react-native';
 import Dash from 'react-native-dash';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/core';
+import { join } from 'lodash';
+import { FlatList } from 'react-native-gesture-handler';
 
 import { ENUM_INVEST_NOTIFY } from '@/common/constants';
 import Languages from '@/common/Languages';
@@ -10,13 +12,16 @@ import HeaderBar from '@/components/header';
 import MyFlatList from '@/components/MyFlatList';
 import { useAppStore } from '@/hooks';
 import { Notify } from '@/models/invest';
-import { COLORS, Styles } from '@/theme';
+import MyStyleLoading from '@/components/loading/styles';
+import Loading from '@/components/loading';
+import NoData from '@/components/NoData';
 import { MyStylesNotifyInvest } from './styles';
+import { COLORS, Styles } from '@/theme';
 
 export const NotifyInvest = () => {
     const styles = MyStylesNotifyInvest();
     const [isRead, setIsRead] = useState<boolean>(false);
-    const [data, setData] = useState<Notify>();
+    const [data, setData] = useState<Notify[]>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_NOTIFY.NOTIFY_ALL);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,38 +35,32 @@ export const NotifyInvest = () => {
     }, [isFocused]);
 
     const fetchData = useCallback(async (type: string) => {
+        console.log('type: ', type);
         if (type === ENUM_INVEST_NOTIFY.NOTIFY_ALL) {
             setIsLoading(true);
             const res = await apiServices.invest.getNotify();
             setIsLoading(false);
             if (res.success) {
-                console.log(JSON.stringify(res.data));
-                const dataNotify = res.data as Notify;
+                const dataNotify = res.data as Notify[];
                 setData(dataNotify);
             }
         }
         else {
             setIsLoading(true);
-            const res = await apiServices.invest.getNotifyOnRead();
+            const res = await apiServices.invest.getNotify();
             setIsLoading(false);
             if (res.success) {
-                console.log(JSON.stringify(res.data));
+
                 if (res.data?.length >= 0) {
-                    const dataNotify = res.data as Notify;
-                    setData(dataNotify);
+                    const dataNotify = res.data as Notify[];
+                    console.log('dataFilter: ', dataNotify?.filter((item: any) => item?.status === 1));
+                    setData(dataNotify?.filter((item: any) => item?.status === 1));
                 } else {
                     setData(undefined);
                 }
-
             }
         }
     }, [apiServices.invest]);
-
-    const onRefresh = useCallback(() => {
-        setIsRefreshing(true);
-        setIsRefreshing(false);
-        fetchData(btnInvest);
-    }, [btnInvest, fetchData]);
 
     const renderInvest = useCallback((type: string) => {
 
@@ -107,6 +106,9 @@ export const NotifyInvest = () => {
         const onRead = async (id: number) => {
             setIsLoading(true);
             const res = await apiServices.invest.getNotifyUpdateRead(id);
+            if (res.success) {
+                fetchData(title);
+            }
             setIsLoading(false);
             if (res.success) {
                 // fetchData(btnInvest);
@@ -114,7 +116,7 @@ export const NotifyInvest = () => {
         };
 
         return (
-            <Touchable style={styles.item} onPress={() => onRead(item?.id)}>
+            <Touchable style={item?.status === 1 ? styles.item : styles.itemBlur} onPress={() => onRead(item?.id)} disabled={!(item?.status === 1)}>
                 <View style={styles.rowTop}>
                     <View style={styles.viewLeft}>
                         <Text style={styles.title} numberOfLines={1}>{item?.note}</Text>
@@ -155,6 +157,52 @@ export const NotifyInvest = () => {
         }
     }, [ItemNotify, btnInvest]);
 
+    const renderFooter = useMemo(() => {
+        return <ActivityIndicator size="large" color="red" />;
+    }, []);
+
+    const renderEmptyData = useMemo(() => {
+        return (
+            <View style={styles.wrapNoData}>
+                <NoData description='NoData' />
+            </View>
+        );
+    }, []);
+
+    const onRefreshing = useCallback(() => {
+        console.log('aaa');
+        fetchData(btnInvest);
+    }, []);
+
+    const handleLoadMore = () => {
+        fetchData(btnInvest);
+    };
+
+    const renderNotify = useMemo(() => {
+        return (
+            <FlatList
+                contentContainerStyle={styles.flatList}
+                showsVerticalScrollIndicator={false}
+                data={data}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
+                refreshing={isRefreshing}
+                // onRefresh={onRefresh}
+                refreshControl={
+                    <RefreshControl
+                        tintColor={COLORS.RED}
+                        refreshing={isRefreshing}
+                        onRefresh={onRefreshing}
+                    />
+                }
+                onEndReachedThreshold={0.5}
+                onEndReached={handleLoadMore}
+                ListFooterComponent={renderFooter}
+                ListEmptyComponent={renderEmptyData}
+            />
+        );
+    }, [btnInvest, handleLoadMore, onRefreshing, isRefreshing]);
+
     return (
         <View style={styles.container}>
             <HeaderBar title={Languages.invest.notify} hasBack />
@@ -163,16 +211,9 @@ export const NotifyInvest = () => {
                     {renderInvest(ENUM_INVEST_NOTIFY.NOTIFY_ALL)}
                     {renderInvest(ENUM_INVEST_NOTIFY.UNREAD)}
                 </View>
-                {data && <MyFlatList
-                    contentContainerStyle={styles.flatList}
-                    showsVerticalScrollIndicator={false}
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={keyExtractor}
-                    refreshing={isRefreshing}
-                    onRefresh={onRefresh}
-                />}
+                {data && renderNotify}
             </View>
+            {isLoading && <Loading isOverview />}
         </View>
     );
 };
