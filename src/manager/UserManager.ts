@@ -12,7 +12,7 @@ export class UserManager {
         makeObservable(this);
     }
 
-    @action updateUserInfo(userInfo: UserInfoModal) {
+    @action updateUserInfo(userInfo?: UserInfoModal) {
         this.userInfo = userInfo;
         this.phoneNumber = userInfo?.phone_number;
 

@@ -96,7 +96,7 @@ const Profile = observer(() => {
 
     const onAgreeLogout = useCallback(() => {
         SessionManager.logout();
-        userManager.updateUserInfo(null);
+        userManager.updateUserInfo(undefined);
         popupLogout.current?.hide();
         Navigator.navigateToDeepScreen(
             [ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin }

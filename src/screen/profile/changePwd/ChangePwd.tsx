@@ -94,7 +94,7 @@ const ChangePwd = observer(() => {
     );
 
     const logout = useCallback(() => {
-        userManager.updateUserInfo(null);
+        userManager.updateUserInfo(undefined);
         Navigator.navigateScreen(screenNames.invest);
     }, [userManager]);
 
