@@ -2,7 +2,6 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 
 import AvatarIC from '@/assets/image/ic_edit_avatar_large.svg';
 import { isIOS } from '@/common/Configs';
@@ -16,8 +15,8 @@ import HideKeyboard from '@/components/HideKeyboard';
 import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import { typePhoto } from '@/mocks/data';
-import { UpLoadImage } from '@/models/common-model';
+import { typeGender, typePhoto } from '@/mocks/data';
+import { ItemProps, UpLoadImage } from '@/models/common-model';
 import FormValidate from '@/utils/FormValidate';
 import ImageUtils from '@/utils/ImageUtils';
 import ToastUtils from '@/utils/ToastUtils';
@@ -27,6 +26,9 @@ import { UpdateInfoModal } from '@/models/user-models';
 import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
 import DatePickerTransaction from '@/components/DatePicker';
 import DateUtils from '@/utils/DateUtils';
+import PickerBankValuation from '@/components/PickerBankValuation';
+import { PopupActionTypes } from '@/models/typesPopup';
+import Navigator from '@/routers/Navigator';
 
 const EditAccountInfo = observer(() => {
     const { apiServices, userManager } = useAppStore();
@@ -46,8 +48,7 @@ const EditAccountInfo = observer(() => {
     const nameRef = useRef<TextFieldActions>();
     const emailRef = useRef<TextFieldActions>();
     const phoneRef = useRef<TextFieldActions>();
-    const birthdayRef = useRef<TextFieldActions>();
-    const genderRef = useRef<TextFieldActions>();
+    const genderRef = useRef<PopupActionTypes>();
     const addressRef = useRef<TextFieldActions>();
     const jobRef = useRef<TextFieldActions>();
 
@@ -95,8 +96,8 @@ const EditAccountInfo = observer(() => {
         );
     }, [onChangeText, styles.inputStyle, styles.labelStyle, styles.wrapInput]);
 
-    const onPressItemFrontPhoto = useCallback((item: any) => {
-        if (item?.value === 'Camera') {
+    const onPressItemFrontPhoto = useCallback((item: ItemProps) => {
+        if (item?.text === 'Camera') {
             ImageUtils.openCamera(setAvatarAcc);
         } else {
             ImageUtils.openLibrary(setAvatarAcc, 1);
@@ -118,7 +119,7 @@ const EditAccountInfo = observer(() => {
         />;
     }, [onPressItemFrontPhoto, styles.circleWrap, styles.noCircleWrap]);
 
-    const renderBirthday = useMemo(() => {
+    const renderBirthday = useCallback((disable?: boolean) => {
         const onConfirmValue = async (date: Date) => {
             setBirthday(date);
             setBirthdayValue(`${DateUtils.formatMMDDYYYYPicker(date?.toDateString())}`);
@@ -133,11 +134,17 @@ const EditAccountInfo = observer(() => {
                     date={birthday || new Date()}
                     maximumDate={new Date()}
                     errMessage={errText}
-                    placeHolderStyle={!birthdayValue ?styles.placeHolderBirthday : styles.placeHolderValueBirthday}
+                    containerDate={disable ? styles.containerDateDisable : styles.containerDate}
+                    placeHolderStyle={!birthdayValue ? styles.placeHolderBirthday : styles.placeHolderValueBirthday}
+                    disabled={disable}
                 />
             </View>
         );
-    }, [birthday, birthdayValue, errText, styles.labelBirthdayStyle, styles.placeHolderBirthday, styles.placeHolderValueBirthday, styles.wrapBirthday]);
+    }, [birthday, birthdayValue, errText, styles.containerDate, styles.containerDateDisable, styles.labelBirthdayStyle, styles.placeHolderBirthday, styles.placeHolderValueBirthday, styles.wrapBirthday]);
+
+    const onGenderChoose = useCallback((item?: any) => {
+        setGender(item?.value || '');
+    }, []);
 
     const onValidate = useCallback(() => {
         const errMsgName = FormValidate.userNameValidate(name);
@@ -148,17 +155,40 @@ const EditAccountInfo = observer(() => {
         const errMsgAddress = FormValidate.addressValidate(addressUser);
         const errMsgJob = FormValidate.jobValidate(jobUser);
 
-        nameRef.current?.setErrorMsg(errMsgName);
         genderRef.current?.setErrorMsg(errMsgGender);
+        nameRef.current?.setErrorMsg(errMsgName);
         setErrText(errMsgBirthday);
         phoneRef.current?.setErrorMsg(errMsgPhone);
         emailRef.current?.setErrorMsg(errMsgPwdEmail);
         addressRef.current?.setErrorMsg(errMsgAddress);
         jobRef.current?.setErrorMsg(errMsgJob);
+
         if (`${errMsgName}${errMsgGender}${errMsgBirthday}${errMsgPhone}${errMsgPwdEmail}${errMsgAddress}${errMsgJob}`.length === 0) {
             return true;
         } return false;
     }, [addressUser, birthdayValue, emailUser, genderUser, jobUser, name, phone]);
+
+    const renderGender = useCallback((disable?: boolean) => {
+        return (
+            <View style={styles.wrapBirthday}>
+                <Text style={styles.labelBirthdayStyle}>{Languages.accountInfo.gender}</Text>
+                <PickerBankValuation
+                    ref={genderRef}
+                    data={typeGender}
+                    value={genderUser}
+                    placeholder={Languages.accountInfo.gender}
+                    onPressItem={onGenderChoose}
+                    btnContainer={disable ? styles.rowItemFilterDisable : styles.rowItemFilter}
+                    containerStyle={styles.containerItemFilter}
+                    hasDash
+                    wrapErrText={styles.textErrorGender}
+                    styleText={disable ? styles.valuePickerDisable : styles.valuePicker}
+                    stylePlaceholder={styles.placeHolderPicker}
+                    disable={disable}
+                />
+            </View>
+        );
+    }, [genderUser, onGenderChoose, styles.containerItemFilter, styles.labelBirthdayStyle, styles.placeHolderPicker, styles.rowItemFilter, styles.rowItemFilterDisable, styles.textErrorGender, styles.valuePicker, styles.valuePickerDisable, styles.wrapBirthday]);
 
     const onSaveInfo = useCallback(async () => {
         if (onValidate()) {
@@ -191,6 +221,7 @@ const EditAccountInfo = observer(() => {
                     address: addressUser,
                     job: jobUser
                 });
+                Navigator.goBack();
             }
         }
     }, [addressUser, apiServices.auth, avatarAcc, birthdayValue, emailUser, genderUser, jobUser, name, onValidate, phone, userManager]);
@@ -198,11 +229,11 @@ const EditAccountInfo = observer(() => {
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
-                {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', false, 50)}
-                {renderKeyFeature(genderRef, Languages.accountInfo.gender, Utils.formatForEachWordCase(genderUser), 'DEFAULT', false, 3)}
-                {renderBirthday}
+                {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', !!userManager.userInfo?.full_name, 50)}
+                {renderGender(!!userManager.userInfo?.gender)}
+                {renderBirthday(!!userManager.userInfo?.birth_date)}
                 {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', true, 10)}
-                {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL', false, 50)}
+                {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL', !!userManager.userInfo?.email, 50)}
                 {renderKeyFeature(addressRef, Languages.accountInfo.address, Utils.formatForEachWordCase(addressUser), 'DEFAULT', false, 100)}
                 {renderKeyFeature(jobRef, Languages.accountInfo.job, Utils.formatForEachWordCase(jobUser), 'DEFAULT', false, 50)}
                 <View style={styles.wrapEdit}>
@@ -215,7 +246,7 @@ const EditAccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [addressUser, emailUser, genderUser, jobUser, name, onSaveInfo, phone, renderBirthday, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit]);
+    }, [addressUser, emailUser, jobUser, name, onSaveInfo, phone, renderBirthday, renderGender, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.birth_date, userManager.userInfo?.email, userManager.userInfo?.full_name, userManager.userInfo?.gender]);
 
     return (
         <View style={styles.container}>

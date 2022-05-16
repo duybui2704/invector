@@ -26,6 +26,7 @@ interface DatePickerTransactionProps extends DatePickerProps {
   placeHolderStyle?: TextStyle;
   containerDate?: ViewStyle;
   errMessage?: string;
+  disabled?:boolean;
 }
 
 type DatePickerTransactionActions = {
@@ -46,7 +47,8 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
             date,
             placeHolderStyle,
             containerDate,
-            errMessage
+            errMessage,
+            disabled
         }: DatePickerTransactionProps,
         ref
     ) => {
@@ -96,7 +98,7 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
 
         return (
             <>
-                <Touchable style={[styles.itemPicker, containerDate]} onPress={show}>
+                <Touchable style={[styles.itemPicker, containerDate]} onPress={show} disabled={disabled}>
                     <Text style={[styles.placeholderDate, placeHolderStyle]}>
                         {dateValue && !common.refresh ? DateUtils.formatMMDDYYYYPicker(dateValue) : title}
                     </Text>

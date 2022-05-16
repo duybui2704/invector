@@ -2,7 +2,7 @@ export type PopupActionTypes = {
     show: (content?: string) => any;
     hide: (content?: string) => any;
     setContent?: (message: string) => void;
-    setErrorMsg?: (msg?: string) => void;
+    setErrorMsg?: (msg?: string) => any;
 };
 export type PopupPropsTypes = {
     onClose?: () => any;

@@ -2,12 +2,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { COLORS } from '@/theme';
+import { COLORS, Styles } from '@/theme';
+import { Configs } from '@/common/Configs';
 
-const NoData = observer(({ description }: { description: string }) => {
+const NoData = observer(({ img, description }: { img?: any, description?: string }) => {
     return (
         <View style={styles.container}>
-            <Text>{description}</Text>
+            {img}
+            <Text style={styles.description}>{description}</Text>
         </View>
     );
 });
@@ -20,5 +22,12 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.TRANSPARENT,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    description:{
+        ...Styles.typography.medium,
+        fontSize: Configs.FontSize.size16,
+        color: COLORS.GRAY_7,
+        paddingTop: 26,
+        textAlign: 'center'
     }
 });

@@ -1,9 +1,11 @@
 import { action, makeObservable, observable } from 'mobx';
+
 export class FastAuthInfo {
     @observable isEnableFastAuth = false;
 
     @observable supportedBiometry = '';
-    @observable isFocusLogin = false
+
+    @observable isFocusLogin = false;
 
 
     constructor() {
@@ -13,6 +15,7 @@ export class FastAuthInfo {
     @action setEnableFastAuthentication(fastAuth: boolean) {
         this.isEnableFastAuth = fastAuth;
     }
+
     @action setFocusLogin(focus: boolean) {
         this.isFocusLogin = focus;
     }

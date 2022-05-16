@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { COLORS } from '../../../theme/colors';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { Configs } from '@/common/Configs';
 import { Styles } from '@/theme';
 
@@ -18,20 +18,19 @@ export const MyStylesNotifyInvest = () => {
                 width: '100%',
                 height: SCREEN_HEIGHT * 0.05,
                 backgroundColor: COLORS.GRAY_13,
-                padding: 4,
                 borderRadius: 26,
-                marginBottom: 12
-
+                marginBottom: 12,
+                padding: 5
             },
             wrapContent: {
                 marginHorizontal: 16
             },
             btInvest: {
-                width: (SCREEN_WIDTH - 40) / 3,
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingVertical: 4,
-                borderRadius: 26
+                borderRadius: 26,
+                paddingHorizontal: 16
             },
             txtBtInvest: {
                 ...Styles.typography.medium,

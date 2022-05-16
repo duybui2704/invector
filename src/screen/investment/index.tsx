@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 
+import IMGNoData from '@/assets/image/img_no_data_invest.svg';
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
 import arrayIcon from '@/common/arrayIcon';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
@@ -19,13 +20,12 @@ import PopupFilterInvested from '@/components/PopupFilterInvested';
 import PopupInvest from '@/components/popupInvest';
 import { useAppStore } from '@/hooks';
 import { PackageInvest, PagingCoditionTypes } from '@/models/invest';
+import NoData from '@/components/NoData';
 import Navigator from '@/routers/Navigator';
-import { COLORS, Styles } from '@/theme';
+import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
 import { HeaderBar } from '../../components/header';
 import styles from './styles';
-import { Configs } from '@/common/Configs';
-
 
 const PAGE_SZIE = 5;
 
@@ -355,6 +355,12 @@ const Investment = observer(({ route }: { route: any }) => {
         return <View>{canLoadMoreUI && <Loading />}</View>;
     }, [canLoadMoreUI]);
 
+    const renderEmptyData = useMemo(() => {
+        return (
+            <NoData img={<IMGNoData/>} description={ Languages.invest.emptyData} />
+        );
+    }, []);
+
     return (
         <View style={styles.main}>
             <HeaderBar title={Languages.invest.title} isLight={false} />
@@ -375,6 +381,7 @@ const Investment = observer(({ route }: { route: any }) => {
                     refreshing={isRefreshing}
                     onRefresh={onRefresh}
                     onEndReached={onEndReached}
+                    ListEmptyComponent={renderEmptyData}
                 />
             </View>
             <PopupInvest

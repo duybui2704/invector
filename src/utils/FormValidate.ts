@@ -128,8 +128,6 @@ function addressValidate(address: string) {
     let errMsg = '';
     if (Validate.isStringEmpty(address)) {
         errMsg = Languages.errorMsg.addressNull;
-    } else if (!validateSpecialCharacters(address)) {
-        errMsg = Languages.errorMsg.addressRegex;
     }
     return errMsg;
 }

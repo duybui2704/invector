@@ -86,11 +86,68 @@ export const MyStylesEditAccountInfo = () => {
             placeHolderBirthday:{
                 ...Styles.typography.regular,
                 color: COLORS.GRAY_6,
-                paddingVertical: 4
+                paddingVertical: 4,
+                paddingHorizontal: 10
             },
             placeHolderValueBirthday:{
                 ...Styles.typography.regular,
-                paddingVertical: 4
+                paddingVertical: 4,
+                paddingHorizontal: 10,
+                color: COLORS.GRAY_7
+            },
+            containerDateDisable:{
+                width: '100%',
+                backgroundColor: COLORS.GRAY_2
+            },
+            containerDate:{
+                width: '100%'
+            },
+            containerItemFilter: {
+                marginBottom: 8,
+                marginTop: -8
+            },
+            rowItemFilter: {
+                backgroundColor: COLORS.WHITE,
+                width: '100%',
+                borderColor: COLORS.GRAY_11,
+                borderRadius: 20,
+                marginVertical: 8,
+                paddingVertical: 8,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                borderWidth: 1,
+                alignItems: 'center',
+                paddingHorizontal: 16
+            },
+            rowItemFilterDisable: {
+                backgroundColor: COLORS.GRAY_2,
+                width: '100%',
+                borderColor: COLORS.GRAY_11,
+                borderRadius: 20,
+                marginVertical: 8,
+                paddingVertical: 8,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                borderWidth: 1,
+                alignItems: 'center',
+                paddingHorizontal: 16
+            },
+            valuePicker: {
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_1
+            },
+            valuePickerDisable: {
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_7
+            },
+            placeHolderPicker: {
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_16
+            },
+            textErrorGender:{
+                paddingHorizontal: 9,
+                marginTop: 7,
+                marginBottom: -12
             }
         });
     }, []);

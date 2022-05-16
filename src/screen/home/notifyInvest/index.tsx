@@ -1,18 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, RefreshControl, Text, TextStyle, View, ViewStyle } from 'react-native';
 import Dash from 'react-native-dash';
-import { useIsFocused } from '@react-navigation/core';
-import { join } from 'lodash';
 import { FlatList } from 'react-native-gesture-handler';
+import { useIsFocused } from '@react-navigation/native';
 
 import { ENUM_INVEST_NOTIFY } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
-import MyFlatList from '@/components/MyFlatList';
 import { useAppStore } from '@/hooks';
 import { Notify } from '@/models/invest';
-import MyStyleLoading from '@/components/loading/styles';
 import Loading from '@/components/loading';
 import NoData from '@/components/NoData';
 import { MyStylesNotifyInvest } from './styles';
@@ -50,9 +47,8 @@ export const NotifyInvest = () => {
             const res = await apiServices.invest.getNotify();
             setIsLoading(false);
             if (res.success) {
-
-                if (res.data?.length >= 0) {
-                    const dataNotify = res.data as Notify[];
+                const dataNotify = res.data as Notify[];
+                if (dataNotify.length >= 0) {
                     console.log('dataFilter: ', dataNotify?.filter((item: any) => item?.status === 1));
                     setData(dataNotify?.filter((item: any) => item?.status === 1));
                 } else {
@@ -69,7 +65,7 @@ export const NotifyInvest = () => {
         } as ViewStyle;
 
         const styleTxt = {
-            fontFamily: Styles.typography.regular.fontFamily,
+            ...Styles.typography.medium,
             color: btnInvest === type ? COLORS.GREEN : COLORS.GRAY_7
         } as TextStyle;
 
@@ -140,7 +136,7 @@ export const NotifyInvest = () => {
 
             </Touchable >
         );
-    }, [apiServices.invest, styles.item, styles.rowTop, styles.title, styles.txtNote, styles.txtRight, styles.txtTimeDate, styles.viewLeft]);
+    }, [apiServices.invest, fetchData, styles.item, styles.itemBlur, styles.rowTop, styles.title, styles.txtNote, styles.txtRight, styles.txtTimeDate, styles.viewLeft]);
 
     const onNotifyDetail = () => {
         console.log('detail');
@@ -167,12 +163,12 @@ export const NotifyInvest = () => {
                 <NoData description='NoData' />
             </View>
         );
-    }, []);
+    }, [styles.wrapNoData]);
 
     const onRefreshing = useCallback(() => {
         console.log('aaa');
         fetchData(btnInvest);
-    }, []);
+    }, [btnInvest, fetchData]);
 
     const handleLoadMore = () => {
         fetchData(btnInvest);
@@ -187,7 +183,6 @@ export const NotifyInvest = () => {
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
                 refreshing={isRefreshing}
-                // onRefresh={onRefresh}
                 refreshControl={
                     <RefreshControl
                         tintColor={COLORS.RED}
@@ -201,7 +196,7 @@ export const NotifyInvest = () => {
                 ListEmptyComponent={renderEmptyData}
             />
         );
-    }, [btnInvest, handleLoadMore, onRefreshing, isRefreshing]);
+    }, [styles.flatList, data, renderItem, keyExtractor, isRefreshing, onRefreshing, renderFooter, renderEmptyData]);
 
     return (
         <View style={styles.container}>

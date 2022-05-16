@@ -21,7 +21,6 @@ import HeaderBar from '@/components/header';
 import ItemInvest from '@/components/ItemInvest';
 import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
-import SessionManager from '@/manager/SessionManager';
 import { BannerModel } from '@/models/banner';
 import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
@@ -91,18 +90,6 @@ const Home = observer(() => {
                 (data).filter((item) => item.image_mobile)
             );
         }
-
-        // const resNews = await apiServices.common.getNews();
-        // if (resNews.success) {
-        //     const data = resNews?.data as NewsModel[];
-        //     setNews(data);
-        // }
-
-        // const resInsurances = await apiServices.common.getInsurances();
-        // if (resInsurances.success) {
-        //     const data = resInsurances?.data as NewsModel[];
-        //     setInsurances(data);
-        // }
     }, [apiServices.common]);
 
     const gotoInvest = () => {
