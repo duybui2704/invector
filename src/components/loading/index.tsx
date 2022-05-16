@@ -20,12 +20,10 @@ const Loading = ({ isOverview }: { isOverview?: boolean }) => {
                         style={styles.activityIndicator} />
                 </View> :
                 <View style={styles.inline} >
-                    <ActivityIndicator size="small" color={COLORS.RED} />
+                    <ActivityIndicator size="small" color={COLORS.GREEN} />
                 </View>}
         </>
     );
-
 };
-
 
 export default Loading;

@@ -22,6 +22,7 @@ import Loading from '@/components/loading';
 import SessionManager from '@/manager/SessionManager';
 import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
+import { COLORS } from '@/theme';
 
 const Transaction = observer(() => {
     const { apiServices, fastAuthInfoManager} = useAppStore();
@@ -191,7 +192,7 @@ const Transaction = observer(() => {
     };
 
     const renderFooter = () => {
-        return <ActivityIndicator size="large" color="red" />;
+        return <ActivityIndicator size="large" color={COLORS.GREEN} />;
     };
 
     const renderTransaction = useMemo(() => {

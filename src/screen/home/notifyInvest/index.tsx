@@ -158,7 +158,7 @@ export const NotifyInvest = () => {
     }, [ItemNotify, btnInvest]);
 
     const renderFooter = useMemo(() => {
-        return <ActivityIndicator size="large" color="red" />;
+        return <ActivityIndicator size="large" color={COLORS.GREEN} />;
     }, []);
 
     const renderEmptyData = useMemo(() => {
