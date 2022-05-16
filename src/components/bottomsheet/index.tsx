@@ -188,7 +188,6 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                 onChange={handleSheetChanges}
                 backdropComponent={CustomBackdrop}
                 keyboardBehavior={'interactive'}
-                enablePanDownToClose={true}
             >
                 <View style={styles.contentContainer}>
                     {renderTextInput}

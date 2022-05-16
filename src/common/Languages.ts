@@ -50,7 +50,7 @@ const Languages = {
     invest: {
         title: 'Đầu tư',
         investing: 'Đang đầu tư',
-        history: 'Lịch sử',
+        history: 'Đã đáo hạn',
         enter: 'Nhập số tiền mà bạn muốn tìm kiếm',
         time: 'Thời gian đầu tư',
         formalPayment: 'Hình thức trả lại',

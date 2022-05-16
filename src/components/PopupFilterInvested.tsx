@@ -22,19 +22,18 @@ export type PopupFilterProps = {
     openDatePicker?: (type: string) => void,
     fromDate?: string,
     toDate?: string,
-    money?: string
+    money?: string,
+    openTimeInvestment?: () => void
 };
 
 
 const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
     ({
         onConfirm,
-        onClose,
         title,
         openDatePicker,
-        fromDate,
-        toDate,
-        money
+        money,
+        openTimeInvestment
     }: PopupFilterProps, ref) => {
 
         const [visible, setVisible] = useState<boolean>(false);
@@ -62,7 +61,7 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
         }, [hide]);
 
         const actionYes = () => {
-            onConfirm?.(DateUtils.formatForServer(startDate),DateUtils.formatForServer(endDate));
+            onConfirm?.(DateUtils.formatForServer(startDate), DateUtils.formatForServer(endDate));
             hide();
         };
 
@@ -70,7 +69,7 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
         const onOpenBottomSheet = useCallback((type: string) => {
 
 
-            
+
             hide();
 
             openDatePicker?.(type);
@@ -84,13 +83,18 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
                 }
                 if (palaceholder === Languages.invest.toDate)
                     setVisiableToDatePicker(true);
+                if(palaceholder===Languages.invest.chooseMoney)
+                {
+                    openTimeInvestment?.();
+                    hide();
+                }
             };
             return (
                 <Touchable style={styles.inputPhone} onPress={onPress}>
-                    <Text style={styles.txtPalaceholder}>{value||palaceholder}</Text>
+                    <Text style={styles.txtPalaceholder}>{value || palaceholder}</Text>
                 </Touchable>
             );
-        }, []);
+        }, [hide, openTimeInvestment]);
 
         const onConfirmDatePicker = useCallback((date: Date, label?: string) => {
             if (label === Languages.invest.fromDate) {
@@ -105,12 +109,10 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
         const renderDatePicker = useCallback((isVisible: boolean, date: Date, label?: string, maximumDate?: string, minimumDate?: string) => {
 
             const onConfirmPicker = (value: Date) => {
-                if(label===Languages.invest.fromDate)
-                {
+                if (label === Languages.invest.fromDate) {
                     setVisiableFromDatePicker(false);
                 }
-                if(label===Languages.invest.toDate)
-                {
+                if (label === Languages.invest.toDate) {
                     setVisiableToDatePicker(false);
                 }
                 onConfirmDatePicker(value, label);

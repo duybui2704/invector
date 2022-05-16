@@ -195,7 +195,6 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                         backdropComponent={renderBackdrop}
                         keyboardBehavior={'extend'}
                         keyboardBlurBehavior={'restore'}
-                        enablePanDownToClose={true}
                         onChange={handleSheetChanges}
                         enableOverDrag={true}
                     >
