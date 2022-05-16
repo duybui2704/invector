@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 
-import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
@@ -10,8 +9,6 @@ import Loading from '@/components/loading';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import { MyStylesChangePass } from './styles';
 import { MyTextInput } from '@/components/elements/textfield';
-import Navigator from '@/routers/Navigator';
-import ScreenName, { TabNamesArray } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
 import { COLORS } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
@@ -29,6 +26,7 @@ const ChangePass = observer((props: any) => {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [disTob, setDisTob] = useState<boolean>(true);
     const [isNavigate, setIsNavigate] = useState<boolean>(false);
+    const { common } = useAppStore();
 
     useEffect(() => {
         isDis();
@@ -70,6 +68,7 @@ const ChangePass = observer((props: any) => {
             setLoading(true);
             const resChangePass = await apiServices.auth.updateNewPwd(props?.phone, props?.token, newPass, confirmPass);
             setLoading(false);
+            common.setSuccessChangePass(true);
             if (resChangePass.success) {
                 setTimeout(() => {
                     setIsNavigate(true);

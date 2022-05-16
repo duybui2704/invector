@@ -3,15 +3,15 @@ import { StyleSheet } from 'react-native';
 import { Configs, STATUSBAR_HEIGHT } from '@/common/Configs';
 import { Styles } from '@/theme';
 import { COLORS } from '@/theme/colors';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 
 
 const styles = StyleSheet.create({
     main: {
         flex: 1,
-        width: DimensionUtils.SCREEN_WIDTH,
-        height: DimensionUtils.SCREEN_HEIGHT
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT
     },
     wrapContent: {
         marginHorizontal: 16
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 
     },
     btInvest: {
-        width: (DimensionUtils.SCREEN_WIDTH - 40) / 3,
+        width: (SCREEN_WIDTH - 40) / 3,
         alignItems: 'center',
         paddingVertical: 4,
         borderRadius: 26

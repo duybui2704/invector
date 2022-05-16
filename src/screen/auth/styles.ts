@@ -1,8 +1,7 @@
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { COLORS, Styles } from '@/theme';
 import { Configs } from '../../common/Configs';
 
@@ -15,17 +14,17 @@ export const myStylesAuth = () => {
             main: {
                 flex: 1,
                 backgroundColor: COLORS.GREEN,
-                width: DimensionUtils.SCREEN_WIDTH,
-                height: DimensionUtils.SCREEN_HEIGHT
+                width: SCREEN_WIDTH,
+                height: SCREEN_HEIGHT
             },
             tob: {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                top: DimensionUtils.SCREEN_HEIGHT * 0.18,
-                right: DimensionUtils.SCREEN_WIDTH * 0.18,
-                width: DimensionUtils.SCREEN_WIDTH * 0.3,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.1,
+                top: SCREEN_HEIGHT * 0.18,
+                right: SCREEN_WIDTH * 0.18,
+                width: SCREEN_WIDTH * 0.3,
+                height: SCREEN_HEIGHT * 0.1,
                 transform: [
                     { rotateX: '-30deg' },
                     { rotateY: '0deg' },
@@ -36,7 +35,7 @@ export const myStylesAuth = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                top: DimensionUtils.SCREEN_HEIGHT * 0.5,
+                top: SCREEN_HEIGHT * 0.5,
                 width: 150,
                 height: 30,
                 right: -50,
@@ -50,8 +49,8 @@ export const myStylesAuth = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                bottom: DimensionUtils.SCREEN_HEIGHT * 0.16,
-                right: DimensionUtils.SCREEN_WIDTH * 0.2,
+                bottom: SCREEN_HEIGHT * 0.16,
+                right: SCREEN_WIDTH * 0.2,
                 width: 200,
                 height: 30,
                 transform: [
@@ -109,9 +108,9 @@ export const myStylesAuth = () => {
             },
             wrapAll: {
                 flex: 1,
-                top: DimensionUtils.SCREEN_HEIGHT / 2 - DimensionUtils.SCREEN_HEIGHT * 0.2,
+                top: SCREEN_HEIGHT / 2 - SCREEN_HEIGHT * 0.2,
                 position: 'absolute',
-                height: DimensionUtils.SCREEN_HEIGHT * 0.4,
+                height: SCREEN_HEIGHT * 0.4,
                 borderTopEndRadius: 60,
                 borderBottomEndRadius: 60
             },
@@ -156,7 +155,7 @@ export const myStylesAuth = () => {
             content: {
                 justifyContent: 'center',
                 marginHorizontal: 10,
-                height: DimensionUtils.SCREEN_HEIGHT * 0.3
+                height: SCREEN_HEIGHT * 0.3
             },
             hisLop: {
                 paddingVertical: 10,
@@ -188,12 +187,12 @@ export const myStylesAuth = () => {
                 padding: 20
             },
             viewSvg: {
-                height: DimensionUtils.SCREEN_HEIGHT,
-                width: DimensionUtils.SCREEN_WIDTH
+                height: SCREEN_HEIGHT,
+                width: SCREEN_WIDTH
             },
             tobLogin: {
-                width: DimensionUtils.SCREEN_WIDTH * 0.4,
-                height: DimensionUtils.SCREEN_WIDTH * 0.12,
+                width: SCREEN_WIDTH * 0.4,
+                height: SCREEN_WIDTH * 0.12,
                 backgroundColor: COLORS.GREEN,
                 borderRadius: 25,
                 justifyContent: 'center',
@@ -206,7 +205,7 @@ export const myStylesAuth = () => {
                 position: 'absolute',
                 alignItems: 'center',
                 paddingHorizontal: 16,
-                bottom: DimensionUtils.SCREEN_HEIGHT * 0.05,
+                bottom: SCREEN_HEIGHT * 0.05,
                 justifyContent: 'space-between'
             },
             txtLogin: {
@@ -223,10 +222,10 @@ export const myStylesAuth = () => {
                 paddingLeft: 10
             },
             func: {
-                height: DimensionUtils.SCREEN_HEIGHT * 0.5,
+                height: SCREEN_HEIGHT * 0.5,
                 position: 'absolute',
-                top: -DimensionUtils.SCREEN_HEIGHT * 0.066,
-                width: DimensionUtils.SCREEN_WIDTH * 0.7
+                top: -SCREEN_HEIGHT * 0.066,
+                width: SCREEN_WIDTH * 0.7
             }
         });
     }, []);

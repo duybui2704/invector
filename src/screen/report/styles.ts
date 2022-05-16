@@ -19,7 +19,8 @@ export const MyStylesReport = () => {
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 16,
                 borderColor: COLORS.GRAY_13,
-                borderWidth: 1
+                borderWidth: 1,
+                paddingTop: 8
             },
             chartTitle: {
                 ...Styles.typography.medium,
@@ -117,7 +118,13 @@ export const MyStylesReport = () => {
             },
             labelAxis: {
                 ...Styles.typography.regular,
-                color: COLORS.GRAY_12
+                color: COLORS.GRAY_12,
+                fontSize: Configs.FontSize.size12
+            },
+            labelAxisSmall: {
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_12,
+                fontSize: Configs.FontSize.size10
             },
             rowFilter: {
                 flexDirection: 'row',

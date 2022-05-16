@@ -12,17 +12,14 @@ import { CheckVimoWalletModel } from '@/models/invest';
 import { PopupActionTypes, PopupPropsTypes } from '@/models/typesPopup';
 import { COLORS } from '@/theme/colors';
 import { Styles } from '@/theme/styles';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { Touchable } from '../elements/touchable';
 import Utils from '@/utils/Utils';
-
-
 
 interface PopupOTPProps extends PopupPropsTypes {
     getOTPcode?: () => any,
     idContract?: string
 }
-
 
 export const PopupInvestOTP = forwardRef<
     PopupActionTypes,
@@ -209,15 +206,15 @@ const styles = StyleSheet.create({
     },
     viewOtp: {
         ...Styles.typography.medium,
-        width: (DimensionUtils.SCREEN_WIDTH - 64 - 5 * 5) / 6,
-        height: (DimensionUtils.SCREEN_WIDTH - 64 - 5 * 5) / 6,
+        width: (SCREEN_WIDTH - 64 - 5 * 5) / 6,
+        height: (SCREEN_WIDTH - 64 - 5 * 5) / 6,
         marginVertical: 10,
         marginHorizontal: 2,
         borderWidth: 1,
-        borderRadius: ((DimensionUtils.SCREEN_WIDTH - 64 - 5 * 5) / 6) / 2,
+        borderRadius: ((SCREEN_WIDTH - 64 - 5 * 5) / 6) / 2,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingLeft: ((DimensionUtils.SCREEN_WIDTH - 64 - 5 * 5) / 6) / 2 - 4,
+        paddingLeft: ((SCREEN_WIDTH - 64 - 5 * 5) / 6) / 2 - 4,
         borderColor: COLORS.GRAY_6,
         color: COLORS.BLACK,
         fontSize: Configs.FontSize.size18
@@ -229,8 +226,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: DimensionUtils.SCREEN_WIDTH * 0.01,
-        marginBottom: DimensionUtils.SCREEN_WIDTH * 0.01
+        marginTop: SCREEN_WIDTH * 0.01,
+        marginBottom: SCREEN_WIDTH * 0.01
     },
     tobModal: {
         backgroundColor: COLORS.WHITE,
@@ -241,19 +238,18 @@ const styles = StyleSheet.create({
 
     },
     underlineStyleBase: {
-        ...Styles.typography.regular,
-        width: DimensionUtils.SCREEN_WIDTH * 0.13,
-        height: DimensionUtils.SCREEN_WIDTH * 0.13,
+        width: SCREEN_WIDTH * 0.13,
+        height: SCREEN_WIDTH * 0.13,
         borderWidth: 1,
         borderColor: COLORS.GRAY_4,
         color: COLORS.BLACK,
         fontSize: Configs.FontSize.size20,
-        borderRadius: DimensionUtils.SCREEN_WIDTH * 0.07,
+        borderRadius: SCREEN_WIDTH * 0.07,
         justifyContent: 'center'
     },
     wrapOTP: {
         backgroundColor: COLORS.WHITE,
-        height: DimensionUtils.SCREEN_WIDTH * 0.14,
+        height: SCREEN_WIDTH * 0.14,
         paddingHorizontal: 10,
         flexDirection: 'row',
         marginBottom: 10

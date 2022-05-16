@@ -6,8 +6,6 @@ import { ImageBackground, StatusBar, Text, View } from 'react-native';
 import LogoAuth from '@/assets/image/auth/logo_auth.svg';
 import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
 import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';
-import IcInsAuth from '@/assets/image/ic_login_instagram.svg';
-import IcLinkedInAuth from '@/assets/image/ic_login_linkedin.svg';
 import Images from '@/assets/Images';
 import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
@@ -15,25 +13,22 @@ import { useAppStore } from '@/hooks';
 import Login from '@/screen/auth/login';
 import SvgComponent from '@/screen/auth/SvgText';
 import { COLORS } from '@/theme';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { loginWithApple, loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
 import ForgotPass from './forgotPass';
 import LoginWithBiometry from './loginWithBiometrty';
 import SignUp from './signUp';
 import { myStylesAuth } from './styles';
-import HideKeyboard from '@/components/HideKeyboard';
 
 const Auth = observer(({ route }: any) => {
     const styles = myStylesAuth();
-    const ratio = DimensionUtils.SCREEN_HEIGHT / DimensionUtils.SCREEN_WIDTH;
+    const ratio = SCREEN_HEIGHT / SCREEN_WIDTH;
     const [wid, setWid] = useState<number>(0);
     const [isNavigate, setIsNavigate] = useState<string>(Languages.auth.txtLogin);
     const isFocused = useIsFocused();
     const {
-        apiServices,
-        userManager,
         fastAuthInfoManager: fastAuthInfo,
-        appManager
+        common
     } = useAppStore();
 
     useEffect(() => {
@@ -52,9 +47,9 @@ const Auth = observer(({ route }: any) => {
 
     const screenRatio = useCallback(() => {
         if (ratio < 1.662) {
-            setWid(DimensionUtils.SCREEN_WIDTH * 0.65);
+            setWid(SCREEN_WIDTH * 0.65);
         } else {
-            setWid(DimensionUtils.SCREEN_WIDTH * 0.75);
+            setWid(SCREEN_WIDTH * 0.75);
         }
     }, []);
 
@@ -118,10 +113,9 @@ const Auth = observer(({ route }: any) => {
             />
             <View style={styles.viewLogo}>
                 <LogoAuth
-                    width={DimensionUtils.SCREEN_HEIGHT * 0.22}
-                    height={DimensionUtils.SCREEN_HEIGHT * 0.22}
-                />
-            </View>
+                    width={SCREEN_HEIGHT * 0.22}
+                    height={SCREEN_HEIGHT * 0.22}
+                /></View>
             <View style={styles.viewSvg}>
                 <SvgComponent onNavigate={onNavigate} title={isNavigate} />
             </View>
@@ -131,7 +125,7 @@ const Auth = observer(({ route }: any) => {
                 }
             </View>
             <View style={styles.viewBottom}>
-                <Text style={styles.txtLogin}>{Languages.auth.txtLogin}</Text>
+                <Text style={styles.txtLogin}>{Languages.auth.txtLoginWith}</Text>
                 <View style={styles.viewIcon}>
                     <Touchable style={styles.icon} onPress={onLoginFacebook}>
                         <IcFaceAuth />
@@ -139,12 +133,12 @@ const Auth = observer(({ route }: any) => {
                     <Touchable style={styles.icon} onPress={onLoginGoogle}>
                         <IcGoogleAuth />
                     </Touchable>
-                    <Touchable style={styles.icon} onPress={onLoginApple}>
+                    {/* <Touchable style={styles.icon} onPress={onLoginApple}>
                         <IcInsAuth />
                     </Touchable>
                     <Touchable style={styles.icon}>
                         <IcLinkedInAuth />
-                    </Touchable>
+                    </Touchable> */}
                 </View>
             </View>
         </ImageBackground>

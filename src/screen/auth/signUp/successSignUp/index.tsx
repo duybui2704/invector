@@ -5,27 +5,27 @@ import Images from '@/assets/Images';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { COLORS } from '@/theme';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { Touchable } from '@/components/elements/touchable';
 import Navigator from '@/routers/Navigator';
-import ScreenName, { TabNamesArray, TabsName } from '@/common/screenNames';
+import ScreenName, { TabsName } from '@/common/screenNames';
 
 export const SuccessSignUp = () => {
 
     const gotoHome = () => {
-        Navigator.navigateScreen(ScreenName.tabs);
+        Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
     };
 
     return (
-        <ImageBackground style={{ flex: 1 }} source={Images.bg_successSignUp} resizeMode='stretch'>
+        <ImageBackground style={styles.container} source={Images.bg_successSignUp} resizeMode='stretch'>
             <View style={styles.main}>
-                <Text style={styles.txt1}>{Languages.auth.succuss}</Text>
-                <Text style={styles.txt2}>{Languages.auth.notifySuccess}</Text>
-                <View style={styles.viewTob}>
-                    <Touchable onPress={gotoHome} style={styles.tob}>
-                        <Text style={styles.txt3}>{Languages.auth.continue}</Text>
-                    </Touchable>
-                </View>
+                <Text style={styles.txtSuccess}>{Languages.auth.succuss}</Text>
+                <Text style={styles.txtNotifySuccess}>{Languages.auth.notifySuccess}</Text>
+            </View>
+            <View style={styles.viewTob}>
+                <Touchable onPress={gotoHome} style={styles.tobContinue}>
+                    <Text style={styles.txtContinue}>{Languages.auth.continue}</Text>
+                </Touchable>
             </View>
         </ImageBackground>
     );
@@ -33,22 +33,25 @@ export const SuccessSignUp = () => {
 
 const styles = StyleSheet.create({
     main: {
-        marginTop: DimensionUtils.SCREEN_HEIGHT * 0.6,
+        marginTop: SCREEN_HEIGHT * 0.6,
         padding: 10,
         width: '80%'
     },
-    txt1: {
+    container: {
+        flex: 1
+    },
+    txtSuccess: {
         color: COLORS.WHITE,
         marginVertical: 15,
         fontSize: Configs.FontSize.size16,
         fontFamily: Configs.FontFamily.regular,
     },
-    txt2: {
+    txtNotifySuccess: {
         fontSize: Configs.FontSize.size14,
         fontFamily: Configs.FontFamily.regular,
         color: COLORS.WHITE
     },
-    txt3: {
+    txtContinue: {
         color: COLORS.WHITE,
         fontSize: Configs.FontSize.size16,
         textAlign: 'center',
@@ -56,13 +59,13 @@ const styles = StyleSheet.create({
     },
     viewTob: {
         justifyContent: 'center',
-        width: '50%',
+        width: '100%',
         height: 100,
         alignItems: 'center',
         marginTop: 15
     },
-    tob: {
-        width: '100%',
+    tobContinue: {
+        width: '40%',
         height: 40,
         borderWidth: 1,
         borderColor: COLORS.WHITE,

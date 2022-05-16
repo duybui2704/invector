@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import ICCalender from '@/assets/image/ic_arrow_date_picker.svg';
@@ -155,11 +155,13 @@ const Transaction = observer(() => {
         return `${index}`;
     }, []);
 
-    const onEndReached = useCallback(() => {
-        if (!onEndReachedCalledDuringMomentum) {
-            // fetchHistory();
-        }
-    }, [onEndReachedCalledDuringMomentum]);
+    const handleLoadMore = useCallback(() => {
+        fetchHistory(
+            '',
+            '',
+            condition.current.option
+        );
+    }, []);
 
     const renderItem = useCallback(({ item }: { item: TransactionModel }) => {
         const _onPress = () => {
@@ -184,28 +186,33 @@ const Transaction = observer(() => {
         );
     }, []);
 
+    const onFreshing = () => {
+        onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
+    };
+
+    const renderFooter = () => {
+        return <ActivityIndicator size="large" color="red" />;
+    };
+
     const renderTransaction = useMemo(() => {
-        const onFreshing = () => {
-            onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
-        };
-        const onMomentScroll = () => {
-            setOnEndReachedCalledDuringMomentum(false);
-        };
+
         return (
             <FlatList
                 data={dataHistory}
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
-                refreshing={isFreshing}
-                onRefresh={onFreshing}
-                onEndReached={onEndReached}
-                onEndReachedThreshold={0.5}
-                onMomentumScrollBegin={onMomentScroll}
+                refreshControl={
+                    <RefreshControl refreshing={false} onRefresh={onFreshing} />
+                }
+                onEndReachedThreshold={0.999}
+                onEndReached={handleLoadMore}
                 style={styles.wrapFlatList}
+                // onContentSizeChange={() => setOnEndReachedCalledDuringMomentum(true)}
                 ListEmptyComponent={renderEmptyData}
+                ListFooterComponent={renderFooter}
             />
         );
-    }, [dataHistory, renderEmptyData, isFreshing, keyExtractor, onEndReached, onRefresh, renderItem]);
+    }, [dataHistory, renderEmptyData, isFreshing, keyExtractor, onRefresh, renderItem, handleLoadMore]);
 
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
@@ -253,7 +260,7 @@ const Transaction = observer(() => {
                 />
             </View>
             {renderTransaction}
-            {condition.current.isLoading && isFreshing === false&& <Loading isOverview/>}
+            {condition.current.isLoading && isFreshing === false && <Loading isOverview />}
         </View>
     );
 });

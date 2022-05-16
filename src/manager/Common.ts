@@ -5,6 +5,8 @@ export class Common {
 
     @observable refresh = false;
 
+    @observable successChangePass = false;
+
     constructor() {
         makeObservable(this);
     }
@@ -15,5 +17,9 @@ export class Common {
 
     @action setRefresh(refresh: boolean) {
         this.refresh = refresh;
+    }
+
+    @action setSuccessChangePass(successChangePass: boolean) {
+        this.successChangePass = successChangePass;
     }
 }

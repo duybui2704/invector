@@ -35,10 +35,8 @@ import { MyStylesHome } from './styles';
 import KeyValue from '@/components/KeyValue';
 
 const Home = observer(() => {
-    const { apiServices, fastAuthInfoManager, userManager } = useAppStore();
-    const {supportedBiometry} = fastAuthInfoManager;
+    const { apiServices, userManager } = useAppStore();
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
-    const [hasUserInfo, setHasUserInfo] = useState<boolean>(userManager.userInfo!==undefined);
     const isFocused = useIsFocused();
     const styles = MyStylesHome();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -99,20 +97,20 @@ const Home = observer(() => {
     };
 
     const navigateToDetail = useCallback((item: PackageInvest) => {
-        if (hasUserInfo || !supportedBiometry) {
+        if (userManager?.userInfo) {
             Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, [btnInvest, hasUserInfo, supportedBiometry]);
+    }, [userManager?.userInfo, btnInvest]);
 
     const navigateToInvestNow = useCallback((item: PackageInvest) => {
-        if (hasUserInfo || !supportedBiometry) {
+        if (userManager?.userInfo) {
             Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.invest, { status: btnInvest, id: item?.id });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, [btnInvest, hasUserInfo, supportedBiometry]);
+    }, [userManager?.userInfo]);
 
     const gotoLogin = useCallback((titleAuth: string) => {
         setTimeout(() => {
@@ -177,6 +175,7 @@ const Home = observer(() => {
         );
     }, [iconTouchable, styles.tab, styles.txtTab]);
 
+
     const renderTabBottom = useCallback((text: string, hasDash?: boolean) => {
         return (
             <KeyValue
@@ -200,7 +199,7 @@ const Home = observer(() => {
                         <IcNotify style={styles.imgNotify} />
                     </Touchable>
                 </View>
-                {hasUserInfo || supportedBiometry?
+                {userManager?.userInfo ?
                     <View style={styles.viewTop}>
                         <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
                         <View style={styles.viewSumInvestValue}>
@@ -237,7 +236,7 @@ const Home = observer(() => {
                         <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
                         <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
                     </View>}
-                {userManager.userInfo || !supportedBiometry?
+                {userManager?.userInfo ?
                     <View style={styles.viewSmallMenu}>
                         {renderIconTab(Languages.home.have)}
                         {renderIconTab(Languages.home.invest)}
@@ -251,7 +250,7 @@ const Home = observer(() => {
                     </View>}
             </View>
         );
-    }, [styles.viewForeground, styles.viewTopLogo, styles.logo, styles.viewRightTop, styles.imgNotify, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValue, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenu, styles.viewSmallMenuLogin, onNotifyInvest, hasUserInfo, supportedBiometry, dataDash?.so_du, dataDash?.tong_goc_da_tra, dataDash?.tong_lai_con_lai, renderIconTab, renderNavigateScreen]);
+    }, [styles, onNotifyInvest, userManager?.userInfo, dataDash?.so_du, dataDash?.tong_goc_da_tra, dataDash?.tong_lai_con_lai, renderIconTab, renderNavigateScreen]);
 
     const renderFooter = useMemo(() => {
         return (

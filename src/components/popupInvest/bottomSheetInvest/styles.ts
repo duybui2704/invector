@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 
 import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
-import DimensionUtils from '@/utils/DimensionUtils';
 
 export const MyStylesBottomSheetInvest = () => {
     return useMemo(() =>

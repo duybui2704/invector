@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { HeaderBar } from '@/components/header';
-import DimensionUtils from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import Navigator from '@/routers/Navigator';
 import ScreenNames, { ScreenName, TabsName } from '@/common/screenNames';
 import SessionManager from '@/manager/SessionManager';
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     imgLogo: {
-        width: DimensionUtils.SCREEN_WIDTH - 100,
+        width: SCREEN_WIDTH - 100,
         alignSelf: 'center',
-        marginBottom: DimensionUtils.SCREEN_HEIGHT / 5
+        marginBottom: SCREEN_HEIGHT / 5
     }
 });

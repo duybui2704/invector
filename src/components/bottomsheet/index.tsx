@@ -16,13 +16,13 @@ import React, {
     useRef,
     useState
 } from 'react';
-import {Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import { COLORS } from '@/theme';
 import Languages from '@/common/Languages';
 import IcFindingContract from '@/assets/image/common/ic_search.svg';
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
-import DimensionUtils from '../../utils/DimensionUtils';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import MyStyleBottomSheet from '@/components/bottomSheet/styles';
 import { BottomSheetAction, BottomSheetProps } from './types';
 
@@ -55,7 +55,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
         const snapPoints = useMemo(() => {
             const num = data?.length as number;
             const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);  // + input height
-            let ratio = contentHeight * 100 / DimensionUtils.SCREEN_HEIGHT;
+            let ratio = contentHeight * 100 / SCREEN_HEIGHT;
             ratio = Math.max(ratio, 15);
             ratio = Math.min(ratio, 70);
 

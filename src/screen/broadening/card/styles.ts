@@ -2,7 +2,7 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import DimensionUtils, { CARD, VERTICAL_MARGIN } from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { COLORS } from '@/theme';
 import { Configs } from '@/common/Configs';
 
@@ -15,8 +15,8 @@ export const MyStylesCard = () => {
                 zIndex: -1
             },
             image: {
-                width: DimensionUtils.SCREEN_WIDTH,
-                height: DimensionUtils.SCREEN_HEIGHT
+                width: SCREEN_WIDTH,
+                height: SCREEN_HEIGHT
             },
             gradient: {
                 color: COLORS.TRANSPARENT,
@@ -41,14 +41,14 @@ export const MyStylesCard = () => {
                 lineHeight: 24
             },
             viewBottom: {
-                marginTop: DimensionUtils.SCREEN_HEIGHT / 1.8,
+                marginTop: SCREEN_HEIGHT / 1.8,
                 position: 'absolute',
                 width: '80%',
                 marginHorizontal: 10
             },
             viewText: {
                 width: '100%',
-                height: DimensionUtils.SCREEN_HEIGHT * 0.2
+                height: SCREEN_HEIGHT * 0.2
             },
             tob: {
                 width: '40%',
@@ -57,15 +57,15 @@ export const MyStylesCard = () => {
                 borderWidth: 1,
                 borderColor: COLORS.WHITE,
                 position: 'absolute',
-                bottom: DimensionUtils.SCREEN_HEIGHT * 0.06,
+                bottom: SCREEN_HEIGHT * 0.06,
                 left: 10,
                 justifyContent: 'center',
                 alignItems: 'center'
             },
             logo: {
                 position: 'absolute',
-                top: DimensionUtils.SCREEN_HEIGHT * 0.05,
-                left: DimensionUtils.SCREEN_WIDTH * 0.08
+                top: SCREEN_HEIGHT * 0.05,
+                left: SCREEN_WIDTH * 0.08
             }
         }), []);
 };

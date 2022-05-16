@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { useMemo } from 'react';
 
-import DimensionUtils from '../../utils/DimensionUtils';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import { COLORS, Styles } from '../../theme';
 import { Configs, PADDING_TOP, STATUSBAR_HEIGHT } from '../../common/Configs';
 
-const IMG_HEADER_HEIGHT = DimensionUtils.SCREEN_WIDTH / 375 * 85;
+const IMG_HEADER_HEIGHT = SCREEN_WIDTH / 375 * 85;
 export const MyStylesHeader = () => {
     return useMemo(() => StyleSheet.create({
         container: {
@@ -16,15 +16,15 @@ export const MyStylesHeader = () => {
             top: 0,
             right: 0,
             left: 0,
-            width: DimensionUtils.SCREEN_WIDTH,
-            height: DimensionUtils.SCREEN_HEIGHT / 3
+            width: SCREEN_WIDTH,
+            height: SCREEN_HEIGHT / 3
         },
         imageBg1: {
             position: 'absolute',
             top: 0,
             right: 0,
             left: 0,
-            width: DimensionUtils.SCREEN_WIDTH,
+            width: SCREEN_WIDTH,
             height: IMG_HEADER_HEIGHT,
             tintColor: COLORS.WHITE
         },
@@ -33,7 +33,7 @@ export const MyStylesHeader = () => {
             flexDirection: 'row',
             alignItems: 'center',
             marginTop: STATUSBAR_HEIGHT + PADDING_TOP,
-            marginHorizontal: DimensionUtils.SCREEN_HEIGHT * 0.01
+            marginHorizontal: SCREEN_HEIGHT * 0.01
         },
         goBack: {
             justifyContent: 'center'
@@ -56,15 +56,15 @@ export const MyStylesHeader = () => {
             color: COLORS.GREEN
         },
         imgBack: {
-            width: DimensionUtils.SCREEN_WIDTH * 0.05,
-            height: DimensionUtils.SCREEN_WIDTH * 0.05
+            width: SCREEN_WIDTH * 0.05,
+            height: SCREEN_WIDTH * 0.05
         },
         logo: {
-            marginLeft: DimensionUtils.SCREEN_WIDTH * 0.05
+            marginLeft: SCREEN_WIDTH * 0.05
         },
         imgNotify: {
-            width: DimensionUtils.SCREEN_WIDTH * 0.08,
-            height: DimensionUtils.SCREEN_WIDTH * 0.08
+            width: SCREEN_WIDTH * 0.08,
+            height: SCREEN_WIDTH * 0.08
         },
         viewRight: {
             position: 'absolute',

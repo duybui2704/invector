@@ -1,7 +1,7 @@
 import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Text, View } from 'react-native';
+import { RefreshControl, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { VictoryBar, VictoryChart, VictoryGroup, VictoryLabel, VictoryTheme, VictoryZoomContainer } from 'victory-native';
 import { useIsFocused } from '@react-navigation/native';
@@ -57,10 +57,10 @@ const Report = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
-        if (year && quarter) {
+        if (year && quarter && isFocused) {
             fetchReport();
         }
-    }, [quarter, year]);
+    }, [quarter, year, isFocused]);
 
     const fetchDataSearch = useCallback(async () => {
         const resQuarters = await apiServices.report.getQuarters();
@@ -81,20 +81,22 @@ const Report = observer(() => {
         const res = await apiServices.report.requestFinanceReport(quarter.substring(4), year);
         if (res.success) {
             setIsLoading(false);
-            const dataMonths = res?.data as OverviewMonthOfQuarterModal[];
-            setReportList(dataMonths);
+            const dataMonths =  res?.data as OverviewMonthOfQuarterModal[];
 
+            setReportList(dataMonths);
             const dataTotal = res?.total as TotalOfQuarterModal;
             setTotal(dataTotal);
-            const temp = dataMonths.map((item) => {
+            console.log('report:', reportList);
+
+            const temp =  dataMonths.map((item) => {
                 return {
                     month: `T${`${item?.month}`.slice(6, 8).replace('/', '')}`,
                     year: item?.year,
                     so_hop_dong_dau_tu: item?.so_hop_dong_dau_tu,
-                    tong_tien_dau_tu: item?.tong_tien_dau_tu,
+                    tong_tien_dau_tu: Math.round(Math.round(item?.tong_tien_dau_tu as number) / 10 ** 4) / 10 ** 2,
                     tien_goc_thu_ve: item?.tien_goc_thu_ve,
                     tong_lai_phi: item?.tong_lai_phi,
-                    tong_tien_thu_ve: item?.tong_tien_thu_ve
+                    tong_tien_thu_ve: Math.round(Math.round(item?.tong_tien_thu_ve as number) / 10 ** 4) / 10 ** 2
                 };
             }).reverse() as OverviewMonthOfQuarterModal[];
             setDataChart(temp);
@@ -142,6 +144,7 @@ const Report = observer(() => {
     }, [quarter, styles.containerContentKeyValue, styles.containerItem, styles.containerItemOverview, styles.monthTxt, styles.overviewQuarterTxt, styles.textLeftMonth, styles.txtContractNumber, styles.txtEarning, styles.txtInterest, styles.txtInvestNumber, total?.tien_goc_thu_ve, total?.tong_hop_dong, total?.tong_lai_phi, total?.tong_tat_ca_tien_dau_tu]);
 
     const renderChart = useMemo(() => {
+        console.log('aaa', Math.round(Math.round(total?.tien_goc_thu_ve as number) / 10 ** 4) / 10 ** 2);
         return (
             <View style={styles.containerContent}>
                 <Text style={styles.overviewQuarterTitle}>{Languages.report.quarterlyOverview}</Text>
@@ -152,19 +155,22 @@ const Report = observer(() => {
                         height={SCREEN_HEIGHT * 0.35}
                         horizontal
                         theme={VictoryTheme.material}
-                        domainPadding={{ x: 40 }}
+                        domainPadding={{ x: 50, y: 5 }}
                         containerComponent={
                             <VictoryZoomContainer
                                 allowZoom={true}
                                 allowPan={true}
-                                zoomDomain={{ y: [100000, 4000000] }}
+                                zoomDomain={{ y: [0, Math.round(Math.round(total?.tong_tat_ca_tien_dau_tu as number) / 10 ** 4) / 10 ** 2 || 15] }}
                             />
                         }
                     >
                         <VictoryGroup
                             offset={-3}
                             domainPadding={{ y: [2, -2] }}
-                            domain={{ y: [100000, 200000000000] }}
+                            domain={{
+                                y: [0
+                                    , Math.round(Math.round(total?.tong_tat_ca_tien_dau_tu as number) / 10 ** 4) / 10 ** 2 || 15]
+                            }}
                             animate
                         >
 
@@ -173,8 +179,6 @@ const Report = observer(() => {
                                 x={'month'}
                                 y={'tong_tien_dau_tu'}
                                 alignment={'start'}
-                                animate
-                                barRatio={0.45}
                                 style={styles.chartInvest}
                             />
 
@@ -183,7 +187,6 @@ const Report = observer(() => {
                                 x={'month'}
                                 y={'tong_tien_thu_ve'}
                                 alignment={'end'}
-                                barRatio={0.45}
                                 style={styles.chartEarning}
                             />
 
@@ -191,8 +194,12 @@ const Report = observer(() => {
                         <VictoryLabel x={30} y={25} style={styles.labelAxis}
                             text={Languages.report.month}
                         />
-                        <VictoryLabel x={SCREEN_WIDTH - 70} y={SCREEN_HEIGHT * 0.35 - 50} style={styles.labelAxis}
-                            text={Languages.common.VND}
+                        <VictoryLabel x={SCREEN_WIDTH - 70} y={SCREEN_HEIGHT * 0.35 - 40} style={styles.labelAxisSmall}
+                            text={Languages.common.million}
+                        />
+
+                        <VictoryLabel x={SCREEN_WIDTH - 70} y={SCREEN_HEIGHT * 0.35 - 60} style={styles.labelAxis}
+                            text={Languages.common.vnd}
                         />
                     </VictoryChart>
                     <View style={styles.row}>
@@ -213,12 +220,22 @@ const Report = observer(() => {
     }, [dataChart, renderItem, styles.chartContainer, styles.chartEarning, styles.chartInvest, styles.chartTitle, styles.containerContent, styles.labelAxis, styles.noteChart, styles.overviewQuarterTitle, styles.rectangleEarning, styles.rectangleInvest, styles.row]);
 
     const renderMonthList = useMemo(() => {
+
+        const onRefresh = () => {
+            setIsLoading(true);
+            fetchReport();
+            setIsLoading(false);
+        };
+
         return (
             <FlatList
                 data={reportList}
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
                 ListHeaderComponent={renderChart}
+                refreshControl={
+                    <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+                }
                 style={styles.flatList}
                 showsVerticalScrollIndicator={false}
             />
