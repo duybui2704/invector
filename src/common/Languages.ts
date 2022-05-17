@@ -17,7 +17,7 @@ const Languages = {
         fromDate: 'Từ ngày',
         toDate: 'Tới ngày',
         allInvestNow: 'Tổng đầu tư hiện tại',
-        noDataTransaction: 'Bạn thực hiện giao dịch nào !'
+        noDataTransaction: 'Bạn chưa thực hiện giao dịch nào!'
     },
     home: {
         title: 'Trang chủ',
