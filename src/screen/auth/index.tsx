@@ -1,9 +1,10 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ImageBackground, StatusBar, Text, View } from 'react-native';
+import { ImageBackground, Platform, StatusBar, Text, View } from 'react-native';
 
 import LogoAuth from '@/assets/image/auth/logo_auth.svg';
+import IcApple from '@/assets/image/auth/ic_apple.svg';
 import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
 import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';
 import Images from '@/assets/Images';
@@ -13,12 +14,13 @@ import { useAppStore } from '@/hooks';
 import Login from '@/screen/auth/login';
 import SvgComponent from '@/screen/auth/SvgText';
 import { COLORS } from '@/theme';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import { loginWithApple, loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
 import ForgotPass from './forgotPass';
 import LoginWithBiometry from './loginWithBiometrty';
 import SignUp from './signUp';
 import { myStylesAuth } from './styles';
+
 
 const Auth = observer(({ route }: any) => {
     const styles = myStylesAuth();
@@ -105,7 +107,7 @@ const Auth = observer(({ route }: any) => {
         }
     }, [isNavigate, fastAuthInfo?.isEnableFastAuth, fastAuthInfo.isFocusLogin]);
     return (
-        <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
+        <ImageBackground  style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
             <StatusBar
                 animated
                 translucent
@@ -119,10 +121,8 @@ const Auth = observer(({ route }: any) => {
             <View style={styles.viewSvg}>
                 <SvgComponent onNavigate={onNavigate} title={isNavigate} />
             </View>
-            <View style={[styles.wrapAll, { width: wid }]}>
-                {isNavigate === Languages.auth.txtLogin ? <Login /> :
-                    isNavigate === Languages.auth.txtSignUp ? <SignUp /> : <ForgotPass />
-                }
+            <View  style={[styles.wrapAll, { width: wid }]}>
+                {renderContent}
             </View>
             <View style={styles.viewBottom}>
                 <Text style={styles.txtLogin}>{Languages.auth.txtLoginWith}</Text>
@@ -133,12 +133,10 @@ const Auth = observer(({ route }: any) => {
                     <Touchable style={styles.icon} onPress={onLoginGoogle}>
                         <IcGoogleAuth />
                     </Touchable>
-                    {/* <Touchable style={styles.icon} onPress={onLoginApple}>
-                        <IcInsAuth />
-                    </Touchable>
-                    <Touchable style={styles.icon}>
-                        <IcLinkedInAuth />
-                    </Touchable> */}
+                    {Platform.OS==='ios'&&<Touchable style={styles.icon} onPress={onLoginApple}>
+                        <IcApple />
+                    </Touchable>}
+                   
                 </View>
             </View>
         </ImageBackground>

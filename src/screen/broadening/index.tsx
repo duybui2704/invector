@@ -4,7 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 
 import Images from '@/assets/Images';
 import Languages from '@/common/Languages';
-import { ACTION_OFFSET, CARD, SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import {  CARD, SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import Card from './card';
 import { MyStylesBoar } from './styles';
 import { COLORS, Styles } from '@/theme';

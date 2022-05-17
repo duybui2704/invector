@@ -61,7 +61,7 @@ export interface CheckVimoWalletModel {
     status: number
 
 }
-export interface PagingCoditionTypes {
+export interface PagingConditionTypes {
     offset: number
     isLoading: boolean,
     canLoadMore: boolean,

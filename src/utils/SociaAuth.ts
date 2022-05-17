@@ -13,9 +13,7 @@ GoogleSignin.configure(configGoogleSignIn);
 
 export const loginWithGoogle = async () => {
     try {
-        // await GoogleSignin.hasPlayServices();
         const { idToken } = await GoogleSignin.signIn();
-
         if (idToken) {
             const userInfo = await GoogleSignin.signInSilently();
             if (userInfo) GoogleSignin.signOut();
@@ -43,7 +41,7 @@ export const loginWithFacebook = async () => {
             }
             else {
                 data = await Profile.getCurrentProfile();
-                console.log('data', data)
+                console.log('data', data);
             }
             if (data) LoginManager.logOut();
             return data;

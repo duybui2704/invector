@@ -19,7 +19,7 @@ import MyFlatList from '@/components/MyFlatList';
 import PopupFilterInvested from '@/components/PopupFilterInvested';
 import PopupInvest from '@/components/popupInvest';
 import { useAppStore } from '@/hooks';
-import { PackageInvest, PagingCoditionTypes } from '@/models/invest';
+import { PackageInvest, PagingConditionTypes } from '@/models/invest';
 import NoData from '@/components/NoData';
 import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
@@ -27,7 +27,7 @@ import Utils from '@/utils/Utils';
 import { HeaderBar } from '../../components/header';
 import styles from './styles';
 
-const PAGE_SZIE = 5;
+const PAGE_SIZE = 5;
 
 const Investment = observer(({ route }: { route: any }) => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -49,7 +49,7 @@ const Investment = observer(({ route }: { route: any }) => {
     const refBottomSheetMonth = useRef<any>(null);
     const refBottomSheetMoney = useRef<any>(null);
     const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(false);
-    const condition = useRef<PagingCoditionTypes>({
+    const condition = useRef<PagingConditionTypes>({
         isLoading: true,
         offset: 0,
         canLoadMore: true,
@@ -83,7 +83,7 @@ const Investment = observer(({ route }: { route: any }) => {
             condition.current.fromDate,
             condition.current.toDate,
             isLoadMore ? condition.current.offset : 0,
-            PAGE_SZIE);
+            PAGE_SIZE);
         const newData = resInvest.data as PackageInvest[];
         const newSize = newData?.length;
 
@@ -100,7 +100,7 @@ const Investment = observer(({ route }: { route: any }) => {
             setListStore([]);
         }
         condition.current.isLoading = false;
-        condition.current.canLoadMore = newSize >= PAGE_SZIE;
+        condition.current.canLoadMore = newSize >= PAGE_SIZE;
         setIsLoading(false);
     }, [apiServices.invest]);
 
@@ -112,7 +112,7 @@ const Investment = observer(({ route }: { route: any }) => {
             condition.current.timeInvestment,
             condition.current.moneyInvest,
             isLoadMore ? condition.current.offset : 0,
-            PAGE_SZIE);
+            PAGE_SIZE);
         const newData = resInvest.data as PackageInvest[];
         const newSize = newData?.length;
 
@@ -129,7 +129,7 @@ const Investment = observer(({ route }: { route: any }) => {
             setListStore([]);
         }
         condition.current.isLoading = false;
-        condition.current.canLoadMore = newSize >= PAGE_SZIE;
+        condition.current.canLoadMore = newSize >= PAGE_SIZE;
         setIsLoading(false);
         setCanLoadMoreUI(condition.current.canLoadMore);
     }, [apiServices.invest]);
@@ -218,18 +218,23 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const onPressItem = useCallback((item?: any, title?: string) => {
         console.log('tt', item);
-        if (title === Languages.invest.monthInvest && btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
+        if (title === Languages.invest.monthInvest) {
             setTimeValue(item);
             condition.current.timeInvestment = item.id;
         }
-        else if (title === Languages.invest.chooseMoney && btnInvest === ENUM_INVEST_STATUS.INVESTING) {
-            setMoneyValueInvest(item);
-            condition.current.moneyInvest = item.id;
+        if (title === Languages.invest.chooseMoney) {
+            if(btnInvest===ENUM_INVEST_STATUS.INVEST_NOW)
+            {
+                setMoneyValueInvest(item);
+                condition.current.moneyInvest = item.id;
+            }
+            if(btnInvest===ENUM_INVEST_STATUS.INVESTING)
+            {
+                setMoneyValueInvested(item);
+                condition.current.moneyInvested = item.id;
+            }
         }
-        else if (title === Languages.invest.chooseMoney && btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
-            setMoneyValueInvested(item);
-            condition.current.moneyInvested = item.id;
-        }
+       
 
         if (btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
             popupInvestRef.current?.show();
@@ -326,7 +331,7 @@ const Investment = observer(({ route }: { route: any }) => {
         }
 
     }, [btnInvest]);
-    const opentTimeInvestment = useCallback(() => {
+    const openTimeInvestment = useCallback(() => {
         refBottomSheetMoney.current.show();
     }, []);
 
@@ -396,7 +401,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 ref={popupInvestedRef}
                 title={Languages.invest.packageInvest}
                 onConfirm={onConfirmFilterInvested}
-                openTimeInvestment={opentTimeInvestment}
+                openTimeInvestment={openTimeInvestment}
                 money={moneyValueInvested?.value}
             />
             <BottomSheetComponentInvest

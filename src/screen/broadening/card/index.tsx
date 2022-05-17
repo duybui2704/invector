@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Animated, Image, ImageBackground, StatusBar, Text, View } from 'react-native';
 import Svg, { Circle, G } from 'react-native-svg';
 
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT, ACTION_OFFSET } from '@/utils/DimensionUtils';
 import { MyStylesCard } from './styles';
 import { COLORS } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';

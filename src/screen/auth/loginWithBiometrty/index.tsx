@@ -1,15 +1,17 @@
 import PasscodeAuth from '@el173/react-native-passcode-auth';
 import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetModal, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
-import { observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Keyboard, Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import HTMLView from 'react-native-htmlview';
 import TouchID from 'react-native-touch-id';
+import FastImage from 'react-native-fast-image';
 
+import AvatarIC from '@/assets/image/ic_avatar.svg';
 import ArrowIc from '@/assets/image/auth/ic_arrow_left.svg';
-import FingerIc from '@/assets/image/auth/ic_finger.svg';
 import FaceIDIc from '@/assets/image/auth/ic_faceid.svg';
+import FingerIc from '@/assets/image/auth/ic_finger.svg';
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import arrayIcon from '@/common/arrayIcon';
 import { Configs } from '@/common/Configs';
@@ -28,6 +30,7 @@ import Navigator from '@/routers/Navigator';
 import { COLORS, HtmlStyles } from '@/theme';
 import StorageUtils from '@/utils/StorageUtils';
 import { MyStylesLogin } from './styles';
+
 
 const customTexts = {
     set: Languages.setPassCode
@@ -52,7 +55,6 @@ const LoginWithBiometry = observer(() => {
             setCheck(true);
         }
         if (SessionManager.getPwdLogin()) {
-            setPass(SessionManager.getPwdLogin.toString);
             setCheck(true);
         }
     }, []);
@@ -67,7 +69,7 @@ const LoginWithBiometry = observer(() => {
 
     const onLoginOther = useCallback(() => {
         fastAuthInfo.setFocusLogin(true);
-    }, []);
+    }, [fastAuthInfo]);
 
     const auth = useCallback(() => {
         if (Platform.OS === 'android') {
@@ -110,7 +112,7 @@ const LoginWithBiometry = observer(() => {
         }
     };
 
-    const renderInput = useCallback((ref: any, value: any, isPhone: boolean, placeHolder: string, rightIcon?: string, keyboardType?: any, maxLength?: number, isPass?: boolean) => {
+    const renderInput = useCallback((ref: any, value: string, isPhone: boolean, placeHolder: string, rightIcon?: string, keyboardType?: any, maxLength?: number, isPass?: boolean) => {
         return (
             <MyTextInput
                 ref={ref}
@@ -129,13 +131,32 @@ const LoginWithBiometry = observer(() => {
 
 
     const onLoginPhone = useCallback(async () => {
-        fastAuthInfo.setEnableFastAuthentication(false);
-        Navigator.navigateToDeepScreen(
-            [ScreenName.tabs],
-            TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
-        );
+        const res = await apiServices.auth.loginPhone(SessionManager?.userInfo?.phone_number||'', pass);
 
-    }, [apiServices.auth, pass, userManager]);
+        if (res.success) {
+            setLoading(false);
+            const resData = res.data as UserInfoModal;
+            SessionManager.setAccessToken(resData?.token);
+            const resInfoAcc = await apiServices.auth.getUserInfo();
+            if (resInfoAcc.success) {
+                
+                fastAuthInfo.setEnableFastAuthentication(false);
+                const data = resInfoAcc?.data as UserInfoModal;
+                setUserData(data);
+                userManager.updateUserInfo(data);
+            }
+            fastAuthInfo.setEnableFastAuthentication(false);
+            setTimeout(() => {
+                if (SessionManager.accessToken) {
+                    Navigator.navigateToDeepScreen(
+                        [ScreenName.tabs],
+                        TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+                    );
+                }
+            }, 200);
+        }
+
+    }, [apiServices.auth, fastAuthInfo, pass, userManager]);
 
     useEffect(() => {
     }, [isLoading, userData]);
@@ -156,7 +177,7 @@ const LoginWithBiometry = observer(() => {
             );
         }
         return null;
-    }, []);
+    }, [auth, fastAuthInfo.supportedBiometry]);
 
     const checkPin = useCallback(async (value: string) => {
         const pin = await StorageUtils.getDataByKey(StorageKeys.KEY_PIN);
@@ -212,42 +233,50 @@ const LoginWithBiometry = observer(() => {
                 </View>
             </BottomSheetModal>
         );
-    }, [animationConfigs, checkPin, onLoginSuccessWithPIn]);
+    }, [animationConfigs, checkPin, onLoginSuccessWithPIn, styles.wrapPin]);
 
     return (
-        <TouchableWithoutFeedback>
-            <View style={styles.content}>
-                <View style={styles.wrapLoginTxt}>
-                    <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
-                    <IcLine />
-                </View>
-                <View style={styles.wrapAvatar} />
-                <HTMLView
-                    value={`<p>${Languages.loginWithBiometry.hello} <g>` + 'Dinh Truong Giang' + '</g>' + '</p>'}
-                    stylesheet={HtmlStyles || undefined} />
-                <HTMLView
-                    value={Languages.loginWithBiometry.description}
-                    stylesheet={HtmlStyles || undefined} />
-                {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true)}
-                <View style={styles.rowInfo}>
-                    <Touchable style={styles.checkbox}>
-                        <ArrowIc />
-                        <Text style={styles.txtSave}>{Languages.loginWithBiometry.loginWithOther}</Text>
-                    </Touchable>
-                    <View style={styles.wrapBt}>
-                        <Touchable onPress={onLoginPhone}
-                            style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
-                            <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                                {Languages.auth.txtLogin}
-                            </Text>
-                        </Touchable>
-                        {renderSupportedBio}
-                    </View>
-                </View>
-                {renderPinCode}
-                {isLoading && <Loading isOverview />}
+        <View style={styles.content}>
+            <View style={styles.wrapLoginTxt}>
+                <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
+                <IcLine />
             </View>
-        </TouchableWithoutFeedback>
+            {!userManager.userInfo?.avatar_user ?
+                <AvatarIC style={styles.circleWrap} />
+                :
+                <FastImage
+                    style={styles.circleWrap}
+                    source={{
+                        uri: userManager.userInfo?.avatar_user
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
+                />
+            }
+            <HTMLView
+                value={`<p>${Languages.loginWithBiometry.hello} <g>${userManager.userInfo?.full_name || ''}</g>` + '</p>'}
+                stylesheet={HtmlStyles || undefined} />
+            <HTMLView
+                value={Languages.loginWithBiometry.description}
+                stylesheet={HtmlStyles || undefined} />
+            {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true)}
+            <View style={styles.rowInfo}>
+                <Touchable onPress={onLoginOther} style={styles.checkbox}>
+                    <ArrowIc />
+                    <Text style={styles.txtSave}>{Languages.loginWithBiometry.loginWithOther}</Text>
+                </Touchable>
+                <View style={styles.wrapBt}>
+                    <Touchable onPress={onLoginPhone}
+                        style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                        <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                            {Languages.auth.txtLogin}
+                        </Text>
+                    </Touchable>
+                    {renderSupportedBio}
+                </View>
+            </View>
+            {renderPinCode}
+            {isLoading && <Loading isOverview />}
+        </View>
     );
 });
 

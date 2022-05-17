@@ -1,6 +1,6 @@
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import Modal from 'react-native-modal';
 import DatePicker from 'react-native-date-picker';
 import { last } from 'lodash';
@@ -89,9 +89,12 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
                     hide();
                 }
             };
+            const styleTxt = {
+                color: value ? COLORS.BLACK : COLORS.GRAY_16
+            } as TextStyle;
             return (
                 <Touchable style={styles.inputPhone} onPress={onPress}>
-                    <Text style={styles.txtPalaceholder}>{value || palaceholder}</Text>
+                    <Text style={[styles.txtPalaceholder, styleTxt]}>{value || palaceholder}</Text>
                 </Touchable>
             );
         }, [hide, openTimeInvestment]);

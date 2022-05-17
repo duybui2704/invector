@@ -18,41 +18,44 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
-
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
-    
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>1</string>
-    <key>FacebookAppID</key>
-    <string>945443669696174</string>
-    <key>FacebookDisplayName</key>
-    <string>Tienngay.vn-Investor</string>
-    <key>FacebookClientToken</key>
-	<string>7d25275c326ffa55b095c209e39681b7</string>
-    <key>CFBundleURLTypes</key>
+	<key>CFBundleURLTypes</key>
 	<array>
-         <dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-            <string>fb945443669696174</string>
-            </array>
-  </dict>
+    	<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app.appsflyer.com</string>
+				<string>sandboxcpanelv2.tienngay.vn</string>
+				<string>tienngay.vn.investor</string>
+				<string>fb922820401777127</string>
+			</array>
+		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.393388576958-k2lgsl04rb0l1shibbejon5t9g8qqd0q</string>
+				<string>com.googleusercontent.apps.393388576958-hrnhb7jka7svk33j2aapg255ohu576tg</string>
 			</array>
 		</dict>
 	</array>
-    
-    <key>LSApplicationQueriesSchemes</key>
+  
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>FacebookAppID</key>
+	<string>945443669696174</string>
+	<key>FacebookClientToken</key>
+	<string>7d25275c326ffa55b095c209e39681b7</string>
+	<key>FacebookDisplayName</key>
+	<string>Tienngay.vn</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>tel</string>
 		<string>fbapi</string>
@@ -71,10 +74,6 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
-    <key>FacebookDisplayName</key>
-    <string>Tienngay.vn-Investor</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -99,6 +98,8 @@
 		<string>OpenSans-Bold.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -113,22 +114,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <key>CFBundleURLTypes</key>
-    <array>
-      <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fbAPP-ID</string>
-      </array>
-      </dict>
-    </array>
-    <key>FacebookAppID</key>
-    <string>APP-ID</string>
-    <key>FacebookClientToken</key>
-    <string>CLIENT-TOKEN</string>
-    <key>FacebookDisplayName</key>
-    <string>APP-NAME</string>
 </dict>
 </plist>
-
-

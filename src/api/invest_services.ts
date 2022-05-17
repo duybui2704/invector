@@ -27,7 +27,7 @@ export class InvestServices extends BaseService {
 
     getNotifyUpdateRead = async (noti_id: number) => this.api().post(API_CONFIG.NOTIFY_UPDATE_READ, this.buildFormData({ noti_id }));
 
-    getInforInvest = async () => this.api().post(API_CONFIG.GET_INFOR_INVESTOR, this.buildFormData({
+    getInfoInvest = async () => this.api().post(API_CONFIG.GET_INFOR_INVESTOR, this.buildFormData({
 
     }));
 
