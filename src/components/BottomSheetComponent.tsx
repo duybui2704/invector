@@ -8,11 +8,11 @@ import React, {
     useRef,
     useState
 } from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Dash from 'react-native-dash';
 import { useIsFocused } from '@react-navigation/native';
 
-import { Configs, isIOS, PADDING_BOTTOM } from '@/common/Configs';
+import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { ItemProps } from '@/models/common-model';
 import { COLORS, Styles } from '@/theme';

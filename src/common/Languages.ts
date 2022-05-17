@@ -130,7 +130,11 @@ const Languages = {
         vnd: 'VNĐ',
         million: '(Triệu)',
         hotline: '18006907',
-        notice: 'Thông báo'
+        notice: 'Thông báo',
+        rate: 'Đánh giá',
+        youRate: 'Vui lòng đánh giá ứng dụng',
+        comment: 'Bình luận',
+        thanksRating: 'Cám ơn bạn đã đóng góp ý kiến !'
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng Tienngay',

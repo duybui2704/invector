@@ -31,7 +31,7 @@ import Navigator from '@/routers/Navigator';
 import { Configs, isIOS } from '@/common/Configs';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
-import { ScreenName, TabNamesArray } from '@/common/screenNames';
+import { ScreenName } from '@/common/screenNames';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
@@ -47,6 +47,7 @@ import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
 import { LINKS } from '@/api/constants';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
+import PopupRating from '@/components/PopupRating';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -68,6 +69,9 @@ const Profile = observer(() => {
     });
     const [errorText, setErrorText] = useState<string>('');
     const popupLogout = useRef<PopupActionTypes>();
+    const popupRating = useRef<PopupActionTypes>();
+    const [text, setText] = useState<string>('');
+    const [ratingPoint, setRating] = useState<number>(0);
 
     useEffect(() => {
         if (!SessionManager.accessToken || !supportedBiometry) {
@@ -120,6 +124,39 @@ const Profile = observer(() => {
         );
     }, [onAgreeLogout]);
 
+    const openPopupRating = useCallback(() => {
+        popupRating.current?.show();
+    }, []);
+
+    const onAgreeRating = useCallback(() => {
+        popupRating.current?.hide();
+        if (ratingPoint > 3) {
+            onLinkRate();
+        } else {
+            ToastUtils.showSuccessToast(Languages.common.thanksRating);
+        }
+    }, [onLinkRate, ratingPoint]);
+
+    const renderPopupRating = useCallback((ref: any) => {
+        const onChangeTextComment = async (_commentText?: string) => {
+            setText(_commentText || '');
+        };
+        const onRating = async (rating?: number) => {
+            setRating(rating || 0);
+        };
+        return (
+            <PopupRating
+                ref={ref}
+                textCancel={styles.textCancel}
+                hasButton
+                onConfirm={onAgreeRating}
+                onChangeTextComment={onChangeTextComment}
+                ratingSwipeComplete={onRating}
+            />
+        );
+    }, [onAgreeRating]);
+
+
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
         const onNavigateScreen = () => {
             switch (title) {
@@ -166,7 +203,7 @@ const Profile = observer(() => {
                     Utils.openURL(LINK_TIENNGAY.LINK_TIENNGAY_FACEBOOK);
                     break;
                 case Languages.account.rate:
-                    onLinkRate();
+                    openPopupRating();
                     break;
                 default:
                     break;
@@ -184,7 +221,7 @@ const Profile = observer(() => {
                 containerContent={styles.featureContainer}
             />
         );
-    }, [callPhone, onLinkRate]);
+    }, [callPhone, openPopupRating]);
 
     const onToggleBiometry = useCallback(
         (value) => {
@@ -415,6 +452,7 @@ const Profile = observer(() => {
             {renderPopupError}
             {renderPinCode}
             {renderPopupLogout(popupLogout)}
+            {renderPopupRating(popupRating)}
         </View>
     );
 });
