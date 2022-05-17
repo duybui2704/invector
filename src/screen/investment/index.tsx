@@ -34,7 +34,7 @@ const Investment = observer(({ route }: { route: any }) => {
     const [textSearch, setTextSearch] = useState<string>();
     const [listStore, setListStore] = useState<PackageInvest[]>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [dataTime, setDataTime] = useState<any>([]);
     const [timeValue, setTimeValue] = useState<ItemProps>();
@@ -75,7 +75,13 @@ const Investment = observer(({ route }: { route: any }) => {
 
 
     const fetchDataInvested = useCallback(async (isLoadMore?: boolean) => {
-        setIsLoading(true);
+        if(!isLoadMore)
+        {
+            setIsLoading(true);
+        }
+        else{
+            setCanLoadMoreUI(true);
+        }
         condition.current.isLoading = true;
         const resInvest = await apiServices.invest.getListContractInvesting(
             condition.current.textSearch,
@@ -105,7 +111,13 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [apiServices.invest]);
 
     const fetchAllDataInvest = useCallback(async (isLoadMore?: boolean) => {
-        setIsLoading(true);
+        if(!isLoadMore)
+        {
+            setIsLoading(true);
+        }
+        else{
+            setCanLoadMoreUI(true);
+        }
         condition.current.isLoading = true;
         const resInvest = await apiServices.invest.getAllContractInvest(
             condition.current.textSearch,
@@ -223,18 +235,16 @@ const Investment = observer(({ route }: { route: any }) => {
             condition.current.timeInvestment = item.id;
         }
         if (title === Languages.invest.chooseMoney) {
-            if(btnInvest===ENUM_INVEST_STATUS.INVEST_NOW)
-            {
+            if (btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
                 setMoneyValueInvest(item);
                 condition.current.moneyInvest = item.id;
             }
-            if(btnInvest===ENUM_INVEST_STATUS.INVESTING)
-            {
+            if (btnInvest === ENUM_INVEST_STATUS.INVESTING) {
                 setMoneyValueInvested(item);
                 condition.current.moneyInvested = item.id;
             }
         }
-       
+
 
         if (btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
             popupInvestRef.current?.show();
@@ -357,14 +367,17 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [handleInputOnchange, onPopupInvest, textSearch]);
 
     const renderLoading = useMemo(() => {
-        return <View>{canLoadMoreUI && <Loading />}</View>;
+        return <View >{canLoadMoreUI && <Loading />}</View>;
     }, [canLoadMoreUI]);
 
     const renderEmptyData = useMemo(() => {
-        return (
-            <NoData img={<IMGNoData/>} description={ Languages.invest.emptyData} />
-        );
-    }, []);
+        if (listStore?.length === 0 && isLoading === false) {
+            return (
+                <NoData img={<IMGNoData />} description={Languages.invest.emptyData} />
+            );
+        }
+        return null;
+    }, [isLoading, listStore?.length]);
 
     return (
         <View style={styles.main}>
@@ -416,7 +429,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 title={Languages.invest.monthInvest}
                 onPressItem={onPressItem}
             />
-            {isLoading && <Loading isOverview />}
+            {/* {isLoading && <Loading isOverview />} */}
         </View>
     );
 });

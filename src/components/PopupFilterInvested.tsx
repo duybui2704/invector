@@ -11,6 +11,7 @@ import { Touchable } from '@/components/elements/touchable';
 import { COLORS, Styles } from '@/theme';
 import { PopupActions } from './popupInvest/types';
 import DateUtils from '@/utils/DateUtils';
+import ICCalender from '@/assets/image/ic_calender.svg';
 
 
 
@@ -95,6 +96,7 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             return (
                 <Touchable style={styles.inputPhone} onPress={onPress}>
                     <Text style={[styles.txtPalaceholder, styleTxt]}>{value || palaceholder}</Text>
+                    <ICCalender/>
                 </Touchable>
             );
         }, [hide, openTimeInvestment]);
@@ -179,17 +181,17 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
 export default PopupFilterInvested;
 const styles = StyleSheet.create({
     textModel: {
-        ...Styles.typography.regular,
+        ...Styles.typography.medium,
         fontSize: Configs.FontSize.size20,
         textAlign: 'center',
-        color: COLORS.GREEN
+        color: COLORS.GREEN_3
     },
     viewFL: {
         backgroundColor: COLORS.WHITE,
         borderColor: COLORS.TRANSPARENT,
         borderRadius: 20,
         borderWidth: 1,
-        paddingBottom: 10,
+        paddingBottom: 16,
         paddingTop: 10,
         width: '100%',
         paddingHorizontal: 16
@@ -201,7 +203,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingVertical: 10,
         borderColor: COLORS.GRAY_11,
-        paddingLeft: 16
+        paddingLeft: 16,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        paddingRight:16
     },
     containerOverViewPicker: {
         marginTop: 12,
@@ -236,13 +242,14 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.GREEN,
         justifyContent: 'center',
         alignItems: 'center',
-        width: (SCREEN_WIDTH - 32 - 60) / 2
+        width: (SCREEN_WIDTH - 32 - 60) / 2,
+        marginTop:10
     },
     viewBottom: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 20,
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop:10
     },
     txtPalaceholder: {
         ...Styles.typography.regular,

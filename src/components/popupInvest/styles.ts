@@ -10,17 +10,17 @@ export const MyStylePupUp = () => {
         StyleSheet.create({
 
             textModel: {
-                ...Styles.typography.regular,
+                ...Styles.typography.medium,
                 fontSize: Configs.FontSize.size20,
                 textAlign: 'center',
-                color: COLORS.GREEN
+                color: COLORS.GREEN_3
             },
             viewFL: {
                 backgroundColor: COLORS.WHITE,
                 borderColor: COLORS.TRANSPARENT,
                 borderRadius: 20,
                 borderWidth: 1,
-                paddingBottom: 10,
+                paddingBottom: 16,
                 paddingTop: 10,
                 width: '100%',
                 paddingHorizontal: 16
@@ -32,7 +32,11 @@ export const MyStylePupUp = () => {
                 borderWidth: 1,
                 paddingVertical: 10,
                 borderColor: COLORS.GRAY_11,
-                paddingLeft: 16
+                paddingLeft: 16,
+                flexDirection:'row',
+                justifyContent:'space-between',
+                alignItems:'center',
+                paddingRight:16
             },
             textConfirm: {
                 ...Styles.typography.medium,
@@ -50,7 +54,7 @@ export const MyStylePupUp = () => {
             viewBottom: {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginVertical: 20,
+                marginTop: 25,
                 alignItems: 'center'
             },
             txtPalaceholder: {
