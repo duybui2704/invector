@@ -2,9 +2,10 @@ import React, {
     forwardRef,
     useCallback,
     useImperativeHandle,
+    useMemo,
     useState
 } from 'react';
-import { StyleSheet, Text, TextInput, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { Rating } from 'react-native-ratings';
 
@@ -12,20 +13,14 @@ import { COLORS, Styles } from '@/theme';
 import Languages from '@/common/Languages';
 import { PopupActionTypes, PopupPropsTypes } from '@/models/typesPopup';
 import { Configs } from '@/common/Configs';
-import { Touchable } from './elements/touchable';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import HideKeyboard from './HideKeyboard';
+import { Button } from './elements/button';
+import { BUTTON_STYLES } from './elements/button/constants';
+import { dataRatingPoint } from '@/mocks/data';
+import { ItemProps } from '@/models/common-model';
 
 interface PopupNoActionProps extends PopupPropsTypes {
-    renderIcon?: any,
-    renderTitle?: string,
-    renderContent?: string,
-    hasButton?: boolean,
-    containerAllBtn?: ViewStyle,
-    containerAgreeBtn?: ViewStyle,
-    textCancel?: TextStyle,
-    textAgree?: TextStyle,
-    containerCancelBtn?: ViewStyle,
     onChangeTextComment?: (_text?: string) => void;
     ratingSwipeComplete?: (_rating?: any) => void;
 }
@@ -35,21 +30,12 @@ const PopupRating = forwardRef<
     PopupNoActionProps
 >(({ onClose,
     onConfirm,
-    renderIcon,
-    renderTitle,
-    renderContent,
-    hasButton,
-    containerAllBtn,
-    containerAgreeBtn,
-    textCancel,
-    textAgree,
-    containerCancelBtn,
     onChangeTextComment,
     ratingSwipeComplete
 }: PopupNoActionProps, ref) => {
     const [visible, setVisible] = useState<boolean>(false);
     const [text, setText] = useState<string>('');
-    const [ratingPoint, setRating] = useState<number>(0);
+    const [ratingPoint, setRating] = useState<number>(1);
     const show = useCallback(() => {
         setVisible(true);
     }, []);
@@ -57,7 +43,7 @@ const PopupRating = forwardRef<
     const hide = useCallback(() => {
         setVisible(false);
         setText('');
-        setRating('' || 0);
+        setRating('' || 1);
     }, []);
 
     const _onClose = useCallback(() => {
@@ -69,19 +55,35 @@ const PopupRating = forwardRef<
         setText(_text || '');
         onChangeTextComment(_text || '');
 
-    },[onChangeTextComment]);
+    }, [onChangeTextComment]);
 
     const ratingCompleted = useCallback((rating?: any) => {
-        console.log('Rating is: ', rating);
-        setRating(rating || 0);
-        ratingSwipeComplete(rating || 0);
-    },[ratingSwipeComplete]);
+        setRating(rating || 1);
+        ratingSwipeComplete(rating || 1);
+    }, [ratingSwipeComplete]);
 
     useImperativeHandle(ref, () => ({
         show,
         hide
     }));
 
+    const renderDescribeRating = useMemo(() => {
+        return (
+            <>
+                {dataRatingPoint.map((item?: ItemProps) => {
+                    return (
+                        <>
+                            {`${ratingPoint}` === item?.id &&
+                                <Text style={styles.txtDescribePoint}>
+                                    {item?.value}
+                                </Text>
+                            }
+                        </>
+                    );
+                })}
+            </>
+        );
+    }, [ratingPoint]);
 
     return (
         <Modal
@@ -94,18 +96,18 @@ const PopupRating = forwardRef<
         >
             <HideKeyboard>
                 <View style={styles.popup}>
-                    {renderIcon}
-                    <Text style={styles.txtTitle}>{Languages.common.rate || renderTitle}</Text>
+                    <Text style={styles.txtTitle}>{`${Languages.common.yourRate}`.toUpperCase()}</Text>
                     <Rating
                         ratingCount={5}
                         imageSize={40}
                         onFinishRating={ratingCompleted}
-                        showRating={true}
                         style={styles.wrapStarRate}
-                        startingValue={ratingPoint}
+                        startingValue={ratingPoint || 1}
+                        minValue={1}
                     />
+                    {renderDescribeRating}
                     <View>
-                        <Text style={styles.txtContent}>{Languages.common.comment || renderContent}</Text>
+                        <Text style={styles.txtContent}>{Languages.common.comment}</Text>
                         <TextInput
                             multiline={true}
                             keyboardType={'DEFAULT'}
@@ -116,15 +118,11 @@ const PopupRating = forwardRef<
                             style={styles.wrapComment}
                         />
                     </View>
-                    {hasButton &&
-                        <View style={[styles.row, containerAllBtn]}>
-                            <Touchable style={[styles.closeButton, containerCancelBtn]} onPress={_onClose}>
-                                <Text style={[styles.txtBt, textCancel]}>{Languages.common.cancel}</Text>
-                            </Touchable>
-                            <Touchable style={[styles.confirmButton, containerAgreeBtn]} onPress={onConfirm}>
-                                <Text style={[styles.txtBtConfirm, textAgree]}>{Languages.common.rate}</Text>
-                            </Touchable>
-                        </View>}
+                    <Button style={styles.row}
+                        label={Languages.common.send}
+                        buttonStyle={BUTTON_STYLES.GREEN}
+                        onPress={onConfirm}
+                    />
                 </View>
             </HideKeyboard>
         </Modal>
@@ -147,56 +145,30 @@ const styles = StyleSheet.create({
     },
     txtTitle: {
         ...Styles.typography.medium,
-        fontSize: Configs.FontSize.size28,
-        color: COLORS.GRAY_7,
+        fontSize: Configs.FontSize.size16,
+        color: COLORS.DARK_GRAY,
         paddingBottom: 10
 
     },
     txtContent: {
-        ...Styles.typography.medium,
+        ...Styles.typography.regular,
         paddingTop: 10,
-        fontSize: Configs.FontSize.size18,
-        color: COLORS.GRAY_7,
+        fontSize: Configs.FontSize.size13,
+        color: COLORS.DARK_GRAY,
         paddingBottom: 10
     },
     row: {
-        width: '100%',
+        width: '90%',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         paddingHorizontal: 16,
-        marginTop: 10,
+        marginTop: 20,
         paddingTop: 10
-    },
-    txtBt: {
-        ...Styles.typography.bold,
-        fontSize: Configs.FontSize.size16,
-        color: COLORS.GREEN
-    },
-    txtBtConfirm: {
-        ...Styles.typography.medium,
-        fontSize: Configs.FontSize.size16,
-        color: COLORS.WHITE
-    },
-    closeButton: {
-        backgroundColor: COLORS.WHITE,
-        borderWidth: 1,
-        borderColor: COLORS.GRAY_6,
-        width: '45%',
-        alignItems: 'center',
-        paddingVertical: 8,
-        borderRadius: 5
-    },
-    confirmButton: {
-        backgroundColor: COLORS.GREEN,
-        borderWidth: 1,
-        borderColor: COLORS.GREEN,
-        width: '45%',
-        alignItems: 'center',
-        paddingVertical: 8,
-        borderRadius: 5
     },
     wrapComment: {
         width: SCREEN_WIDTH * 0.75,
+        minHeight: SCREEN_WIDTH * 0.3,
         paddingHorizontal: 16,
         borderColor: COLORS.GRAY_11,
         borderWidth: 1,
@@ -204,5 +176,11 @@ const styles = StyleSheet.create({
     },
     wrapStarRate: {
         flexDirection: 'column-reverse'
+    },
+    txtDescribePoint: {
+        ...Styles.typography.regular,
+        fontSize: Configs.FontSize.size11,
+        color: COLORS.DARK_GRAY,
+        paddingTop: 4
     }
 });

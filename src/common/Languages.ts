@@ -86,7 +86,8 @@ const Languages = {
     },
     account: {
         title: 'Tài khoản',
-        payMethod: 'Phương thức thanh toán',
+        payMethod: 'Hình thức nhận tiền',
+        linkWallet: 'Liên kết ví điện tử',
         changePwd: 'Đổi mật khẩu',
         loginWithFinger: 'Xác thực nhanh vân tay',
         loginWithFaceId: 'Xác thực nhanh Face ID',
@@ -132,9 +133,11 @@ const Languages = {
         hotline: '18006907',
         notice: 'Thông báo',
         rate: 'Đánh giá',
-        youRate: 'Vui lòng đánh giá ứng dụng',
-        comment: 'Bình luận',
-        thanksRating: 'Cám ơn bạn đã đóng góp ý kiến !'
+        yourRate: 'Đánh giá của bạn',
+        comment: 'Nội dung đánh giá',
+        descriptionRating: 'Chúng tôi rất hi vọng nhận được đánh giá từ bạn nhằm nâng cao chất lượng phục vụ.',
+        thanksRating: 'Cám ơn bạn đã đóng góp ý kiến !',
+        send: 'Gửi'
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng Tienngay',

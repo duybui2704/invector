@@ -116,3 +116,11 @@ export const typeGender = [
     { id: '1', value: 'Nam' },
     { id: '2', value: 'Nữ' }
 ];
+
+export const dataRatingPoint = [
+    { id: '1', value: 'Tệ' },
+    { id: '2', value: 'Khá tệ' },
+    { id: '3', value: 'Tạm được' },
+    { id: '4', value: 'Tốt' },
+    { id: '5', value: 'Xuất sắc' }
+];

@@ -28,7 +28,8 @@ export const ScreenName = {
     notifyInvest: ' NotifyInvest',
     myWedView: 'MyWedView',
     splash: 'Slash',
-    paymentWebview:'PaymentWebview'
+    paymentWebview:'PaymentWebview',
+    linkWallet: 'LinkWallet'
 };
 
 export default ScreenName;

@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Configs } from '@/common/Configs';
 import { COLORS, Styles } from '@/theme';
 
-export const MyStylesPaymentMethod = () => {
+export const MyStylesLinkWallet = () => {
     return useMemo(() => {
         return StyleSheet.create({
             container: {
@@ -12,70 +11,53 @@ export const MyStylesPaymentMethod = () => {
                 backgroundColor: COLORS.GRAY_5
             },
             wrapAllContent: {
+                width: '100%',
                 paddingHorizontal: 16,
-                paddingTop: 10
+                paddingTop: 30,
+                paddingBottom: 16,
+                alignSelf: 'center'
             },
-            txtMethodChoose: {
-                ...Styles.typography.medium,
-                color: COLORS.GRAY_7,
-                fontSize: Configs.FontSize.size16
-            },
-            txtMethodName: {
-                ...Styles.typography.medium,
-                color: COLORS.GRAY_7
-            },
-            wrapItemPayment: {
+            wrapBtnLinkWallet: {
+                flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                flexDirection: 'row',
-                paddingVertical: 10,
+                width: '100%',
                 borderWidth: 1,
                 borderColor: COLORS.GRAY_2,
-                borderRadius: 18,
+                backgroundColor: COLORS.WHITE,
+                borderRadius: 20,
                 paddingHorizontal: 16,
-                marginTop: 16,
-                backgroundColor: COLORS.WHITE
+                paddingVertical: 13
             },
-            wrapItemPaymentChooser: {
+            wrapBtnLinkWalletChooser: {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 flexDirection: 'row',
-                paddingVertical: 10,
+                paddingVertical: 13,
                 borderWidth: 1,
                 borderColor: COLORS.GREEN,
-                borderRadius: 18,
+                borderRadius: 20,
                 paddingHorizontal: 16,
-                marginTop: 16,
                 backgroundColor: COLORS.WHITE
             },
-            wrapRightItemPayment: {
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexDirection: 'row',
-                width: '80%'
-            },
-            titleItemLink: {
+            txtNameLink: {
                 ...Styles.typography.medium,
                 color: COLORS.GRAY_7
             },
-            stateItemLink: {
-                ...Styles.typography.regular,
-                color: COLORS.GREEN
+            txtStateLink: {
+                ...Styles.typography.medium,
+                color: COLORS.GRAY_7,
+                paddingVertical: 5
             },
-            wrapRightIcon: {
-                width: 32,
-                height: 32,
-                borderWidth: 1,
-                borderRadius: 30,
-                borderColor: COLORS.GRAY_12,
-                alignItems: 'center',
-                justifyContent: 'center'
+            wrapTitle: {
+                width: '65%'
             },
             redText: {
                 color: COLORS.RED
             },
-            greenBorder: {
-                borderColor: COLORS.GREEN
+            stateItemLink: {
+                ...Styles.typography.regular,
+                color: COLORS.GREEN
             },
             containerAllBtnPopup:{
                 flexDirection: 'row-reverse'

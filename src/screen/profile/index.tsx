@@ -2,15 +2,17 @@ import React, { useMemo, useCallback, useState, useRef, useEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native';
 import { observer } from 'mobx-react';
 import { ScrollView } from 'react-native-gesture-handler';
+import { AirbnbRating } from 'react-native-ratings';
 import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
 import TouchID from 'react-native-touch-id';
 import PasscodeAuth from '@el173/react-native-passcode-auth';
+import { useIsFocused } from '@react-navigation/native';
 
+import WomanIC from '@/assets/image/ic_large_woman.svg';
 import WarnIC from '@/assets/image/ic_warn_vimo_red_round.svg';
 import ChangePwdIC from '@/assets/image/ic_change_pwd.svg';
 import FaceIdIC from '@/assets/image/ic_faceid_big.svg';
-import StarIC from '@/assets/image/ic_star_rate.svg';
 import WebIC from '@/assets/image/ic_tienngay_web.svg';
 import FacebookIC from '@/assets/image/ic_tienngay_fb.svg';
 import PayMethodIC from '@/assets/image/ic_pay_method.svg';
@@ -71,13 +73,20 @@ const Profile = observer(() => {
     const popupLogout = useRef<PopupActionTypes>();
     const popupRating = useRef<PopupActionTypes>();
     const [text, setText] = useState<string>('');
-    const [ratingPoint, setRating] = useState<number>(0);
+    const [ratingPoint, setRating] = useState<number>(1);
+    const isFocus = useIsFocused();
 
     useEffect(() => {
-        if (!SessionManager.accessToken || !supportedBiometry) {
+        if(isFocus){
+            setRating(1);
+        }
+    }, [isFocus]);
+
+    useEffect(() => {
+        if (!userManager.userInfo?.token_app) {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, [supportedBiometry]);
+    }, [supportedBiometry, userManager.userInfo?.token_app]);
 
     const callPhone = useCallback(() => {
         Utils.callNumber(Languages.common.hotline);
@@ -147,8 +156,6 @@ const Profile = observer(() => {
         return (
             <PopupRating
                 ref={ref}
-                textCancel={styles.textCancel}
-                hasButton
                 onConfirm={onAgreeRating}
                 onChangeTextComment={onChangeTextComment}
                 ratingSwipeComplete={onRating}
@@ -202,8 +209,8 @@ const Profile = observer(() => {
                 case Languages.account.facebook:
                     Utils.openURL(LINK_TIENNGAY.LINK_TIENNGAY_FACEBOOK);
                     break;
-                case Languages.account.rate:
-                    openPopupRating();
+                case Languages.account.linkWallet:
+                    Navigator.pushScreen(ScreenName.linkWallet);
                     break;
                 default:
                     break;
@@ -221,7 +228,7 @@ const Profile = observer(() => {
                 containerContent={styles.featureContainer}
             />
         );
-    }, [callPhone, openPopupRating]);
+    }, [callPhone]);
 
     const onToggleBiometry = useCallback(
         (value) => {
@@ -367,6 +374,7 @@ const Profile = observer(() => {
                 );
         }
     }, [userManager.userInfo?.tinh_trang?.status]);
+
     const renderPinCode = useMemo(() => {
         return (
             <BottomSheetModal
@@ -402,6 +410,27 @@ const Profile = observer(() => {
         );
     }, [animationConfigs, onSetPinCodeSuccess]);
 
+    const renderViewRating = useMemo(() => {
+        return (
+            <Touchable style={styles.fedBack}
+                onPress={openPopupRating}
+                disabled={SessionManager.getRatingPoint() > 3}>
+                <View style={styles.starLeft}>
+                    <Text style={styles.textTitleFeed}>{Languages.common.yourRate}</Text>
+                    <Text style={styles.textTitleDescriptionFeed}>{Languages.common.descriptionRating}</Text>
+                    <AirbnbRating
+                        count={5}
+                        defaultRating={ratingPoint || 0}
+                        size={20}
+                        showRating={false}
+                        isDisabled={false}
+                    />
+                </View>
+                <WomanIC />
+            </Touchable>
+        );
+    }, [openPopupRating, ratingPoint]);
+
     return (
         <View style={styles.container}>
             <HeaderBar title={Languages.account.title} isLight={false} />
@@ -425,7 +454,10 @@ const Profile = observer(() => {
                     </View>
                     <ArrowIC />
                 </Touchable>
-                {renderKeyValue(Languages.account.payMethod, <PayMethodIC />, true)}
+                <View style={styles.containerPayMethodFeature}>
+                    {renderKeyValue(Languages.account.linkWallet, <PayMethodIC />)}
+                    {renderKeyValue(Languages.account.payMethod, <PayMethodIC />, true)}
+                </View>
                 <View style={styles.containerFeature}>
                     {renderKeyValue(Languages.account.changePwd, <ChangePwdIC />)}
                     {renderAuthnFinger}
@@ -438,9 +470,9 @@ const Profile = observer(() => {
                     {renderKeyValue(Languages.account.facebook, <FacebookIC />)}
                     {renderKeyValue(Languages.account.useManual, <ManualIC />)}
                     {renderKeyValue(Languages.account.answer, <AnswerIC />)}
-                    {renderKeyValue(Languages.account.hotline, <PhoneIC />)}
-                    {renderKeyValue(Languages.account.rate, <StarIC />, true)}
+                    {renderKeyValue(Languages.account.hotline, <PhoneIC />, true)}
                 </View>
+                {renderViewRating}
                 <Button label={`${Languages.account.logout}`}
                     style={styles.wrapBtn}
                     buttonStyle={BUTTON_STYLES.GRAY_RED}
@@ -463,6 +495,13 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         marginHorizontal: 16
+    },
+    containerPayMethodFeature: {
+        borderWidth: 1,
+        borderColor: COLORS.GRAY_13,
+        backgroundColor: COLORS.WHITE,
+        borderRadius: 16,
+        paddingVertical: 2
     },
     containerFeature: {
         borderWidth: 1,
@@ -605,6 +644,28 @@ const styles = StyleSheet.create({
     },
     textCancel: {
         color: COLORS.GRAY_12
+    },
+    fedBack: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        backgroundColor: COLORS.WHITE,
+        padding: 16,
+        margin: 20,
+        marginTop: 16,
+        borderRadius: 20
+    },
+    textTitleFeed: {
+        ...Styles.typography.medium,
+        fontSize: Configs.FontSize.size16,
+        marginBottom: 5
+    },
+    textTitleDescriptionFeed: {
+        ...Styles.typography.regular,
+        fontSize: Configs.FontSize.size12,
+        color: COLORS.DARK_GRAY
+    },
+    starLeft: {
+        flex: 2
     }
 });
 const customStyles = StyleSheet.create({

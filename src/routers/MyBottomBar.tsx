@@ -30,6 +30,7 @@ import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
 import MyWebView from '@/screen/profile/myWedView/MyWebView';
 import { NotifyInvest } from '@/screen/home/notifyInvest';
 import PaymentWebview from '@/screen/investment/paymentWebview';
+import LinkWallet from '@/screen/profile/linkWallet/LinkWallet';
 
 const TabsData = [
     {
@@ -123,6 +124,7 @@ const AccountStack = () => {
             <Stack.Screen name={ScreenName.confirmPhone} component={ConfirmPhone} />
             <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} />
             <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
+            <Stack.Screen name={ScreenName.linkWallet} component={LinkWallet} />
         </Stack.Navigator>
     );
 };
