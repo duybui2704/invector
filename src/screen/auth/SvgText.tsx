@@ -111,7 +111,7 @@ const SvgComponent = observer((props: any) => {
                         />
                     </G>
                     <Text fill={login ? COLORS.WHITE : COLORS.GRAY}
-                        fontSize={Configs.FontSize.size22}
+                        fontSize={Configs.FontSize.size20}
                         onPress={onNavigateLogin}
                         key='1'
                         fontFamily={Configs.FontFamily.regular}
@@ -127,7 +127,7 @@ const SvgComponent = observer((props: any) => {
                         </TextPath>
                     </Text>
                     <Text fill={signUp ? COLORS.WHITE : COLORS.GRAY}
-                        fontSize={Configs.FontSize.size22}
+                        fontSize={Configs.FontSize.size20}
                         onPress={onNavigateSignUp}
                         key='2'
                         fontFamily={Configs.FontFamily.regular}

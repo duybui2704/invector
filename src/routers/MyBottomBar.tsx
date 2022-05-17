@@ -78,6 +78,7 @@ const HomeStack = () => {
             <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
             <Stack.Screen name={ScreenName.invest} component={Invest} />
             <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
+            <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
         </Stack.Navigator>
     );
 };

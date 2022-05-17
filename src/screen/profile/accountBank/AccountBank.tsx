@@ -5,7 +5,7 @@ import HTMLView from 'react-native-htmlview';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import LinkIC from '@/assets/image/ic_ischecked_save_acc.svg';
+import LinkIC from '@/assets/image/ic_isChecked_save_acc.svg';
 import ViettinIC from '@/assets/image/ic_logo_viettin_bank.svg';
 import ArrowIC from '@/assets/image/ic_right_arrow.svg';
 import NotLinkIC from '@/assets/image/ic_unchecked_save_acc.svg';

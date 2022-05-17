@@ -23,7 +23,8 @@ export enum API_CONFIG {
     // BASE_URL = 'https://appndt.tienngay.vn/',
 
     // common
-    GET_BANNERS = '/banner/get_all_home', // banner app
+    GET_BANNERS = '/banner/news', // banner app
+    GET_BANNERS_HOME = '/banner/home',
     ENCRYPT = '/api/Encrypt',
     CHECK_APP_REVIEW = '/app/review',
 

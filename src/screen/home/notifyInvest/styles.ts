@@ -34,7 +34,7 @@ export const MyStylesNotifyInvest = () => {
             },
             txtBtInvest: {
                 ...Styles.typography.medium,
-                fontSize: Configs.FontSize.size12
+                fontSize: Configs.FontSize.size13
             },
             flatList: {
                 paddingBottom: 150
@@ -79,9 +79,9 @@ export const MyStylesNotifyInvest = () => {
                 alignItems: 'flex-start'
             },
             txtTimeDate: {
-                fontSize: Configs.FontSize.size12,
+                fontSize: Configs.FontSize.size11,
                 fontFamily: Configs.FontFamily.medium,
-                color: COLORS.BLACK
+                color: COLORS.GRAY_12
             },
             txtRight: {
                 position: 'absolute',
@@ -89,9 +89,9 @@ export const MyStylesNotifyInvest = () => {
                 flexDirection: 'row'
             },
             txtNote: {
-                fontSize: Configs.FontSize.size12,
+                fontSize: Configs.FontSize.size13,
                 fontFamily: Configs.FontFamily.medium,
-                color: COLORS.BLACK,
+                color: COLORS.GRAY_12,
                 marginVertical: 5
             },
             wrapNoData: {

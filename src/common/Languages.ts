@@ -45,7 +45,9 @@ const Languages = {
         formInterestPay: 'Hình thức trả lãi',
         hello: 'Chào mừng bạn đến với',
         nameApp: 'TienNgay.Vn',
-        investAndAccumulate: 'Đầu tư & Tích luỹ'
+        investAndAccumulate: 'Đầu tư & Tích luỹ',
+        newMedia: 'Tin tức truyền thông',
+        investNowFloral: 'ĐẦU TƯ NGAY'
 
     },
     invest: {

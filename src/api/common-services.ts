@@ -10,6 +10,8 @@ export class CommonServices extends BaseService {
 
     getBanners = async () => this.api().post(API_CONFIG.GET_BANNERS, {});
 
+    getBannerHome = async () => this.api().post(API_CONFIG.GET_BANNERS_HOME, {});
+
     getAppInReview = async () => this.api().post(API_CONFIG.CHECK_APP_REVIEW);
 }
 

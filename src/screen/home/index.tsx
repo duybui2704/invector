@@ -1,9 +1,9 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { StatusBar, Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { StatusBar, Text, View, FlatList, Image } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import { join } from 'lodash';
 
 import { LINKS } from '@/api/constants';
 import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
@@ -21,18 +21,23 @@ import HeaderBar from '@/components/header';
 import ItemInvest from '@/components/ItemInvest';
 import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
-import { BannerModel } from '@/models/banner';
+import { BannerHome, BannerModel } from '@/models/banner';
 import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
 import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
-import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import DimensionUtils, { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import Utils from '@/utils/Utils';
 import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import LogoHome from '../../assets/image/header/logo_home.svg';
 import NotificationListening from './NotificationListening';
 import { MyStylesHome } from './styles';
 import KeyValue from '@/components/KeyValue';
+import DraggableComponent from '@/components/Draggable';
+import PopupInvestFirst, { PopupActions } from '@/components/popupInvestFirst';
+import { MyImageView } from '@/components/image';
+import DateUtils from '@/utils/DateUtils';
+import { BaseModel } from '@/models/base-model';
 
 const Home = observer(() => {
     const { apiServices, userManager } = useAppStore();
@@ -40,11 +45,16 @@ const Home = observer(() => {
     const isFocused = useIsFocused();
     const styles = MyStylesHome();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [banners, setBanners] = useState<BannerModel[]>();
+    const [banners, setBanners] = useState<BannerModel[]>([]);
     const [dataArr, setDataArr] = useState<PackageInvest[]>();
     const [dataDash, setDataDash] = useState<DashBroad>();
+    const [showFloating, setShowFloating] = useState<boolean>(true);
+    const refPopupFirst = useRef<PopupActions>();
+    const [iconBanner, setIconBanner] = useState<BannerHome>();
+    const ref = useRef();
 
     useEffect(() => {
+        setShowFloating(true);
         setTimeout(() => {
             StatusBar.setBarStyle(isFocused ? 'light-content' : 'dark-content', true);
         }, 10);
@@ -86,10 +96,16 @@ const Home = observer(() => {
         const resBanner = await apiServices.common.getBanners();
         if (resBanner.success) {
             const data = resBanner?.data as BannerModel[];
-            setBanners(
-                (data).filter((item) => item.image_mobile)
-            );
+            setBanners(data);
         }
+        const resBannerHome = await apiServices.common.getBannerHome();
+        if (resBannerHome.success) {
+            console.log(JSON.stringify(resBannerHome.data));
+            const bannerHome = resBannerHome?.data as BannerHome;
+            setIconBanner(bannerHome);
+        }
+        setIsLoading(false);
+
     }, [apiServices.common]);
 
     const gotoInvest = () => {
@@ -175,20 +191,64 @@ const Home = observer(() => {
         );
     }, [iconTouchable, styles.tab, styles.txtTab]);
 
+    const renderNewsItem = useCallback(({ item }: { item: BannerModel }) => {
+        const navigate = () => {
+            console.log('url', item.link);
+            Navigator.pushScreen(ScreenName.myWedView, {
+                title: item.title_vi,
+                url: `https://tienngay.vn/${item.link.toString()}`
+            });
+        };
 
-    const renderTabBottom = useCallback((text: string, hasDash?: boolean) => {
         return (
-            <KeyValue
-                title={text}
-                noIndicator
-                hasDashBottom={hasDash}
-                rightIcon={<IcChevronRight />}
-                styleTitle={styles.txtForEachTitleQuestion}
-                containerContent={styles.featureContainer}
-                disable={true}
+            <Touchable style={styles.newsItem} onPress={navigate}>
+                <MyImageView
+                    imageUrl={item.image}
+                    resizeMode={'cover'}
+                    style={styles.communicationImage}
+                />
+
+                <Text style={styles.txtCommunityTitle} numberOfLines={2}>
+                    {item.title_vi}
+                </Text>
+                <Text style={styles.txtCommunityDes}>
+                    {DateUtils.getLongFromDate(item.created_at)}
+                </Text>
+            </Touchable>
+        );
+    }, []);
+
+    const keyExtractorBanner = useCallback((item: BaseModel) => {
+        return `${item._id?.$oid}`;
+    }, []);
+
+    const renderNews = useMemo(() => {
+        return (
+            <FlatList
+                data={banners}
+                contentContainerStyle={styles.communicationContainer}
+                renderItem={renderNewsItem}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={keyExtractorBanner}
             />
         );
-    }, [styles.featureContainer, styles.txtForEachTitleQuestion]);
+    }, [banners, keyExtractorBanner, renderNewsItem]);
+
+
+    // const renderTabBottom = useCallback((text: string, hasDash?: boolean) => {
+    //     return (
+    //         <KeyValue
+    //             title={text}
+    //             noIndicator
+    //             hasDashBottom={hasDash}
+    //             rightIcon={<IcChevronRight />}
+    //             styleTitle={styles.txtForEachTitleQuestion}
+    //             containerContent={styles.featureContainer}
+    //             disable={true}
+    //         />
+    //     );
+    // }, [styles.featureContainer, styles.txtForEachTitleQuestion]);
 
     const renderTop = useMemo(() => {
         return (
@@ -266,17 +326,21 @@ const Home = observer(() => {
                         <Text style={styles.txtForEachTitleQuestion}>{Languages.home.signFree}</Text>
                     </View>
                 </Touchable>
-                {banners && <Banner banners={banners} />}
-                <View style={styles.wrapManualQuestion}>
+                <View style={styles.viewBanner}>
+                    <Text style={styles.txtCenter}>{Languages.home.newMedia}</Text>
+                    {renderNews}
+                </View>
+                {/* <View style={styles.wrapManualQuestion}>
                     <Text style={styles.txtTitleQuestion}>{Languages.home.question}</Text>
                     {renderTabBottom(Languages.home.todoInvest, true)}
                     {renderTabBottom(Languages.home.investNow, true)}
                     {renderTabBottom(Languages.home.percentCalculated, true)}
                     {renderTabBottom(Languages.home.paymentMethod, false)}
-                </View>
+                </View> */}
             </>
         );
-    }, [dataArr, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.wrapManualQuestion, styles.txtTitleQuestion, onOpenVPS, banners, renderTabBottom]);
+    }, [dataArr, styles.more, styles.txtForEachTitleQuestion,
+        styles.viewVfs, styles.txtVfs, styles.txtVPS, onOpenVPS, banners]);
 
 
     const renderItem = useCallback((item: any) => {
@@ -300,11 +364,18 @@ const Home = observer(() => {
         return renderItem(item?.item);
     }, [renderItem]);
 
+
+    const focusContracts = useCallback(() => {
+        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVEST_NOW });
+    }, []);
+
     const renderContent = useMemo(() => {
         return (
             <View style={styles.viewCenter}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
                 <FlatList
+                    showsVerticalScrollIndicator={false}
+                    ref={ref}
                     data={dataArr}
                     renderItem={renderItemInvestPackage}
                     ListFooterComponent={renderFooter}
@@ -322,6 +393,10 @@ const Home = observer(() => {
 
     const renderForeground = () => {
         return (renderTop);
+    };
+
+    const showFirstPopup = () => {
+        refPopupFirst.current?.show();
     };
 
     return (
@@ -342,6 +417,22 @@ const Home = observer(() => {
                     renderForeground={renderForeground}>
                     {renderContent}
                 </ParallaxScrollView>
+                {showFloating && (
+                    <DraggableComponent
+                        image={iconBanner?.icon}
+                        x={SCREEN_WIDTH - 110}
+                        renderSize={100}
+                        isCircle
+                        shouldReverse
+                        onShortPressRelease={showFirstPopup}
+                        onClose={() => setShowFloating(false)}
+                    />
+                )}
+                <PopupInvestFirst
+                    ref={refPopupFirst}
+                    image={iconBanner?.image}
+                    onConfirm={focusContracts}
+                />
                 {isLoading && <Loading isOverview />}
             </View >
         </NotificationListening >
