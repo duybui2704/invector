@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
         padding: 4,
         borderRadius: 26,
         marginBottom: 12
-
     },
     btInvest: {
         width: (SCREEN_WIDTH - 40) / 3,

@@ -283,7 +283,7 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const renderInvest = useCallback((type: string) => {
         const styleBt = {
-            backgroundColor: btnInvest === type ? COLORS.WHITE : null
+            backgroundColor: btnInvest === type ? COLORS.WHITE : null,
         } as ViewStyle;
 
         const styleTxt = {
@@ -311,7 +311,7 @@ const Investment = observer(({ route }: { route: any }) => {
         };
 
         return (
-            <Touchable disabled={btnInvest === type} onPress={onPress} style={[styles.btInvest, styleBt]}>
+            <Touchable disabled={btnInvest === type} onPress={onPress} style={[styles.btInvest, styleBt]} radius={26}>
                 <Text style={[styles.txtBtnStatus, styleTxt]}>{getTitle()}</Text>
             </Touchable>
         );
