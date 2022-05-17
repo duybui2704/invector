@@ -29,7 +29,7 @@ import { InfoLinkVimoModal } from '@/models/user-models';
 
 const Invest = observer(({ route }: any) => {
     const styles = MyStylesInvest();
-    const [csdl, setCsdl] = useState<PackageInvest>();
+    const [dataInvestment, setDataInvestment] = useState<PackageInvest>();
     const [methodPayment, setMethodPayment] = useState<string>();
     const [isCheckBox, setIsCheckBox] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -59,7 +59,7 @@ const Invest = observer(({ route }: any) => {
         setIsLoading(false);
         if (resInvestNow.success) {
             const res = resInvestNow.data as PackageInvest;
-            setCsdl(res);
+            setDataInvestment(res);
         }
     }, [apiServices.invest, route.params.id]);
 
@@ -68,7 +68,7 @@ const Invest = observer(({ route }: any) => {
     }, [isCheckBox]);
 
     const getOtpVimo = useCallback(async () => {
-        const resOtp = await apiServices.invest.getOTP(csdl?.id?.toString() || '');
+        const resOtp = await apiServices.invest.getOTP(dataInvestment?.id?.toString() || '');
         if (resOtp.success && resOtp.data) {
             refModal.current?.show();
         }
@@ -76,10 +76,10 @@ const Invest = observer(({ route }: any) => {
             const infor = resOtp?.data as CheckVimoWalletModel;
             Alert.alert(infor.message || Languages.detailInvest.error);
         }
-    }, [apiServices.invest, csdl?.id]);
+    }, [apiServices.invest, dataInvestment?.id]);
 
     const onInvest = useCallback(async () => {
-        const res = await apiServices.invest.getInforInvest();
+        const res = await apiServices.invest.getInfoInvest();
         setIsLoading(true);
         if (res.success) {
             const data = res.data as InvestorInfoModel;
@@ -102,7 +102,7 @@ const Invest = observer(({ route }: any) => {
                 );
             }
             else if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
-                const resPayment = await apiServices.invest.requestNganLuong(csdl?.id?.toString() || '', Platform.OS);
+                const resPayment = await apiServices.invest.requestNganLuong(dataInvestment?.id?.toString() || '', Platform.OS);
                 if (res.success && resPayment.data) {
                     Navigator.pushScreen(ScreenName.paymentWebview, {
                         url: resPayment?.data
@@ -114,7 +114,7 @@ const Invest = observer(({ route }: any) => {
             }
         }
         setIsLoading(false);
-    }, [apiServices.invest, csdl?.id, getOtpVimo, methodPayment]);
+    }, [apiServices.invest, dataInvestment?.id, getOtpVimo, methodPayment]);
 
     const openPolicy = useCallback(() => {
         refPopupPolicy.current?.show();
@@ -165,17 +165,17 @@ const Invest = observer(({ route }: any) => {
                 </View>
                 <View style={styles.wrapInfo}>
                     <Text style={styles.title}>{Languages.detailInvest.information}</Text>
-                    {renderInfoItem(Languages.detailInvest.idContract, `${csdl?.ma_hop_dong}`, COLORS.GREEN)}
-                    {renderInfoItem(Languages.detailInvest.moneyInvest, Utils.formatMoney(csdl?.so_tien_dau_tu), COLORS.RED)}
-                    {renderInfoItem(Languages.detailInvest.interest, `${csdl?.ti_le_lai_suat_hang_thang}`)}
-                    {renderInfoItem(Languages.detailInvest.interestMonth, Utils.formatMoney(csdl?.lai_hang_thang))}
-                    {renderInfoItem(Languages.detailInvest.amountInterest, Utils.formatMoney(csdl?.tong_lai_nhan_duoc))}
-                    {renderInfoItem(Languages.detailInvest.period, `${csdl?.ki_han_dau_tu}`)}
-                    {renderInfoItem(Languages.detailInvest.expectedDate, `${csdl?.ngay_dao_han_du_kien}`)}
-                    {renderInfoItem(Languages.detailInvest.formality, `${csdl?.hinh_thuc_tra_lai}`)}
+                    {renderInfoItem(Languages.detailInvest.idContract, `${dataInvestment?.ma_hop_dong}`, COLORS.GREEN)}
+                    {renderInfoItem(Languages.detailInvest.moneyInvest, Utils.formatMoney(dataInvestment?.so_tien_dau_tu), COLORS.RED)}
+                    {renderInfoItem(Languages.detailInvest.interest, `${dataInvestment?.ti_le_lai_suat_hang_thang}`)}
+                    {renderInfoItem(Languages.detailInvest.interestMonth, Utils.formatMoney(dataInvestment?.lai_hang_thang))}
+                    {renderInfoItem(Languages.detailInvest.amountInterest, Utils.formatMoney(dataInvestment?.tong_lai_nhan_duoc))}
+                    {renderInfoItem(Languages.detailInvest.period, `${dataInvestment?.ki_han_dau_tu}`)}
+                    {renderInfoItem(Languages.detailInvest.expectedDate, `${dataInvestment?.ngay_dao_han_du_kien}`)}
+                    {renderInfoItem(Languages.detailInvest.formality, `${dataInvestment?.hinh_thuc_tra_lai}`)}
                 </View>
                 <Text style={styles.labelMoney}>{Languages.detailInvest.money}</Text>
-                <Text style={styles.money}>{Utils.formatMoney(csdl?.so_tien_dau_tu)}</Text>
+                <Text style={styles.money}>{Utils.formatMoney(dataInvestment?.so_tien_dau_tu)}</Text>
                 <Text style={styles.headerText}>{Languages.detailInvest.method}</Text>
                 {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, statusVimo)}
                 {renderMethod(<IcNganLuong />, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
@@ -202,7 +202,7 @@ const Invest = observer(({ route }: any) => {
                 />
 
             </ScrollView>
-            <PopupInvestOTP idContract={csdl?.id?.toString()} getOTPcode={getOtpVimo} ref={refModal} />
+            <PopupInvestOTP idContract={dataInvestment?.id?.toString()} getOTPcode={getOtpVimo} ref={refModal} />
             <PopupConfirmPolicy
                 onConfirm={onConfirmPopup}
                 ref={refPopupPolicy}
