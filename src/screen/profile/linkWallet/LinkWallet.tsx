@@ -3,10 +3,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
-import LinkIC from '@/assets/image/ic_ischecked_save_acc.svg';
-import NotLinkIC from '@/assets/image/ic_unchecked_save_acc.svg';
 import WarnIC from '@/assets/image/ic_warn_vimo_red_round.svg';
-import VimoIC from '@/assets/image/ic_vimo.svg';
+import VimoIc from '@/assets/image/ic_logo_vimo_large.svg';
 import { STATE_LINK } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
@@ -20,6 +18,7 @@ import { InfoLinkVimoModal } from '@/models/user-models';
 import Loading from '@/components/loading';
 import ToastUtils from '@/utils/ToastUtils';
 import { MyStylesLinkWallet } from './styles';
+import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
 
 const LinkWallet = observer(() => {
     const styles = MyStylesLinkWallet();
@@ -60,17 +59,6 @@ const LinkWallet = observer(() => {
             </>
         );
     }, [styles.redText, styles.stateItemLink]);
-
-    const renderRightIcon = useCallback((status?: boolean) => {
-        return (
-            <>
-                {status ?
-                    <LinkIC width={24} height={24} /> :
-                    <NotLinkIC width={24} height={24} />
-                }
-            </>
-        );
-    }, []);
 
     const onPopupVimoAgree = useCallback(async () => {
         setLoading(true);
@@ -113,27 +101,23 @@ const LinkWallet = observer(() => {
         }
     }, [userManager.userInfo?.infoLinkVimo?.trang_thai]);
 
-    const renderAccountWallet = useCallback((icon: any, title: string, state: boolean) => {
+    const renderAccountWallet = useCallback((icon: any, state: boolean) => {
         const _onPress = () => {
             onVimo();
         };
         return (
             <Touchable onPress={_onPress} style={state ? styles.wrapBtnLinkWalletChooser : styles.wrapBtnLinkWallet}>
                 {icon}
-                <View style={styles.wrapTitle}>
-                    <Text style={styles.txtNameLink}>{title}</Text>
-                    {renderStateLink(state)}
-                </View>
-                {renderRightIcon(state)}
+                {renderStateLink(state)}
             </Touchable>
         );
-    }, [onVimo, renderRightIcon, renderStateLink, styles.txtNameLink, styles.wrapBtnLinkWallet, styles.wrapBtnLinkWalletChooser, styles.wrapTitle]);
+    }, [onVimo, renderStateLink, styles.wrapBtnLinkWallet, styles.wrapBtnLinkWalletChooser]);
 
     return (
         <View style={styles.container}>
             <HeaderBar isLight={false} title={Languages.account.linkWallet} hasBack />
             <View style={styles.wrapAllContent}>
-                {renderAccountWallet(<VimoIC />, Languages.paymentMethod.vimo, userManager.userInfo?.infoLinkVimo?.trang_thai === STATE_LINK.LINKING)}
+                {renderAccountWallet(<VimoIc width={SCREEN_WIDTH *0.7} />, userManager.userInfo?.infoLinkVimo?.trang_thai === STATE_LINK.LINKING)}
             </View>
             {popupVimo(vimoRef, <WarnIC />)}
             {isLoading && <Loading isOverview />}

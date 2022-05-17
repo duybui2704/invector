@@ -4,7 +4,6 @@ import { KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
 
 import { Events } from '@/common/constants';
 import Languages from '@/common/Languages';
-import screenNames from '@/common/screenNames';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { Button } from '@/components/elements/button/index';
 import { MyTextInput } from '@/components/elements/textfield/index';
@@ -94,16 +93,17 @@ const ChangePwd = observer(() => {
     );
 
     const logout = useCallback(() => {
-        userManager.updateUserInfo(undefined);
-        Navigator.navigateScreen(screenNames.invest);
-    }, [userManager]);
+        // userManager.updateUserInfo(undefined);
+        Navigator.goBack();
+    }, []);
 
     const onPressChange = useCallback(async () => {
         if (onChangeValidation()) {
-            EventEmitter.emit(Events.LOGOUT, logout);
+            // EventEmitter.emit(Events.LOGOUT, logout);
+            Navigator.goBack();
             ToastUtils.showSuccessToast(Languages.changePwd.successNotify);
         }
-    }, [logout, onChangeValidation]);
+    }, [onChangeValidation]);
 
     return (
         <HideKeyboard style={styles.container}>
@@ -126,6 +126,7 @@ const ChangePwd = observer(() => {
                         onPress={onPressChange}
                         isLowerCase
                         style={styles.btnStyle}
+                        disabled={`${oldPwd}`.length === 0 || `${newPwd}`.length === 0 || `${currentNewPwd}`.length === 0}
                     />
                 </View>
             </View>

@@ -31,6 +31,7 @@ import Utils from '@/utils/Utils';
 import { isIOS } from '@/common/Configs';
 import { UpLoadImage } from '@/models/common-model';
 import { UserInfoModal } from '@/models/user-models';
+import Loading from '@/components/loading';
 
 const AccountIdentify = observer(() => {
     const { apiServices, userManager } = useAppStore();
@@ -39,6 +40,7 @@ const AccountIdentify = observer(() => {
     const [avatar, setAvatar] = useState<UpLoadImage>();
     const [frontIdentify, setFrontIdentify] = useState<UpLoadImage>();
     const [afterIdentify, setBehindIdentify] = useState<UpLoadImage>();
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     const identifyRef = useRef<TextFieldActions>();
     const avatarRef = useRef<BottomSheetModal>();
@@ -52,6 +54,7 @@ const AccountIdentify = observer(() => {
     }, []);
 
     const fetchIdentityVerify = useCallback(async () => {
+        setLoading(true);
         const res = await apiServices.auth.identityVerify(
             identityAcc,
             {
@@ -74,6 +77,7 @@ const AccountIdentify = observer(() => {
             }
         );
         if (res.success) {
+            setLoading(false);
             popupConfirmRef.current?.show();
             const resUser = await apiServices.auth.getUserInfo();
             if (resUser.success) {
@@ -89,6 +93,7 @@ const AccountIdentify = observer(() => {
             }
 
         }
+        setLoading(false);
     }, [afterIdentify?.images, apiServices.auth, avatar?.images, frontIdentify?.images, identityAcc, userManager]);
 
     const renderInput = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, length?: number) => {
@@ -253,6 +258,7 @@ const AccountIdentify = observer(() => {
                 {renderPhoto}
                 {SessionManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED && renderBottom}
                 {renderPopupConfirm(popupConfirmRef)}
+                {isLoading && <Loading isOverview/>}
             </ScrollView>
         </View >
 

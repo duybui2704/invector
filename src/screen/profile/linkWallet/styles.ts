@@ -18,7 +18,7 @@ export const MyStylesLinkWallet = () => {
                 alignSelf: 'center'
             },
             wrapBtnLinkWallet: {
-                flexDirection: 'row',
+                ...Styles.shadow,
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 width: '100%',
@@ -27,37 +27,26 @@ export const MyStylesLinkWallet = () => {
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 20,
                 paddingHorizontal: 16,
-                paddingVertical: 13
+                paddingVertical: 20
             },
             wrapBtnLinkWalletChooser: {
+                ...Styles.shadow,
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                flexDirection: 'row',
-                paddingVertical: 13,
+                paddingVertical: 20,
                 borderWidth: 1,
                 borderColor: COLORS.GREEN,
                 borderRadius: 20,
                 paddingHorizontal: 16,
                 backgroundColor: COLORS.WHITE
             },
-            txtNameLink: {
-                ...Styles.typography.medium,
-                color: COLORS.GRAY_7
-            },
-            txtStateLink: {
-                ...Styles.typography.medium,
-                color: COLORS.GRAY_7,
-                paddingVertical: 5
-            },
-            wrapTitle: {
-                width: '65%'
-            },
             redText: {
                 color: COLORS.RED
             },
             stateItemLink: {
                 ...Styles.typography.regular,
-                color: COLORS.GREEN
+                color: COLORS.GREEN,
+                paddingTop: 10
             },
             containerAllBtnPopup:{
                 flexDirection: 'row-reverse'
