@@ -412,7 +412,7 @@ const Profile = observer(() => {
 
     const renderViewRating = useMemo(() => {
         return (
-            <Touchable style={styles.fedBack}
+            <Touchable style={styles.feedBack}
                 onPress={openPopupRating}
                 disabled={SessionManager.getRatingPoint() > 3}>
                 <View style={styles.starLeft}>
@@ -645,12 +645,13 @@ const styles = StyleSheet.create({
     textCancel: {
         color: COLORS.GRAY_12
     },
-    fedBack: {
+    feedBack: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         backgroundColor: COLORS.WHITE,
         padding: 16,
-        margin: 20,
+        marginVertical: 20,
+        marginHorizontal: 5,
         marginTop: 16,
         borderRadius: 20
     },
@@ -662,7 +663,8 @@ const styles = StyleSheet.create({
     textTitleDescriptionFeed: {
         ...Styles.typography.regular,
         fontSize: Configs.FontSize.size12,
-        color: COLORS.DARK_GRAY
+        color: COLORS.DARK_GRAY,
+        marginBottom: 20
     },
     starLeft: {
         flex: 2
