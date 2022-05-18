@@ -1,7 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { StatusBar, Text, View, FlatList, Image } from 'react-native';
+import { StatusBar, Text, View, FlatList } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 
 import { LINKS } from '@/api/constants';

@@ -1,117 +1,66 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, RefreshControl, Text, TextStyle, View, ViewStyle } from 'react-native';
-import Dash from 'react-native-dash';
-import { FlatList } from 'react-native-gesture-handler';
-import { useIsFocused } from '@react-navigation/native';
-
-import { ENUM_INVEST_NOTIFY, ENUM_INVEST_STATUS } from '@/common/constants';
+import IcNoDataNotify from '@/assets/image/home/ic_no_data_notify.svg';
+import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
+import ScreenName, { TabsName } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
-import { useAppStore } from '@/hooks';
-import { Notify, PagingConditionTypes } from '@/models/invest';
-import IcNoDataNotify from '@/assets/image/home/ic_no_data_notify.svg';
-import MyStyleLoading from '@/components/loading/styles';
 import Loading from '@/components/loading';
-import NoData from '@/components/NoData';
-import { MyStylesNotifyInvest } from './styles';
-import { COLORS, Styles } from '@/theme';
-import DateUtils from '@/utils/DateUtils';
-import Navigator from '@/routers/Navigator';
-import ScreenName, { TabsName } from '@/common/screenNames';
 import MyFlatList from '@/components/MyFlatList';
+import NoData from '@/components/NoData';
+import { useAppStore } from '@/hooks';
+import { Notify } from '@/models/invest';
+import Navigator from '@/routers/Navigator';
+import { COLORS } from '@/theme';
+import DateUtils from '@/utils/DateUtils';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Text, View } from 'react-native';
+import Dash from 'react-native-dash';
+import { MyStylesNotifyInvest } from './styles';
 
 const PAGE_SIZE = 7;
 export const NotifyInvest = () => {
     const styles = MyStylesNotifyInvest();
     const [data, setData] = useState<Notify[]>([]);
-    const [dataFilter, setDataFilter] = useState<Notify[]>([]);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-    const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_NOTIFY.NOTIFY_ALL);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(false);
-    const isFocused = useIsFocused();
+    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(true);
     const { apiServices } = useAppStore();
     const condition = useRef({
-        isLoading: true,
+        isLoading: false,
         offset: 0,
         canLoadMore: true
     });
 
     useEffect(() => {
-        if (isFocused) {
-            condition.current.offset = 0;
-            condition.current.isLoading = true;
-            condition.current.canLoadMore = true;
-            fetchData();
-        }
-    }, [isFocused]);
+        fetchData();
+    }, []);
 
     const fetchData = useCallback(async (isLoadMore?: boolean) => {
-        setCanLoadMoreUI(true);
-        if (!isLoadMore) {
-            setIsLoading(true);
+        if (condition.current.isLoading) {
+            return;
         }
         condition.current.isLoading = true;
+
         const res = await apiServices.invest.getNotify(PAGE_SIZE, condition.current.offset);
-        setIsLoading(false);
+        let totalSize = 0;
         if (res.success) {
             const dataNotify = res.data as Notify[];
-            const dataNotifyOnRead = dataNotify?.filter((item: any) => item?.status === 1);
-            const newSize = dataNotify.length;
-            if (newSize > 0) {
+            totalSize = dataNotify?.length || 0;
+
+            if (totalSize > 0) {
                 if (isLoadMore) {
                     setData((list) => [...list || [], ...dataNotify]);
-                    setDataFilter((list) => [...list || [], ...dataNotifyOnRead]);
-                }
-                else {
+                } else {
                     setData(dataNotify);
-                    setDataFilter(dataNotifyOnRead);
                 }
-                condition.current.offset += newSize;
-            }
-            condition.current.isLoading = false;
-            condition.current.canLoadMore = newSize >= PAGE_SIZE;
-            setIsLoading(false);
-            setCanLoadMoreUI(condition.current.canLoadMore);
-            if (!condition.current.canLoadMore || dataFilter.length < 1) {
-                setCanLoadMoreUI(false);
+                condition.current.offset += totalSize;
             }
         }
+
+        condition.current.isLoading = false;
+
+        condition.current.canLoadMore = totalSize >= PAGE_SIZE;
+        setCanLoadMoreUI(condition.current.canLoadMore);
     }, [apiServices.invest]);
-
-    const renderInvest = useCallback((type: string) => {
-        const styleBt = {
-            backgroundColor: btnInvest === type ? COLORS.WHITE : null
-        } as ViewStyle;
-
-        const styleTxt = {
-            ...Styles.typography.medium,
-            color: btnInvest === type ? COLORS.GREEN : COLORS.GRAY_7
-        } as TextStyle;
-
-        const onPress = () => {
-            setCanLoadMoreUI(false);
-            setBtnInvest(type);
-        };
-
-        const getTitle = () => {
-            switch (type) {
-                case ENUM_INVEST_NOTIFY.NOTIFY_ALL:
-                    return Languages.invest.notifyAll;
-                case ENUM_INVEST_NOTIFY.UNREAD:
-                    return Languages.invest.notifyUnRead;
-                default:
-                    return null;
-            }
-        };
-        return (
-            <Touchable onPress={onPress} style={[styles.btInvest, styleBt]}>
-                <Text style={[styles.txtBtInvest, styleTxt]}>{getTitle()}</Text>
-            </Touchable>
-        );
-
-    }, [btnInvest, styles.btInvest, styles.txtBtInvest]);
 
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
@@ -120,12 +69,10 @@ export const NotifyInvest = () => {
     const renderItem = useCallback(({ item }: any) => {
         const onRead = async (id: number, status: number) => {
             if (status === 1) {
-                setIsLoading(true);
                 const res = await apiServices.invest.getNotifyUpdateRead(id);
                 if (res.success) {
                     Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: ENUM_INVEST_STATUS.INVESTING, id: `${item?.action_id}` });
                 }
-                setIsLoading(false);
             }
             Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: ENUM_INVEST_STATUS.INVESTING, id: `${item?.action_id}` });
         };
@@ -154,20 +101,21 @@ export const NotifyInvest = () => {
 
     const renderFooter = useMemo(() => {
         return <>
-            {canLoadMoreUI && <ActivityIndicator size="large" color={COLORS.GREEN} />}
+            {canLoadMoreUI && <Loading />}
         </>;
     }, [canLoadMoreUI]);
 
     const renderEmptyData = useMemo(() => {
         return (
-            <View style={styles.wrapNoData}>
-                <NoData img={<IcNoDataNotify />} description={Languages.home.noNotify} />
-            </View>
+            <>
+                {!canLoadMoreUI && <NoData img={<IcNoDataNotify />} description={Languages.home.noNotify} />}
+            </>
         );
-    }, [styles.wrapNoData]);
+    }, [canLoadMoreUI, styles.wrapNoData]);
 
     const onRefreshing = useCallback(() => {
         condition.current.offset = 0;
+        condition.current.canLoadMore = true;
         setIsRefreshing(true);
         fetchData();
         setIsRefreshing(false);
@@ -184,7 +132,7 @@ export const NotifyInvest = () => {
             <MyFlatList
                 contentContainerStyle={styles.flatList}
                 showsVerticalScrollIndicator={false}
-                data={btnInvest === ENUM_INVEST_NOTIFY.NOTIFY_ALL ? data : dataFilter}
+                data={data}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
                 ListEmptyComponent={renderEmptyData}
@@ -194,19 +142,14 @@ export const NotifyInvest = () => {
                 onEndReached={handleLoadMore}
             />
         );
-    }, [data, styles.flatList, renderItem, keyExtractor, renderEmptyData, btnInvest, renderFooter, isRefreshing, onRefreshing, handleLoadMore, dataFilter]);
+    }, [data, styles.flatList, renderItem, keyExtractor, renderEmptyData, renderFooter, isRefreshing, onRefreshing, handleLoadMore]);
 
     return (
         <View style={styles.container}>
             <HeaderBar title={Languages.invest.notify} hasBack />
             <View style={styles.wrapContent}>
-                <View style={styles.investTab}>
-                    {renderInvest(ENUM_INVEST_NOTIFY.NOTIFY_ALL)}
-                    {renderInvest(ENUM_INVEST_NOTIFY.UNREAD)}
-                </View>
                 {data && renderNotify}
             </View>
-            {isLoading && <Loading isOverview />}
         </View>
     );
 };

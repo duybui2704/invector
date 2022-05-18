@@ -34,7 +34,7 @@ export const MyStylesHome = () => {
                 marginHorizontal: 10,
                 marginTop: 45,
                 position: 'absolute',
-                top: 0
+                top: 0,
             },
             viewTopCenter: {
                 position: 'absolute',
