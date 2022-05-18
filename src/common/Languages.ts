@@ -21,9 +21,11 @@ const Languages = {
     },
     home: {
         title: 'Trang chủ',
-        sumInvest: 'Tổng đầu tư',
+        sumInvest: 'Tổng vốn đầu tư',
         sumpProfit: 'Tổng lãi đã nhận',
         sumResidualProfit: 'Tổng lãi còn lại',
+        totalCaption: 'Tổng vốn còn lại',
+        balanceVimo: 'Số dư ví Vimo',
         have: 'Đang có',
         vnd: ' VNĐ',
         invest: 'Đầu tư',

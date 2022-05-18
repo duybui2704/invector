@@ -3,19 +3,13 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StatusBar, Text, View, FlatList, Image } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import { join } from 'lodash';
 
 import { LINKS } from '@/api/constants';
-import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
-import IcChevronRight from '@/assets/image/home/ic_chevron_right.svg';
-import IcDollar from '@/assets/image/home/ic_dollar.svg';
-import IcSmartPhone from '@/assets/image/home/ic_smartphone.svg';
-import IcWallet from '@/assets/image/home/ic_wallet.svg';
+import LogoWasLogin from '@/assets/image/home/logo_was_login.svg';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
-import Banner from '@/components/banner';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import ItemInvest from '@/components/ItemInvest';
@@ -26,13 +20,12 @@ import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
 import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
-import DimensionUtils, { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import Utils from '@/utils/Utils';
 import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import LogoHome from '../../assets/image/header/logo_home.svg';
 import NotificationListening from './NotificationListening';
 import { MyStylesHome } from './styles';
-import KeyValue from '@/components/KeyValue';
 import DraggableComponent from '@/components/Draggable';
 import PopupInvestFirst, { PopupActions } from '@/components/popupInvestFirst';
 import { MyImageView } from '@/components/image';
@@ -153,44 +146,6 @@ const Home = observer(() => {
         return `${index}${item.id}`;
     }, []);
 
-    const iconTouchable = useCallback((title: string) => {
-        switch (title) {
-            case Languages.home.have:
-                return <IcWallet />;
-            case Languages.home.invest:
-                return <IcDollar />;
-            case Languages.home.report:
-                return <IcChartUp />;
-            case Languages.home.payment:
-                return <IcSmartPhone />;
-            default:
-                return null;
-        }
-    }, []);
-
-    const renderIconTab = useCallback((title: string) => {
-        const onPress = () => {
-            switch (title) {
-                case Languages.home.have:
-                    return Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVESTING });
-                case Languages.home.invest:
-                    return gotoInvest();
-                case Languages.home.report:
-                    return Navigator.navigateScreen(TabsName.reportTabs);
-                case Languages.home.payment:
-                    return Navigator.navigateScreen(TabsName.paymentTabs);
-                default:
-                    return null;
-            }
-        };
-        return (
-            <Touchable style={styles.tab} onPress={onPress}>
-                {iconTouchable(title)}
-                <Text style={styles.txtTab}>{title}</Text>
-            </Touchable>
-        );
-    }, [iconTouchable, styles.tab, styles.txtTab]);
-
     const renderNewsItem = useCallback(({ item }: { item: BannerModel }) => {
         const navigate = () => {
             console.log('url', item.link);
@@ -235,26 +190,11 @@ const Home = observer(() => {
         );
     }, [banners, keyExtractorBanner, renderNewsItem]);
 
-
-    // const renderTabBottom = useCallback((text: string, hasDash?: boolean) => {
-    //     return (
-    //         <KeyValue
-    //             title={text}
-    //             noIndicator
-    //             hasDashBottom={hasDash}
-    //             rightIcon={<IcChevronRight />}
-    //             styleTitle={styles.txtForEachTitleQuestion}
-    //             containerContent={styles.featureContainer}
-    //             disable={true}
-    //         />
-    //     );
-    // }, [styles.featureContainer, styles.txtForEachTitleQuestion]);
-
     const renderTop = useMemo(() => {
         return (
             <View style={styles.viewForeground}>
                 <View style={styles.viewTopLogo}>
-                    <LogoHome style={styles.logo} />
+                    {userManager?.userInfo ? <LogoWasLogin style={styles.logo} /> : <LogoHome style={styles.logo} />}
                     <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
                         <IcNotify style={styles.imgNotify} />
                     </Touchable>
@@ -264,17 +204,40 @@ const Home = observer(() => {
                         <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
                         <View style={styles.viewSumInvestValue}>
                             <Text style={styles.txtSumInvestValue} numberOfLines={1}>
-                                {Utils.formatMoney(dataDash?.so_du)}
-                                <Text style={styles.txtVND}> {Languages.home.vnd}</Text>
+                                200000000
+                                {/* {Utils.formatMoney(dataDash?.tong_tien_dau_tu)} */}
+
                             </Text>
+                            <Text style={styles.txtVND}> {Languages.home.vnd}</Text>
+                        </View>
+
+                        <View style={styles.wrapRow}>
+                            <View style={styles.wrapTotalInterest}>
+                                <View style={styles.txtLeft}>
+                                    <Text style={styles.txtSumProfit}>{Languages.home.balanceVimo}</Text>
+                                    <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                        {Utils.formatMoney(dataDash?.so_du)}
+                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.wrapTotalInterest}>
+                                <View style={styles.txtRight}>
+                                    <Text style={styles.txtSumProfit}>{Languages.home.sumpProfit}</Text>
+                                    <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
+                                        {Utils.formatMoney(dataDash?.tong_tien_lai)}
+                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                                    </Text>
+                                </View>
+                            </View>
                         </View>
                         <View style={styles.wrapRow}>
                             <View style={styles.wrapTotalInterest}>
                                 <View style={styles.txtLeft}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.sumpProfit}</Text>
+                                    <Text style={styles.txtSumProfit}>{Languages.home.totalCaption}</Text>
                                     <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
 
-                                        {Utils.formatMoney(dataDash?.tong_goc_da_tra)}
+                                        {Utils.formatMoney(dataDash?.tong_goc_con_lai)}
                                         <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
                                     </Text>
                                 </View>
@@ -296,21 +259,14 @@ const Home = observer(() => {
                         <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
                         <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
                     </View>}
-                {userManager?.userInfo ?
-                    <View style={styles.viewSmallMenu}>
-                        {renderIconTab(Languages.home.have)}
-                        {renderIconTab(Languages.home.invest)}
-                        {renderIconTab(Languages.home.report)}
-                        {renderIconTab(Languages.home.payment)}
-                    </View>
-                    :
+                {!userManager?.userInfo &&
                     <View style={styles.viewSmallMenuLogin}>
                         {renderNavigateScreen(Languages.auth.txtLogin)}
                         {renderNavigateScreen(Languages.auth.txtSignUp)}
                     </View>}
             </View>
         );
-    }, [styles, onNotifyInvest, userManager?.userInfo, dataDash?.so_du, dataDash?.tong_goc_da_tra, dataDash?.tong_lai_con_lai, renderIconTab, renderNavigateScreen]);
+    }, [styles, onNotifyInvest, userManager?.userInfo, dataDash?.so_du, dataDash?.tong_goc_da_tra, dataDash?.tong_lai_con_lai, renderNavigateScreen]);
 
     const renderFooter = useMemo(() => {
         return (
@@ -330,13 +286,6 @@ const Home = observer(() => {
                     <Text style={styles.txtCenter}>{Languages.home.newMedia}</Text>
                     {renderNews}
                 </View>
-                {/* <View style={styles.wrapManualQuestion}>
-                    <Text style={styles.txtTitleQuestion}>{Languages.home.question}</Text>
-                    {renderTabBottom(Languages.home.todoInvest, true)}
-                    {renderTabBottom(Languages.home.investNow, true)}
-                    {renderTabBottom(Languages.home.percentCalculated, true)}
-                    {renderTabBottom(Languages.home.paymentMethod, false)}
-                </View> */}
             </>
         );
     }, [dataArr, styles.more, styles.txtForEachTitleQuestion,
@@ -371,7 +320,7 @@ const Home = observer(() => {
 
     const renderContent = useMemo(() => {
         return (
-            <View style={styles.viewCenter}>
+            <View style={userManager?.userInfo ? [styles.viewCenter, { marginTop: - SCREEN_HEIGHT * 0.03 }] : styles.viewCenter}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
                 <FlatList
                     showsVerticalScrollIndicator={false}
