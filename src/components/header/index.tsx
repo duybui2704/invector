@@ -2,14 +2,12 @@ import React, { useCallback, useMemo } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
 
 import IcBack from '../../assets/image/header/ic_back_header.svg';
-import IcNotifyInvest from '../../assets/image/header/ic_header_invest.svg';
 import Images from '../../assets/Images';
 import { isIOS } from '../../common/Configs';
 import Navigator from '../../routers/Navigator';
 import { Touchable } from '../elements/touchable';
 import { HeaderProps } from './types';
 import { COLORS } from '../../theme';
-import Languages from '@/common/Languages';
 import { MyStylesHeader } from './styles';
 
 export const HeaderBar = ({
@@ -73,10 +71,10 @@ export const HeaderBar = ({
             {!noHeader && !exitApp && <View style={styles.headerContainer}>
                 {renderTitle}
                 {(!exitApp) && (hasBack ? renderBack : null)}
-                {title === Languages.invest.title &&
+                {/* {title === Languages.invest.title &&
                     <Touchable style={styles.viewRight} >
                         <IcNotifyInvest width={22} height={22} />
-                    </Touchable>}
+                    </Touchable>} */}
             </View>}
         </View>
     );
