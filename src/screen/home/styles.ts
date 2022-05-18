@@ -98,12 +98,12 @@ export const MyStylesHome = () => {
                 marginLeft: 5,
                 marginTop: 5
             },
-            txtTitleQuestion: {
-                ...Styles.typography.medium,
-                fontSize: Configs.FontSize.size16,
-                color: COLORS.GRAY_7,
-                paddingHorizontal: 16
-            },
+            // txtTitleQuestion: {
+            //     ...Styles.typography.medium,
+            //     fontSize: Configs.FontSize.size16,
+            //     color: COLORS.GRAY_7,
+            //     paddingHorizontal: 16
+            // },
             txtLeft: {
                 marginLeft: '30%',
                 justifyContent: 'center',
@@ -162,8 +162,37 @@ export const MyStylesHome = () => {
                 paddingTop: 3
             },
             viewCenter: {
-                paddingHorizontal: 15,
+                marginHorizontal: 15,
                 marginBottom: 20
+            },
+            newsItem: {
+                ...Styles.shadow,
+                width: SCREEN_WIDTH / 1.7,
+                borderRadius: 10,
+                marginHorizontal: 5,
+                paddingBottom: 5
+            },
+            communicationImage: {
+                width: SCREEN_WIDTH / 1.7,
+                height: (SCREEN_WIDTH / 1.7 / 215) * 104,
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10
+            },
+            communicationContainer: {
+                paddingTop: 10,
+                paddingLeft: 15
+            },
+            txtCommunityTitle: {
+                ...Styles.typography.medium,
+                marginTop: 10,
+                paddingHorizontal: 5
+            },
+            txtCommunityDes: {
+                ...Styles.typography.regular,
+                fontSize: Configs.FontSize.size11,
+                color: COLORS.LIGHT_GRAY,
+                marginVertical: 5,
+                paddingHorizontal: 5
             },
             more: {
                 width: '100%',
@@ -178,20 +207,24 @@ export const MyStylesHome = () => {
                 paddingHorizontal: 16,
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                paddingVertical: 8
+                paddingVertical: 8,
+                marginHorizontal: 3
             },
             txtVfs: {
                 flex: 1,
                 flexDirection: 'column',
                 paddingLeft: 20
             },
-            wrapManualQuestion: {
-                ...Styles.shadow,
-                width: '100%',
-                backgroundColor: COLORS.WHITE,
-                borderRadius: 15,
-                marginVertical: 20,
-                paddingVertical: 10
+            // wrapManualQuestion: {
+            //     ...Styles.shadow,
+            //     width: '100%',
+            //     backgroundColor: COLORS.WHITE,
+            //     borderRadius: 15,
+            //     marginVertical: 20,
+            //     paddingVertical: 10
+            // },
+            viewBanner: {
+                marginTop: SCREEN_WIDTH * 0.02
             },
             txtQuestion: {
                 flex: 1,
@@ -250,11 +283,11 @@ export const MyStylesHome = () => {
             },
             imgNotify: {
                 width: SCREEN_WIDTH * 0.08
-            },
-            featureContainer: {
-                width: '100%',
-                paddingVertical: 6
             }
+            // featureContainer: {
+            //     width: '100%',
+            //     paddingVertical: 6
+            // }
         }
         ), []);
 };

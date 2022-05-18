@@ -25,13 +25,14 @@ import ScreenName from '@/common/screenNames';
 import IMGNoDataTransaction from '@/assets/image/img_no_data_transaction.svg';
 import { COLORS } from '@/theme';
 
+
+const PER_PAGE = 7;
 const Transaction = observer(() => {
     const { apiServices, fastAuthInfoManager } = useAppStore();
     const { supportedBiometry } = fastAuthInfoManager;
     const isFocused = useIsFocused();
     const [isFreshing, setIsFreshing] = useState<boolean>(true);
     const [dataHistory, setDataHistory] = useState<TransactionModel[]>([]);
-    const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState<boolean>(true);
 
     const { common } = useAppStore();
 

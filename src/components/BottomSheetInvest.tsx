@@ -157,7 +157,8 @@ const styles = StyleSheet.create({
     },
     flatList: {
         flex: 1,
-        marginTop: 0
+        marginTop: 0,
+        marginBottom: PADDING_BOTTOM
     },
     txtTitle: {
         ...Styles.typography.medium,

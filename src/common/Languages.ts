@@ -17,7 +17,7 @@ const Languages = {
         fromDate: 'Từ ngày',
         toDate: 'Tới ngày',
         allInvestNow: 'Tổng đầu tư hiện tại',
-        noDataTransaction: 'Bạn thực hiện giao dịch nào !'
+        noDataTransaction: 'Bạn chưa thực hiện giao dịch nào!'
     },
     home: {
         title: 'Trang chủ',
@@ -45,7 +45,9 @@ const Languages = {
         formInterestPay: 'Hình thức trả lãi',
         hello: 'Chào mừng bạn đến với',
         nameApp: 'TienNgay.Vn',
-        investAndAccumulate: 'Đầu tư & Tích luỹ'
+        investAndAccumulate: 'Đầu tư & Tích luỹ',
+        newMedia: 'Tin tức truyền thông',
+        investNowFloral: 'ĐẦU TƯ NGAY'
 
     },
     invest: {

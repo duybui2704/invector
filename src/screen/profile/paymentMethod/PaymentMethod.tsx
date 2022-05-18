@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import BankIC from '@/assets/image/ic_bank.svg';
-import LinkIC from '@/assets/image/ic_ischecked_save_acc.svg';
+import LinkIC from '@/assets/image/ic_isChecked_save_acc.svg';
 import NotLinkIC from '@/assets/image/ic_unchecked_save_acc.svg';
 import VimoIC from '@/assets/image/ic_vimo.svg';
 import Languages from '@/common/Languages';

@@ -41,7 +41,8 @@ export const MyStylesHeader = () => {
         titleContainer: {
             position: 'absolute',
             left: 0,
-            right: 0
+            right: 0,
+            paddingHorizontal: 30
         },
         titleCenter: {
             ...Styles.typography.medium,

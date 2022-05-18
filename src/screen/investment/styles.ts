@@ -1,11 +1,9 @@
 import { StyleSheet } from 'react-native';
 
-import { Configs, STATUSBAR_HEIGHT } from '@/common/Configs';
+import { Configs } from '@/common/Configs';
 import { Styles } from '@/theme';
 import { COLORS } from '@/theme/colors';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
-
-
 
 const styles = StyleSheet.create({
     main: {
@@ -28,7 +26,6 @@ const styles = StyleSheet.create({
         padding: 4,
         borderRadius: 26,
         marginBottom: 12
-
     },
     btInvest: {
         width: (SCREEN_WIDTH - 40) / 3,
@@ -42,7 +39,7 @@ const styles = StyleSheet.create({
     },
     txtBtnStatus: {
         ...Styles.typography.medium,
-        fontSize: Configs.FontSize.size11
+        fontSize: Configs.FontSize.size14
     },
     input: {
         borderRadius: 26,

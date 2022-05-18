@@ -4,7 +4,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
-import CheckIcon from '@/assets/image/ic_ischecked_save_acc.svg';
+import CheckIcon from '@/assets/image/ic_isChecked_save_acc.svg';
 import UnCheckIcon from '@/assets/image/ic_unchecked_save_acc.svg';
 import Languages from '@/common/Languages';
 import arrayIcon from '@/common/arrayIcon';

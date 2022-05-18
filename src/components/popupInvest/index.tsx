@@ -13,6 +13,7 @@ import { useAppStore } from '@/hooks';
 import { arrMoney, arrMonth } from '@/mocks/data';
 import { COLORS } from '@/theme';
 import { PopupActions } from './types';
+import IcSelect from '@/assets/image/ic_select.svg';
 
 export type PopupFilterProps = {
     onClose?: () => any;
@@ -116,6 +117,7 @@ const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
             return (
                 <Touchable style={styles.inputPhone} onPress={onPress}>
                     <Text style={[styles.txtPalaceholder, styleTxt]}>{value || palaceholder}</Text>
+                    <IcSelect/>
                 </Touchable>
             );
         }, [onOpenBottomSheet, styles.inputPhone, styles.txtPalaceholder]);

@@ -38,6 +38,7 @@ export enum COLORS {
   GREEN = '#0E9549',
   GREEN_1='#26A05B',
   GREEN_2='#1D9752',
+  GREEN_3='#115C26',
   LIGHT_GREEN = '#d0ded5',
   TRANSPARENT = 'transparent',
   MODAL = 'rgba(0, 0, 0, 0.3)',

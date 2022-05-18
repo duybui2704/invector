@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Text, View } from 'react-native';
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
-import CheckIcon from '@/assets/image/ic_ischecked_save_acc.svg';
+import CheckIcon from '@/assets/image/ic_isChecked_save_acc.svg';
 import UnCheckIcon from '@/assets/image/ic_unchecked_save_acc.svg';
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';

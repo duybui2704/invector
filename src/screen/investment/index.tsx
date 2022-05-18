@@ -27,14 +27,14 @@ import Utils from '@/utils/Utils';
 import { HeaderBar } from '../../components/header';
 import styles from './styles';
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 10;
 
 const Investment = observer(({ route }: { route: any }) => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
     const [textSearch, setTextSearch] = useState<string>();
     const [listStore, setListStore] = useState<PackageInvest[]>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [dataTime, setDataTime] = useState<any>([]);
     const [timeValue, setTimeValue] = useState<ItemProps>();
@@ -48,7 +48,7 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const refBottomSheetMonth = useRef<any>(null);
     const refBottomSheetMoney = useRef<any>(null);
-    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(false);
+    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(true);
     const condition = useRef<PagingConditionTypes>({
         isLoading: true,
         offset: 0,
@@ -61,10 +61,9 @@ const Investment = observer(({ route }: { route: any }) => {
         moneyInvested: ''
     });
 
-    const {
-        common, apiServices
-    } = useAppStore();
+    console.log('render---')
 
+    const { common, apiServices } = useAppStore();
 
     useEffect(() => {
         setBtnInvest(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -75,7 +74,12 @@ const Investment = observer(({ route }: { route: any }) => {
 
 
     const fetchDataInvested = useCallback(async (isLoadMore?: boolean) => {
-        setIsLoading(true);
+        setCanLoadMoreUI(true);
+        
+        if (!isLoadMore) {
+            setIsLoading(true);
+        }
+
         condition.current.isLoading = true;
         const resInvest = await apiServices.invest.getListContractInvesting(
             condition.current.textSearch,
@@ -84,6 +88,7 @@ const Investment = observer(({ route }: { route: any }) => {
             condition.current.toDate,
             isLoadMore ? condition.current.offset : 0,
             PAGE_SIZE);
+
         const newData = resInvest.data as PackageInvest[];
         const newSize = newData?.length;
 
@@ -102,10 +107,16 @@ const Investment = observer(({ route }: { route: any }) => {
         condition.current.isLoading = false;
         condition.current.canLoadMore = newSize >= PAGE_SIZE;
         setIsLoading(false);
+        setCanLoadMoreUI(condition.current.canLoadMore);
     }, [apiServices.invest]);
 
     const fetchAllDataInvest = useCallback(async (isLoadMore?: boolean) => {
-        setIsLoading(true);
+        setCanLoadMoreUI(true);
+
+        if (!isLoadMore) {
+            setIsLoading(true);
+        }
+
         condition.current.isLoading = true;
         const resInvest = await apiServices.invest.getAllContractInvest(
             condition.current.textSearch,
@@ -128,12 +139,12 @@ const Investment = observer(({ route }: { route: any }) => {
         else if (!resInvest?.success || !isLoadMore) {
             setListStore([]);
         }
+
         condition.current.isLoading = false;
         condition.current.canLoadMore = newSize >= PAGE_SIZE;
         setIsLoading(false);
         setCanLoadMoreUI(condition.current.canLoadMore);
     }, [apiServices.invest]);
-
 
     const fetchData = useCallback((type: string, isLoadMore?: boolean) => {
         switch (type) {
@@ -217,24 +228,20 @@ const Investment = observer(({ route }: { route: any }) => {
     }, []);
 
     const onPressItem = useCallback((item?: any, title?: string) => {
-        console.log('tt', item);
         if (title === Languages.invest.monthInvest) {
             setTimeValue(item);
             condition.current.timeInvestment = item.id;
         }
         if (title === Languages.invest.chooseMoney) {
-            if(btnInvest===ENUM_INVEST_STATUS.INVEST_NOW)
-            {
+            if (btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
                 setMoneyValueInvest(item);
                 condition.current.moneyInvest = item.id;
             }
-            if(btnInvest===ENUM_INVEST_STATUS.INVESTING)
-            {
+            if (btnInvest === ENUM_INVEST_STATUS.INVESTING) {
                 setMoneyValueInvested(item);
                 condition.current.moneyInvested = item.id;
             }
         }
-       
 
         if (btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) {
             popupInvestRef.current?.show();
@@ -244,13 +251,17 @@ const Investment = observer(({ route }: { route: any }) => {
         }
     }, [btnInvest]);
 
-    const debounceSearchItem = useCallback(debounce(() => fetchData(btnInvest), 500), [btnInvest]);
+    const debounceSearchItem = useCallback(debounce(() => {
+        fetchData(btnInvest)
+    }, 500), [btnInvest]);
 
-    const handleInputOnchange = useCallback(
+    const handleInputOnChange = useCallback(
         (value: string) => {
-            setTextSearch(Utils.formatMoney(value));
-            condition.current.textSearch = Utils.formatTextToNumber(value);
-            debounceSearchItem();
+            if (value !== textSearch) {
+                setTextSearch(Utils.formatMoney(value));
+                condition.current.textSearch = Utils.formatTextToNumber(value);
+                debounceSearchItem();
+            }
         },
         [debounceSearchItem]
     );
@@ -273,7 +284,7 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const renderInvest = useCallback((type: string) => {
         const styleBt = {
-            backgroundColor: btnInvest === type ? COLORS.WHITE : null
+            backgroundColor: btnInvest === type ? COLORS.WHITE : null,
         } as ViewStyle;
 
         const styleTxt = {
@@ -301,7 +312,7 @@ const Investment = observer(({ route }: { route: any }) => {
         };
 
         return (
-            <Touchable disabled={btnInvest === type} onPress={onPress} style={[styles.btInvest, styleBt]}>
+            <Touchable disabled={btnInvest === type} onPress={onPress} style={[styles.btInvest, styleBt]} radius={26}>
                 <Text style={[styles.txtBtnStatus, styleTxt]}>{getTitle()}</Text>
             </Touchable>
         );
@@ -331,6 +342,7 @@ const Investment = observer(({ route }: { route: any }) => {
         }
 
     }, [btnInvest]);
+
     const openTimeInvestment = useCallback(() => {
         refBottomSheetMoney.current.show();
     }, []);
@@ -339,7 +351,7 @@ const Investment = observer(({ route }: { route: any }) => {
         return (
             <View style={styles.wrapSearch}>
                 <MyTextInput
-                    onChangeText={handleInputOnchange}
+                    onChangeText={handleInputOnChange}
                     rightIcon={arrayIcon.login.search}
                     containerInput={styles.input}
                     placeHolder={Languages.invest.enter}
@@ -354,17 +366,20 @@ const Investment = observer(({ route }: { route: any }) => {
                 </Touchable>
             </View>
         );
-    }, [handleInputOnchange, onPopupInvest, textSearch]);
+    }, [handleInputOnChange, onPopupInvest, textSearch]);
 
     const renderLoading = useMemo(() => {
-        return <View>{canLoadMoreUI && <Loading />}</View>;
+        return <View >{canLoadMoreUI && <Loading />}</View>;
     }, [canLoadMoreUI]);
 
     const renderEmptyData = useMemo(() => {
-        return (
-            <NoData img={<IMGNoData/>} description={ Languages.invest.emptyData} />
-        );
-    }, []);
+        if (listStore?.length === 0 && isLoading === false) {
+            return (
+                <NoData img={<IMGNoData />} description={Languages.invest.emptyData} />
+            );
+        }
+        return null;
+    }, [isLoading, listStore?.length]);
 
     return (
         <View style={styles.main}>
@@ -416,7 +431,6 @@ const Investment = observer(({ route }: { route: any }) => {
                 title={Languages.invest.monthInvest}
                 onPressItem={onPressItem}
             />
-            {isLoading && <Loading isOverview />}
         </View>
     );
 });

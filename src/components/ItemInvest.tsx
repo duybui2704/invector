@@ -25,13 +25,13 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
     return (
         <View style={styles.item}>
             <Touchable onPress={onPress}>
-                <Touchable style={styles.rowTop}>
+                <View style={styles.rowTop}>
                     <Text style={[styles.txtMoney, styleText]}>{Utils.formatMoney(data?.so_tien_dau_tu)}</Text>
                     <View style={styles.wrapText}>
                         <Text style={styles.txtInterest}>{Languages.invest.interest}</Text>
                         <Text style={styles.txtPercent}>{data?.ti_le_lai_suat_hang_thang}</Text>
                     </View>
-                </Touchable>
+                </View>
                 <Dash
                     dashThickness={1}
                     dashLength={10}
