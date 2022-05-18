@@ -11,6 +11,7 @@ import HideKeyboard from '@/components/HideKeyboard';
 import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
 import { COLORS } from '@/theme';
+import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import FormValidate from '@/utils/FormValidate';
 import OtpSignIn from '../otpSignIn';
 import { MyStylesForgotPass } from './styles';
@@ -54,6 +55,7 @@ const ForgotPass = observer(() => {
                     <View style={styles.content}>
                         <View style={styles.viewTitle}>
                             <Text style={styles.txtTitle}>{Languages.auth.titleForgotPass}</Text>
+                            <IcLine width={'20%'} />
                         </View>
                         <View style={styles.txtLeft}>
                             <Text style={styles.txt}>{Languages.auth.txtForgotPass}</Text>

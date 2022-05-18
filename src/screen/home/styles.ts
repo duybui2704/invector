@@ -54,7 +54,8 @@ export const MyStylesHome = () => {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size32,
                 color: COLORS.WHITE,
-                alignItems: 'flex-end'
+                alignItems: 'center',
+                marginLeft: SCREEN_WIDTH * 0.08
             },
             txtSumProfit: {
                 ...Styles.typography.regular,
@@ -64,13 +65,17 @@ export const MyStylesHome = () => {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size20,
                 color: COLORS.WHITE,
-                marginHorizontal: 2
+                marginHorizontal: 2,
+                position: 'relative',
+                bottom: 4
             },
             txtVNDSmall: {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size10,
                 color: COLORS.WHITE,
-                marginHorizontal: 2
+                marginHorizontal: 2,
+                position: 'relative',
+                bottom: 3
             },
             txtVPS: {
                 ...Styles.typography.medium,
@@ -110,9 +115,10 @@ export const MyStylesHome = () => {
                 alignItems: 'center'
             },
             txtRight: {
-                marginRight: '30%',
+                marginRight: '25%',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingLeft: '5%'
             },
             wrapRow: {
                 flexDirection: 'row'
@@ -121,7 +127,8 @@ export const MyStylesHome = () => {
                 flexDirection: 'row',
                 alignItems: 'flex-end',
                 justifyContent: 'center',
-                paddingRight: 5
+                paddingRight: 5,
+                marginHorizontal: 15
             },
             wrapTotalInterest: {
                 alignItems: 'center',

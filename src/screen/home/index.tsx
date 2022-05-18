@@ -32,6 +32,9 @@ import { MyImageView } from '@/components/image';
 import DateUtils from '@/utils/DateUtils';
 import { BaseModel } from '@/models/base-model';
 
+
+const PAGE_SIZE = 3;
+
 const Home = observer(() => {
     const { apiServices, userManager } = useAppStore();
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -44,7 +47,14 @@ const Home = observer(() => {
     const [showFloating, setShowFloating] = useState<boolean>(true);
     const refPopupFirst = useRef<PopupActions>();
     const [iconBanner, setIconBanner] = useState<BannerHome>();
+    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(false);
+    const [unMore, setUnMore] = useState<boolean>(false);
     const ref = useRef();
+    const condition = useRef({
+        isLoading: true,
+        offset: 0,
+        canLoadMore: true
+    });
 
     useEffect(() => {
         setShowFloating(true);
@@ -54,23 +64,43 @@ const Home = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
-        fetchContractsDash();
-        fetchDataInvest();
-        fetchDataBanner();
-    }, []);
+        if (isFocused) {
+            fetchContractsDash();
+            fetchDataInvest();
+            fetchDataBanner();
+        }
+    }, [isFocused]);
 
     const onOpenVPS = useCallback(() => {
         Utils.openURL(LINKS.VPS);
     }, []);
 
-    const fetchDataInvest = useCallback(async () => {
-        setIsLoading(true);
+    const fetchDataInvest = useCallback(async (isLoadMore?: boolean) => {
+        setCanLoadMoreUI(true);
+        if (!isLoadMore) {
+            setIsLoading(true);
+        }
+        condition.current.isLoading = true;
         const resInvest = await apiServices.common.getListInvest();
+        setIsLoading(false);
         setIsLoading(false);
         if (resInvest.success) {
             const data = resInvest?.data as PackageInvest[];
-            const temp = data.slice(0, 3);
-            setDataArr(temp);
+            const dataSize = data.length;
+            if (dataSize > 0) {
+                if (isLoadMore) {
+                    setDataArr((list) => [...list || [], ...data]);
+                }
+                else {
+                    setDataArr(data);
+                }
+                condition.current.offset += dataSize;
+            }
+            condition.current.isLoading = false;
+            condition.current.canLoadMore = dataSize >= PAGE_SIZE;
+            setUnMore(dataSize >= PAGE_SIZE);
+            setIsLoading(false);
+            setCanLoadMoreUI(condition.current.canLoadMore);
         }
     }, [apiServices.common]);
 
@@ -101,9 +131,11 @@ const Home = observer(() => {
 
     }, [apiServices.common]);
 
-    const gotoInvest = () => {
-        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVEST_NOW });
-    };
+    const onMore = useCallback(() => {
+        if (!condition.current.isLoading && condition.current.canLoadMore) {
+            fetchDataInvest(true);
+        }
+    }, [fetchDataInvest]);
 
     const navigateToDetail = useCallback((item: PackageInvest) => {
         if (userManager?.userInfo) {
@@ -119,7 +151,7 @@ const Home = observer(() => {
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, [userManager?.userInfo]);
+    }, [btnInvest, userManager?.userInfo]);
 
     const gotoLogin = useCallback((titleAuth: string) => {
         setTimeout(() => {
@@ -171,7 +203,7 @@ const Home = observer(() => {
                 </Text>
             </Touchable>
         );
-    }, []);
+    }, [styles.communicationImage, styles.newsItem, styles.txtCommunityDes, styles.txtCommunityTitle]);
 
     const keyExtractorBanner = useCallback((item: BaseModel) => {
         return `${item._id?.$oid}`;
@@ -188,7 +220,7 @@ const Home = observer(() => {
                 keyExtractor={keyExtractorBanner}
             />
         );
-    }, [banners, keyExtractorBanner, renderNewsItem]);
+    }, [banners, keyExtractorBanner, renderNewsItem, styles.communicationContainer]);
 
     const renderTop = useMemo(() => {
         return (
@@ -204,30 +236,32 @@ const Home = observer(() => {
                         <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
                         <View style={styles.viewSumInvestValue}>
                             <Text style={styles.txtSumInvestValue} numberOfLines={1}>
-                                200000000
-                                {/* {Utils.formatMoney(dataDash?.tong_tien_dau_tu)} */}
-
+                                {Utils.formatMoney(dataDash?.tong_tien_dau_tu)}
                             </Text>
                             <Text style={styles.txtVND}> {Languages.home.vnd}</Text>
                         </View>
-
                         <View style={styles.wrapRow}>
                             <View style={styles.wrapTotalInterest}>
                                 <View style={styles.txtLeft}>
                                     <Text style={styles.txtSumProfit}>{Languages.home.balanceVimo}</Text>
-                                    <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
-                                        {Utils.formatMoney(dataDash?.so_du)}
+                                    <View style={styles.viewSumInvestValue}>
+                                        <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                            {Utils.formatMoney(dataDash?.so_du)}
+                                        </Text>
                                         <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </Text>
+                                    </View>
+
                                 </View>
                             </View>
                             <View style={styles.wrapTotalInterest}>
                                 <View style={styles.txtRight}>
                                     <Text style={styles.txtSumProfit}>{Languages.home.sumpProfit}</Text>
-                                    <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
-                                        {Utils.formatMoney(dataDash?.tong_tien_lai)}
+                                    <View style={styles.viewSumInvestValue}>
+                                        <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
+                                            {Utils.formatMoney(dataDash?.tong_tien_lai)}
+                                        </Text>
                                         <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </Text>
+                                    </View>
                                 </View>
                             </View>
                         </View>
@@ -235,20 +269,23 @@ const Home = observer(() => {
                             <View style={styles.wrapTotalInterest}>
                                 <View style={styles.txtLeft}>
                                     <Text style={styles.txtSumProfit}>{Languages.home.totalCaption}</Text>
-                                    <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
-
-                                        {Utils.formatMoney(dataDash?.tong_goc_con_lai)}
+                                    <View style={styles.viewSumInvestValue}>
+                                        <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                            {Utils.formatMoney(dataDash?.tong_goc_con_lai)}
+                                        </Text>
                                         <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </Text>
+                                    </View>
                                 </View>
                             </View>
                             <View style={styles.wrapTotalInterest}>
                                 <View style={styles.txtRight}>
                                     <Text style={styles.txtSumProfit}>{Languages.home.sumResidualProfit}</Text>
-                                    <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
-                                        {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
+                                    <View style={styles.viewSumInvestValue}>
+                                        <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
+                                            {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
+                                        </Text>
                                         <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </Text>
+                                    </View>
                                 </View>
                             </View>
                         </View>
@@ -266,12 +303,12 @@ const Home = observer(() => {
                     </View>}
             </View>
         );
-    }, [styles, onNotifyInvest, userManager?.userInfo, dataDash?.so_du, dataDash?.tong_goc_da_tra, dataDash?.tong_lai_con_lai, renderNavigateScreen]);
+    }, [styles.viewForeground, styles.viewTopLogo, styles.logo, styles.viewRightTop, styles.imgNotify, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValue, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLogin, userManager?.userInfo, onNotifyInvest, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, renderNavigateScreen]);
 
     const renderFooter = useMemo(() => {
         return (
             <>
-                {dataArr && <Touchable style={styles.more} onPress={gotoInvest}>
+                {dataArr && unMore && <Touchable style={styles.more} onPress={onMore}>
                     <Text style={[styles.txtForEachTitleQuestion, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
                 </Touchable>
                 }
@@ -288,8 +325,7 @@ const Home = observer(() => {
                 </View>
             </>
         );
-    }, [dataArr, styles.more, styles.txtForEachTitleQuestion,
-        styles.viewVfs, styles.txtVfs, styles.txtVPS, onOpenVPS, banners]);
+    }, [dataArr, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.viewBanner, styles.txtCenter, onMore, onOpenVPS, renderNews]);
 
 
     const renderItem = useCallback((item: any) => {
@@ -333,7 +369,7 @@ const Home = observer(() => {
                 />
             </View>
         );
-    }, [dataArr, keyExtractor, renderFooter, renderItemInvestPackage, styles.txtCenter, styles.viewCenter]);
+    }, [dataArr, keyExtractor, renderFooter, renderItemInvestPackage, styles.txtCenter, styles.viewCenter, userManager?.userInfo]);
 
 
     const renderBackground = () => {

@@ -164,6 +164,7 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [fetchAllDataInvest, fetchDataInvested]);
 
     const onEndReached = useCallback(() => {
+        console.log('handleLoadMore', condition.current.isLoading, condition.current.canLoadMore);
         if (!condition.current.isLoading && condition.current.canLoadMore) {
             fetchData(btnInvest, true);
         }

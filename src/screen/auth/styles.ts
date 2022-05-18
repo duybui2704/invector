@@ -118,10 +118,17 @@ export const myStylesAuth = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '100%',
-                position: 'absolute'
-
+                position: 'absolute',
+                top: 0
             },
-
+            iconClose: {
+                position: 'absolute',
+                top: SCREEN_HEIGHT * 0.055,
+                right: SCREEN_WIDTH * 0.08,
+                width: 40,
+                height: 40,
+                zIndex: 1
+            },
             checkbox: {
                 justifyContent: 'flex-end',
                 marginTop: 10,
