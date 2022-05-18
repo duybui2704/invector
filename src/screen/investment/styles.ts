@@ -12,7 +12,11 @@ const styles = StyleSheet.create({
         height: SCREEN_HEIGHT
     },
     wrapContent: {
-        marginHorizontal: 16
+        // marginHorizontal: 16
+    },
+    wrapNodata:{
+        flex:1,
+        backgroundColor:COLORS.YELLOW
     },
     txt: {
         ...Styles.typography.regular,
@@ -25,7 +29,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.GRAY_13,
         padding: 4,
         borderRadius: 26,
-        marginBottom: 12
+        marginBottom: 12,
+        marginHorizontal: 16
     },
     btInvest: {
         width: (SCREEN_WIDTH - 40) / 3,
@@ -45,12 +50,37 @@ const styles = StyleSheet.create({
         borderRadius: 26,
         borderWidth: 1,
         borderColor: COLORS.GRAY_11,
-        height: 32,
         width: '90%'
+    },
+    suggestion: {
+        ...Styles.heavyShadow,
+        width: SCREEN_WIDTH,
+        maxHeight: 200,
+        position: 'absolute',
+        top: 100,
+        zIndex: 222,
+        // borderWidth:1,
+        borderColor: COLORS.GRAY_11
+    },
+    flatListSuggestion: {
+        backgroundColor: COLORS.RED_4
+    },
+    itemSuggestion: {
+        backgroundColor: COLORS.WHITE,
+        paddingLeft:16,
+        paddingVertical:10
+    },
+    txtSuggest:{
+        ...Styles.typography.regular,
+        fontSize:Configs.FontSize.size13,
+        color:COLORS.BLACK
     },
     wrapSearch: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginHorizontal: 16,
+        position: 'relative'
     },
     iconFilter: {
         width: 32,
@@ -60,8 +90,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: COLORS.GRAY_11,
-        marginBottom: 26
+        borderColor: COLORS.GRAY_11
     },
     item: {
         paddingTop: 8,
@@ -130,7 +159,8 @@ const styles = StyleSheet.create({
         ...Styles.typography.medium
     },
     flatList: {
-        paddingBottom: 150
+        paddingBottom: 150,
+        marginHorizontal: 16
     },
     txtYellow: {
         ...Styles.typography.medium,

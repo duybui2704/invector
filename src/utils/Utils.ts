@@ -5,6 +5,9 @@ import AndroidOpenSettings from 'react-native-android-open-settings';
 
 import Validate from './Validate';
 
+const MIN_INPUT = 10e5;
+const MAX_INPUT = 10e8;
+
 function formatMoney(number: string | number | undefined) {
     const hasMinus = `${number}`.includes('-');
     number = `${number}`.replace(/[^0-9]/g, '');
@@ -214,6 +217,22 @@ function formatForEachWordCase(str: string) {
     return splitStr.join(' ');
 }
 
+function updateSuggestions (text:string) {
+    console.log('text',text);
+    const suggest = [];
+    let inputNo = Number(text);
+    while (true && inputNo > 0) {
+        inputNo *= 10;
+        if (inputNo <= MAX_INPUT) {
+            if (inputNo >= MIN_INPUT) {
+                suggest.push(formatTextToNumber(`${inputNo}`));
+            }
+        } else {
+            break;
+        }
+    }
+    return suggest;
+}
 
 export default {
     formatTextToNumber,
@@ -232,5 +251,6 @@ export default {
     configNotification,
     getFcmToken,
     convertSecondToMinutes,
-    formatForEachWordCase
+    formatForEachWordCase,
+    updateSuggestions
 };
