@@ -82,11 +82,11 @@ const Profile = observer(() => {
         }
     }, [isFocus]);
 
-    useEffect(() => {
-        if (!userManager.userInfo?.token_app) {
-            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
-        }
-    }, [supportedBiometry, userManager.userInfo?.token_app]);
+    // useEffect(() => {
+    //     if (!userManager.userInfo?.token_app) {
+    //         Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
+    //     }
+    // }, [supportedBiometry, userManager.userInfo?.token_app]);
 
     const callPhone = useCallback(() => {
         Utils.callNumber(Languages.common.hotline);

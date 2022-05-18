@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginHorizontal: 16,
-        position: 'relative'
+        position: 'relative',
+        marginBottom:10
     },
     iconFilter: {
         width: 32,

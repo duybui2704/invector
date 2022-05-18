@@ -43,8 +43,8 @@ const Investment = observer(({ route }: { route: any }) => {
     const [dataMoney, setDataMoney] = useState<any>([]);
     const [moneyValueInvest, setMoneyValueInvest] = useState<ItemProps>();
     const [moneyValueInvested, setMoneyValueInvested] = useState<ItemProps>();
-    const [showSuggestion,setShowSuggestion] = useState<boolean>(false);
-    const [dataSuggestion,setDataSuggestion] = useState<any[]>();
+    const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
+    const [dataSuggestion, setDataSuggestion] = useState<any[]>();
 
     const popupInvestRef = useRef<any>();
     const popupInvestedRef = useRef<any>();
@@ -77,7 +77,7 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const fetchDataInvested = useCallback(async (isLoadMore?: boolean) => {
         setCanLoadMoreUI(true);
-        
+
         if (!isLoadMore) {
             setIsLoading(true);
         }
@@ -344,15 +344,30 @@ const Investment = observer(({ route }: { route: any }) => {
 
     }, [btnInvest]);
 
+    const onCancelPopupFilterInvested = useCallback(()=>{
+        condition.current.fromDate='';
+        condition.current.toDate='';
+        setMoneyValueInvested(undefined);
+    },[]);
+
+    const onCancelPopupFilter = useCallback(()=>{
+        condition.current.timeInvestment='';
+        condition.current.moneyInvest='';
+    },[]);
+
     const openTimeInvestment = useCallback(() => {
         refBottomSheetMoney.current.show();
     }, []);
 
-    const renderSuggestionItem = useCallback(({item}:any)=>{
-        return <Touchable style={styles.itemSuggestion}>
+    const onPressSuggestItem = useCallback(() => {
+        setShowSuggestion(false);
+    }, []);
+
+    const renderSuggestionItem = useCallback(({ item }: any) => {
+        return <Touchable onPress={onPressSuggestItem} style={styles.itemSuggestion}>
             <Text style={styles.txtSuggest}>{Utils.formatMoney(item)}</Text>
         </Touchable>;
-    },[]);
+    }, [onPressSuggestItem]);
 
     const renderSearchBar = useMemo(() => {
         return (
@@ -372,16 +387,16 @@ const Investment = observer(({ route }: { route: any }) => {
                     >
                         <IcBtnFilter />
                     </Touchable>
-                
+
                 </View>
-                <FlatList
+                {showSuggestion && <FlatList
                     renderItem={renderSuggestionItem}
                     style={styles.suggestion}
                     data={dataSuggestion}
-                />
+                />}
             </>
         );
-    }, [dataSuggestion, handleInputOnChange, onPopupInvest, renderSuggestionItem, textSearch]);
+    }, [dataSuggestion, handleInputOnChange, onPopupInvest, renderSuggestionItem, showSuggestion, textSearch]);
 
     const renderLoading = useMemo(() => {
         return <View >{canLoadMoreUI && <Loading />}</View>;
@@ -426,6 +441,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 openBottomSheet={openBottomSheet}
                 timeInvestment={timeValue}
                 moneyInvestment={moneyValueInvest}
+                onCancel={onCancelPopupFilterInvested}
             />
             <PopupFilterInvested
                 ref={popupInvestedRef}
@@ -433,6 +449,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 onConfirm={onConfirmFilterInvested}
                 openTimeInvestment={openTimeInvestment}
                 money={moneyValueInvested?.value}
+                onCancel={onCancelPopupFilterInvested}
             />
             <BottomSheetComponentInvest
                 ref={refBottomSheetMoney}

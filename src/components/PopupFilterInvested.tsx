@@ -24,7 +24,8 @@ export type PopupFilterProps = {
     fromDate?: string,
     toDate?: string,
     money?: string,
-    openTimeInvestment?: () => void
+    openTimeInvestment?: () => void;
+    onCancel?: () => void
 };
 
 
@@ -34,12 +35,13 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
         title,
         openDatePicker,
         money,
-        openTimeInvestment
+        openTimeInvestment,
+        onCancel
     }: PopupFilterProps, ref) => {
 
         const [visible, setVisible] = useState<boolean>(false);
-        const [visibleFromDatePicker, setVisiableFromDatePicker] = useState<boolean>(false);
-        const [visibleToDatePicker, setVisiableToDatePicker] = useState<boolean>(false);
+        const [visibleFromDatePicker, setVisibleFromDatePicker] = useState<boolean>(false);
+        const [visibleToDatePicker, setVisibleToDatePicker] = useState<boolean>(false);
         const [startDate, setStartDate] = useState<Date>();
         const [endDate, setEndDate] = useState<Date>();
         const show = useCallback(() => {
@@ -48,8 +50,8 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
 
         const hide = useCallback(() => {
             setVisible(false);
-            setVisiableFromDatePicker(false);
-            setVisiableToDatePicker(false);
+            setVisibleFromDatePicker(false);
+            setVisibleToDatePicker(false);
         }, []);
 
         useImperativeHandle(ref, () => ({
@@ -65,7 +67,12 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             onConfirm?.(DateUtils.formatForServer(startDate), DateUtils.formatForServer(endDate));
             hide();
         };
-
+        const _onCancel = useCallback(() => {
+            setStartDate(undefined);
+            setEndDate(undefined);
+            onCancel?.();
+            _onClose();
+        }, [_onClose, onCancel]);
 
         const onOpenBottomSheet = useCallback((type: string) => {
 
@@ -80,12 +87,11 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
         const renderItem = useCallback((value: any, palaceholder: string) => {
             const onPress = () => {
                 if (palaceholder === Languages.invest.fromDate) {
-                    setVisiableFromDatePicker(true);
+                    setVisibleFromDatePicker(true);
                 }
                 if (palaceholder === Languages.invest.toDate)
-                    setVisiableToDatePicker(true);
-                if(palaceholder===Languages.invest.chooseMoney)
-                {
+                    setVisibleToDatePicker(true);
+                if (palaceholder === Languages.invest.chooseMoney) {
                     openTimeInvestment?.();
                     hide();
                 }
@@ -96,7 +102,7 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             return (
                 <Touchable style={styles.inputPhone} onPress={onPress}>
                     <Text style={[styles.txtPalaceholder, styleTxt]}>{value || palaceholder}</Text>
-                    <ICCalender/>
+                    <ICCalender />
                 </Touchable>
             );
         }, [hide, openTimeInvestment]);
@@ -115,10 +121,10 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
 
             const onConfirmPicker = (value: Date) => {
                 if (label === Languages.invest.fromDate) {
-                    setVisiableFromDatePicker(false);
+                    setVisibleFromDatePicker(false);
                 }
                 if (label === Languages.invest.toDate) {
-                    setVisiableToDatePicker(false);
+                    setVisibleToDatePicker(false);
                 }
                 onConfirmDatePicker(value, label);
             };
@@ -135,8 +141,6 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
                     onDateChange={(value) => console.log(value)}
                     onCancel={hide}
                     onConfirm={onConfirmPicker}
-                    // maximumDate={new Date()}
-                    // minimumDate={new Date()}
                     confirmText={Languages.common.agree}
                     cancelText={Languages.common.cancel}
                 />
@@ -154,15 +158,15 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             >
                 <View style={styles.viewFL}>
                     <Text style={styles.textModel}>{title}</Text>
-                    {renderItem(DateUtils.formatMMDDYYYYPicker(startDate), Languages.invest.fromDate)}
-                    {renderItem(DateUtils.formatMMDDYYYYPicker(endDate), Languages.invest.toDate)}
+                    {renderItem(DateUtils.formatMMDDYYYYPicker(startDate)||'', Languages.invest.fromDate)}
+                    {renderItem(DateUtils.formatMMDDYYYYPicker(endDate)||'', Languages.invest.toDate)}
                     {renderItem(money, Languages.invest.chooseMoney)}
                     <View style={styles.viewBottom}>
                         <Touchable style={styles.tobConfirm} onPress={actionYes}>
                             <Text style={styles.textConfirm}>{Languages.invest.search}</Text>
                         </Touchable>
                         <Touchable style={[styles.tobConfirm, { backgroundColor: COLORS.GRAY_2 }]}
-                            onPress={_onClose}>
+                            onPress={_onCancel}>
                             <Text
                                 style={[styles.textConfirm, { color: COLORS.GRAY_12 }]}>{Languages.invest.cancel}</Text>
                         </Touchable>
@@ -204,10 +208,10 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderColor: COLORS.GRAY_11,
         paddingLeft: 16,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
-        paddingRight:16
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingRight: 16
     },
     containerOverViewPicker: {
         marginTop: 12,
@@ -243,13 +247,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: (SCREEN_WIDTH - 32 - 60) / 2,
-        marginTop:10
+        marginTop: 10
     },
     viewBottom: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop:10
+        marginTop: 10
     },
     txtPalaceholder: {
         ...Styles.typography.regular,
