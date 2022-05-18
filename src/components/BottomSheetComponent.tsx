@@ -29,7 +29,8 @@ type BottomSheetProps = {
     leftIcon?: any,
     rightIcon?: any,
     title?: string,
-    hasInputSearch?: boolean
+    hasInputSearch?: boolean,
+    isValueBank?: boolean
 };
 
 export type BottomSheetAction = {
@@ -48,7 +49,8 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             leftIcon,
             rightIcon,
             title,
-            hasInputSearch
+            hasInputSearch,
+            isValueBank
         }: BottomSheetProps,
 
         ref: any
@@ -94,17 +96,26 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
         const searchItem = useCallback(
             (text: string) => {
                 if (text) {
-                    setDataFilter(
-                        data?.filter((item) =>
-                            item.value?.toUpperCase().includes(text.toUpperCase())
-                        )
-                    );
+                    if(!isValueBank){
+                        setDataFilter(
+                            data?.filter((item) =>
+                                item?.value?.toUpperCase().includes(text.toUpperCase())
+                            )
+                        );
+                    }else{
+                        setDataFilter(
+                            data?.filter((item) =>
+                                `${item?.value}${' - '}${item?.text}`?.toUpperCase().includes(text.toUpperCase())
+                            )
+                        );
+                    }
                 }
+
                 if (text === '') {
                     setDataFilter(data);
                 }
             },
-            [data]
+            [data, isValueBank]
         );
 
         const debounceSearchItem = debounce((text: string) => searchItem(text), 0);
@@ -128,7 +139,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                         <Touchable onPress={onPress} style={styles.valueContainer}>
                             <View style={styles.row}>
                                 {leftIcon}
-                                <Text style={!leftIcon ? styles.value : styles.noLeftIconValue}>{item.value}</Text>
+                                <Text style={!leftIcon ? styles.value : styles.noLeftIconValue}>{isValueBank? `${item.value}${' - '}${item.text}`: item.value }</Text>
                                 {rightIcon}
                             </View>
                         </Touchable>
@@ -141,7 +152,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                     </>
                 );
             },
-            [hasDash, hide, leftIcon, onPressItem, rightIcon]
+            [hasDash, hide, isValueBank, leftIcon, onPressItem, rightIcon]
         );
 
         const onFocus = useCallback(() => {

@@ -39,7 +39,8 @@ type PickerProps = {
     hasDash?:boolean,
     stylePlaceholder?: TextStyle,
     hasInput?: boolean,
-    wrapErrText?: ViewStyle
+    wrapErrText?: ViewStyle,
+    isValueBank?: boolean
 };
 const PickerBankValuation = forwardRef<PopupActionTypes, PickerProps>(({
     leftIcon,
@@ -62,7 +63,8 @@ const PickerBankValuation = forwardRef<PopupActionTypes, PickerProps>(({
     hasDash,
     leftIconPicker,
     hasInput,
-    wrapErrText
+    wrapErrText,
+    isValueBank
 }: PickerProps, ref: any) => {
     useImperativeHandle(ref, () => ({
         setErrorMsg
@@ -171,6 +173,7 @@ const PickerBankValuation = forwardRef<PopupActionTypes, PickerProps>(({
                     rightIcon={rightIcon}
                     hasInputSearch={hasInput}
                     title={placeholder}
+                    isValueBank={isValueBank}
                 />
             </Animated.View>
             {errorMessage}

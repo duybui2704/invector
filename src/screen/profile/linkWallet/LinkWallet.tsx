@@ -109,15 +109,18 @@ const LinkWallet = observer(() => {
             <Touchable onPress={_onPress} style={state ? styles.wrapBtnLinkWalletChooser : styles.wrapBtnLinkWallet}>
                 {icon}
                 {renderStateLink(state)}
+                {state ?
+                    <Text style={styles.txtOnPressToLink}>{Languages.paymentMethod.onPressToCancelLink}</Text> :
+                    <Text style={styles.txtOnPressToLink}>{Languages.paymentMethod.onPressToLink}</Text>}
             </Touchable>
         );
-    }, [onVimo, renderStateLink, styles.wrapBtnLinkWallet, styles.wrapBtnLinkWalletChooser]);
+    }, [onVimo, renderStateLink, styles.txtOnPressToLink, styles.wrapBtnLinkWallet, styles.wrapBtnLinkWalletChooser]);
 
     return (
         <View style={styles.container}>
             <HeaderBar isLight={false} title={Languages.account.linkWallet} hasBack />
             <View style={styles.wrapAllContent}>
-                {renderAccountWallet(<VimoIc width={SCREEN_WIDTH *0.7} />, userManager.userInfo?.infoLinkVimo?.trang_thai === STATE_LINK.LINKING)}
+                {renderAccountWallet(<VimoIc width={SCREEN_WIDTH * 0.7} />, userManager.userInfo?.infoLinkVimo?.trang_thai === STATE_LINK.LINKING)}
             </View>
             {popupVimo(vimoRef, <WarnIC />)}
             {isLoading && <Loading isOverview />}

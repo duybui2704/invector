@@ -407,7 +407,9 @@ const Languages = {
         cancelLinkVimo: 'Huỷ liên kết ví Vimo',
         changeMethodBank: 'Bạn có muốn chuyển sang liên kết ngân hàng',
         changeMethodVimo: 'Bạn có muốn chuyển sang liên kết Vimo',
-        contentCancelLinkVimo: 'Bạn có thật sự muốn huỷ liên kết với ví Vimo. Nếu bạn huỷ liên kết bạn sẽ không thể đầu tư bằng ví Vimo'
+        contentCancelLinkVimo: 'Bạn có thật sự muốn huỷ liên kết với ví Vimo. Nếu bạn huỷ liên kết bạn sẽ không thể đầu tư bằng ví Vimo',
+        onPressToLink: 'Chạm để liên kết ví',
+        onPressToCancelLink:'Chạm để hủy liên kết ví'
     },
     accountBank: {
         bankChoose: 'Chọn ngân hàng',

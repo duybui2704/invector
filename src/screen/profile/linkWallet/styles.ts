@@ -62,6 +62,11 @@ export const MyStylesLinkWallet = () => {
             },
             textCancel:{
                 color: COLORS.GRAY_12
+            },
+            txtOnPressToLink:{
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_1,
+                paddingTop: 8
             }
         });
     }, []);

@@ -7,7 +7,7 @@ import { COLORS, Styles } from '@/theme';
 const KeyValueReport = (
     { title, content, noIndicator, styleColor,
         styleContainer, leftIcon, rightIcon, hasDashBottom,
-        styleTouchable, styleTitle, containerContent }:
+        styleTouchable, styleTitle, containerContent, defaultValue }:
         {
             noIndicator?: boolean,
             title: string,
@@ -21,6 +21,7 @@ const KeyValueReport = (
             onPress?: any,
             styleTitle?: TextStyle,
             containerContent?: ViewStyle,
+            defaultValue?:string| number| undefined
         }
 ) => {
 
@@ -37,7 +38,7 @@ const KeyValueReport = (
                 {leftIcon || null}
                 <View style={[styles.rowCenter, containerContent]}>
                     <Text style={[styles.leftText, styleTitle]}>{title}</Text>
-                    <Text style={[styles.contentText, styleColor]}>{content}</Text>
+                    <Text style={[styles.contentText, styleColor]}>{content || defaultValue}</Text>
                 </View>
                 {rightIcon || null}
             </View>

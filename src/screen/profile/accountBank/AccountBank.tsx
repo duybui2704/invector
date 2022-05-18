@@ -58,7 +58,7 @@ const AccountBank = observer(() => {
             const firstName = temp?.filter((item) => {
                 return item?.id === nameBank;
             }) as ItemProps[];
-            setNameBank(firstName?.[0]?.value || '');
+            setNameBank(`${firstName?.[0]?.value || ''}${firstName?.[0]?.value ? ' - ' : ''}${firstName?.[0]?.text || ''}`);
             setDataBanks(temp);
         }
     }, [apiServices.paymentMethod, nameBank]);
@@ -131,7 +131,7 @@ const AccountBank = observer(() => {
 
     const onBanksChoose = useCallback((item?: ItemProps) => {
         setBanks(item?.id || '');
-        setNameBank(item?.value || '');
+        setNameBank(`${item?.value}${' - '}${item?.text}` || '');
     }, []);
 
     const onValidate = useCallback(() => {
@@ -190,7 +190,8 @@ const AccountBank = observer(() => {
                                         btnContainer={styles.rowItemFilter}
                                         containerStyle={styles.containerItemFilter}
                                         hasDash
-                                        hasInput                                      
+                                        hasInput
+                                        isValueBank
                                         styleText={styles.valuePicker}
                                         stylePlaceholder={styles.placeHolderPicker}
                                         leftIcon={<ViettinIC />}

@@ -81,14 +81,14 @@ const Report = observer(() => {
         const res = await apiServices.report.requestFinanceReport(quarter.substring(4), year);
         if (res.success) {
             setIsLoading(false);
-            const dataMonths =  res?.data as OverviewMonthOfQuarterModal[];
+            const dataMonths = res?.data as OverviewMonthOfQuarterModal[];
 
             setReportList(dataMonths);
             const dataTotal = res?.total as TotalOfQuarterModal;
             setTotal(dataTotal);
             console.log('report:', reportList);
 
-            const temp =  dataMonths.map((item) => {
+            const temp = dataMonths.map((item) => {
                 return {
                     month: `T${`${item?.month}`.slice(6, 8).replace('/', '')}`,
                     year: item?.year,
@@ -103,7 +103,7 @@ const Report = observer(() => {
         }
         setIsLoading(false);
 
-    }, [apiServices.report, quarter, year]);
+    }, [apiServices.report, quarter, reportList, year]);
 
     const renderItem = useCallback(({ item, isOverview }:
         { isOverview?: boolean, item?: OverviewMonthOfQuarterModal }) => {
@@ -119,25 +119,32 @@ const Report = observer(() => {
                     title={Languages.report.contractNumber}
                     containerContent={styles.containerContentKeyValue}
                     content={isOverview ? Utils.formatMoney(total?.tong_hop_dong || 0) : Utils.formatMoney(item?.so_hop_dong_dau_tu || 0)}
-                    styleColor={styles.txtContractNumber} />
+                    styleColor={styles.txtContractNumber}
+                    defaultValue={0}
+                />
                 <KeyValueReport
                     title={Languages.report.investMoney}
                     styleTitle={styles.textLeftMonth}
                     containerContent={styles.containerContentKeyValue}
                     content={isOverview ? Utils.formatMoney(total?.tong_tat_ca_tien_dau_tu || 0) : Utils.formatMoney(item?.tong_tien_dau_tu || 0)}
-                    styleColor={styles.txtInvestNumber} />
+                    styleColor={styles.txtInvestNumber}
+                    defaultValue={0}
+                />
                 <KeyValueReport
                     title={Languages.report.originMoneyCollected}
                     styleTitle={styles.textLeftMonth}
                     containerContent={styles.containerContentKeyValue}
                     content={isOverview ? Utils.formatMoney(total?.tien_goc_thu_ve || 0) : Utils.formatMoney(item?.tien_goc_thu_ve || 0)}
-                    styleColor={styles.txtEarning} />
+                    styleColor={styles.txtEarning}
+                    defaultValue={0}
+                />
                 <KeyValueReport
                     title={Languages.report.interest}
                     styleTitle={styles.textLeftMonth}
                     containerContent={styles.containerContentKeyValue}
                     content={isOverview ? Utils.formatMoney(total?.tong_lai_phi || 0) : Utils.formatMoney(item?.tong_lai_phi || 0)}
                     styleColor={styles.txtInterest}
+                    defaultValue={0}
                 />
             </View>
         );
@@ -217,7 +224,7 @@ const Report = observer(() => {
                 <Text style={styles.overviewQuarterTitle}>{Languages.report.monthOfQuarter}</Text>
             </View>
         );
-    }, [dataChart, renderItem, styles.chartContainer, styles.chartEarning, styles.chartInvest, styles.chartTitle, styles.containerContent, styles.labelAxis, styles.noteChart, styles.overviewQuarterTitle, styles.rectangleEarning, styles.rectangleInvest, styles.row]);
+    }, [dataChart, renderItem, styles.chartContainer, styles.chartEarning, styles.chartInvest, styles.chartTitle, styles.containerContent, styles.labelAxis, styles.labelAxisSmall, styles.noteChart, styles.overviewQuarterTitle, styles.rectangleEarning, styles.rectangleInvest, styles.row, total?.tien_goc_thu_ve, total?.tong_tat_ca_tien_dau_tu]);
 
     const renderMonthList = useMemo(() => {
 
