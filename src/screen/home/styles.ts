@@ -186,8 +186,7 @@ export const MyStylesHome = () => {
                 borderTopLeftRadius: 10
             },
             communicationContainer: {
-                paddingTop: 10,
-                paddingLeft: 15
+                paddingTop: 10
             },
             txtCommunityTitle: {
                 ...Styles.typography.medium,

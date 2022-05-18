@@ -81,8 +81,7 @@ const Home = observer(() => {
             setIsLoading(true);
         }
         condition.current.isLoading = true;
-        const resInvest = await apiServices.common.getListInvest();
-        setIsLoading(false);
+        const resInvest = await apiServices.common.getListInvest(PAGE_SIZE, condition.current.offset);
         setIsLoading(false);
         if (resInvest.success) {
             const data = resInvest?.data as PackageInvest[];
@@ -225,77 +224,85 @@ const Home = observer(() => {
     const renderTop = useMemo(() => {
         return (
             <View style={styles.viewForeground}>
-                <View style={styles.viewTopLogo}>
-                    {userManager?.userInfo ? <LogoWasLogin style={styles.logo} /> : <LogoHome style={styles.logo} />}
-                    <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
-                        <IcNotify style={styles.imgNotify} />
-                    </Touchable>
-                </View>
                 {userManager?.userInfo ?
-                    <View style={styles.viewTop}>
-                        <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
-                        <View style={styles.viewSumInvestValue}>
-                            <Text style={styles.txtSumInvestValue} numberOfLines={1}>
-                                {Utils.formatMoney(dataDash?.tong_tien_dau_tu)}
-                            </Text>
-                            <Text style={styles.txtVND}> {Languages.home.vnd}</Text>
+                    <>
+                        <View style={styles.viewTopLogo}>
+                            <LogoWasLogin style={styles.logo} />
+                            <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
+                                <IcNotify style={styles.imgNotify} />
+                            </Touchable>
                         </View>
-                        <View style={styles.wrapRow}>
-                            <View style={styles.wrapTotalInterest}>
-                                <View style={styles.txtLeft}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.balanceVimo}</Text>
-                                    <View style={styles.viewSumInvestValue}>
-                                        <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
-                                            {Utils.formatMoney(dataDash?.so_du)}
-                                        </Text>
-                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </View>
+                        <View style={styles.viewTop}>
+                            <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
+                            <View style={styles.viewSumInvestValue}>
+                                <Text style={styles.txtSumInvestValue} numberOfLines={1}>
+                                    {Utils.formatMoney(dataDash?.tong_tien_dau_tu)}
+                                </Text>
+                                <Text style={styles.txtVND}> {Languages.home.vnd}</Text>
+                            </View>
+                            <View style={styles.wrapRow}>
+                                <View style={styles.wrapTotalInterest}>
+                                    <View style={styles.txtLeft}>
+                                        <Text style={styles.txtSumProfit}>{Languages.home.balanceVimo}</Text>
+                                        <View style={styles.viewSumInvestValue}>
+                                            <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                                {Utils.formatMoney(dataDash?.so_du)}
+                                            </Text>
+                                            <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                                        </View>
 
+                                    </View>
+                                </View>
+                                <View style={styles.wrapTotalInterest}>
+                                    <View style={styles.txtRight}>
+                                        <Text style={styles.txtSumProfit}>{Languages.home.sumpProfit}</Text>
+                                        <View style={styles.viewSumInvestValue}>
+                                            <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
+                                                {Utils.formatMoney(dataDash?.tong_tien_lai)}
+                                            </Text>
+                                            <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                                        </View>
+                                    </View>
                                 </View>
                             </View>
-                            <View style={styles.wrapTotalInterest}>
-                                <View style={styles.txtRight}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.sumpProfit}</Text>
-                                    <View style={styles.viewSumInvestValue}>
-                                        <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
-                                            {Utils.formatMoney(dataDash?.tong_tien_lai)}
-                                        </Text>
-                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                            <View style={styles.wrapRow}>
+                                <View style={styles.wrapTotalInterest}>
+                                    <View style={styles.txtLeft}>
+                                        <Text style={styles.txtSumProfit}>{Languages.home.totalCaption}</Text>
+                                        <View style={styles.viewSumInvestValue}>
+                                            <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                                {Utils.formatMoney(dataDash?.tong_goc_con_lai)}
+                                            </Text>
+                                            <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={styles.wrapTotalInterest}>
+                                    <View style={styles.txtRight}>
+                                        <Text style={styles.txtSumProfit}>{Languages.home.sumResidualProfit}</Text>
+                                        <View style={styles.viewSumInvestValue}>
+                                            <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
+                                                {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
+                                            </Text>
+                                            <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                                        </View>
                                     </View>
                                 </View>
                             </View>
                         </View>
-                        <View style={styles.wrapRow}>
-                            <View style={styles.wrapTotalInterest}>
-                                <View style={styles.txtLeft}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.totalCaption}</Text>
-                                    <View style={styles.viewSumInvestValue}>
-                                        <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
-                                            {Utils.formatMoney(dataDash?.tong_goc_con_lai)}
-                                        </Text>
-                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={styles.wrapTotalInterest}>
-                                <View style={styles.txtRight}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.sumResidualProfit}</Text>
-                                    <View style={styles.viewSumInvestValue}>
-                                        <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
-                                            {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
-                                        </Text>
-                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
+                    </>
                     :
-                    <View style={styles.viewTopCenter}>
-                        <Text style={styles.txtHello}>{Languages.home.hello}</Text>
-                        <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
-                        <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
-                    </View>}
+                    <>
+                        <View style={styles.viewTopLogo}>
+                            <LogoHome style={styles.logo} />
+                        </View>
+                        <View style={styles.viewTopCenter}>
+                            <Text style={styles.txtHello}>{Languages.home.hello}</Text>
+                            <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
+                            <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
+                        </View>
+                    </>
+                }
                 {!userManager?.userInfo &&
                     <View style={styles.viewSmallMenuLogin}>
                         {renderNavigateScreen(Languages.auth.txtLogin)}
@@ -325,7 +332,7 @@ const Home = observer(() => {
                 </View>
             </>
         );
-    }, [dataArr, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.viewBanner, styles.txtCenter, onMore, onOpenVPS, renderNews]);
+    }, [dataArr, unMore, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.viewBanner, styles.txtCenter, onMore, onOpenVPS, renderNews]);
 
 
     const renderItem = useCallback((item: any) => {
@@ -355,6 +362,7 @@ const Home = observer(() => {
     }, []);
 
     const renderContent = useMemo(() => {
+        console.log(dataArr);
         return (
             <View style={userManager?.userInfo ? [styles.viewCenter, { marginTop: - SCREEN_HEIGHT * 0.03 }] : styles.viewCenter}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
