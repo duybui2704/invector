@@ -12,13 +12,11 @@ const styles = StyleSheet.create({
         height: SCREEN_HEIGHT
     },
     wrapContent: {
-        alignItems: 'center',
-        paddingHorizontal: 16,
-        width: '100%'
+        flex: 1
     },
     wrapNodata:{
         flex:1,
-        backgroundColor:COLORS.YELLOW
+        minHeight: SCREEN_HEIGHT / 2
     },
     txt: {
         ...Styles.typography.regular,
@@ -27,7 +25,6 @@ const styles = StyleSheet.create({
     },
     investTab: {
         flexDirection: 'row',
-        width: '100%',
         backgroundColor: COLORS.GRAY_13,
         padding: 4,
         borderRadius: 26,
@@ -54,11 +51,12 @@ const styles = StyleSheet.create({
         width: '88%'
     },
     suggestion: {
-        ...Styles.heavyShadow,
-        width: SCREEN_WIDTH,
+        ...Styles.shadow,
         maxHeight: 200,
         position: 'absolute',
-        top: 100,
+        top: 90,
+        right: 10,
+        left: 10,
         zIndex: 222,
         borderColor: COLORS.GRAY_11
     },
@@ -148,7 +146,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         paddingHorizontal: 7,
         alignItems: 'center'
-
     },
     txtInvestNow: {
         ...Styles.typography.medium,
@@ -160,8 +157,8 @@ const styles = StyleSheet.create({
         ...Styles.typography.medium
     },
     flatList: {
-        paddingBottom: 200,
-        width:'100%'
+        flex:1,
+        marginHorizontal: 16
     },
     txtYellow: {
         ...Styles.typography.medium,

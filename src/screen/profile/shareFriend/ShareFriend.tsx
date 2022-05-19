@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
-import Lightbox from 'react-native-lightbox';
+import Lightbox from 'react-native-lightbox-v2';
 import QRCode from 'react-native-qrcode-svg';
 
 import ShareIC from '@/assets/image/ic_share_round.svg';
@@ -62,6 +62,7 @@ const ShareFriend = observer(() => {
                     <Text style={styles.txtQR}>{Languages.shareFriend.qrCode}</Text>
                     <Lightbox
                         renderContent={renderContent}
+                        springConfig={{ tension: 90000000, friction: 9000000 }}
                         swipeToDismiss={true}>
                         <QRCode
                             value={onLinkQR}

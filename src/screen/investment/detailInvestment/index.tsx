@@ -45,7 +45,6 @@ export const DetailInvestment = observer(({ route }: any) => {
 
     const fetchDetailInvestNow = useCallback(async () => {
         setIsLoading(true);
-        console.log('resInvest');
         const resInvestNow = await apiServices.invest.getDetailInvestNow(id);
         setIsLoading(false);
         if (resInvestNow.success) {
@@ -56,7 +55,6 @@ export const DetailInvestment = observer(({ route }: any) => {
 
     const fetchDetailInvesting = useCallback(async () => {
         setIsLoading(true);
-        console.log('resInvesting');
         const resInvesting = await apiServices.invest.getInvestHaveContract(id);
         setIsLoading(false);
         if (resInvesting.success) {
@@ -67,7 +65,6 @@ export const DetailInvestment = observer(({ route }: any) => {
     }, [apiServices.invest, id]);
 
     const fetchDetailHistory = useCallback(async () => {
-        console.log('resInvestHistory');
         const resInvestHistory = await apiServices.invest.getInvestHaveContract(id);
         setIsLoading(false);
         if (resInvestHistory.success) {
@@ -111,7 +108,6 @@ export const DetailInvestment = observer(({ route }: any) => {
         );
     }, []);
     const navigateToInvest = useCallback(() => {
-        console.log('data: ', data);
         if (data) {
             Navigator.pushScreen(ScreenName.invest, { id: data?.id });
         }

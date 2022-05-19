@@ -124,7 +124,7 @@ export const myStylesAuth = () => {
             iconClose: {
                 position: 'absolute',
                 top: SCREEN_HEIGHT * 0.055,
-                right: SCREEN_WIDTH * 0.08,
+                right: 0,
                 width: 40,
                 height: 40,
                 zIndex: 1

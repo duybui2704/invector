@@ -95,7 +95,6 @@ export const MyStylesNotifyInvest = () => {
                 marginVertical: 5
             },
             wrapNoData: {
-                flex: 12,
                 justifyContent: 'center',
                 alignItems: 'center',
                 minHeight: SCREEN_HEIGHT / 2

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet, Image } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Lightbox from 'react-native-lightbox';
+import Lightbox from 'react-native-lightbox-v2';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
 import { COLORS } from '@/theme';
@@ -47,6 +47,7 @@ export const MyImageView = React.memo(({ imageUrl, style, resizeMode }: MyImageV
         return (
             <>
                 <Lightbox
+                    springConfig={{ tension: 90000000, friction: 9000000 }}
                     renderContent={renderContent}>
                     <FastImage
                         style={[styles.img, style]}

@@ -54,7 +54,6 @@ const NotificationListening = observer(({ children }: any) => {
 
     const pushNotificationLocal = useCallback(
         async (remoteMessage: any) => {
-            console.log('IOSpushNotificationLocal');
             await getUnreadNotify();
             if (isIOS) {
                 PushNotificationIOS.addNotificationRequest({

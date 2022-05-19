@@ -27,7 +27,6 @@ const SvgComponent = observer((props: any) => {
     const [dx1, setDx1] = useState<number>(0);
 
     useEffect(() => {
-        console.log('props: ', props);
         if (props.title) {
             if (props.title === Languages.auth.txtLogin) {
                 setSignUp(false);

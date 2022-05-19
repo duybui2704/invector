@@ -32,7 +32,6 @@ import { MyImageView } from '@/components/image';
 import DateUtils from '@/utils/DateUtils';
 import { BaseModel } from '@/models/base-model';
 
-
 const PAGE_SIZE = 3;
 
 const Home = observer(() => {
@@ -64,11 +63,16 @@ const Home = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
+        fetchDataInvest();
+        fetchDataBanner();
+    }, []);
+
+    useEffect(() => {
         if (isFocused) {
             condition.current.offset = 0;
-            fetchContractsDash();
-            fetchDataInvest();
-            fetchDataBanner();
+            if (userManager.userInfo) {
+                fetchContractsDash();
+            }
         }
     }, [isFocused]);
 
@@ -123,7 +127,6 @@ const Home = observer(() => {
         }
         const resBannerHome = await apiServices.common.getBannerHome();
         if (resBannerHome.success) {
-            console.log(JSON.stringify(resBannerHome.data));
             const bannerHome = resBannerHome?.data as BannerHome;
             setIconBanner(bannerHome);
         }
@@ -180,7 +183,6 @@ const Home = observer(() => {
 
     const renderNewsItem = useCallback(({ item }: { item: BannerModel }) => {
         const navigate = () => {
-            console.log('url', item.link);
             Navigator.pushScreen(ScreenName.myWedView, {
                 title: item.title_vi,
                 url: `${LINK_TIENNGAY.LINK_TIENNGAY_WEB}${item.link.toString()}`
@@ -213,26 +215,20 @@ const Home = observer(() => {
         return (
             <FlatList
                 data={banners}
-                contentContainerStyle={styles.communicationContainer}
+                style={styles.newsContainer}
                 renderItem={renderNewsItem}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={keyExtractorBanner}
             />
         );
-    }, [banners, keyExtractorBanner, renderNewsItem, styles.communicationContainer]);
+    }, [banners, keyExtractorBanner, renderNewsItem]);
 
     const renderTop = useMemo(() => {
         return (
             <View style={styles.viewForeground}>
                 {userManager?.userInfo ?
                     <>
-                        <View style={styles.viewTopLogo}>
-                            <LogoWasLogin style={styles.logo} />
-                            <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
-                                <IcNotify style={styles.imgNotify} />
-                            </Touchable>
-                        </View>
                         <View style={styles.viewTop}>
                             <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
                             <View style={styles.viewSumInvestValue}>
@@ -291,6 +287,12 @@ const Home = observer(() => {
                                 </View>
                             </View>
                         </View>
+                        <View style={styles.viewTopLogo}>
+                            <LogoWasLogin style={styles.logo} />
+                            <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
+                                <IcNotify style={styles.imgNotify} width={40} />
+                            </Touchable>
+                        </View>
                     </>
                     :
                     <>
@@ -316,21 +318,21 @@ const Home = observer(() => {
     const renderFooter = useMemo(() => {
         return (
             <>
-                {dataArr && unMore && <Touchable style={styles.more} onPress={onMore}>
-                    <Text style={[styles.txtForEachTitleQuestion, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
-                </Touchable>
-                }
-                <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
-                    <LogoVfs />
-                    <View style={styles.txtVfs}>
-                        <Text style={styles.txtVPS}>{Languages.home.stockVfs}</Text>
-                        <Text style={styles.txtForEachTitleQuestion}>{Languages.home.signFree}</Text>
-                    </View>
-                </Touchable>
-                <View style={styles.viewBanner}>
-                    <Text style={styles.txtCenter}>{Languages.home.newMedia}</Text>
-                    {renderNews}
+                <View style={styles.marginHorizontal}>
+                    {dataArr && unMore && <Touchable style={styles.more} onPress={onMore}>
+                        <Text style={[styles.txtForEachTitleQuestion, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
+                    </Touchable>
+                    }
+                    <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
+                        <LogoVfs />
+                        <View style={styles.txtVfs}>
+                            <Text style={styles.txtVPS}>{Languages.home.stockVfs}</Text>
+                            <Text style={styles.txtForEachTitleQuestion}>{Languages.home.signFree}</Text>
+                        </View>
+                    </Touchable>
+                    <Text style={styles.txtNews}>{Languages.home.newMedia}</Text>
                 </View>
+                {renderNews}
             </>
         );
     }, [dataArr, unMore, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.viewBanner, styles.txtCenter, onMore, onOpenVPS, renderNews]);
@@ -344,12 +346,14 @@ const Home = observer(() => {
             return navigateToDetail(item);
         };
         return (
-            <ItemInvest
-                onPress={onPressToDetail}
-                onPressInvestNow={onPressToInvestNow}
-                data={item}
-                title={ENUM_INVEST_STATUS.INVEST_NOW}
-            />
+            <View style={styles.marginHorizontal}>
+                <ItemInvest
+                    onPress={onPressToDetail}
+                    onPressInvestNow={onPressToInvestNow}
+                    data={item}
+                    title={ENUM_INVEST_STATUS.INVEST_NOW}
+                />
+            </View>
         );
     }, [navigateToDetail, navigateToInvestNow]);
 
@@ -363,9 +367,8 @@ const Home = observer(() => {
     }, []);
 
     const renderContent = useMemo(() => {
-        console.log(dataArr);
         return (
-            <View style={userManager?.userInfo ? [styles.viewCenter, { marginTop: - SCREEN_HEIGHT * 0.03 }] : styles.viewCenter}>
+            <View style={userManager?.userInfo ? [{ marginTop: - SCREEN_HEIGHT * 0.03 }] : {}}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
                 <FlatList
                     showsVerticalScrollIndicator={false}

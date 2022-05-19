@@ -83,7 +83,6 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
         const renderItem = useCallback(
             ({ item }: any) => {
                 const onPress = () => {
-                    console.log('fdfdfd');
                     hide();
                     onPressItem?.(item, title);
                 };

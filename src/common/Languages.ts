@@ -85,7 +85,8 @@ const Languages = {
         payFinished:
         '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>',
         error:'Không lấy được dữ liệu',
-        emptyData: 'Bạn chưa có gói đầu tư nào, cùng đầu tư ngay nào !!!',
+        emptyData1: 'Không có gói đầu tư nào phù hợp.',
+        emptyData2: 'Bạn chưa có gói đầu tư nào, cùng đầu tư ngay nào !!!',
         fromDate:'Từ ngày',
         toDate:'Đến ngày'
     },
@@ -181,7 +182,8 @@ const Languages = {
         change: 'Thay đổi',
         succuss: 'Đăng ký thành công',
         notifySuccess: 'Chúc mừng bạn đã đăng ký thành công TienNgay.vn Đầu tư & Tích luỹ. Tiến hành đầu tư ngay và nhận lãi khủng hàng tháng',
-        continue: 'Tiếp tục'
+        continue: 'Tiếp tục',
+        successChangePass: 'Đổi mật khẩu thành công !'
     },
     errorMsg: {
         userNameRequired: 'Họ và tên không được để trống',

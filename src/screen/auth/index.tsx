@@ -1,8 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ImageBackground, Platform, StatusBar, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import LogoAuth from '@/assets/image/auth/logo_auth.svg';
 import IcCloseAuth from '@/assets/image/auth/ic_close_auth.svg';
@@ -24,6 +23,7 @@ import SignUp from './signUp';
 import { myStylesAuth } from './styles';
 import Navigator from '@/routers/Navigator';
 import { TabsName } from '@/common/screenNames';
+import { ToastBottom } from '@/components/toastBottom';
 
 
 const Auth = observer(({ route }: any) => {
@@ -32,10 +32,17 @@ const Auth = observer(({ route }: any) => {
     const [wid, setWid] = useState<number>(0);
     const [isNavigate, setIsNavigate] = useState<string>(Languages.auth.txtLogin);
     const isFocused = useIsFocused();
+    const toastRef = useRef();
     const {
         fastAuthInfoManager: fastAuthInfo,
         common
     } = useAppStore();
+
+    useLayoutEffect(() => {
+        if (common.successChangePass) {
+            toastRef?.current?.showToast(Languages.auth.successChangePass, 2000);
+        }
+    }, [common.successChangePass]);
 
     useEffect(() => {
         setTimeout(() => {
@@ -45,7 +52,6 @@ const Auth = observer(({ route }: any) => {
 
     useEffect(() => {
         if (route?.params) {
-            console.log('route:', route.params);
             setIsNavigate(route?.params.titleAuth);
         }
         screenRatio();
@@ -76,7 +82,6 @@ const Auth = observer(({ route }: any) => {
     };
 
     const gotoHome = useCallback(async () => {
-        console.log('abccccc');
         Navigator.navigateScreen(TabsName.homeTabs);
     }, []);
 
@@ -153,6 +158,7 @@ const Auth = observer(({ route }: any) => {
                    
                 </View>
             </View>
+            <ToastBottom ref={toastRef} />
         </ImageBackground>
     );
 });

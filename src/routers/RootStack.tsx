@@ -59,7 +59,7 @@ const RootStack = observer(() => {
     const forceLogout = useCallback(() => {
         SessionManager.logout();
         userManager.updateUserInfo(undefined);
-        Navigator.pushScreen(ScreenName.login);
+        Navigator.pushScreen(ScreenName.authStack);
     }, [userManager]);
 
     useEffect(() => {

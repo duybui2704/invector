@@ -72,13 +72,13 @@ const PopupRating = forwardRef<
             <>
                 {dataRatingPoint.map((item?: ItemProps) => {
                     return (
-                        <>
+                        <View key={item?.id}>
                             {`${ratingPoint}` === item?.id &&
                                 <Text style={styles.txtDescribePoint}>
                                     {item?.value}
                                 </Text>
                             }
-                        </>
+                        </View>
                     );
                 })}
             </>

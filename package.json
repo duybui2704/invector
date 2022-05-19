@@ -57,7 +57,7 @@
     "react-native-htmlview": "^0.16.0",
     "react-native-image-crop-picker": "^0.37.3",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
-    "react-native-lightbox": "^0.8.1",
+    "react-native-lightbox-v2": "^0.9.0",
     "react-native-material-ripple": "^0.9.1",
     "react-native-modal": "^13.0.1",
     "react-native-otp-inputs": "^7.1.1",

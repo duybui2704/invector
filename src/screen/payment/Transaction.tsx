@@ -66,7 +66,6 @@ const Transaction = observer(() => {
             isLoadMoreData ? condition.current.offset : 0
         );
         const data = res.data as TransactionModel[];
-        console.log('dataHistory: ', data);
         const dataSize = data?.length;
         if (dataSize > 0) {
             condition.current.offset = isLoadMoreData ? condition.current.offset + dataSize : dataSize;
@@ -109,8 +108,6 @@ const Transaction = observer(() => {
             );
         }
     }, [common, fetchHistory]);
-
-
 
     const renderFilterTemplate = useCallback(
         (item: KeyValueModel) => {
