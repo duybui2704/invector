@@ -68,7 +68,7 @@ const Home = observer(() => {
             condition.current.offset = 0;
             fetchDataInvest();
             fetchDataBanner();
-            if(userManager.userInfo){
+            if (userManager.userInfo) {
                 fetchContractsDash();
             }
         }
@@ -215,14 +215,14 @@ const Home = observer(() => {
         return (
             <FlatList
                 data={banners}
-                contentContainerStyle={styles.communicationContainer}
+                style={styles.newsContainer}
                 renderItem={renderNewsItem}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={keyExtractorBanner}
             />
         );
-    }, [banners, keyExtractorBanner, renderNewsItem, styles.communicationContainer]);
+    }, [banners, keyExtractorBanner, renderNewsItem]);
 
     const renderTop = useMemo(() => {
         return (
@@ -318,21 +318,21 @@ const Home = observer(() => {
     const renderFooter = useMemo(() => {
         return (
             <>
-                {dataArr && unMore && <Touchable style={styles.more} onPress={onMore}>
-                    <Text style={[styles.txtForEachTitleQuestion, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
-                </Touchable>
-                }
-                <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
-                    <LogoVfs />
-                    <View style={styles.txtVfs}>
-                        <Text style={styles.txtVPS}>{Languages.home.stockVfs}</Text>
-                        <Text style={styles.txtForEachTitleQuestion}>{Languages.home.signFree}</Text>
-                    </View>
-                </Touchable>
-                <View style={styles.viewBanner}>
-                    <Text style={styles.txtCenter}>{Languages.home.newMedia}</Text>
-                    {renderNews}
+                <View style={styles.marginHorizontal}>
+                    {dataArr && unMore && <Touchable style={styles.more} onPress={onMore}>
+                        <Text style={[styles.txtForEachTitleQuestion, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
+                    </Touchable>
+                    }
+                    <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
+                        <LogoVfs />
+                        <View style={styles.txtVfs}>
+                            <Text style={styles.txtVPS}>{Languages.home.stockVfs}</Text>
+                            <Text style={styles.txtForEachTitleQuestion}>{Languages.home.signFree}</Text>
+                        </View>
+                    </Touchable>
+                    <Text style={styles.txtNews}>{Languages.home.newMedia}</Text>
                 </View>
+                {renderNews}
             </>
         );
     }, [dataArr, unMore, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.viewBanner, styles.txtCenter, onMore, onOpenVPS, renderNews]);
@@ -346,12 +346,14 @@ const Home = observer(() => {
             return navigateToDetail(item);
         };
         return (
-            <ItemInvest
-                onPress={onPressToDetail}
-                onPressInvestNow={onPressToInvestNow}
-                data={item}
-                title={ENUM_INVEST_STATUS.INVEST_NOW}
-            />
+            <View style={styles.marginHorizontal}>
+                <ItemInvest
+                    onPress={onPressToDetail}
+                    onPressInvestNow={onPressToInvestNow}
+                    data={item}
+                    title={ENUM_INVEST_STATUS.INVEST_NOW}
+                />
+            </View>
         );
     }, [navigateToDetail, navigateToInvestNow]);
 
@@ -367,7 +369,7 @@ const Home = observer(() => {
     const renderContent = useMemo(() => {
         console.log(dataArr);
         return (
-            <View style={userManager?.userInfo ? [styles.viewCenter, { marginTop: - SCREEN_HEIGHT * 0.03 }] : styles.viewCenter}>
+            <View style={userManager?.userInfo ? [{ marginTop: - SCREEN_HEIGHT * 0.03 }] : {}}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
                 <FlatList
                     showsVerticalScrollIndicator={false}

@@ -18,7 +18,18 @@ export const MyStylesHome = () => {
                 fontSize: Configs.FontSize.size16,
                 color: COLORS.GRAY_7,
                 marginTop: 10,
-                marginBottom: 8
+                marginBottom: 8,
+                marginHorizontal: 15
+            },
+            txtNews: {
+                ...Styles.typography.medium,
+                fontSize: Configs.FontSize.size16,
+                color: COLORS.GRAY_7,
+                marginTop: 20,
+                marginBottom: 8,
+            },
+            marginHorizontal: {
+                marginHorizontal: 15
             },
             viewTop: {
                 position: 'absolute',
@@ -185,8 +196,9 @@ export const MyStylesHome = () => {
                 borderTopRightRadius: 10,
                 borderTopLeftRadius: 10
             },
-            communicationContainer: {
-                paddingTop: 10
+            newsContainer: {
+                paddingTop: 10,
+                paddingBottom: 20
             },
             txtCommunityTitle: {
                 ...Styles.typography.medium,
@@ -210,11 +222,10 @@ export const MyStylesHome = () => {
                 flexDirection: 'row',
                 backgroundColor: COLORS.WHITE,
                 borderRadius: 15,
-                paddingHorizontal: 16,
+                paddingHorizontal: 10,
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 paddingVertical: 8,
-                marginHorizontal: 3
             },
             txtVfs: {
                 flex: 1,
