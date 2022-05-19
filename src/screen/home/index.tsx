@@ -32,7 +32,6 @@ import { MyImageView } from '@/components/image';
 import DateUtils from '@/utils/DateUtils';
 import { BaseModel } from '@/models/base-model';
 
-
 const PAGE_SIZE = 3;
 
 const Home = observer(() => {
@@ -64,10 +63,13 @@ const Home = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
+        fetchDataInvest();
+        fetchDataBanner();
+    }, []);
+
+    useEffect(() => {
         if (isFocused) {
             condition.current.offset = 0;
-            fetchDataInvest();
-            fetchDataBanner();
             if (userManager.userInfo) {
                 fetchContractsDash();
             }
@@ -125,7 +127,6 @@ const Home = observer(() => {
         }
         const resBannerHome = await apiServices.common.getBannerHome();
         if (resBannerHome.success) {
-            console.log(JSON.stringify(resBannerHome.data));
             const bannerHome = resBannerHome?.data as BannerHome;
             setIconBanner(bannerHome);
         }
@@ -182,7 +183,6 @@ const Home = observer(() => {
 
     const renderNewsItem = useCallback(({ item }: { item: BannerModel }) => {
         const navigate = () => {
-            console.log('url', item.link);
             Navigator.pushScreen(ScreenName.myWedView, {
                 title: item.title_vi,
                 url: `${LINK_TIENNGAY.LINK_TIENNGAY_WEB}${item.link.toString()}`
@@ -367,7 +367,6 @@ const Home = observer(() => {
     }, []);
 
     const renderContent = useMemo(() => {
-        console.log(dataArr);
         return (
             <View style={userManager?.userInfo ? [{ marginTop: - SCREEN_HEIGHT * 0.03 }] : {}}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>

@@ -32,7 +32,6 @@ export const NetworkProvider = observer(({ children }: any) => {
     //         ref={popupRef}
     //     />;
     // }, [popupRef]);
-    console.log('2');
     return (<>
         {/* <NetworkContext.Provider value={storeLocal}>
             {children}

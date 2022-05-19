@@ -107,9 +107,9 @@ export const NotifyInvest = () => {
 
     const renderEmptyData = useMemo(() => {
         return (
-            <>
+            <View style={styles.wrapNoData}>
                 {!canLoadMoreUI && <NoData img={<IcNoDataNotify />} description={Languages.home.noNotify} />}
-            </>
+            </View>
         );
     }, [canLoadMoreUI, styles.wrapNoData]);
 

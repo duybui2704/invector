@@ -128,10 +128,6 @@ const Login = observer(() => {
 
     }, [apiServices.auth, phone, pass, checked, fastAuthInfo, userManager]);
 
-    useEffect(() => {
-        console.log('userData=', userData);
-    }, [isLoading, userData, checked]);
-
     return (
         <HideKeyboard>
             <View style={styles.content}>

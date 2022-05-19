@@ -164,7 +164,6 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [fetchAllDataInvest, fetchDataInvested]);
 
     const onEndReached = useCallback(() => {
-        console.log('handleLoadMore', condition.current.isLoading, condition.current.canLoadMore);
         if (!condition.current.isLoading && condition.current.canLoadMore) {
             fetchData(btnInvest, true);
         }
@@ -408,8 +407,10 @@ const Investment = observer(({ route }: { route: any }) => {
     const renderEmptyData = useMemo(() => {
         if (listStore?.length === 0 && isLoading === false) {
             return (
-                <NoData img={<IMGNoData />}
+                <View style={styles.wrapNodata}>
+                    <NoData img={<IMGNoData />}
                     description={btnInvest === ENUM_INVEST_STATUS.INVESTING ? Languages.invest.emptyData2 : Languages.invest.emptyData1} />
+                </View>
             );
         }
         return null;

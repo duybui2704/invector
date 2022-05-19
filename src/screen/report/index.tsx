@@ -141,7 +141,6 @@ const Report = observer(() => {
     }, [quarter, styles.containerContentKeyValue, styles.containerItem, styles.containerItemOverview, styles.monthTxt, styles.overviewQuarterTxt, styles.textLeftMonth, styles.txtContractNumber, styles.txtEarning, styles.txtInterest, styles.txtInvestNumber, total?.tien_goc_thu_ve, total?.tong_hop_dong, total?.tong_lai_phi, total?.tong_tat_ca_tien_dau_tu]);
 
     const renderChart = useMemo(() => {
-        console.log('aaa', Math.round(Math.round(total?.tien_goc_thu_ve as number) / 10 ** 4) / 10 ** 2);
         return (
             <View style={styles.containerContent}>
                 <Text style={styles.overviewQuarterTitle}>{Languages.report.quarterlyOverview}</Text>

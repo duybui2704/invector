@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     },
     wrapNodata:{
         flex:1,
-        backgroundColor:COLORS.YELLOW
+        minHeight: SCREEN_HEIGHT / 2
     },
     txt: {
         ...Styles.typography.regular,

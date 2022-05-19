@@ -137,7 +137,6 @@ const PinCode = ({
         async (newPin: string) => {
             const ret = await checkPin?.(newPin);
             setPin('');
-            console.log(ret);
             if (ret) {
                 setFailureCount(0);
                 onEnterSuccess?.(newPin);

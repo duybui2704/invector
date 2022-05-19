@@ -231,7 +231,6 @@ const Profile = observer(() => {
             if (value)
                 TouchID.isSupported(configTouchId)
                     .then(() => {
-                        console.log('dd');
                         popupConfirm.current?.show();
                     })
                     .catch((error) => {

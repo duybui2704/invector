@@ -52,7 +52,6 @@ const Auth = observer(({ route }: any) => {
 
     useEffect(() => {
         if (route?.params) {
-            console.log('route:', route.params);
             setIsNavigate(route?.params.titleAuth);
         }
         screenRatio();

@@ -23,6 +23,7 @@ export default Filter;
 
 const styles = StyleSheet.create({
     filterUnSelected: {
+        flex:1,
         borderRadius: 35,
         marginHorizontal: 5,
         backgroundColor: COLORS.GRAY_13,
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
         marginVertical: 4
     },
     filterSelected: {
+        flex:1,
         borderRadius: 35,
         backgroundColor: COLORS.WHITE,
         marginHorizontal: 5,

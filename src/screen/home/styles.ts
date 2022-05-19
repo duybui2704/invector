@@ -214,8 +214,9 @@ export const MyStylesHome = () => {
             },
             more: {
                 width: '100%',
-                height: 50,
-                alignItems: 'center'
+                paddingVertical: 10,
+                marginBottom: 10,
+                alignItems: 'center',
             },
             viewVfs: {
                 ...Styles.shadow,

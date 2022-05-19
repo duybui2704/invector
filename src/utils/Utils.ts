@@ -220,7 +220,6 @@ function formatForEachWordCase(str: string) {
 }
 
 function updateSuggestions (text:string) {
-    console.log('text',text);
     const suggest = [];
     let inputNo = Number(text);
     while (true && inputNo > 0) {

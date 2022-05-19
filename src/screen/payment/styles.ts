@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
         marginHorizontal: 16,
         flexDirection: 'row',
         marginTop: 10,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     filterItem: {
         paddingHorizontal: 2
@@ -33,7 +33,6 @@ export const styles = StyleSheet.create({
         marginBottom: 10
     },
     wrapNoData: {
-        flex: 12,
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: SCREEN_HEIGHT / 2

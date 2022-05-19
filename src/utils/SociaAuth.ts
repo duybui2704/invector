@@ -26,7 +26,6 @@ export const loginWithGoogle = async () => {
     }
 };
 
-
 export const loginWithFacebook = async () => {
     try {
         const result = await LoginManager.logInWithPermissions(
@@ -60,7 +59,6 @@ export const loginWithApple = async () => {
 
 
         const data = appleAuthRequestResponse;
-        console.log('dât', data);
         if (data?.identityToken) {
             console.log('token', data?.identityToken);
             return data;
