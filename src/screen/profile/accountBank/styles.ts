@@ -83,8 +83,10 @@ export const MyStylesAccountBank = () => {
             placeHolderPicker: {
                 ...Styles.typography.regular,
                 color: COLORS.GRAY_16
+            },
+            wrapBtnAddAcc:{
+                marginTop: 24
             }
-            
         });
     }, []);
 };

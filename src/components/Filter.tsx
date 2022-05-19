@@ -7,11 +7,12 @@ import { KeyValueModel } from '@/models/keyValue-model';
 import { Touchable } from './elements/touchable';
 import { COLORS, Styles } from '@/theme';
 
-const Filter = ({ item, selected, onPress, style }:
-    { item: KeyValueModel , selected: boolean, onPress: any, style?: TextStyle }) => {
+const Filter = ({ item, selected, onPress, style, disabled }:
+    { item: KeyValueModel , selected: boolean, onPress: any, style?: TextStyle, disabled?:boolean }) => {
 
     return <Touchable style={selected ? styles.filterSelected : styles.filterUnSelected}
-        onPress={onPress}>
+        onPress={onPress}
+        disabled={disabled}>
         <Text style={[selected ? styles.filterTxtSelected : styles.filterTxtUnSelected, style]}>
             {item.label}
         </Text>

@@ -214,6 +214,7 @@ const AccountBank = observer(() => {
                                     isLowerCase
                                     onPress={onAddAccount}
                                     disabled={!nameBank || !accountNumber || !accountProvider || !ATMNumber}
+                                    style={styles.wrapBtnAddAcc}
                                 />
                             </View>
                         </ScrollViewWithKeyboard>

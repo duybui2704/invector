@@ -18,14 +18,10 @@ import { OverviewMonthOfQuarterModal, TotalOfQuarterModal } from '@/models/month
 import DateUtils from '@/utils/DateUtils';
 import Utils from '@/utils/Utils';
 import { MyStylesReport } from './styles';
-import ScreenName from '@/common/screenNames';
-import Navigator from '@/routers/Navigator';
-import SessionManager from '@/manager/SessionManager';
 
 const Report = observer(() => {
     const styles = MyStylesReport();
-    const { apiServices, fastAuthInfoManager } = useAppStore();
-    const { supportedBiometry } = fastAuthInfoManager;
+    const { apiServices } = useAppStore();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [quarter, setQuarter] = useState<string>(DateUtils.getCurrentQuarter().toString());
     const [quarterList, setQuarterList] = useState<ItemProps[]>([]);
@@ -41,12 +37,6 @@ const Report = observer(() => {
     const keyExtractor = useCallback((item?: OverviewMonthOfQuarterModal, index?: any) => {
         return `${item?.month}${index}`;
     }, []);
-
-    useEffect(() => {
-        if (!SessionManager.accessToken || !supportedBiometry) {
-            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
-        }
-    }, [supportedBiometry]);
 
     useEffect(() => {
         if (isFocused) {
@@ -247,7 +237,7 @@ const Report = observer(() => {
                 showsVerticalScrollIndicator={false}
             />
         );
-    }, [keyExtractor, renderChart, renderItem, reportList, styles.flatList]);
+    }, [fetchReport, isLoading, keyExtractor, renderChart, renderItem, reportList, styles.flatList]);
 
     const onPressQuarter = useCallback((item?: any) => {
         setQuarter(item?.value);

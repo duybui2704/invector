@@ -1,9 +1,9 @@
 import React, { useMemo, useCallback, useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { observer } from 'mobx-react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { AirbnbRating } from 'react-native-ratings';
-import { BottomSheetModal, SCREEN_HEIGHT, SCREEN_WIDTH, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, useBottomSheetTimingConfigs } from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
 import TouchID from 'react-native-touch-id';
 import PasscodeAuth from '@el173/react-native-passcode-auth';
@@ -27,13 +27,13 @@ import LinkAccIC from '@/assets/image/ic_acc_link.svg';
 import ArrowIC from '@/assets/image/ic_right_arrow.svg';
 import KeyValue from '@/components/KeyValue';
 import HeaderBar from '@/components/header';
-import { COLORS, Styles } from '@/theme';
+import { COLORS } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';
 import Navigator from '@/routers/Navigator';
 import { Configs, isIOS } from '@/common/Configs';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
-import { ScreenName } from '@/common/screenNames';
+import { ScreenName, TabsName } from '@/common/screenNames';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
@@ -50,6 +50,7 @@ import Utils from '@/utils/Utils';
 import { LINKS } from '@/api/constants';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 import PopupRating from '@/components/PopupRating';
+import { MyStylesPinCodeProfile, MyStylesProfile } from './styles';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -59,6 +60,8 @@ const configTouchId = {
     passcodeFallback: false
 };
 const Profile = observer(() => {
+    const styles = MyStylesProfile();
+    const customStyles = MyStylesPinCodeProfile();
     const { userManager, fastAuthInfoManager } = useAppStore();
     const { supportedBiometry } = fastAuthInfoManager;
     const popupError = useRef<PopupActionTypes>(null);
@@ -77,7 +80,7 @@ const Profile = observer(() => {
     const isFocus = useIsFocused();
 
     useEffect(() => {
-        if(isFocus){
+        if (isFocus) {
             setRating(1);
         }
     }, [isFocus]);
@@ -112,7 +115,7 @@ const Profile = observer(() => {
         userManager.updateUserInfo(undefined);
         popupLogout.current?.hide();
         Navigator.navigateToDeepScreen(
-            [ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin }
+            [ScreenName.tabs], TabsName.homeTabs
         );
     }, [userManager]);
 
@@ -131,7 +134,7 @@ const Profile = observer(() => {
                 onConfirm={onAgreeLogout}
             />
         );
-    }, [onAgreeLogout]);
+    }, [onAgreeLogout, styles.containerAllBtnPopup, styles.containerCancelBtnPopup, styles.containerItemBtnPopup, styles.textCancel]);
 
     const openPopupRating = useCallback(() => {
         popupRating.current?.show();
@@ -219,16 +222,15 @@ const Profile = observer(() => {
         return (
             <KeyValue
                 title={title}
-                noIndicator
                 hasDashBottom={!hasDashBottom}
                 rightIcon={<ArrowIC />}
                 leftIcon={leftIcon}
-                styleTitle={styles.txtAuthnFinger}
+                styleTitle={styles.txtTitleKeyValue}
                 onPress={onNavigateScreen}
                 containerContent={styles.featureContainer}
             />
         );
-    }, [callPhone]);
+    }, [callPhone, styles.featureContainer, styles.txtTitleKeyValue]);
 
     const onToggleBiometry = useCallback(
         (value) => {
@@ -373,7 +375,7 @@ const Profile = observer(() => {
                     </View>
                 );
         }
-    }, [userManager.userInfo?.tinh_trang?.status]);
+    }, [styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy, styles.txtWaitAccuracy, styles.waitAccuracyWrap, userManager.userInfo?.tinh_trang?.status]);
 
     const renderPinCode = useMemo(() => {
         return (
@@ -408,7 +410,7 @@ const Profile = observer(() => {
                 </View>
             </BottomSheetModal>
         );
-    }, [animationConfigs, onSetPinCodeSuccess]);
+    }, [animationConfigs, customStyles.buttonText, customStyles.buttons, customStyles.main, customStyles.pinContainer, customStyles.subTitle, customStyles.title, onSetPinCodeSuccess, styles.wrapPin]);
 
     const renderViewRating = useMemo(() => {
         return (
@@ -429,7 +431,7 @@ const Profile = observer(() => {
                 <WomanIC />
             </Touchable>
         );
-    }, [openPopupRating, ratingPoint]);
+    }, [openPopupRating, ratingPoint, styles.fedBack, styles.starLeft, styles.textTitleDescriptionFeed, styles.textTitleFeed]);
 
     return (
         <View style={styles.container}>
@@ -447,12 +449,14 @@ const Profile = observer(() => {
                             resizeMode={FastImage.resizeMode.cover}
                         />
                     }
-                    <View style={styles.headerAccRight}>
-                        <Text style={styles.headerAccName}>{userManager.userInfo?.full_name || ''}</Text>
-                        <Text style={styles.headerAccPhone}>{userManager.userInfo?.phone_number || ''}</Text>
-                        {renderAccuracy}
+                    <View style={styles.wrapNameVerify}>
+                        <View style={styles.headerAccRight}>
+                            <Text style={styles.headerAccName}>{userManager.userInfo?.full_name || ''}</Text>
+                            <Text style={styles.headerAccPhone}>{userManager.userInfo?.phone_number || ''}</Text>
+                            {renderAccuracy}
+                        </View>
+                        <ArrowIC />
                     </View>
-                    <ArrowIC />
                 </Touchable>
                 <View style={styles.containerPayMethodFeature}>
                     {renderKeyValue(Languages.account.linkWallet, <PayMethodIC />)}
@@ -488,220 +492,5 @@ const Profile = observer(() => {
         </View>
     );
 });
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: COLORS.GRAY_5
-    },
-    contentContainer: {
-        marginHorizontal: 16
-    },
-    containerPayMethodFeature: {
-        borderWidth: 1,
-        borderColor: COLORS.GRAY_13,
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 16,
-        paddingVertical: 2
-    },
-    containerFeature: {
-        borderWidth: 1,
-        borderColor: COLORS.GRAY_13,
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 16,
-        marginTop: 16,
-        paddingVertical: 2
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderWidth: 1,
-        borderColor: COLORS.GRAY_13,
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 16,
-        marginVertical: 12,
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        marginHorizontal: 16,
-        alignItems: 'center'
-    },
-    accContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderWidth: 1,
-        borderColor: COLORS.GRAY_13,
-        backgroundColor: COLORS.WHITE,
-        borderRadius: 16,
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        alignItems: 'center',
-        marginVertical: 16
-    },
-    leftText: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_12
-    },
-    contentText: {
-        ...Styles.typography.medium,
-        color: COLORS.GRAY_7
-    },
-    dash: {
-        paddingBottom: 10
-    },
-    stylePayMethodContainer: {
-        paddingVertical: 10,
-        marginTop: 16
-    },
-    headerAccRight: {
-        justifyContent: 'space-around'
-    },
-    notAccuracyWrap: {
-        backgroundColor: COLORS.PINK,
-        borderRadius: 70,
-        alignItems: 'center',
-        marginTop: 5,
-        paddingVertical: 4
-    },
-    waitAccuracyWrap: {
-        backgroundColor: COLORS.YELLOW_3,
-        borderRadius: 70,
-        alignItems: 'center',
-        marginTop: 5,
-        paddingVertical: 4
-    },
-    accuracyWrap: {
-        backgroundColor: COLORS.WHITE_GREEN,
-        borderRadius: 70,
-        alignItems: 'center',
-        marginTop: 5,
-        paddingVertical: 4
-    },
-    circleWrap: {
-        width: SCREEN_WIDTH * 0.2 - 10,
-        height: SCREEN_WIDTH * 0.2 - 10,
-        borderRadius: 70,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 2,
-        borderColor: COLORS.GREEN
-    },
-    headerAccName: {
-        ...Styles.typography.medium,
-        color: COLORS.GREEN,
-        fontSize: Configs.FontSize.size16
-    },
-    headerAccPhone: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_7,
-        fontSize: Configs.FontSize.size12
-    },
-    txtNotAccuracy: {
-        ...Styles.typography.medium,
-        color: COLORS.RED_2,
-        fontSize: Configs.FontSize.size12,
-        paddingHorizontal: 60
-    },
-    txtWaitAccuracy: {
-        ...Styles.typography.medium,
-        color: COLORS.YELLOW_2,
-        fontSize: Configs.FontSize.size12,
-        textAlign: 'center',
-        paddingHorizontal: 16
-    },
-    txtAccuracy: {
-        ...Styles.typography.medium,
-        color: COLORS.GREEN,
-        fontSize: Configs.FontSize.size12,
-        paddingHorizontal: 40
-    },
-    wrapBtn: {
-        marginVertical: 15,
-        width: SCREEN_WIDTH - 32,
-        height: SCREEN_HEIGHT * 0.1 - 40
-    },
-    txtAuthnFinger: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_7,
-        paddingVertical: 7
-    },
-    featureContainer: {
-        flex: 1,
-        marginLeft: 16
-    },
-    wrapPin: {
-        flex: 1
-    },
-    containerAllBtnPopup: {
-        flexDirection: 'row-reverse'
-    },
-    containerItemBtnPopup: {
-        backgroundColor: COLORS.RED_2,
-        borderColor: COLORS.RED_2,
-        borderRadius: 20
-    },
-    containerCancelBtnPopup: {
-        borderColor: COLORS.GRAY_13,
-        borderRadius: 20
-    },
-    textCancel: {
-        color: COLORS.GRAY_12
-    },
-    fedBack: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        backgroundColor: COLORS.WHITE,
-        padding: 16,
-        margin: 20,
-        marginTop: 16,
-        borderRadius: 20
-    },
-    textTitleFeed: {
-        ...Styles.typography.medium,
-        fontSize: Configs.FontSize.size16,
-        marginBottom: 5
-    },
-    textTitleDescriptionFeed: {
-        ...Styles.typography.regular,
-        fontSize: Configs.FontSize.size12,
-        color: COLORS.DARK_GRAY
-    },
-    starLeft: {
-        flex: 2
-    }
-});
-const customStyles = StyleSheet.create({
-    main: {
-        marginTop: 20,
-        paddingHorizontal: 20,
-        backgroundColor: COLORS.TRANSPARENT
-    },
-    title: {
-        ...Styles.typography.regular,
-        fontSize: Configs.FontSize.size16,
-        fontFamily: Configs.FontFamily.medium,
-        color: COLORS.GREEN
-    },
-    subTitle: {
-        color: COLORS.BLACK
-    },
-    buttonText: {
-        ...Styles.typography.regular,
-        color: COLORS.GREEN,
-        fontSize: Configs.FontSize.size32,
-        fontFamily: Configs.FontFamily.medium
-    },
-    buttons: {
-        backgroundColor: COLORS.WHITE,
-        borderWidth: 1.5,
-        marginHorizontal: 15,
-        borderColor: COLORS.GREEN,
-        width: 65,
-        height: 65,
-        borderRadius: 35
-    },
-    pinContainer: {
-        height: 30,
-        justifyContent: 'center',
-        marginBottom: 10
-    }
-});
+
 export default Profile;

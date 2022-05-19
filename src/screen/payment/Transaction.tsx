@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import ICCalender from '@/assets/image/ic_arrow_date_picker.svg';
@@ -19,26 +19,22 @@ import { styles } from './styles';
 import NoData from '@/components/NoData';
 import DateUtils from '@/utils/DateUtils';
 import Loading from '@/components/loading';
-import SessionManager from '@/manager/SessionManager';
-import Navigator from '@/routers/Navigator';
-import ScreenName from '@/common/screenNames';
 import IMGNoDataTransaction from '@/assets/image/img_no_data_transaction.svg';
-import { COLORS } from '@/theme';
-
 
 const PER_PAGE = 7;
 const Transaction = observer(() => {
-    const { apiServices, fastAuthInfoManager } = useAppStore();
-    const { supportedBiometry } = fastAuthInfoManager;
+    const { apiServices } = useAppStore();
     const isFocused = useIsFocused();
     const [isFreshing, setIsFreshing] = useState<boolean>(true);
+    const [isFilterLoading, setFilterLoading] = useState<boolean>(false);
+    const [isLoadMore, setLoadMore] = useState<boolean>(true);
     const [dataHistory, setDataHistory] = useState<TransactionModel[]>([]);
 
     const { common } = useAppStore();
 
     const condition = useRef<PagingConditionTypes>({
-        isLoading: false,
-        canLoadMore: false,
+        isLoading: true,
+        canLoadMore: true,
         offset: 0,
         startDate: '',
         endDate: '',
@@ -47,13 +43,8 @@ const Transaction = observer(() => {
     const [selectedFilter, setSelectedFilter] = useState<string>(condition.current.option || '');
 
     useEffect(() => {
-        if (!SessionManager.accessToken || !supportedBiometry) {
-            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
-        }
-    }, [supportedBiometry]);
-
-    useEffect(() => {
         if (isFocused) {
+            setDataHistory([]);
             common.setIsFocus(true);
             fetchHistory();
             setSelectedFilter(TransactionTypes[0].type);
@@ -62,25 +53,42 @@ const Transaction = observer(() => {
         }
     }, [isFocused, common.isFocused, common]);
 
-    const fetchHistory = useCallback(async (fDate?: string, tDate?: string, option?: string) => {
-        condition.current.isLoading = true;
+    const fetchHistory = useCallback(async (fDate?: string, tDate?: string, option?: string, isLoadMoreData?: boolean) => {
+        if (!isLoadMoreData) {
+            setLoadMore(true);
+        }
         const res = await apiServices.history.getHistory(
             fDate || '',
             tDate || '',
-            option || ''
+            option || '',
+            PER_PAGE,
+            isLoadMoreData ? condition.current.offset : 0
         );
-        condition.current.isLoading = false;
-        if (res.success) {
-            const data = res.data as TransactionModel[];
-            setDataHistory(data);
-            setIsFreshing(false);
+        const data = res.data as TransactionModel[];
+        console.log('dataHistory: ', data);
+        const dataSize = data?.length;
+        if (dataSize > 0) {
+            condition.current.offset = isLoadMoreData ? condition.current.offset + dataSize : dataSize;
+            if (isLoadMoreData) {
+                setDataHistory((last) => [...last || [], ...data]);
+            }
+            else {
+                setDataHistory(data);
+            }
+        } else if (!res.success || !isLoadMoreData) {
+            setDataHistory([]);
         }
+        condition.current.canLoadMore = dataSize >= PER_PAGE;
+        setIsFreshing(false);
+        setLoadMore(true);
+        setLoadMore(false);
         setIsFreshing(false);
 
     }, [apiServices.history]);
 
     const onRefresh = useCallback((startDate?: Date, endDate?: Date, option?: string, isRefreshDate?: boolean) => {
         setIsFreshing(true);
+        setDataHistory([]);
         condition.current.canLoadMore = false;
         condition.current.offset = 0;
         condition.current.startDate = startDate || '';
@@ -113,23 +121,26 @@ const Transaction = observer(() => {
             }
 
             const _onPress = () => {
+                setDataHistory([]);
                 condition.current.option = item.type;
-                condition.current.isLoading = true;
                 setSelectedFilter(item.type || TransactionTypes[0].type);
                 if (condition.current.startDate && condition.current.endDate) {
+                    setFilterLoading(true);
                     fetchHistory(
                         `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}`,
                         `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}`,
                         condition.current.option
                     );
+                    setFilterLoading(false);
                 } else {
+                    setFilterLoading(true);
                     fetchHistory(
                         '',
                         '',
                         condition.current.option
                     );
+                    setFilterLoading(false);
                 }
-                condition.current.isLoading = false;
             };
 
             return (
@@ -139,6 +150,7 @@ const Transaction = observer(() => {
                     item={item}
                     onPress={_onPress}
                     selected={selected}
+                    disabled={false}
                 />
             );
         },
@@ -156,14 +168,6 @@ const Transaction = observer(() => {
 
     const keyExtractor = useCallback((item: TransactionModel, index?: number) => {
         return `${index}`;
-    }, []);
-
-    const handleLoadMore = useCallback(() => {
-        fetchHistory(
-            '',
-            '',
-            condition.current.option
-        );
     }, []);
 
     const renderItem = useCallback(({ item }: { item: TransactionModel }) => {
@@ -184,39 +188,45 @@ const Transaction = observer(() => {
     const renderEmptyData = useMemo(() => {
         return (
             <View style={styles.wrapNoData}>
-                <NoData description={Languages.transaction.noDataTransaction} img={<IMGNoDataTransaction/>}/>
+                <NoData description={Languages.transaction.noDataTransaction} img={<IMGNoDataTransaction />} />
             </View>
         );
     }, []);
 
-    const renderFooter = () => {
-        return <ActivityIndicator size="large" color={COLORS.GREEN} />;
-    };
+    const renderFooter = useMemo(() => {
+        return <>
+            {isLoadMore && <Loading />}
+        </>;
+    }, [isLoadMore]);
 
-    const renderRefreshControl = useMemo(() => {
+    const onEndReached = useCallback(() => {
+        fetchHistory(
+            `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}` || '',
+            `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}` || '',
+            condition.current.option,
+            true
+        );
+    }, [fetchHistory]);
+
+    const renderTransaction = useMemo(() => {
         const onFreshing = () => {
             onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
         };
-        return (<RefreshControl refreshing={false} onRefresh={onFreshing} />);
-    }, [onRefresh]);
-
-    const renderTransaction = useMemo(() => {
-
         return (
             <FlatList
                 data={dataHistory}
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
-                refreshControl={renderRefreshControl}
-                onEndReachedThreshold={0.999}
-                onEndReached={handleLoadMore}
+                refreshing={isFreshing}
+                onRefresh={onFreshing}
+                onEndReachedThreshold={0.99}
+                onEndReached={onEndReached}
                 style={styles.wrapFlatList}
-                // onContentSizeChange={() => setOnEndReachedCalledDuringMomentum(true)}
                 ListEmptyComponent={renderEmptyData}
                 ListFooterComponent={renderFooter}
             />
         );
-    }, [dataHistory, keyExtractor, renderItem, renderRefreshControl, handleLoadMore, renderEmptyData]);
+    }, [dataHistory, keyExtractor, renderItem, isFreshing, onEndReached, renderEmptyData, renderFooter, onRefresh]);
 
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
@@ -264,7 +274,7 @@ const Transaction = observer(() => {
                 />
             </View>
             {renderTransaction}
-            {condition.current.isLoading && isFreshing === false && <Loading isOverview />}
+            {isFilterLoading && <Loading isOverview />}
         </View>
     );
 });

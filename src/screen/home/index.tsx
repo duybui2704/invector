@@ -3,19 +3,16 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StatusBar, Text, View, FlatList, Image } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import { join } from 'lodash';
 
 import { LINKS } from '@/api/constants';
 import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
-import IcChevronRight from '@/assets/image/home/ic_chevron_right.svg';
 import IcDollar from '@/assets/image/home/ic_dollar.svg';
 import IcSmartPhone from '@/assets/image/home/ic_smartphone.svg';
 import IcWallet from '@/assets/image/home/ic_wallet.svg';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
-import { ENUM_INVEST_STATUS } from '@/common/constants';
+import { ENUM_INVEST_STATUS, LINK_TIENNGAY } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
-import Banner from '@/components/banner';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import ItemInvest from '@/components/ItemInvest';
@@ -26,13 +23,12 @@ import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
 import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
-import DimensionUtils, { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import Utils from '@/utils/Utils';
 import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import LogoHome from '../../assets/image/header/logo_home.svg';
 import NotificationListening from './NotificationListening';
 import { MyStylesHome } from './styles';
-import KeyValue from '@/components/KeyValue';
 import DraggableComponent from '@/components/Draggable';
 import PopupInvestFirst, { PopupActions } from '@/components/popupInvestFirst';
 import { MyImageView } from '@/components/image';
@@ -196,7 +192,7 @@ const Home = observer(() => {
             console.log('url', item.link);
             Navigator.pushScreen(ScreenName.myWedView, {
                 title: item.title_vi,
-                url: `https://tienngay.vn/${item.link.toString()}`
+                url: `${LINK_TIENNGAY.LINK_TIENNGAY_WEB}${item.link.toString()}`
             });
         };
 

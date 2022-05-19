@@ -61,7 +61,7 @@ const Investment = observer(({ route }: { route: any }) => {
         moneyInvested: ''
     });
 
-    console.log('render---')
+    console.log('render---');
 
     const { common, apiServices } = useAppStore();
 
@@ -252,7 +252,7 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [btnInvest]);
 
     const debounceSearchItem = useCallback(debounce(() => {
-        fetchData(btnInvest)
+        fetchData(btnInvest);
     }, 500), [btnInvest]);
 
     const handleInputOnChange = useCallback(
@@ -284,7 +284,7 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const renderInvest = useCallback((type: string) => {
         const styleBt = {
-            backgroundColor: btnInvest === type ? COLORS.WHITE : null,
+            backgroundColor: btnInvest === type ? COLORS.WHITE : null
         } as ViewStyle;
 
         const styleTxt = {

@@ -25,34 +25,35 @@ export const MyStylesPaymentMethod = () => {
                 color: COLORS.GRAY_7
             },
             wrapItemPayment: {
-                justifyContent: 'space-between',
                 alignItems: 'center',
                 flexDirection: 'row',
                 paddingVertical: 10,
                 borderWidth: 1,
                 borderColor: COLORS.GRAY_2,
                 borderRadius: 18,
-                paddingHorizontal: 16,
-                marginTop: 16,
+                paddingRight: 16,
+                paddingLeft: 10,
+                marginTop: 8,
                 backgroundColor: COLORS.WHITE
             },
             wrapItemPaymentChooser: {
-                justifyContent: 'space-between',
                 alignItems: 'center',
                 flexDirection: 'row',
                 paddingVertical: 10,
                 borderWidth: 1,
                 borderColor: COLORS.GREEN,
                 borderRadius: 18,
-                paddingHorizontal: 16,
-                marginTop: 16,
+                paddingRight: 16,
+                paddingLeft: 10,
+                marginTop: 8,
                 backgroundColor: COLORS.WHITE
             },
             wrapRightItemPayment: {
                 justifyContent: 'space-between',
+                flex:1,
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '80%'
+                paddingLeft: 13
             },
             titleItemLink: {
                 ...Styles.typography.medium,
@@ -60,7 +61,8 @@ export const MyStylesPaymentMethod = () => {
             },
             stateItemLink: {
                 ...Styles.typography.regular,
-                color: COLORS.GREEN
+                color: COLORS.GREEN,
+                paddingTop: 4
             },
             wrapRightIcon: {
                 width: 32,

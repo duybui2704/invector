@@ -16,11 +16,11 @@ const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, s
             case COLOR_TRANSACTION.RED:
                 return <Text style={[styles.leftText, styles.red]}>{_title}</Text>;
             case COLOR_TRANSACTION.YELLOW:
-                return <Text style={[styles.leftText, styles.green]}>{_title}</Text>;
+                return <Text style={[styles.leftText, styles.yellow]}>{_title}</Text>;
             case COLOR_TRANSACTION.GREEN:
-                return <Text style={[styles.leftText, styles.yellow]}>{_title}</Text>;
+                return <Text style={[styles.leftText, styles.green]}>{_title}</Text>;
             default:
-                return <Text style={[styles.leftText, styles.yellow]}>{_title}</Text>;
+                return <Text style={[styles.leftText, styles.green]}>{_title}</Text>;
         }
     }, []);
 

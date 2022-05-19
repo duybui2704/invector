@@ -7,14 +7,18 @@ import { Touchable } from './elements/touchable';
 
 
 const KeyValue = (
-    { title, content, noIndicator, styleColor,
-        styleContainer, leftIcon, rightIcon, hasDashBottom,
-        styleTouchable, onPress, styleTitle, containerContent, disable }:
+    { title,
+        styleContainer,
+        leftIcon,
+        rightIcon,
+        hasDashBottom,
+        styleTouchable,
+        onPress,
+        styleTitle,
+        containerContent,
+        disable }:
         {
-            noIndicator?: boolean,
             title: string,
-            content?: string,
-            styleColor?: TextStyle,
             styleContainer?: ViewStyle,
             leftIcon?: any,
             rightIcon?: any,
@@ -23,32 +27,25 @@ const KeyValue = (
             onPress?: any,
             styleTitle?: TextStyle,
             containerContent?: ViewStyle,
-            disable?:boolean
+            disable?: boolean
         }
 ) => {
 
     return (
         <View style={[styles.container, styleContainer]}>
-            {!noIndicator && <Dash
-                dashThickness={1}
-                dashLength={10}
-                dashGap={5}
-                dashColor={COLORS.GRAY_13} />
-            }
-
             <Touchable style={[styles.row, styleTouchable]} onPress={onPress} disabled={disable}>
                 {leftIcon || null}
                 <View style={[styles.rowCenter, containerContent]}>
                     <Text style={[styles.leftText, styleTitle]}>{title}</Text>
-                    <Text style={[styles.contentText, styleColor]}>{content}</Text>
+                    {rightIcon || null}
                 </View>
-                {rightIcon || null}
             </Touchable>
             {hasDashBottom && <Dash
                 dashThickness={1}
                 dashLength={10}
-                dashGap={5}
-                dashColor={COLORS.GRAY_13} 
+                dashGap={4}
+                dashColor={COLORS.GRAY_13}
+                style={styles.dash}
             />
             }
         </View>
@@ -62,27 +59,25 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.WHITE,
         paddingHorizontal: 16,
         borderRadius: 16,
-        width: '100%'
+        flex:1
     },
     row: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginRight: 12,
-        paddingVertical: 4
+        marginRight: 12
     },
     rowCenter: {
+        flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 14
     },
     leftText: {
         ...Styles.typography.regular,
-        color: COLORS.GRAY_12,
-        alignSelf: 'flex-start'
+        color: COLORS.GRAY_12
     },
-    contentText: {
-        ...Styles.typography.medium,
-        color: COLORS.GRAY_7,
-        alignSelf: 'flex-end'
+    dash:{
+        paddingVertical: 1
     }
-
 });

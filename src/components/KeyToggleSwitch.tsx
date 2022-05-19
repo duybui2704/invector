@@ -12,7 +12,7 @@ const KeyToggleValue = ({ leftIcon, label, isEnabledSwitch, onToggleSwitch, hasD
     { label: string, isEnabledSwitch: boolean, onToggleSwitch: (value: boolean) => any, hasDash?: boolean, leftIcon?: any }) => {
 
     return (
-        <>
+        <View style={styles.container}>
             <View style={styles.fingerWrap}>
                 {leftIcon}
                 <View style={styles.featureFingerContainer}>
@@ -38,7 +38,7 @@ const KeyToggleValue = ({ leftIcon, label, isEnabledSwitch, onToggleSwitch, hasD
                 dashLength={10}
                 dashGap={5}
                 dashColor={COLORS.GRAY_13} /> : null}
-        </>
+        </View>
     );
 };
 
@@ -47,23 +47,28 @@ export default KeyToggleValue;
 const styles = StyleSheet.create({
     txtAuthenFinger: {
         ...Styles.typography.regular,
-        color: COLORS.GRAY_7,
-        paddingVertical: 10
+        color: COLORS.GRAY_7
+        
+    },
+    container:{
+        flex:1,
+        paddingHorizontal: 16
     },
     dash: {
-        marginHorizontal: 16
+        paddingVertical:1
     },
     featureFingerContainer: {
-        width: '90%',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        paddingLeft: 8,
-        alignItems: 'center'
+        paddingLeft: 22,
+        alignItems: 'center',
+        paddingVertical: 14,
+        flex:1
     },
     fingerWrap: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal: 16,
-        alignItems: 'center'
+        alignItems: 'center',
+        flex:1
     }
 });
