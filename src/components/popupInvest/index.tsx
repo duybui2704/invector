@@ -28,20 +28,19 @@ export type PopupFilterProps = {
     value?: string,
     openBottomSheet?: (type: string) => void,
     timeInvestment?: ItemProps,
-    moneyInvestment?: ItemProps
+    moneyInvestment?: ItemProps,
+    onCancel?:()=>void
 };
 
 
 const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
     ({
         onConfirm,
-        onClose,
         title,
-        description,
-        data,
         openBottomSheet,
         timeInvestment,
-        moneyInvestment
+        moneyInvestment,
+        onCancel
     }: PopupFilterProps, ref) => {
 
         const styles = MyStylePupUp();
@@ -50,11 +49,6 @@ const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
         const [month, setMonth] = useState<string>();
         const refMoney = useRef<TextFieldActions>(null);
         const [money, setMoney] = useState<string>();
-        const [dataPicker, setDataPicker] = useState<ItemProps[]>(arrMonth);
-        const refBottomSheetMoney = useRef<any>(null);
-        const refBottomSheetMonth = useRef<any>(null);
-        const [picker, setPicker] = useState<boolean>(false);
-        console.log('timeInvestment', timeInvestment);
         const {
             common
         } = useAppStore();
@@ -65,7 +59,6 @@ const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
                 setMonth('');
             }
             setVisible(true);
-            setPicker(false);
         }, [common.isFocused]);
 
         const hide = useCallback(() => {
@@ -86,19 +79,14 @@ const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
             hide();
         };
 
-        const showPicker = useCallback((label: string) => {
-            hide();
-            if (label === Languages.invest.monthInvest) {
-                setDataPicker(arrMonth);
-                setPicker(true);
-                refBottomSheetMonth.current.show();
-            } else {
-                setDataPicker(arrMoney);
-                setPicker(true);
-                refBottomSheetMoney.current.show();
-            }
+        const _onCancel =useCallback(()=>{
+            setMoney('');
+            setMoney('');
+            _onClose();
+            onCancel?.();
+        },[_onClose, onCancel]);
 
-        }, [hide]);
+     
 
         const onOpenBottomSheet = useCallback((type: string) => {
             hide();
@@ -140,7 +128,7 @@ const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
                             <Text style={styles.textConfirm}>{Languages.invest.search}</Text>
                         </Touchable>
                         <Touchable style={[styles.tobConfirm, { backgroundColor: COLORS.GRAY_2 }]}
-                            onPress={_onClose}>
+                            onPress={_onCancel}>
                             <Text
                                 style={[styles.textConfirm, { color: COLORS.GRAY_12 }]}>{Languages.invest.cancel}</Text>
                         </Touchable>

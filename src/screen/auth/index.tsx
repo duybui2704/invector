@@ -2,8 +2,10 @@ import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ImageBackground, Platform, StatusBar, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import LogoAuth from '@/assets/image/auth/logo_auth.svg';
+import IcCloseAuth from '@/assets/image/auth/ic_close_auth.svg';
 import IcApple from '@/assets/image/auth/ic_apple.svg';
 import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
 import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';
@@ -20,6 +22,8 @@ import ForgotPass from './forgotPass';
 import LoginWithBiometry from './loginWithBiometrty';
 import SignUp from './signUp';
 import { myStylesAuth } from './styles';
+import Navigator from '@/routers/Navigator';
+import { TabsName } from '@/common/screenNames';
 
 
 const Auth = observer(({ route }: any) => {
@@ -71,6 +75,11 @@ const Auth = observer(({ route }: any) => {
         }
     };
 
+    const gotoHome = useCallback(async () => {
+        console.log('abccccc');
+        Navigator.navigateScreen(TabsName.homeTabs);
+    }, []);
+
     // const initUser = useCallback(
     //     async (typeLogin: string, providerId: string) => {
     //         const res = await apiServices?.auth?.loginWithThirdParty(
@@ -113,11 +122,16 @@ const Auth = observer(({ route }: any) => {
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
             />
+            <Touchable style={styles.iconClose} onPress={gotoHome}>
+                <IcCloseAuth width={30} />
+            </Touchable>
             <View style={styles.viewLogo}>
                 <LogoAuth
                     width={SCREEN_HEIGHT * 0.22}
                     height={SCREEN_HEIGHT * 0.22}
-                /></View>
+                />
+            </View>
+
             <View style={styles.viewSvg}>
                 <SvgComponent onNavigate={onNavigate} title={isNavigate} />
             </View>
@@ -133,7 +147,7 @@ const Auth = observer(({ route }: any) => {
                     <Touchable style={styles.icon} onPress={onLoginGoogle}>
                         <IcGoogleAuth />
                     </Touchable>
-                    {Platform.OS==='ios'&&<Touchable style={styles.icon} onPress={onLoginApple}>
+                    {Platform.OS === 'ios' && <Touchable style={styles.icon} onPress={onLoginApple}>
                         <IcApple />
                     </Touchable>}
                    

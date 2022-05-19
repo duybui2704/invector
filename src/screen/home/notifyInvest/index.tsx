@@ -1,124 +1,78 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, RefreshControl, Text, TextStyle, View, ViewStyle } from 'react-native';
-import Dash from 'react-native-dash';
-import { FlatList } from 'react-native-gesture-handler';
-import { useIsFocused } from '@react-navigation/native';
-
-import { ENUM_INVEST_NOTIFY, ENUM_INVEST_STATUS } from '@/common/constants';
+import IcNoDataNotify from '@/assets/image/home/ic_no_data_notify.svg';
+import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
+import ScreenName, { TabsName } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
-import { useAppStore } from '@/hooks';
-import { Notify, PagingConditionTypes } from '@/models/invest';
-import MyStyleLoading from '@/components/loading/styles';
 import Loading from '@/components/loading';
-import NoData from '@/components/NoData';
-import { MyStylesNotifyInvest } from './styles';
-import { COLORS, Styles } from '@/theme';
-import DateUtils from '@/utils/DateUtils';
-import Navigator from '@/routers/Navigator';
-import ScreenName, { TabsName } from '@/common/screenNames';
 import MyFlatList from '@/components/MyFlatList';
+import NoData from '@/components/NoData';
+import { useAppStore } from '@/hooks';
+import { Notify } from '@/models/invest';
+import Navigator from '@/routers/Navigator';
+import { COLORS } from '@/theme';
+import DateUtils from '@/utils/DateUtils';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Text, View } from 'react-native';
+import Dash from 'react-native-dash';
+import { MyStylesNotifyInvest } from './styles';
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 7;
 export const NotifyInvest = () => {
     const styles = MyStylesNotifyInvest();
     const [data, setData] = useState<Notify[]>([]);
-    const [dataFilter, setDataFilter] = useState<Notify[]>([]);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-    const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_NOTIFY.NOTIFY_ALL);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(false);
-    const isFocused = useIsFocused();
+    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(true);
     const { apiServices } = useAppStore();
     const condition = useRef({
-        isLoading: true,
+        isLoading: false,
         offset: 0,
         canLoadMore: true
     });
 
     useEffect(() => {
-        if (isFocused) {
-            fetchData(btnInvest);
-        }
-    }, [isFocused]);
+        fetchData();
+    }, []);
 
-    const fetchData = useCallback(async (type: string, isLoadMore?: boolean) => {
-        console.log(type, condition.current.offset);
-        setIsLoading(true);
+    const fetchData = useCallback(async (isLoadMore?: boolean) => {
+        if (condition.current.isLoading) {
+            return;
+        }
+        condition.current.isLoading = true;
+
         const res = await apiServices.invest.getNotify(PAGE_SIZE, condition.current.offset);
-        setIsLoading(false);
+        let totalSize = 0;
         if (res.success) {
             const dataNotify = res.data as Notify[];
-            const dataNotifyOnRead = dataNotify?.filter((item: any) => item?.status === 1);
-            console.log('data: ', dataNotifyOnRead);
-            const newSize = dataNotify.length;
-            if (newSize > 0) {
+            totalSize = dataNotify?.length || 0;
+
+            if (totalSize > 0) {
                 if (isLoadMore) {
-                    if (type === ENUM_INVEST_NOTIFY.NOTIFY_ALL) setData((list) => [...list || [], ...dataNotify]);
-                    if (type === ENUM_INVEST_NOTIFY.UNREAD) setData((list) => [...list?.filter((item: any) => item?.status === 1) || [], ...dataNotifyOnRead]);
+                    setData((list) => [...list || [], ...dataNotify]);
                 } else {
-                    if (type === ENUM_INVEST_NOTIFY.NOTIFY_ALL) setData(dataNotify);
-                    if (type === ENUM_INVEST_NOTIFY.UNREAD) setData(dataNotifyOnRead);
+                    setData(dataNotify);
                 }
-                condition.current.offset += newSize;
+                condition.current.offset += totalSize;
             }
-
-            condition.current.isLoading = false;
-            condition.current.canLoadMore = newSize >= PAGE_SIZE;
-            setCanLoadMoreUI(condition.current.canLoadMore);
         }
-    }, [apiServices.invest, btnInvest]);
 
-    const renderInvest = useCallback((type: string) => {
-        const styleBt = {
-            backgroundColor: btnInvest === type ? COLORS.WHITE : null
-        } as ViewStyle;
+        condition.current.isLoading = false;
 
-        const styleTxt = {
-            ...Styles.typography.medium,
-            color: btnInvest === type ? COLORS.GREEN : COLORS.GRAY_7
-        } as TextStyle;
-
-        const onPress = () => {
-            setBtnInvest(type);
-            setData([]);
-            fetchData(type, true);
-        };
-
-        const getTitle = () => {
-            switch (type) {
-                case ENUM_INVEST_NOTIFY.NOTIFY_ALL:
-                    return Languages.invest.notifyAll;
-                case ENUM_INVEST_NOTIFY.UNREAD:
-                    return Languages.invest.notifyUnRead;
-                default:
-                    return null;
-            }
-        };
-        return (
-            <Touchable onPress={onPress} style={[styles.btInvest, styleBt]}>
-                <Text style={[styles.txtBtInvest, styleTxt]}>{getTitle()}</Text>
-            </Touchable>
-        );
-
-    }, [btnInvest]);
+        condition.current.canLoadMore = totalSize >= PAGE_SIZE;
+        setCanLoadMoreUI(condition.current.canLoadMore);
+    }, [apiServices.invest]);
 
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
     }, []);
 
-
-    const ItemNotify = useCallback((item: any, title: string) => {
+    const renderItem = useCallback(({ item }: any) => {
         const onRead = async (id: number, status: number) => {
             if (status === 1) {
-                setIsLoading(true);
                 const res = await apiServices.invest.getNotifyUpdateRead(id);
                 if (res.success) {
-                    fetchData(title);
                     Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: ENUM_INVEST_STATUS.INVESTING, id: `${item?.action_id}` });
                 }
-                setIsLoading(false);
             }
             Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: ENUM_INVEST_STATUS.INVESTING, id: `${item?.action_id}` });
         };
@@ -143,47 +97,37 @@ export const NotifyInvest = () => {
                 <Text style={styles.txtNote}>{item?.message}</Text>
             </Touchable >
         );
-    }, [apiServices.invest, fetchData, styles.item, styles.itemBlur, styles.rowTop, styles.title, styles.txtNote, styles.txtRight, styles.txtTimeDate, styles.viewLeft]);
-
-    const renderItem = useCallback(({ item }: any) => {
-        switch (btnInvest) {
-            case ENUM_INVEST_NOTIFY.NOTIFY_ALL:
-                return ItemNotify(item, ENUM_INVEST_NOTIFY.NOTIFY_ALL);
-            case ENUM_INVEST_NOTIFY.UNREAD:
-                return ItemNotify(item, ENUM_INVEST_NOTIFY.UNREAD);
-            default:
-                return null;
-        }
-    }, [btnInvest]);
+    }, [apiServices.invest, styles.item, styles.itemBlur, styles.rowTop, styles.title, styles.txtNote, styles.txtRight, styles.txtTimeDate, styles.viewLeft]);
 
     const renderFooter = useMemo(() => {
         return <>
-            {canLoadMoreUI && <ActivityIndicator size="large" color={COLORS.GREEN} />}
+            {canLoadMoreUI && <Loading />}
         </>;
-    }, []);
+    }, [canLoadMoreUI]);
 
     const renderEmptyData = useMemo(() => {
         return (
-            <View style={styles.wrapNoData}>
-                <NoData description='NoData' />
-            </View>
+            <>
+                {!canLoadMoreUI && <NoData img={<IcNoDataNotify />} description={Languages.home.noNotify} />}
+            </>
         );
-    }, [styles.wrapNoData]);
+    }, [canLoadMoreUI, styles.wrapNoData]);
 
     const onRefreshing = useCallback(() => {
-        console.log('onRefreshing', btnInvest);
-        fetchData(btnInvest);
-    }, [btnInvest, fetchData]);
+        condition.current.offset = 0;
+        condition.current.canLoadMore = true;
+        setIsRefreshing(true);
+        fetchData();
+        setIsRefreshing(false);
+    }, [fetchData]);
 
     const handleLoadMore = useCallback(() => {
-        console.log('handleLoadMore', condition.current.isLoading, condition.current.canLoadMore);
         if (!condition.current.isLoading && condition.current.canLoadMore) {
-            fetchData(btnInvest, true);
+            fetchData(true);
         }
-    }, []);
+    }, [fetchData]);
 
     const renderNotify = useMemo(() => {
-        console.log(data);
         return (
             <MyFlatList
                 contentContainerStyle={styles.flatList}
@@ -198,19 +142,14 @@ export const NotifyInvest = () => {
                 onEndReached={handleLoadMore}
             />
         );
-    }, [btnInvest, handleLoadMore, onRefreshing, data, renderItem, fetchData]);
+    }, [data, styles.flatList, renderItem, keyExtractor, renderEmptyData, renderFooter, isRefreshing, onRefreshing, handleLoadMore]);
 
     return (
         <View style={styles.container}>
             <HeaderBar title={Languages.invest.notify} hasBack />
             <View style={styles.wrapContent}>
-                <View style={styles.investTab}>
-                    {renderInvest(ENUM_INVEST_NOTIFY.NOTIFY_ALL)}
-                    {renderInvest(ENUM_INVEST_NOTIFY.UNREAD)}
-                </View>
                 {data && renderNotify}
             </View>
-            {isLoading && <Loading isOverview />}
         </View>
     );
 };

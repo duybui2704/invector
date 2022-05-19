@@ -2,6 +2,7 @@ import { debounce } from 'lodash';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
 import IMGNoData from '@/assets/image/img_no_data_invest.svg';
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
@@ -42,6 +43,8 @@ const Investment = observer(({ route }: { route: any }) => {
     const [dataMoney, setDataMoney] = useState<any>([]);
     const [moneyValueInvest, setMoneyValueInvest] = useState<ItemProps>();
     const [moneyValueInvested, setMoneyValueInvested] = useState<ItemProps>();
+    const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
+    const [dataSuggestion, setDataSuggestion] = useState<any[]>();
 
     const popupInvestRef = useRef<any>();
     const popupInvestedRef = useRef<any>();
@@ -61,7 +64,6 @@ const Investment = observer(({ route }: { route: any }) => {
         moneyInvested: ''
     });
 
-    console.log('render---');
 
     const { common, apiServices } = useAppStore();
 
@@ -75,7 +77,7 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const fetchDataInvested = useCallback(async (isLoadMore?: boolean) => {
         setCanLoadMoreUI(true);
-        
+
         if (!isLoadMore) {
             setIsLoading(true);
         }
@@ -162,6 +164,7 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [fetchAllDataInvest, fetchDataInvested]);
 
     const onEndReached = useCallback(() => {
+        console.log('handleLoadMore', condition.current.isLoading, condition.current.canLoadMore);
         if (!condition.current.isLoading && condition.current.canLoadMore) {
             fetchData(btnInvest, true);
         }
@@ -257,11 +260,11 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const handleInputOnChange = useCallback(
         (value: string) => {
-            if (value !== textSearch) {
-                setTextSearch(Utils.formatMoney(value));
-                condition.current.textSearch = Utils.formatTextToNumber(value);
-                debounceSearchItem();
-            }
+            setTextSearch(Utils.formatMoney(value));
+            setShowSuggestion(true);
+            setDataSuggestion(Utils.updateSuggestions(value));
+            condition.current.textSearch = Utils.formatTextToNumber(value);
+            debounceSearchItem();
         },
         [debounceSearchItem]
     );
@@ -326,7 +329,6 @@ const Investment = observer(({ route }: { route: any }) => {
         condition.current.fromDate = fromDate;
         condition.current.toDate = toDate;
         condition.current.moneyInvested = moneyValueInvested?.value || '';
-        console.log(toDate, fromDate, moneyValueInvested);
     }, [moneyValueInvested]);
 
     const onPopupInvest = useCallback(() => {
@@ -343,30 +345,59 @@ const Investment = observer(({ route }: { route: any }) => {
 
     }, [btnInvest]);
 
+    const onCancelPopupFilterInvested = useCallback(()=>{
+        condition.current.fromDate='';
+        condition.current.toDate='';
+        setMoneyValueInvested(undefined);
+    },[]);
+
+    const onCancelPopupFilter = useCallback(()=>{
+        condition.current.timeInvestment='';
+        condition.current.moneyInvest='';
+    },[]);
+
     const openTimeInvestment = useCallback(() => {
         refBottomSheetMoney.current.show();
     }, []);
 
+    const onPressSuggestItem = useCallback(() => {
+        setShowSuggestion(false);
+    }, []);
+
+    const renderSuggestionItem = useCallback(({ item }: any) => {
+        return <Touchable onPress={onPressSuggestItem} style={styles.itemSuggestion}>
+            <Text style={styles.txtSuggest}>{Utils.formatMoney(item)}</Text>
+        </Touchable>;
+    }, [onPressSuggestItem]);
+
     const renderSearchBar = useMemo(() => {
         return (
-            <View style={styles.wrapSearch}>
-                <MyTextInput
-                    onChangeText={handleInputOnChange}
-                    rightIcon={arrayIcon.login.search}
-                    containerInput={styles.input}
-                    placeHolder={Languages.invest.enter}
-                    keyboardType={'NUMBER'}
-                    value={textSearch}
-                />
-                <Touchable
-                    style={styles.iconFilter}
-                    onPress={onPopupInvest}
-                >
-                    <IcBtnFilter />
-                </Touchable>
-            </View>
+            <>
+                <View style={styles.wrapSearch}>
+                    <MyTextInput
+                        onChangeText={handleInputOnChange}
+                        rightIcon={arrayIcon.login.search}
+                        containerInput={styles.input}
+                        placeHolder={Languages.invest.enter}
+                        keyboardType={'NUMBER'}
+                        value={textSearch}
+                    />
+                    <Touchable
+                        style={styles.iconFilter}
+                        onPress={onPopupInvest}
+                    >
+                        <IcBtnFilter />
+                    </Touchable>
+
+                </View>
+                {showSuggestion && <FlatList
+                    renderItem={renderSuggestionItem}
+                    style={styles.suggestion}
+                    data={dataSuggestion}
+                />}
+            </>
         );
-    }, [handleInputOnChange, onPopupInvest, textSearch]);
+    }, [dataSuggestion, handleInputOnChange, onPopupInvest, renderSuggestionItem, showSuggestion, textSearch]);
 
     const renderLoading = useMemo(() => {
         return <View >{canLoadMoreUI && <Loading />}</View>;
@@ -390,13 +421,13 @@ const Investment = observer(({ route }: { route: any }) => {
                     {renderInvest(ENUM_INVEST_STATUS.INVESTING)}
                     {renderInvest(ENUM_INVEST_STATUS.HISTORY)}
                 </View>
+                {renderSearchBar}
                 <MyFlatList
                     contentContainerStyle={styles.flatList}
                     showsVerticalScrollIndicator={false}
                     data={listStore}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
-                    ListHeaderComponent={renderSearchBar}
                     ListFooterComponent={renderLoading}
                     refreshing={isRefreshing}
                     onRefresh={onRefresh}
@@ -411,6 +442,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 openBottomSheet={openBottomSheet}
                 timeInvestment={timeValue}
                 moneyInvestment={moneyValueInvest}
+                onCancel={onCancelPopupFilterInvested}
             />
             <PopupFilterInvested
                 ref={popupInvestedRef}
@@ -418,6 +450,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 onConfirm={onConfirmFilterInvested}
                 openTimeInvestment={openTimeInvestment}
                 money={moneyValueInvested?.value}
+                onCancel={onCancelPopupFilterInvested}
             />
             <BottomSheetComponentInvest
                 ref={refBottomSheetMoney}

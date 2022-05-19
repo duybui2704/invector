@@ -1,14 +1,11 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { StatusBar, Text, View, FlatList, Image } from 'react-native';
+import { StatusBar, Text, View, FlatList } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 
 import { LINKS } from '@/api/constants';
-import IcChartUp from '@/assets/image/home/ic_chart_up.svg';
-import IcDollar from '@/assets/image/home/ic_dollar.svg';
-import IcSmartPhone from '@/assets/image/home/ic_smartphone.svg';
-import IcWallet from '@/assets/image/home/ic_wallet.svg';
+import LogoWasLogin from '@/assets/image/home/logo_was_login.svg';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
 import { ENUM_INVEST_STATUS, LINK_TIENNGAY } from '@/common/constants';
 import Languages from '@/common/Languages';
@@ -35,6 +32,9 @@ import { MyImageView } from '@/components/image';
 import DateUtils from '@/utils/DateUtils';
 import { BaseModel } from '@/models/base-model';
 
+
+const PAGE_SIZE = 3;
+
 const Home = observer(() => {
     const { apiServices, userManager } = useAppStore();
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -47,7 +47,14 @@ const Home = observer(() => {
     const [showFloating, setShowFloating] = useState<boolean>(true);
     const refPopupFirst = useRef<PopupActions>();
     const [iconBanner, setIconBanner] = useState<BannerHome>();
+    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(false);
+    const [unMore, setUnMore] = useState<boolean>(false);
     const ref = useRef();
+    const condition = useRef({
+        isLoading: true,
+        offset: 0,
+        canLoadMore: true
+    });
 
     useEffect(() => {
         setShowFloating(true);
@@ -57,23 +64,42 @@ const Home = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
-        fetchContractsDash();
-        fetchDataInvest();
-        fetchDataBanner();
-    }, []);
+        if (isFocused) {
+            fetchContractsDash();
+            fetchDataInvest();
+            fetchDataBanner();
+        }
+    }, [isFocused]);
 
     const onOpenVPS = useCallback(() => {
         Utils.openURL(LINKS.VPS);
     }, []);
 
-    const fetchDataInvest = useCallback(async () => {
-        setIsLoading(true);
-        const resInvest = await apiServices.common.getListInvest();
+    const fetchDataInvest = useCallback(async (isLoadMore?: boolean) => {
+        setCanLoadMoreUI(true);
+        if (!isLoadMore) {
+            setIsLoading(true);
+        }
+        condition.current.isLoading = true;
+        const resInvest = await apiServices.common.getListInvest(PAGE_SIZE, condition.current.offset);
         setIsLoading(false);
         if (resInvest.success) {
             const data = resInvest?.data as PackageInvest[];
-            const temp = data.slice(0, 3);
-            setDataArr(temp);
+            const dataSize = data.length;
+            if (dataSize > 0) {
+                if (isLoadMore) {
+                    setDataArr((list) => [...list || [], ...data]);
+                }
+                else {
+                    setDataArr(data);
+                }
+                condition.current.offset += dataSize;
+            }
+            condition.current.isLoading = false;
+            condition.current.canLoadMore = dataSize >= PAGE_SIZE;
+            setUnMore(dataSize >= PAGE_SIZE);
+            setIsLoading(false);
+            setCanLoadMoreUI(condition.current.canLoadMore);
         }
     }, [apiServices.common]);
 
@@ -104,9 +130,11 @@ const Home = observer(() => {
 
     }, [apiServices.common]);
 
-    const gotoInvest = () => {
-        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVEST_NOW });
-    };
+    const onMore = useCallback(() => {
+        if (!condition.current.isLoading && condition.current.canLoadMore) {
+            fetchDataInvest(true);
+        }
+    }, [fetchDataInvest]);
 
     const navigateToDetail = useCallback((item: PackageInvest) => {
         if (userManager?.userInfo) {
@@ -122,7 +150,7 @@ const Home = observer(() => {
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, [userManager?.userInfo]);
+    }, [btnInvest, userManager?.userInfo]);
 
     const gotoLogin = useCallback((titleAuth: string) => {
         setTimeout(() => {
@@ -149,44 +177,6 @@ const Home = observer(() => {
         return `${index}${item.id}`;
     }, []);
 
-    const iconTouchable = useCallback((title: string) => {
-        switch (title) {
-            case Languages.home.have:
-                return <IcWallet />;
-            case Languages.home.invest:
-                return <IcDollar />;
-            case Languages.home.report:
-                return <IcChartUp />;
-            case Languages.home.payment:
-                return <IcSmartPhone />;
-            default:
-                return null;
-        }
-    }, []);
-
-    const renderIconTab = useCallback((title: string) => {
-        const onPress = () => {
-            switch (title) {
-                case Languages.home.have:
-                    return Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVESTING });
-                case Languages.home.invest:
-                    return gotoInvest();
-                case Languages.home.report:
-                    return Navigator.navigateScreen(TabsName.reportTabs);
-                case Languages.home.payment:
-                    return Navigator.navigateScreen(TabsName.paymentTabs);
-                default:
-                    return null;
-            }
-        };
-        return (
-            <Touchable style={styles.tab} onPress={onPress}>
-                {iconTouchable(title)}
-                <Text style={styles.txtTab}>{title}</Text>
-            </Touchable>
-        );
-    }, [iconTouchable, styles.tab, styles.txtTab]);
-
     const renderNewsItem = useCallback(({ item }: { item: BannerModel }) => {
         const navigate = () => {
             console.log('url', item.link);
@@ -212,7 +202,7 @@ const Home = observer(() => {
                 </Text>
             </Touchable>
         );
-    }, []);
+    }, [styles.communicationImage, styles.newsItem, styles.txtCommunityDes, styles.txtCommunityTitle]);
 
     const keyExtractorBanner = useCallback((item: BaseModel) => {
         return `${item._id?.$oid}`;
@@ -229,89 +219,103 @@ const Home = observer(() => {
                 keyExtractor={keyExtractorBanner}
             />
         );
-    }, [banners, keyExtractorBanner, renderNewsItem]);
-
-
-    // const renderTabBottom = useCallback((text: string, hasDash?: boolean) => {
-    //     return (
-    //         <KeyValue
-    //             title={text}
-    //             noIndicator
-    //             hasDashBottom={hasDash}
-    //             rightIcon={<IcChevronRight />}
-    //             styleTitle={styles.txtForEachTitleQuestion}
-    //             containerContent={styles.featureContainer}
-    //             disable={true}
-    //         />
-    //     );
-    // }, [styles.featureContainer, styles.txtForEachTitleQuestion]);
+    }, [banners, keyExtractorBanner, renderNewsItem, styles.communicationContainer]);
 
     const renderTop = useMemo(() => {
         return (
             <View style={styles.viewForeground}>
-                <View style={styles.viewTopLogo}>
-                    <LogoHome style={styles.logo} />
-                    <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
-                        <IcNotify style={styles.imgNotify} />
-                    </Touchable>
-                </View>
                 {userManager?.userInfo ?
-                    <View style={styles.viewTop}>
-                        <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
-                        <View style={styles.viewSumInvestValue}>
-                            <Text style={styles.txtSumInvestValue} numberOfLines={1}>
-                                {Utils.formatMoney(dataDash?.so_du)}
+                    <>
+                        <View style={styles.viewTopLogo}>
+                            <LogoWasLogin style={styles.logo} />
+                            <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
+                                <IcNotify style={styles.imgNotify} />
+                            </Touchable>
+                        </View>
+                        <View style={styles.viewTop}>
+                            <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
+                            <View style={styles.viewSumInvestValue}>
+                                <Text style={styles.txtSumInvestValue} numberOfLines={1}>
+                                    {Utils.formatMoney(dataDash?.tong_tien_dau_tu)}
+                                </Text>
                                 <Text style={styles.txtVND}> {Languages.home.vnd}</Text>
-                            </Text>
-                        </View>
-                        <View style={styles.wrapRow}>
-                            <View style={styles.wrapTotalInterest}>
-                                <View style={styles.txtLeft}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.sumpProfit}</Text>
-                                    <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                            </View>
+                            <View style={styles.wrapRow}>
+                                <View style={styles.wrapTotalInterest}>
+                                    <View style={styles.txtLeft}>
+                                        <Text style={styles.txtSumProfit}>{Languages.home.balanceVimo}</Text>
+                                        <View style={styles.viewSumInvestValue}>
+                                            <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                                {Utils.formatMoney(dataDash?.so_du)}
+                                            </Text>
+                                            <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                                        </View>
 
-                                        {Utils.formatMoney(dataDash?.tong_goc_da_tra)}
-                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.wrapTotalInterest}>
+                                    <View style={styles.txtRight}>
+                                        <Text style={styles.txtSumProfit}>{Languages.home.sumpProfit}</Text>
+                                        <View style={styles.viewSumInvestValue}>
+                                            <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
+                                                {Utils.formatMoney(dataDash?.tong_tien_lai)}
+                                            </Text>
+                                            <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                                        </View>
+                                    </View>
                                 </View>
                             </View>
-                            <View style={styles.wrapTotalInterest}>
-                                <View style={styles.txtRight}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.sumResidualProfit}</Text>
-                                    <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
-                                        {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
-                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </Text>
+                            <View style={styles.wrapRow}>
+                                <View style={styles.wrapTotalInterest}>
+                                    <View style={styles.txtLeft}>
+                                        <Text style={styles.txtSumProfit}>{Languages.home.totalCaption}</Text>
+                                        <View style={styles.viewSumInvestValue}>
+                                            <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                                {Utils.formatMoney(dataDash?.tong_goc_con_lai)}
+                                            </Text>
+                                            <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={styles.wrapTotalInterest}>
+                                    <View style={styles.txtRight}>
+                                        <Text style={styles.txtSumProfit}>{Languages.home.sumResidualProfit}</Text>
+                                        <View style={styles.viewSumInvestValue}>
+                                            <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
+                                                {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
+                                            </Text>
+                                            <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
+                                        </View>
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
+                    </>
                     :
-                    <View style={styles.viewTopCenter}>
-                        <Text style={styles.txtHello}>{Languages.home.hello}</Text>
-                        <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
-                        <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
-                    </View>}
-                {userManager?.userInfo ?
-                    <View style={styles.viewSmallMenu}>
-                        {renderIconTab(Languages.home.have)}
-                        {renderIconTab(Languages.home.invest)}
-                        {renderIconTab(Languages.home.report)}
-                        {renderIconTab(Languages.home.payment)}
-                    </View>
-                    :
+                    <>
+                        <View style={styles.viewTopLogo}>
+                            <LogoHome style={styles.logo} />
+                        </View>
+                        <View style={styles.viewTopCenter}>
+                            <Text style={styles.txtHello}>{Languages.home.hello}</Text>
+                            <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
+                            <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
+                        </View>
+                    </>
+                }
+                {!userManager?.userInfo &&
                     <View style={styles.viewSmallMenuLogin}>
                         {renderNavigateScreen(Languages.auth.txtLogin)}
                         {renderNavigateScreen(Languages.auth.txtSignUp)}
                     </View>}
             </View>
         );
-    }, [styles, onNotifyInvest, userManager?.userInfo, dataDash?.so_du, dataDash?.tong_goc_da_tra, dataDash?.tong_lai_con_lai, renderIconTab, renderNavigateScreen]);
+    }, [styles.viewForeground, styles.viewTopLogo, styles.logo, styles.viewRightTop, styles.imgNotify, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValue, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLogin, userManager?.userInfo, onNotifyInvest, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, renderNavigateScreen]);
 
     const renderFooter = useMemo(() => {
         return (
             <>
-                {dataArr && <Touchable style={styles.more} onPress={gotoInvest}>
+                {dataArr && unMore && <Touchable style={styles.more} onPress={onMore}>
                     <Text style={[styles.txtForEachTitleQuestion, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
                 </Touchable>
                 }
@@ -326,17 +330,9 @@ const Home = observer(() => {
                     <Text style={styles.txtCenter}>{Languages.home.newMedia}</Text>
                     {renderNews}
                 </View>
-                {/* <View style={styles.wrapManualQuestion}>
-                    <Text style={styles.txtTitleQuestion}>{Languages.home.question}</Text>
-                    {renderTabBottom(Languages.home.todoInvest, true)}
-                    {renderTabBottom(Languages.home.investNow, true)}
-                    {renderTabBottom(Languages.home.percentCalculated, true)}
-                    {renderTabBottom(Languages.home.paymentMethod, false)}
-                </View> */}
             </>
         );
-    }, [dataArr, styles.more, styles.txtForEachTitleQuestion,
-        styles.viewVfs, styles.txtVfs, styles.txtVPS, onOpenVPS, banners]);
+    }, [dataArr, unMore, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.viewBanner, styles.txtCenter, onMore, onOpenVPS, renderNews]);
 
 
     const renderItem = useCallback((item: any) => {
@@ -366,8 +362,9 @@ const Home = observer(() => {
     }, []);
 
     const renderContent = useMemo(() => {
+        console.log(dataArr);
         return (
-            <View style={styles.viewCenter}>
+            <View style={userManager?.userInfo ? [styles.viewCenter, { marginTop: - SCREEN_HEIGHT * 0.03 }] : styles.viewCenter}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
                 <FlatList
                     showsVerticalScrollIndicator={false}
@@ -380,7 +377,7 @@ const Home = observer(() => {
                 />
             </View>
         );
-    }, [dataArr, keyExtractor, renderFooter, renderItemInvestPackage, styles.txtCenter, styles.viewCenter]);
+    }, [dataArr, keyExtractor, renderFooter, renderItemInvestPackage, styles.txtCenter, styles.viewCenter, userManager?.userInfo]);
 
 
     const renderBackground = () => {

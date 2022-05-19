@@ -37,7 +37,7 @@ export const Styles = {
         shadowColor: COLORS.BLACK,
         shadowOffset: {
             width: 0,
-            height: 0
+            height: 4
         },
         shadowOpacity: 0.3,
         shadowRadius: 4,
@@ -50,7 +50,7 @@ export const Styles = {
             width: 0,
             height: 0
         },
-        shadowOpacity: 1,
+        shadowOpacity: 2,
         shadowRadius: 14,
         elevation: 10
     },
@@ -126,7 +126,7 @@ export const HtmlStyles = {
         ...Styles.typography.regular,
         color: COLORS.GREEN,
         fontSize: Configs.FontSize.size12
-    },
+    }
 };
 
 export const HtmlStylesSeen = {

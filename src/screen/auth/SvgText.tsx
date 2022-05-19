@@ -70,8 +70,8 @@ const SvgComponent = observer((props: any) => {
         } else {
             setR(SCREEN_WIDTH * 0.6);
             setX(SCREEN_WIDTH * 0.22);
-            setDx(SCREEN_WIDTH * 0.6 * 0.035);
-            setDx1(SCREEN_WIDTH * 0.6 * 6.05);
+            setDx(SCREEN_WIDTH * 0.6 * 0.04);
+            setDx1(SCREEN_WIDTH * 0.6 * 6.07);
             setDx2(SCREEN_WIDTH * 0.6 * 5.17);
             setDx3(SCREEN_WIDTH * 0.6 * 0.55);
         }

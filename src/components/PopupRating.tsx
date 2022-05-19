@@ -53,13 +53,13 @@ const PopupRating = forwardRef<
 
     const onChangeText = useCallback((_text?: string) => {
         setText(_text || '');
-        onChangeTextComment(_text || '');
+        onChangeTextComment?.(_text || '');
 
     }, [onChangeTextComment]);
 
     const ratingCompleted = useCallback((rating?: any) => {
         setRating(rating || 1);
-        ratingSwipeComplete(rating || 1);
+        ratingSwipeComplete?.(rating || 1);
     }, [ratingSwipeComplete]);
 
     useImperativeHandle(ref, () => ({
@@ -110,7 +110,6 @@ const PopupRating = forwardRef<
                         <Text style={styles.txtContent}>{Languages.common.comment}</Text>
                         <TextInput
                             multiline={true}
-                            keyboardType={'DEFAULT'}
                             numberOfLines={5}
                             maxLength={300}
                             onChangeText={onChangeText}
@@ -164,7 +163,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 16,
         marginTop: 20,
-        paddingTop: 10
     },
     wrapComment: {
         width: SCREEN_WIDTH * 0.75,

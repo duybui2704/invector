@@ -22,11 +22,10 @@ export const MyStylesHome = () => {
             },
             viewTop: {
                 position: 'absolute',
-                left: '-2%',
-                top: SCREEN_HEIGHT * 0.12,
+                top: SCREEN_HEIGHT * 0.08,
                 width: '100%',
-                alignItems: 'center',
-                marginHorizontal: 10
+                alignItems: 'center'
+                // marginHorizontal: 30
             },
             viewTopLogo: {
                 flexDirection: 'row',
@@ -35,7 +34,7 @@ export const MyStylesHome = () => {
                 marginHorizontal: 10,
                 marginTop: 45,
                 position: 'absolute',
-                top: 0
+                top: 0,
             },
             viewTopCenter: {
                 position: 'absolute',
@@ -54,7 +53,9 @@ export const MyStylesHome = () => {
             txtSumInvestValue: {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size32,
-                color: COLORS.WHITE
+                color: COLORS.WHITE,
+                alignItems: 'center',
+                marginLeft: SCREEN_WIDTH * 0.08
             },
             txtSumProfit: {
                 ...Styles.typography.regular,
@@ -64,13 +65,17 @@ export const MyStylesHome = () => {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size20,
                 color: COLORS.WHITE,
-                marginHorizontal: 2
+                marginHorizontal: 2,
+                position: 'relative',
+                bottom: 4
             },
             txtVNDSmall: {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size10,
                 color: COLORS.WHITE,
-                marginHorizontal: 2
+                marginHorizontal: 2,
+                position: 'relative',
+                bottom: 3
             },
             txtVPS: {
                 ...Styles.typography.medium,
@@ -110,9 +115,10 @@ export const MyStylesHome = () => {
                 alignItems: 'center'
             },
             txtRight: {
-                marginRight: '30%',
+                marginRight: '25%',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingLeft: '5%'
             },
             wrapRow: {
                 flexDirection: 'row'
@@ -121,7 +127,8 @@ export const MyStylesHome = () => {
                 flexDirection: 'row',
                 alignItems: 'flex-end',
                 justifyContent: 'center',
-                marginHorizontal: 30
+                paddingRight: 5,
+                marginHorizontal: 15
             },
             wrapTotalInterest: {
                 alignItems: 'center',
@@ -179,8 +186,7 @@ export const MyStylesHome = () => {
                 borderTopLeftRadius: 10
             },
             communicationContainer: {
-                paddingTop: 10,
-                paddingLeft: 15
+                paddingTop: 10
             },
             txtCommunityTitle: {
                 ...Styles.typography.medium,
@@ -276,7 +282,7 @@ export const MyStylesHome = () => {
             },
             viewRightTop: {
                 position: 'absolute',
-                right: 10
+                right: 15
             },
             logo: {
                 marginLeft: SCREEN_WIDTH * 0.05

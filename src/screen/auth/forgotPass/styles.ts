@@ -58,7 +58,8 @@ export const MyStylesForgotPass = () => {
                 ...Styles.typography.medium,
                 fontSize: Configs.FontSize.size20,
                 color: COLORS.GRAY_7,
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingRight: '2%'
             },
             viewTitle: {
                 flexDirection: 'row',

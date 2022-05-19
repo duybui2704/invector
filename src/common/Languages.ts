@@ -21,9 +21,11 @@ const Languages = {
     },
     home: {
         title: 'Trang chủ',
-        sumInvest: 'Tổng đầu tư',
+        sumInvest: 'Tổng vốn đầu tư',
         sumpProfit: 'Tổng lãi đã nhận',
         sumResidualProfit: 'Tổng lãi còn lại',
+        totalCaption: 'Tổng vốn còn lại',
+        balanceVimo: 'Số dư ví Vimo',
         have: 'Đang có',
         vnd: ' VNĐ',
         invest: 'Đầu tư',
@@ -47,7 +49,8 @@ const Languages = {
         nameApp: 'TienNgay.Vn',
         investAndAccumulate: 'Đầu tư & Tích luỹ',
         newMedia: 'Tin tức truyền thông',
-        investNowFloral: 'ĐẦU TƯ NGAY'
+        investNowFloral: 'ĐẦU TƯ NGAY',
+        noNotify: 'Bạn không có thông báo nào'
 
     },
     invest: {
@@ -168,7 +171,7 @@ const Languages = {
         txtD: 'Đăng',
         txtK: 'ký',
         titleForgotPass: 'Xác minh số điện thoại',
-        txtForgotPass: 'Nhập mã OTP đã được gửi về số điện thoại bạn đã xác nhận',
+        txtForgotPass: 'Nhập số điện thoại đã được liên kết với tài khoản của bạn',
         accuracy: 'Xác thực',
         sentOTP: 'Gửi mã',
         txtConfirmNewPass: 'Nhập lại mật khẩu mới',
