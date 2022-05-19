@@ -47,6 +47,7 @@ export const MyImageView = React.memo(({ imageUrl, style, resizeMode }: MyImageV
         return (
             <>
                 <Lightbox
+                    springConfig={{ tension: 90000000, friction: 9000000 }}
                     renderContent={renderContent}>
                     <FastImage
                         style={[styles.img, style]}

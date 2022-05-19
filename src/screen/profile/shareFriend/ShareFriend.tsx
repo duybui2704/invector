@@ -62,6 +62,7 @@ const ShareFriend = observer(() => {
                     <Text style={styles.txtQR}>{Languages.shareFriend.qrCode}</Text>
                     <Lightbox
                         renderContent={renderContent}
+                        springConfig={{ tension: 90000000, friction: 9000000 }}
                         swipeToDismiss={true}>
                         <QRCode
                             value={onLinkQR}

@@ -260,10 +260,11 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const handleInputOnChange = useCallback(
         (value: string) => {
-            setTextSearch(Utils.formatMoney(value));
+            const trimValue = value.trim();
+            setTextSearch(trimValue ? Utils.formatMoney(trimValue) : '');
             setShowSuggestion(true);
-            setDataSuggestion(Utils.updateSuggestions(value));
-            condition.current.textSearch = Utils.formatTextToNumber(value);
+            setDataSuggestion(Utils.updateSuggestions(trimValue));
+            condition.current.textSearch = trimValue ? Utils.formatTextToNumber(trimValue) : '';
             debounceSearchItem();
         },
         [debounceSearchItem]
@@ -345,16 +346,16 @@ const Investment = observer(({ route }: { route: any }) => {
 
     }, [btnInvest]);
 
-    const onCancelPopupFilterInvested = useCallback(()=>{
-        condition.current.fromDate='';
-        condition.current.toDate='';
+    const onCancelPopupFilterInvested = useCallback(() => {
+        condition.current.fromDate = '';
+        condition.current.toDate = '';
         setMoneyValueInvested(undefined);
-    },[]);
+    }, []);
 
-    const onCancelPopupFilter = useCallback(()=>{
-        condition.current.timeInvestment='';
-        condition.current.moneyInvest='';
-    },[]);
+    const onCancelPopupFilter = useCallback(() => {
+        condition.current.timeInvestment = '';
+        condition.current.moneyInvest = '';
+    }, []);
 
     const openTimeInvestment = useCallback(() => {
         refBottomSheetMoney.current.show();
@@ -390,11 +391,12 @@ const Investment = observer(({ route }: { route: any }) => {
                     </Touchable>
 
                 </View>
-                {showSuggestion && <FlatList
-                    renderItem={renderSuggestionItem}
-                    style={styles.suggestion}
-                    data={dataSuggestion}
-                />}
+                {showSuggestion && <View style={styles.suggestion}>
+                    <FlatList
+                        renderItem={renderSuggestionItem}
+                        data={dataSuggestion}
+                    />
+                </View>}
             </>
         );
     }, [dataSuggestion, handleInputOnChange, onPopupInvest, renderSuggestionItem, showSuggestion, textSearch]);
@@ -406,7 +408,8 @@ const Investment = observer(({ route }: { route: any }) => {
     const renderEmptyData = useMemo(() => {
         if (listStore?.length === 0 && isLoading === false) {
             return (
-                <NoData img={<IMGNoData />} description={Languages.invest.emptyData} />
+                <NoData img={<IMGNoData />}
+                    description={btnInvest === ENUM_INVEST_STATUS.INVESTING ? Languages.invest.emptyData2 : Languages.invest.emptyData1} />
             );
         }
         return null;
@@ -423,7 +426,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 </View>
                 {renderSearchBar}
                 <MyFlatList
-                    contentContainerStyle={styles.flatList}
+                    style={styles.flatList}
                     showsVerticalScrollIndicator={false}
                     data={listStore}
                     renderItem={renderItem}

@@ -85,7 +85,8 @@ const Languages = {
         payFinished:
         '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>',
         error:'Không lấy được dữ liệu',
-        emptyData: 'Bạn chưa có gói đầu tư nào, cùng đầu tư ngay nào !!!',
+        emptyData1: 'Không có gói đầu tư nào phù hợp.',
+        emptyData2: 'Bạn chưa có gói đầu tư nào, cùng đầu tư ngay nào !!!',
         fromDate:'Từ ngày',
         toDate:'Đến ngày'
     },
