@@ -181,7 +181,8 @@ const Languages = {
         change: 'Thay đổi',
         succuss: 'Đăng ký thành công',
         notifySuccess: 'Chúc mừng bạn đã đăng ký thành công TienNgay.vn Đầu tư & Tích luỹ. Tiến hành đầu tư ngay và nhận lãi khủng hàng tháng',
-        continue: 'Tiếp tục'
+        continue: 'Tiếp tục',
+        successChangePass: 'Đổi mật khẩu thành công !'
     },
     errorMsg: {
         userNameRequired: 'Họ và tên không được để trống',

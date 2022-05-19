@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
+import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import { useAppStore } from '@/hooks';
 import Loading from '@/components/loading';
 import { TextFieldActions } from '@/components/elements/textfield/types';
@@ -68,8 +69,8 @@ const ChangePass = observer((props: any) => {
             setLoading(true);
             const resChangePass = await apiServices.auth.updateNewPwd(props?.phone, props?.token, newPass, confirmPass);
             setLoading(false);
-            common.setSuccessChangePass(true);
             if (resChangePass.success) {
+                common.setSuccessChangePass(true);
                 setTimeout(() => {
                     setIsNavigate(true);
                 }, 1500);
@@ -82,6 +83,7 @@ const ChangePass = observer((props: any) => {
             <View style={styles.content}>
                 <View style={styles.viewTitle}>
                     <Text style={styles.txtTitle}>{Languages.auth.titleChangePass}</Text>
+                    <IcLine width={'35%'} />
                 </View>
                 <View style={styles.viewTxt}>
                     <Text style={styles.txt}>{Languages.auth.txtChange}</Text>

@@ -65,6 +65,7 @@ const Home = observer(() => {
 
     useEffect(() => {
         if (isFocused) {
+            condition.current.offset = 0;
             fetchContractsDash();
             fetchDataInvest();
             fetchDataBanner();
@@ -226,12 +227,6 @@ const Home = observer(() => {
             <View style={styles.viewForeground}>
                 {userManager?.userInfo ?
                     <>
-                        <View style={styles.viewTopLogo}>
-                            <LogoWasLogin style={styles.logo} />
-                            <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
-                                <IcNotify style={styles.imgNotify} />
-                            </Touchable>
-                        </View>
                         <View style={styles.viewTop}>
                             <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
                             <View style={styles.viewSumInvestValue}>
@@ -289,6 +284,12 @@ const Home = observer(() => {
                                     </View>
                                 </View>
                             </View>
+                        </View>
+                        <View style={styles.viewTopLogo}>
+                            <LogoWasLogin style={styles.logo} />
+                            <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
+                                <IcNotify style={styles.imgNotify} width={40} />
+                            </Touchable>
                         </View>
                     </>
                     :
