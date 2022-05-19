@@ -113,10 +113,10 @@ const Profile = observer(() => {
         );
     }, [userManager]);
 
-    const renderPopupLogout = useCallback((ref: any) => {
+    const renderPopupLogout = useMemo(() => {
         return (
             <PopupNotifyNoAction
-                ref={ref}
+                ref={popupLogout}
                 renderIcon={<WarnIC />}
                 containerAllBtn={styles.containerAllBtnPopup}
                 containerAgreeBtn={styles.containerItemBtnPopup}
@@ -143,7 +143,7 @@ const Profile = observer(() => {
         }
     }, [onLinkRate, ratingPoint]);
 
-    const renderPopupRating = useCallback((ref: any) => {
+    const renderPopupRating = useMemo(() => {
         const onChangeTextComment = async (_commentText?: string) => {
             setText(_commentText || '');
         };
@@ -152,7 +152,7 @@ const Profile = observer(() => {
         };
         return (
             <PopupRating
-                ref={ref}
+                ref={popupRating}
                 onConfirm={onAgreeRating}
                 onChangeTextComment={onChangeTextComment}
                 ratingSwipeComplete={onRating}
@@ -481,8 +481,8 @@ const Profile = observer(() => {
             {popupUpdatePassCode}
             {renderPopupError}
             {renderPinCode}
-            {renderPopupLogout(popupLogout)}
-            {renderPopupRating(popupRating)}
+            {renderPopupLogout}
+            {renderPopupRating}
         </View>
     );
 });

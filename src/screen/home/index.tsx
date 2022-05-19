@@ -66,9 +66,11 @@ const Home = observer(() => {
     useEffect(() => {
         if (isFocused) {
             condition.current.offset = 0;
-            fetchContractsDash();
             fetchDataInvest();
             fetchDataBanner();
+            if(userManager.userInfo){
+                fetchContractsDash();
+            }
         }
     }, [isFocused]);
 

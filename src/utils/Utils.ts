@@ -182,28 +182,30 @@ async function configNotification(onNotification: () => void) {
     requestUserPermissionNotify();
     createChannel();
 
-    PushNotification.configure({
-        async onNotification(notification: any) {
-            if (notification.channelId) {
-                onNotification();
-            }
-        },
-
-        onAction(notification: any) {
-            console.log('ACTION:', notification.action);
-            console.log('NOTIFICATION:', notification);
-        },
-        onRegistrationError(err: any) {
-            console.error(err.message, err);
-        },
-        permissions: {
-            alert: true,
-            badge: true,
-            sound: true
-        },
-        popInitialNotification: true,
-        requestPermissions: true
-    });
+    if(Platform.OS === 'android'){
+        PushNotification.configure({
+            async onNotification(notification: any) {
+                if (notification.channelId) {
+                    onNotification();
+                }
+            },
+    
+            onAction(notification: any) {
+                console.log('ACTION:', notification.action);
+                console.log('NOTIFICATION:', notification);
+            },
+            onRegistrationError(err: any) {
+                console.error(err.message, err);
+            },
+            permissions: {
+                alert: true,
+                badge: true,
+                sound: true
+            },
+            popInitialNotification: true,
+            requestPermissions: true
+        });
+    }
 }
 function convertSecondToMinutes(value: number) {
     return `${Math.floor(value / 60)}:${value % 60 ? value % 60 : '00'}`;

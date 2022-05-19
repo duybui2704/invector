@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet, Image } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Lightbox from 'react-native-lightbox';
+import Lightbox from 'react-native-lightbox-v2';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
 import { COLORS } from '@/theme';
