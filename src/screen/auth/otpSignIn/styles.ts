@@ -33,7 +33,7 @@ export const MyStylesOtp = () => {
                 justifyContent: 'center',
                 marginTop: SCREEN_WIDTH * 0.02,
                 marginBottom: SCREEN_WIDTH * 0.01,
-                marginLeft: 10
+                marginLeft: SCREEN_WIDTH * 0.01
             },
             inputOtp: {
                 ...Styles.typography.mediumSmall,
@@ -79,16 +79,17 @@ export const MyStylesOtp = () => {
                 color: COLORS.RED
             },
             wrapOTP: {
-                backgroundColor: COLORS.WHITE,
+                backgroundColor: COLORS.TRANSPARENT,
                 height: SCREEN_WIDTH * 0.14,
                 paddingHorizontal: 10,
+                paddingLeft: 20,
                 flexDirection: 'row',
                 marginBottom: 10
             },
             viewOtp: {
                 ...Styles.typography.medium,
-                width: SCREEN_WIDTH * 0.12,
-                height: SCREEN_WIDTH * 0.12,
+                width: SCREEN_WIDTH * 0.11,
+                height: SCREEN_WIDTH * 0.11,
                 marginVertical: 10,
                 marginHorizontal: 2,
                 borderWidth: 1,

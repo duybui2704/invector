@@ -101,20 +101,20 @@ export default function Broadening() {
                 swipe={swipe}
                 tiltSign={tiltSign}
                 txt={item.txt}
-                handleChoice={() => { handleChoice(item.title, -1.5); }}
+                handleChoice={() => { handleChoice(item.title, -1.8); }}
             />
         );
     }, []);
 
     return (
-        <ImageBackground style={styles.main} source={Images.bg_board} resizeMode='stretch'>
+        <Animated.View style={styles.main}>
             <StatusBar
                 barStyle={'dark-content'}
                 animated
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
             />
-            <Animated.View style={styles.container}>
+            <ImageBackground style={styles.main} source={Images.bg_board} resizeMode={'stretch'} >
                 <FlatList
                     data={data}
                     horizontal
@@ -122,7 +122,7 @@ export default function Broadening() {
                     keyExtractor={keyExtractor}
                     renderItem={renderItemFlatList}
                 />
-            </Animated.View>
-        </ImageBackground>
+            </ImageBackground>
+        </Animated.View>
     );
 }

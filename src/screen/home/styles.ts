@@ -26,7 +26,7 @@ export const MyStylesHome = () => {
                 fontSize: Configs.FontSize.size16,
                 color: COLORS.GRAY_7,
                 marginTop: 20,
-                marginBottom: 8,
+                marginBottom: 8
             },
             marginHorizontal: {
                 marginHorizontal: 15
@@ -36,16 +36,15 @@ export const MyStylesHome = () => {
                 top: SCREEN_HEIGHT * 0.08,
                 width: '100%',
                 alignItems: 'center'
-                // marginHorizontal: 30
             },
             viewTopLogo: {
                 flexDirection: 'row',
                 width: '100%',
                 alignItems: 'center',
                 marginHorizontal: 10,
-                marginTop: 45,
+                marginTop: SCREEN_HEIGHT * 0.045,
                 position: 'absolute',
-                top: 0,
+                top: 0
             },
             viewTopCenter: {
                 position: 'absolute',
@@ -70,7 +69,8 @@ export const MyStylesHome = () => {
             },
             txtSumProfit: {
                 ...Styles.typography.regular,
-                color: COLORS.WHITE
+                color: COLORS.WHITE,
+                paddingBottom: SCREEN_HEIGHT * 0.005
             },
             txtVND: {
                 ...Styles.typography.regular,
@@ -103,16 +103,14 @@ export const MyStylesHome = () => {
                 fontSize: Configs.FontSize.size20,
                 color: COLORS.WHITE,
                 marginHorizontal: 2,
-                marginRight: 5,
-                marginTop: 5
+                marginRight: 5
             },
             txtTotalInterestExtant: {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size20,
                 color: COLORS.WHITE,
                 marginHorizontal: 2,
-                marginLeft: 5,
-                marginTop: 5
+                marginLeft: 5
             },
             // txtTitleQuestion: {
             //     ...Styles.typography.medium,
@@ -139,24 +137,13 @@ export const MyStylesHome = () => {
                 alignItems: 'flex-end',
                 justifyContent: 'center',
                 paddingRight: 5,
-                marginHorizontal: 15
+                marginHorizontal: 15,
+                paddingVertical: SCREEN_HEIGHT * 0.002
             },
             wrapTotalInterest: {
                 alignItems: 'center',
-                marginVertical: 8,
+                marginVertical: SCREEN_HEIGHT * 0.005,
                 width: '60%'
-            },
-            viewSmallMenu: {
-                ...Styles.shadow,
-                flexDirection: 'row',
-                width: '92%',
-                paddingVertical: 8,
-                backgroundColor: COLORS.WHITE,
-                borderRadius: 25,
-                justifyContent: 'space-around',
-                alignItems: 'center',
-                position: 'absolute',
-                top: SCREEN_HEIGHT / 3.4
             },
             viewSmallMenuLogin: {
                 ...Styles.shadow,
@@ -167,7 +154,7 @@ export const MyStylesHome = () => {
                 justifyContent: 'space-around',
                 alignItems: 'center',
                 position: 'absolute',
-                top: SCREEN_HEIGHT / 3.4
+                top: SCREEN_HEIGHT / 3.55
             },
             tab: {
                 flex: 1,
@@ -217,7 +204,7 @@ export const MyStylesHome = () => {
                 width: '100%',
                 paddingVertical: 10,
                 marginBottom: 10,
-                alignItems: 'center',
+                alignItems: 'center'
             },
             viewVfs: {
                 ...Styles.shadow,
@@ -227,35 +214,15 @@ export const MyStylesHome = () => {
                 paddingHorizontal: 10,
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                paddingVertical: 8,
+                paddingVertical: 8
             },
             txtVfs: {
                 flex: 1,
                 flexDirection: 'column',
                 paddingLeft: 20
             },
-            // wrapManualQuestion: {
-            //     ...Styles.shadow,
-            //     width: '100%',
-            //     backgroundColor: COLORS.WHITE,
-            //     borderRadius: 15,
-            //     marginVertical: 20,
-            //     paddingVertical: 10
-            // },
             viewBanner: {
                 marginTop: SCREEN_WIDTH * 0.02
-            },
-            txtQuestion: {
-                flex: 1,
-                flexDirection: 'row',
-                paddingVertical: 8,
-                alignItems: 'center'
-            },
-            txtQuestionTop: {
-                flex: 1,
-                flexDirection: 'row',
-                paddingVertical: 5,
-                alignItems: 'center'
             },
             viewTxtBottom: {
                 width: '100%',
@@ -271,7 +238,7 @@ export const MyStylesHome = () => {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                paddingVertical: 20
+                paddingVertical: SCREEN_HEIGHT * 0.035
             },
             txtHello: {
                 fontFamily: Configs.FontFamily.medium,
@@ -303,10 +270,6 @@ export const MyStylesHome = () => {
             imgNotify: {
                 width: SCREEN_WIDTH * 0.08
             }
-            // featureContainer: {
-            //     width: '100%',
-            //     paddingVertical: 6
-            // }
         }
         ), []);
 };

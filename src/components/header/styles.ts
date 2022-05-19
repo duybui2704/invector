@@ -17,7 +17,7 @@ export const MyStylesHeader = () => {
             right: 0,
             left: 0,
             width: SCREEN_WIDTH,
-            height: SCREEN_HEIGHT / 3
+            height: SCREEN_HEIGHT / 2.9
         },
         imageBg1: {
             position: 'absolute',

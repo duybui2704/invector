@@ -58,9 +58,13 @@ const Auth = observer(({ route }: any) => {
     }, []);
 
     const screenRatio = useCallback(() => {
-        if (ratio < 1.662) {
+        console.log(SCREEN_HEIGHT, SCREEN_WIDTH, ratio);
+        if (ratio <= 1.7) {
             setWid(SCREEN_WIDTH * 0.65);
-        } else {
+        }
+        else if (ratio >= 1.7 && ratio <= 1.9) {
+            setWid(SCREEN_WIDTH * 0.71);
+        } else if (ratio > 1.9) {
             setWid(SCREEN_WIDTH * 0.75);
         }
     }, []);
@@ -132,8 +136,8 @@ const Auth = observer(({ route }: any) => {
             </Touchable>
             <View style={styles.viewLogo}>
                 <LogoAuth
-                    width={SCREEN_HEIGHT * 0.22}
-                    height={SCREEN_HEIGHT * 0.22}
+                    width={SCREEN_HEIGHT * 0.2}
+                    height={SCREEN_HEIGHT * 0.2}
                 />
             </View>
 

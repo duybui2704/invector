@@ -32,7 +32,8 @@ export const MyStylesCard = () => {
             txtContinue: {
                 fontSize: Configs.FontSize.size16,
                 color: COLORS.WHITE,
-                fontFamily: Configs.FontFamily.regular
+                fontFamily: Configs.FontFamily.regular,
+                paddingVertical: '5%'
             },
             txt: {
                 fontSize: Configs.FontSize.size14,
@@ -47,12 +48,10 @@ export const MyStylesCard = () => {
                 marginHorizontal: 10
             },
             viewText: {
-                width: '100%',
-                height: SCREEN_HEIGHT * 0.2
+                width: '100%'
             },
             tob: {
                 width: '40%',
-                height: '6%',
                 borderRadius: 25,
                 borderWidth: 1,
                 borderColor: COLORS.WHITE,
