@@ -22,6 +22,7 @@ import Loading from '@/components/loading';
 import IMGNoDataTransaction from '@/assets/image/img_no_data_transaction.svg';
 
 const PER_PAGE = 7;
+
 const Transaction = observer(() => {
     const { apiServices } = useAppStore();
     const isFocused = useIsFocused();
@@ -80,9 +81,7 @@ const Transaction = observer(() => {
         }
         condition.current.canLoadMore = dataSize >= PER_PAGE;
         setIsFreshing(false);
-        setLoadMore(true);
-        setLoadMore(false);
-        setIsFreshing(false);
+        setLoadMore(condition.current.canLoadMore);
 
     }, [apiServices.history]);
 
