@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         borderWidth: 1,
         borderColor: COLORS.GRAY_11,
-        marginBottom: 8
+        marginBottom: 8,
+        flex:1
     },
     rowTop: {
         flexDirection: 'row',
@@ -101,7 +102,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 8
+        paddingVertical: 8,
+        width: '100%'
     },
     rowBottom: {
         flexDirection: 'row',

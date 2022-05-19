@@ -149,7 +149,7 @@ const Transaction = observer(() => {
                     item={item}
                     onPress={_onPress}
                     selected={selected}
-                    disabled={false}
+                    disabled={item.type === selectedFilter}
                 />
             );
         },

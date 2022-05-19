@@ -57,7 +57,7 @@ export interface RePay {
     bank_name?: string;
     interest_receiving_account?: string;
     name_bank_account?: string;
-    type_card?: string;
+    type_card?: number;
     type_interest_receiving_account?: string;
 }
 

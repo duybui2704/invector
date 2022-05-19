@@ -30,23 +30,30 @@ import ToastUtils from '@/utils/ToastUtils';
 import Loading from '@/components/loading';
 import { UserInfoModal } from '@/models/user-models';
 import { DataBanksModal } from '@/models/payment-link-models';
+import Utils from '@/utils/Utils';
+import Navigator from '@/routers/Navigator';
 
 const AccountBank = observer(() => {
     const { apiServices, userManager } = useAppStore();
     const styles = MyStylesAccountBank();
     const [dataBanks, setDataBanks] = useState<ItemProps[]>([]);
-    const [banks, setBanks] = useState<string>('');
+    const [banks, setBanks] = useState<string>(userManager.userInfo?.tra_lai?.bank_name || '');
+    const [nameBank, setNameBank] = useState<string>(userManager.userInfo?.tra_lai?.bank_name || '');
     const [accountNumber, setAccountNumber] = useState<string>(userManager.userInfo?.tra_lai?.interest_receiving_account || '');
     const [ATMNumber, setATMNumber] = useState<string>(userManager.userInfo?.tra_lai?.interest_receiving_account || '');
+    const [typeCard, setTypeCard] = useState<number>(userManager.userInfo?.tra_lai?.type_card || 1);
     const [accountProvider, setAccountProvider] = useState<string>(userManager.userInfo?.tra_lai?.name_bank_account || '');
-    const [active, setActive] = useState<boolean>(true);
     const [type, setType] = useState<string>(ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER || '');
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [nameBank, setNameBank] = useState<string>(userManager.userInfo?.tra_lai?.bank_name || '');
+
     const accountNumberRef = useRef<TextFieldActions>(null);
     const ATMNumberRef = useRef<TextFieldActions>(null);
     const accountProviderRef = useRef<TextFieldActions>(null);
     const bankRef = useRef<PopupActionTypes>(null);
+
+    useEffect(() => {
+        fetchBankList();
+    }, []);
 
     const fetchBankList = useCallback(async () => {
         const res = await apiServices.paymentMethod.getBank();
@@ -63,24 +70,20 @@ const AccountBank = observer(() => {
         }
     }, [apiServices.paymentMethod, nameBank]);
 
-    useEffect(() => {
-        fetchBankList();
-    }, []);
-
-    const onChangeText = useCallback((value?: any, tag?: any) => {
+    const onChangeText = useCallback(async (value?: any, tag?: any) => {
         switch (tag) {
             case Languages.accountBank.accountNumber:
                 return setAccountNumber(value);
             case Languages.accountBank.ATMNumber:
                 return setATMNumber(value);
             case Languages.accountBank.accountProvider:
-                return setAccountProvider(value);
+                return setAccountProvider(Utils.formatForEachWordCase(value));
             default:
                 return null;
         }
     }, []);
 
-    const renderInput = useCallback((_title?: any, _placeHolder?: any, _text?: string, _ref?: any, typeKeyboard?: any, length?: number) => {
+    const renderInput = useCallback((_title?: string, _placeHolder?: string, _text?: string, _ref?: any, typeKeyboard?: any, length?: number) => {
         const onChange = (text: string) => {
             onChangeText(text, _title);
         };
@@ -103,31 +106,39 @@ const AccountBank = observer(() => {
         </View>;
     }, [onChangeText, styles.containerStyle, styles.groupInput, styles.inputStyle, styles.pwd, styles.title]);
 
+    const onPressType = useCallback((_title?: string) => {
+        switch (_title) {
+            case Languages.accountBank.accountNumber:
+                setType(ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER);
+                setTypeCard(1);
+                break;
+            case Languages.accountBank.ATMNumber:
+                setType(ENUM_TYPE_CARD_BANK.ATM_NUMBER);
+                setTypeCard(2);
+                break;
+            default:
+                setType(ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER);
+                setTypeCard(1);
+                break;
+        }
+    }, []);
+
     const renderAccBank = useCallback((title?: string, status?: boolean) => {
 
         const onType = () => {
-            setActive(title === ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER);
-            switch (title) {
-                case ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER:
-                    setType(ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER);
-                    break;
-                case ENUM_TYPE_CARD_BANK.ATM_NUMBER:
-                    setType(ENUM_TYPE_CARD_BANK.ATM_NUMBER);
-                    break;
-                default:
-                    break;
-            }
+            onPressType(title);
         };
+
         return (
-            <Touchable style={styles.rowContainerItemInputChoose} onPress={onType} >
+            <Touchable style={styles.rowContainerItemInputChoose} onPress={onType} disabled={status} >
                 {status ?
-                    <LinkIC width={24} height={24} /> :
-                    <NotLinkIC width={24} height={24} />
+                    <LinkIC width={20} height={20} /> :
+                    <NotLinkIC width={20} height={20} />
                 }
                 <Text style={styles.textChooseToInput}>{title}</Text>
             </Touchable>
         );
-    }, [styles.rowContainerItemInputChoose, styles.textChooseToInput]);
+    }, [onPressType, styles.rowContainerItemInputChoose, styles.textChooseToInput]);
 
     const onBanksChoose = useCallback((item?: ItemProps) => {
         setBanks(item?.id || '');
@@ -135,10 +146,10 @@ const AccountBank = observer(() => {
     }, []);
 
     const onValidate = useCallback(() => {
-        const errMsgBank = FormValidate.inputValidate(banks, Languages.errorMsg.errBankEmpty);
-        const errMsgAccNumber = FormValidate.inputValidate(accountNumber, Languages.errorMsg.errStkEmpty, Languages.errorMsg.errStk, 16);
-        const errMsgATMNumber = FormValidate.inputValidate(ATMNumber, Languages.errorMsg.errStkEmpty, Languages.errorMsg.errStk, 16);
-        const errMsgName = FormValidate.inputNameEmpty(accountProvider, Languages.errorMsg.errNameEmpty, Languages.errorMsg.userNameRegex);
+        const errMsgBank = FormValidate.inputEmpty(banks, Languages.errorMsg.errBankEmpty);
+        const errMsgAccNumber = FormValidate.inputValidate(accountNumber, Languages.errorMsg.errStkEmpty, '', 16, true);
+        const errMsgATMNumber = FormValidate.inputValidate(ATMNumber, Languages.errorMsg.errStkEmpty, '', 19, false, true);
+        const errMsgName = FormValidate.inputNameEmpty(Utils.formatForEachWordCase(accountProvider), Languages.errorMsg.errNameEmpty, Languages.errorMsg.userNameRegex);
 
         accountNumberRef.current?.setErrorMsg(errMsgAccNumber);
         ATMNumberRef.current?.setErrorMsg(errMsgATMNumber);
@@ -156,20 +167,29 @@ const AccountBank = observer(() => {
     const onAddAccount = useCallback(async () => {
         setIsLoading(true);
         if (onValidate()) {
-            const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest(TYPE_INTEREST_RECEIVE_ACC.BANK, banks, accountNumber, accountProvider, 2);
+            const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest(
+                TYPE_INTEREST_RECEIVE_ACC.BANK,
+                banks,
+                typeCard === 1 ? accountNumber : ATMNumber,
+                accountProvider,
+                typeCard
+            );
             if (res.success) {
                 ToastUtils.showSuccessToast(Languages.msgNotify.successAccountLinkBank);
                 setIsLoading(false);
                 const resUser = await apiServices.auth.getUserInfo();
-                const user = resUser.data as UserInfoModal;
-                userManager.updateUserInfo({
-                    ...userManager.userInfo,
-                    ...user
-                });
+                if (resUser.success) {
+                    const user = resUser.data as UserInfoModal;
+                    userManager.updateUserInfo({
+                        ...userManager.userInfo,
+                        ...user
+                    });
+                    Navigator.goBack();
+                }
             }
         }
         setIsLoading(false);
-    }, [accountNumber, accountProvider, apiServices.auth, apiServices.paymentMethod, banks, onValidate, userManager]);
+    }, [ATMNumber, accountNumber, accountProvider, apiServices.auth, apiServices.paymentMethod, banks, onValidate, typeCard, userManager]);
 
     return (
         <GestureHandlerRootView style={styles.container}>
@@ -198,22 +218,48 @@ const AccountBank = observer(() => {
                                         rightIcon={<ArrowIC />}
                                     />
                                     <View style={styles.rowContainerAllInputChoose}>
-                                        {renderAccBank(Languages.accountBank.accountNumber, type === ENUM_TYPE_CARD_BANK.ACCOUNT_NUMBER)}
-                                        {renderAccBank(Languages.accountBank.ATMNumber, type === ENUM_TYPE_CARD_BANK.ATM_NUMBER)}
+                                        {renderAccBank(Languages.accountBank.accountNumber,
+                                            typeCard === 1)}
+                                        {renderAccBank(Languages.accountBank.ATMNumber,
+                                            typeCard === 2)}
                                     </View>
-                                    {active ? renderInput(Languages.accountBank.accountNumber, Languages.accountBank.accountNumber, accountNumber, accountNumberRef, 'NUMBER', 16) :
-                                        renderInput(Languages.accountBank.ATMNumber, Languages.accountBank.ATMNumber, ATMNumber, ATMNumberRef, 'NUMBER', 16)}
-                                    {renderInput(Languages.accountBank.accountProvider, Languages.accountBank.accountProviderName, accountProvider, accountProviderRef)}
+                                    {typeCard === 1 ?
+                                        renderInput(
+                                            Languages.accountBank.accountNumber,
+                                            Languages.accountBank.accountNumber,
+                                            accountNumber,
+                                            accountNumberRef,
+                                            'NUMBER',
+                                            16
+                                        ) :
+                                        renderInput(
+                                            Languages.accountBank.ATMNumber,
+                                            Languages.accountBank.ATMNumber,
+                                            ATMNumber,
+                                            ATMNumberRef,
+                                            'NUMBER',
+                                            16
+                                        )
+                                    }
+
+                                    {renderInput(
+                                        Languages.accountBank.accountProvider,
+                                        Languages.accountBank.accountProviderName,
+                                        accountProvider,
+                                        accountProviderRef,
+                                        'DEFAULT',
+                                        50)
+                                    }
                                 </KeyboardAvoidingView>
                                 <HTMLView
                                     value={Languages.accountBank.noteAccountBank}
                                     stylesheet={HtmlStyles || undefined} />
 
                                 <Button label={Languages.accountBank.addAccount}
-                                    buttonStyle={nameBank && accountNumber && accountProvider && ATMNumber ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
+                                    buttonStyle={nameBank && accountProvider && (accountNumber || ATMNumber) ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
                                     isLowerCase
                                     onPress={onAddAccount}
-                                    disabled={!nameBank || !accountNumber || !accountProvider || !ATMNumber}
+                                    disabled={!nameBank || !accountProvider || (!accountNumber || !ATMNumber)}
                                     style={styles.wrapBtnAddAcc}
                                 />
                             </View>

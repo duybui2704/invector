@@ -65,7 +65,7 @@ const Investment = observer(({ route }: { route: any }) => {
     });
 
 
-    const { common, apiServices } = useAppStore();
+    const { apiServices } = useAppStore();
 
     useEffect(() => {
         setBtnInvest(ENUM_INVEST_STATUS.INVEST_NOW);
@@ -273,13 +273,29 @@ const Investment = observer(({ route }: { route: any }) => {
     }, []);
 
     const renderItem = useCallback(({ item }: any) => {
+        const navigateScreen = () => {
+            navigateToDetail(item);
+        };
+        const onPressToInvestNowScreen = () => {
+            navigateToInvestNow(item);
+        };
         switch (btnInvest) {
             case ENUM_INVEST_STATUS.INVEST_NOW:
-                return <ItemInvest onPress={() => navigateToDetail(item)} onPressInvestNow={() => navigateToInvestNow(item)} data={item} title={ENUM_INVEST_STATUS.INVEST_NOW} />;
+                return <ItemInvest
+                    onPress={navigateScreen}
+                    onPressInvestNow={onPressToInvestNowScreen}
+                    data={item}
+                    title={ENUM_INVEST_STATUS.INVEST_NOW} />;
             case ENUM_INVEST_STATUS.INVESTING:
-                return <ItemInvest onPress={() => navigateToDetail(item)} data={item} title={ENUM_INVEST_STATUS.INVESTING} />;
+                return <ItemInvest
+                    onPress={navigateScreen}
+                    data={item}
+                    title={ENUM_INVEST_STATUS.INVESTING} />;
             case ENUM_INVEST_STATUS.HISTORY:
-                return <ItemInvest onPress={() => navigateToDetail(item)} data={item} title={ENUM_INVEST_STATUS.HISTORY} />;
+                return <ItemInvest
+                    onPress={navigateScreen}
+                    data={item}
+                    title={ENUM_INVEST_STATUS.HISTORY} />;
             default:
                 return null;
         }
@@ -345,16 +361,16 @@ const Investment = observer(({ route }: { route: any }) => {
 
     }, [btnInvest]);
 
-    const onCancelPopupFilterInvested = useCallback(()=>{
-        condition.current.fromDate='';
-        condition.current.toDate='';
+    const onCancelPopupFilterInvested = useCallback(() => {
+        condition.current.fromDate = '';
+        condition.current.toDate = '';
         setMoneyValueInvested(undefined);
-    },[]);
+    }, []);
 
-    const onCancelPopupFilter = useCallback(()=>{
-        condition.current.timeInvestment='';
-        condition.current.moneyInvest='';
-    },[]);
+    const onCancelPopupFilter = useCallback(() => {
+        condition.current.timeInvestment = '';
+        condition.current.moneyInvest = '';
+    }, []);
 
     const openTimeInvestment = useCallback(() => {
         refBottomSheetMoney.current.show();

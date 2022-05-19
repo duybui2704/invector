@@ -12,7 +12,9 @@ const styles = StyleSheet.create({
         height: SCREEN_HEIGHT
     },
     wrapContent: {
-        // marginHorizontal: 16
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        width: '100%'
     },
     wrapNodata:{
         flex:1,
@@ -29,14 +31,13 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.GRAY_13,
         padding: 4,
         borderRadius: 26,
-        marginBottom: 12,
-        marginHorizontal: 16
+        marginBottom: 12
     },
     btInvest: {
-        width: (SCREEN_WIDTH - 40) / 3,
         alignItems: 'center',
         paddingVertical: 4,
-        borderRadius: 26
+        borderRadius: 26,
+        flex: 1
     },
     txtBtInvest: {
         ...Styles.typography.medium,
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
         borderRadius: 26,
         borderWidth: 1,
         borderColor: COLORS.GRAY_11,
-        width: '90%'
+        width: '88%'
     },
     suggestion: {
         ...Styles.heavyShadow,
@@ -59,7 +60,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 100,
         zIndex: 222,
-        // borderWidth:1,
         borderColor: COLORS.GRAY_11
     },
     flatListSuggestion: {
@@ -79,9 +79,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginHorizontal: 16,
         position: 'relative',
-        marginBottom:10
+        marginBottom:10,
+        width: '100%'
     },
     iconFilter: {
         width: 32,
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
         ...Styles.typography.medium
     },
     flatList: {
-        paddingBottom: 150,
-        marginHorizontal: 16
+        paddingBottom: 200,
+        width:'100%'
     },
     txtYellow: {
         ...Styles.typography.medium,

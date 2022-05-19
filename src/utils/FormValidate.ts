@@ -114,7 +114,7 @@ function passConFirmPhone(phone: string) {
     return errMsg;
 }
 
-function inputNameEmpty (value: any, errEmpty: string, errCharacters?: any) {
+function inputNameEmpty(value: any, errEmpty: string, errCharacters?: any) {
     let errMsg = '';
     if (Validate.isStringEmpty(value)) {
         errMsg = errEmpty;
@@ -146,32 +146,46 @@ function birthdayValidate(birthday: string) {
     let errMsg = '';
     const today = new Date();
     const todayYear = today.getFullYear().toString();
-    const birthdayCurrent = birthday.toString().split('/',4)[2];
+    const birthdayCurrent = birthday.toString().split('/', 4)[2];
 
     if (Validate.isStringEmpty(birthday.toString())) {
         errMsg = Languages.errorMsg.birthdayNull;
     } else if (!validateBirthday(birthday.toString())) {
         errMsg = Languages.errorMsg.birthdayRegex;
-    } else if ( Number(todayYear) - Number(birthdayCurrent) < 18) {
+    } else if (Number(todayYear) - Number(birthdayCurrent) < 18) {
         errMsg = Languages.errorMsg.birthdayCompare18;
     }
     return errMsg;
 }
 
-function inputValidate (
+function inputValidate(
     value: any,
     errEmpty: string,
     errSyntax?: any,
-    numOperator?: number
+    numOperator?: number,
+    isBankAccount?: boolean,
+    isATM?:boolean
 ) {
     let errMsg = '';
     const number = numOperator || 16;
 
     if (Validate.isStringEmpty(value)) {
         errMsg = errEmpty;
+    } else if (isBankAccount && (value.length < 8 || value.length > 16)){
+        errMsg = Languages.errorMsg.errSyntaxBank;
+    } else if (isATM && value.length !== 16) {
+        errMsg = Languages.errorMsg.errSyntaxATM;
     } else if (value.length > number) {
         errMsg = errSyntax;
     }
+    return errMsg;
+}
+
+function inputEmpty(value: any, errEmpty: string) {
+    let errMsg = '';
+    if (Validate.isStringEmpty(value)) {
+        errMsg = errEmpty;
+    } 
     return errMsg;
 }
 
@@ -188,5 +202,6 @@ export default {
     jobValidate,
     birthdayValidate,
     inputValidate,
-    removeAscent
+    removeAscent,
+    inputEmpty
 };

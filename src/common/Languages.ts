@@ -206,13 +206,15 @@ const Languages = {
         birthdayNull: 'Ngày sinh không được để trống',
         birthdayRegex: 'Ngày sinh không đúng định dạng (vd: 05/11/1999)',
         birthdayCompare18: 'Chưa đủ 18 tuổi',
-        errStk: 'Số tài khoản hoặc số thẻ vượt quá giới hạn cho phép',
+        errStk: 'Số tài khoản hoặc số thẻ ít hơn giới hạn cho phép',
         errStkEmpty: 'Số tài khoản hoặc số thẻ trống',
         errNameEmpty: 'Tên chủ tài khoản ngân hàng trống',
         errBankEmpty: 'Ngân hàng chưa được chọn',
         noInternet: 'Kết nối bị gián đoạn, vui lòng thử lại!',
         sessionExpired: 'Kết nối bị gián đoạn, vui lòng thử lại!',
-        errEmptyIdentity: 'Bạn cần điền đầy đủ thông tin trước khi xác thực'
+        errEmptyIdentity: 'Bạn cần điền đầy đủ thông tin trước khi xác thực',
+        errSyntaxBank: 'Số thẻ ngân hàng phải từ 8 đến 16 kí tự số',
+        errSyntaxATM: 'Số thẻ ATM phải bằng 16 hoặc 19 kí tự số'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
