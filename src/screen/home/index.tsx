@@ -235,8 +235,8 @@ const Home = observer(() => {
                     <>
                         <View style={styles.viewTop}>
                             <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
-                            <View style={styles.viewSumInvestValue}>
-                                <Text style={styles.txtSumInvestValue} numberOfLines={1}>
+                            <View style={styles.viewSumInvestValueCenter}>
+                                <Text style={styles.txtSumInvestValue}>
                                     {Utils.formatMoney(dataDash?.tong_tien_dau_tu)}
                                 </Text>
                                 <Text style={styles.txtVND}> {Languages.home.vnd}</Text>
@@ -246,7 +246,7 @@ const Home = observer(() => {
                                     <View style={styles.txtLeft}>
                                         <Text style={styles.txtSumProfit}>{Languages.home.balanceVimo}</Text>
                                         <View style={styles.viewSumInvestValue}>
-                                            <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                            <Text style={styles.txtTotalInterestReceived}>
                                                 {Utils.formatMoney(dataDash?.so_du)}
                                             </Text>
                                             <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
@@ -271,7 +271,7 @@ const Home = observer(() => {
                                     <View style={styles.txtLeft}>
                                         <Text style={styles.txtSumProfit}>{Languages.home.totalCaption}</Text>
                                         <View style={styles.viewSumInvestValue}>
-                                            <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                            <Text style={styles.txtTotalInterestReceived} >
                                                 {Utils.formatMoney(dataDash?.tong_goc_con_lai)}
                                             </Text>
                                             <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
@@ -282,7 +282,7 @@ const Home = observer(() => {
                                     <View style={styles.txtRight}>
                                         <Text style={styles.txtSumProfit}>{Languages.home.sumResidualProfit}</Text>
                                         <View style={styles.viewSumInvestValue}>
-                                            <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
+                                            <Text style={styles.txtTotalInterestExtant} >
                                                 {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
                                             </Text>
                                             <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>

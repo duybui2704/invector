@@ -64,8 +64,8 @@ export const MyStylesHome = () => {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size32,
                 color: COLORS.WHITE,
-                alignItems: 'center',
-                marginLeft: SCREEN_WIDTH * 0.08
+                marginLeft: SCREEN_WIDTH * 0.08,
+                textAlign: 'center'
             },
             txtSumProfit: {
                 ...Styles.typography.regular,
@@ -119,7 +119,7 @@ export const MyStylesHome = () => {
             //     paddingHorizontal: 16
             // },
             txtLeft: {
-                marginLeft: '30%',
+                marginLeft: '25%',
                 justifyContent: 'center',
                 alignItems: 'center'
             },
@@ -135,10 +135,17 @@ export const MyStylesHome = () => {
             viewSumInvestValue: {
                 flexDirection: 'row',
                 alignItems: 'flex-end',
-                justifyContent: 'center',
                 paddingRight: 5,
-                marginHorizontal: 15,
-                paddingVertical: SCREEN_HEIGHT * 0.002
+                paddingVertical: SCREEN_HEIGHT * 0.002,
+                width: '100%'
+            },
+            viewSumInvestValueCenter: {
+                flexDirection: 'row',
+                alignItems: 'flex-end',
+                paddingRight: 5,
+                paddingVertical: SCREEN_HEIGHT * 0.002,
+                width: '100%',
+                justifyContent: 'center'
             },
             wrapTotalInterest: {
                 alignItems: 'center',
