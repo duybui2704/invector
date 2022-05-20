@@ -108,7 +108,7 @@ export const myStylesAuth = () => {
             },
             wrapAll: {
                 flex: 1,
-                top: SCREEN_HEIGHT / 2 - SCREEN_HEIGHT * 0.2,
+                top: SCREEN_HEIGHT / 2 - SCREEN_HEIGHT * 0.22,
                 position: 'absolute',
                 height: SCREEN_HEIGHT * 0.4,
                 borderTopEndRadius: 60,

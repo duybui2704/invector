@@ -59,20 +59,27 @@ const SvgComponent = observer((props: any) => {
     }, [common.successChangePass]);
 
     useLayoutEffect(() => {
-        if (ratio < 1.662) {
+        if (ratio < 1.7) {
             setR(SCREEN_WIDTH * 0.54);
             setX(SCREEN_WIDTH * 0.2);
             setDx1(SCREEN_WIDTH * 0.54 * 5.96);
             setDx2(SCREEN_WIDTH * 0.54 * 5.06);
             setDx3(SCREEN_WIDTH * 0.54 * 0.46);
             setDx(0);
-        } else {
+        } else if (ratio >= 1.7 && ratio <= 1.9) {
             setR(SCREEN_WIDTH * 0.6);
-            setX(SCREEN_WIDTH * 0.22);
-            setDx(SCREEN_WIDTH * 0.6 * 0.04);
-            setDx1(SCREEN_WIDTH * 0.6 * 6.07);
+            setX(SCREEN_WIDTH * 0.2);
+            setDx1(SCREEN_WIDTH * 0.6 * 6.04);
             setDx2(SCREEN_WIDTH * 0.6 * 5.17);
             setDx3(SCREEN_WIDTH * 0.6 * 0.55);
+            setDx(0.6 * 0.06);
+        } else if (ratio >= 1.9) {
+            setR(SCREEN_WIDTH * 0.63);
+            setX(SCREEN_WIDTH * 0.22);
+            setDx(SCREEN_WIDTH * 0.63 * 0.04);
+            setDx1(SCREEN_WIDTH * 0.63 * 6.07);
+            setDx2(SCREEN_WIDTH * 0.63 * 5.17);
+            setDx3(SCREEN_WIDTH * 0.63 * 0.55);
         }
     }, []);
 

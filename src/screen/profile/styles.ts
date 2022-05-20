@@ -164,12 +164,12 @@ export const MyStylesProfile = () => {
             textCancel: {
                 color: COLORS.GRAY_12
             },
-            fedBack: {
+            feedBack: {
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 backgroundColor: COLORS.WHITE,
                 padding: 16,
-                margin: 20,
+                marginVertical: 20,
                 marginTop: 16,
                 borderRadius: 20
             },
@@ -181,7 +181,8 @@ export const MyStylesProfile = () => {
             textTitleDescriptionFeed: {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size12,
-                color: COLORS.DARK_GRAY
+                color: COLORS.DARK_GRAY,
+                marginBottom: 10
             },
             starLeft: {
                 flex: 2

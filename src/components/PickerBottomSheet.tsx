@@ -89,7 +89,7 @@ const PickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
                     onPress={openPicker}
                     disabled={disable || data.length === 0}
                     ref={ref}
-                    style={[styles.wrapContent,btnContainer]}
+                    style={[styles.wrapContent, btnContainer]}
                 >
                     {renderValue}
                     {rightIcon || null}
@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
     },
     label: {
         marginBottom: 7,
-        color: COLORS.BLACK
+        color: COLORS.BLACK,
+        paddingRight: 3
     },
     placeholder: {
         ...Styles.typography.regular,
@@ -126,6 +127,7 @@ const styles = StyleSheet.create({
     },
     wrapContent:{
         alignItems:'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        paddingRight: 20
     }
 });

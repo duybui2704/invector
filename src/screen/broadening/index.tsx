@@ -9,7 +9,7 @@ import Card from './card';
 import { MyStylesBoar } from './styles';
 import { COLORS, Styles } from '@/theme';
 import Navigator from '@/routers/Navigator';
-import ScreenName from '@/common/screenNames';
+import ScreenName, { TabsName } from '@/common/screenNames';
 import IcBroad1 from '@/assets/image/broadening/ic_broad1.svg';
 import IcBroad2 from '@/assets/image/broadening/ic_broad2.svg';
 import IcBroad3 from '@/assets/image/broadening/ic_broad3.svg';
@@ -79,7 +79,7 @@ export default function Broadening() {
                 }).start(transitionNext);
             } else {
                 SessionManager.setSkipOnboarding();
-                Navigator.replaceScreen(ScreenName.authStack);
+                Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
             }
         },
         [swipe.x, transitionNext]
@@ -101,20 +101,20 @@ export default function Broadening() {
                 swipe={swipe}
                 tiltSign={tiltSign}
                 txt={item.txt}
-                handleChoice={() => { handleChoice(item.title, -1.5); }}
+                handleChoice={() => { handleChoice(item.title, -1.8); }}
             />
         );
     }, []);
 
     return (
-        <ImageBackground style={styles.main} source={Images.bg_board} resizeMode='stretch'>
+        <Animated.View style={styles.main}>
             <StatusBar
                 barStyle={'dark-content'}
                 animated
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
             />
-            <Animated.View style={styles.container}>
+            <ImageBackground style={styles.main} source={Images.bg_board} resizeMode={'stretch'} >
                 <FlatList
                     data={data}
                     horizontal
@@ -122,7 +122,7 @@ export default function Broadening() {
                     keyExtractor={keyExtractor}
                     renderItem={renderItemFlatList}
                 />
-            </Animated.View>
-        </ImageBackground>
+            </ImageBackground>
+        </Animated.View>
     );
 }

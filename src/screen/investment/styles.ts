@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.GRAY_13,
         padding: 4,
         borderRadius: 26,
-        marginBottom: 12
+        marginBottom: 12,
+        marginHorizontal: 15
     },
     btInvest: {
         alignItems: 'center',
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'relative',
         marginBottom:10,
-        width: '100%'
+        marginHorizontal: 15
     },
     iconFilter: {
         width: 32,

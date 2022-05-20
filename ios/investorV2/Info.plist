@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>vn.tienngay.ndt</string>
+	<string>ĐầuTưTíchLuỹ</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleGetInfoString</key>
@@ -26,7 +26,7 @@
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
-    	<dict>
+		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>app.appsflyer.com</string>
@@ -44,7 +44,6 @@
 			</array>
 		</dict>
 	</array>
-  
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>

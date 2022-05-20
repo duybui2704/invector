@@ -55,9 +55,11 @@ const Transaction = observer(() => {
     }, [isFocused, common.isFocused, common]);
 
     const fetchHistory = useCallback(async (fDate?: string, tDate?: string, option?: string, isLoadMoreData?: boolean) => {
-        if (!isLoadMoreData) {
-            setLoadMore(true);
+        setLoadMore(true);
+        if (!isLoadMore) {
+            setFilterLoading(true);
         }
+        condition.current.isLoading = true;
         const res = await apiServices.history.getHistory(
             fDate || '',
             tDate || '',
@@ -68,17 +70,20 @@ const Transaction = observer(() => {
         const data = res.data as TransactionModel[];
         const dataSize = data?.length;
         if (dataSize > 0) {
-            condition.current.offset = isLoadMoreData ? condition.current.offset + dataSize : dataSize;
             if (isLoadMoreData) {
                 setDataHistory((last) => [...last || [], ...data]);
             }
             else {
                 setDataHistory(data);
             }
+            condition.current.offset = isLoadMoreData ? condition.current.offset + dataSize : dataSize;
         } else if (!res.success || !isLoadMoreData) {
             setDataHistory([]);
         }
+
+        condition.current.isLoading = false;
         condition.current.canLoadMore = dataSize >= PER_PAGE;
+        setFilterLoading(false);
         setIsFreshing(false);
         setLoadMore(condition.current.canLoadMore);
 
@@ -86,7 +91,6 @@ const Transaction = observer(() => {
 
     const onRefresh = useCallback((startDate?: Date, endDate?: Date, option?: string, isRefreshDate?: boolean) => {
         setIsFreshing(true);
-        setDataHistory([]);
         condition.current.canLoadMore = false;
         condition.current.offset = 0;
         condition.current.startDate = startDate || '';
@@ -196,18 +200,21 @@ const Transaction = observer(() => {
     }, [isLoadMore]);
 
     const onEndReached = useCallback(() => {
-        fetchHistory(
-            `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}` || '',
-            `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}` || '',
-            condition.current.option,
-            true
-        );
+        if (!condition.current.isLoading && condition.current.canLoadMore) {
+            fetchHistory(
+                `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}` || '',
+                `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}` || '',
+                condition.current.option,
+                true
+            );
+        }
     }, [fetchHistory]);
 
+    const onFreshing = () => {
+        onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
+    };
+
     const renderTransaction = useMemo(() => {
-        const onFreshing = () => {
-            onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
-        };
         return (
             <FlatList
                 data={dataHistory}
@@ -215,7 +222,6 @@ const Transaction = observer(() => {
                 renderItem={renderItem}
                 refreshing={isFreshing}
                 onRefresh={onFreshing}
-                onEndReachedThreshold={0.99}
                 onEndReached={onEndReached}
                 style={styles.wrapFlatList}
                 ListEmptyComponent={renderEmptyData}

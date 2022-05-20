@@ -407,7 +407,7 @@ const Profile = observer(() => {
 
     const renderViewRating = useMemo(() => {
         return (
-            <Touchable style={styles.fedBack}
+            <Touchable style={styles.feedBack}
                 onPress={openPopupRating}
                 disabled={SessionManager.getRatingPoint() > 3}>
                 <View style={styles.starLeft}>
@@ -424,7 +424,7 @@ const Profile = observer(() => {
                 <WomanIC />
             </Touchable>
         );
-    }, [openPopupRating, ratingPoint, styles.fedBack, styles.starLeft, styles.textTitleDescriptionFeed, styles.textTitleFeed]);
+    }, [openPopupRating, ratingPoint, styles.feedBack, styles.starLeft, styles.textTitleDescriptionFeed, styles.textTitleFeed]);
 
     return (
         <View style={styles.container}>

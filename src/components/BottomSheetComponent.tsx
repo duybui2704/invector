@@ -237,7 +237,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
     });
 
 export default BottomSheetComponent;
-const ITEM_HEIGHT = Configs.FontSize.size40;
+const ITEM_HEIGHT = Configs.FontSize.size40 + 20;
 const HEADER_HEIGHT = Configs.FontSize.size40 + 30;
 const MIN_SIZE_HAS_INPUT = 10;
 const styles = StyleSheet.create({

@@ -1,13 +1,13 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { StatusBar, Text, View, FlatList } from 'react-native';
+import { StatusBar, Text, View, FlatList, Image } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 
 import { LINKS } from '@/api/constants';
 import LogoWasLogin from '@/assets/image/home/logo_was_login.svg';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
-import { ENUM_INVEST_STATUS, LINK_TIENNGAY } from '@/common/constants';
+import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
@@ -177,6 +177,10 @@ const Home = observer(() => {
         Navigator.navigateScreen(ScreenName.notifyInvest);
     }, []);
 
+    const gotoProfile = useCallback(() => {
+        Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.accountTabs);
+    }, []);
+
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
     }, []);
@@ -185,7 +189,7 @@ const Home = observer(() => {
         const navigate = () => {
             Navigator.pushScreen(ScreenName.myWedView, {
                 title: item.title_vi,
-                url: `${LINK_TIENNGAY.LINK_TIENNGAY_WEB}${item.link.toString()}`
+                url: `https://tienngay.vn/${item.link.toString()}`
             });
         };
 
@@ -231,8 +235,8 @@ const Home = observer(() => {
                     <>
                         <View style={styles.viewTop}>
                             <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
-                            <View style={styles.viewSumInvestValue}>
-                                <Text style={styles.txtSumInvestValue} numberOfLines={1}>
+                            <View style={styles.viewSumInvestValueCenter}>
+                                <Text style={styles.txtSumInvestValue}>
                                     {Utils.formatMoney(dataDash?.tong_tien_dau_tu)}
                                 </Text>
                                 <Text style={styles.txtVND}> {Languages.home.vnd}</Text>
@@ -242,7 +246,7 @@ const Home = observer(() => {
                                     <View style={styles.txtLeft}>
                                         <Text style={styles.txtSumProfit}>{Languages.home.balanceVimo}</Text>
                                         <View style={styles.viewSumInvestValue}>
-                                            <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                            <Text style={styles.txtTotalInterestReceived}>
                                                 {Utils.formatMoney(dataDash?.so_du)}
                                             </Text>
                                             <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
@@ -267,7 +271,7 @@ const Home = observer(() => {
                                     <View style={styles.txtLeft}>
                                         <Text style={styles.txtSumProfit}>{Languages.home.totalCaption}</Text>
                                         <View style={styles.viewSumInvestValue}>
-                                            <Text style={styles.txtTotalInterestReceived} numberOfLines={1} >
+                                            <Text style={styles.txtTotalInterestReceived} >
                                                 {Utils.formatMoney(dataDash?.tong_goc_con_lai)}
                                             </Text>
                                             <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
@@ -278,7 +282,7 @@ const Home = observer(() => {
                                     <View style={styles.txtRight}>
                                         <Text style={styles.txtSumProfit}>{Languages.home.sumResidualProfit}</Text>
                                         <View style={styles.viewSumInvestValue}>
-                                            <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
+                                            <Text style={styles.txtTotalInterestExtant} >
                                                 {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
                                             </Text>
                                             <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
@@ -288,7 +292,9 @@ const Home = observer(() => {
                             </View>
                         </View>
                         <View style={styles.viewTopLogo}>
-                            <LogoWasLogin style={styles.logo} />
+                            <Touchable onPress={gotoProfile}>
+                                <LogoWasLogin style={styles.logo} />
+                            </Touchable>
                             <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
                                 <IcNotify style={styles.imgNotify} width={40} />
                             </Touchable>
@@ -363,7 +369,11 @@ const Home = observer(() => {
 
 
     const focusContracts = useCallback(() => {
-        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVEST_NOW });
+        if (userManager?.userInfo) {
+            Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVEST_NOW });
+        } else {
+            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
+        }
     }, []);
 
     const renderContent = useMemo(() => {
@@ -408,10 +418,11 @@ const Home = observer(() => {
                 <ParallaxScrollView
                     contentBackgroundColor={COLORS.TRANSPARENT}
                     backgroundColor={COLORS.TRANSPARENT}
-                    parallaxHeaderHeight={SCREEN_HEIGHT * 0.38}
+                    parallaxHeaderHeight={SCREEN_HEIGHT * 0.4}
                     stickyHeaderHeight={SCREEN_HEIGHT * 0.12}
                     renderBackground={renderBackground}
-                    renderForeground={renderForeground}>
+                    renderForeground={renderForeground}
+                >
                     {renderContent}
                 </ParallaxScrollView>
                 {showFloating && (

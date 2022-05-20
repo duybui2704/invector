@@ -20,12 +20,13 @@ export const MyStylesSign = () => {
                 height: SCREEN_HEIGHT
             },
             scrollView: {
-                marginVertical: 20
+                backgroundColor: COLORS.TRANSPARENT,
+                marginTop: SCREEN_HEIGHT * 0.035,
+                width: '95%'
             },
             wrapLoginTxt: {
                 flexDirection: 'row',
-                alignItems: 'center',
-                paddingBottom: 15
+                alignItems: 'center'
             },
             txtTitleModal: {
                 ...Styles.typography.regular,
@@ -41,8 +42,7 @@ export const MyStylesSign = () => {
                 height: Configs.FontSize.size40,
                 marginBottom: 10
             },
-            containerOverViewPicker:{
-                marginTop: 12,
+            containerOverViewPicker: {
                 borderRadius: 20,
                 borderWidth: 1 ,
                 justifyContent: 'space-between',
@@ -61,13 +61,14 @@ export const MyStylesSign = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 width: '100%',
-                paddingHorizontal: 20
+                paddingHorizontal: 15
             },
             containerPlaceholderPicker:{
             },
             rowInfo: {
                 flexDirection: 'column',
-                alignItems: 'flex-start'
+                alignItems: 'flex-start',
+                marginBottom: 5
             },
             wrapIcon: {
                 flexDirection: 'row',
@@ -95,11 +96,12 @@ export const MyStylesSign = () => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'flex-end',
-                marginBottom: 20
+                marginBottom: 20,
+                marginTop: -10
             },
             content: {
                 justifyContent: 'center',
-                width: '88%',
+                width: '100%',
                 height: '100%'
             },
             hisLop: {

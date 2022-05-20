@@ -1,3 +1,7 @@
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Text, View } from 'react-native';
+import Dash from 'react-native-dash';
+
 import IcNoDataNotify from '@/assets/image/home/ic_no_data_notify.svg';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
@@ -12,9 +16,6 @@ import { Notify } from '@/models/invest';
 import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import DateUtils from '@/utils/DateUtils';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Text, View } from 'react-native';
-import Dash from 'react-native-dash';
 import { MyStylesNotifyInvest } from './styles';
 
 const PAGE_SIZE = 7;
@@ -57,7 +58,6 @@ export const NotifyInvest = () => {
         }
 
         condition.current.isLoading = false;
-
         condition.current.canLoadMore = totalSize >= PAGE_SIZE;
         setCanLoadMoreUI(condition.current.canLoadMore);
     }, [apiServices.invest]);
