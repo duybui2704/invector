@@ -216,7 +216,9 @@ const Languages = {
         sessionExpired: 'Kết nối bị gián đoạn, vui lòng thử lại!',
         errEmptyIdentity: 'Bạn cần điền đầy đủ thông tin trước khi xác thực',
         errSyntaxBank: 'Số thẻ ngân hàng phải từ 8 đến 16 kí tự số',
-        errSyntaxATM: 'Số thẻ ATM phải bằng 16 hoặc 19 kí tự số'
+        errSyntaxATM: 'Số thẻ ATM phải bằng 16 kí tự số',
+        errNotNumberBank: 'Số thẻ ngân hàng phải là kí tự số',
+        errNotNumberATM: 'Số thẻ ATM phải là kí tự số'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',

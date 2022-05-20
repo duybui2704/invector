@@ -173,8 +173,12 @@ function inputValidate(
         errMsg = errEmpty;
     } else if (isBankAccount && (value.length < 8 || value.length > 16)){
         errMsg = Languages.errorMsg.errSyntaxBank;
+    } else if (isBankAccount && validateNumber(`${value}`)){
+        errMsg = Languages.errorMsg.errNotNumberBank;
     } else if (isATM && value.length !== 16) {
         errMsg = Languages.errorMsg.errSyntaxATM;
+    } else if (isATM && validateNumber(`${value}`)){
+        errMsg = Languages.errorMsg.errNotNumberATM;
     } else if (value.length > number) {
         errMsg = errSyntax;
     }
