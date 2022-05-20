@@ -57,7 +57,7 @@ export const MyStylePupUp = () => {
                 marginTop: 25,
                 alignItems: 'center'
             },
-            txtPalaceholder: {
+            txtPlaceholder: {
                 ...Styles.typography.regular,
                 color: COLORS.GRAY_16
             }
