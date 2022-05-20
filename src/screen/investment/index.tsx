@@ -64,7 +64,6 @@ const Investment = observer(({ route }: { route: any }) => {
         moneyInvested: ''
     });
 
-
     const { apiServices } = useAppStore();
 
     useEffect(() => {
@@ -73,7 +72,6 @@ const Investment = observer(({ route }: { route: any }) => {
         fetchDataTimeInvestment();
         fetchDataMoney();
     }, []);
-
 
     const fetchDataInvested = useCallback(async (isLoadMore?: boolean) => {
         setCanLoadMoreUI(true);

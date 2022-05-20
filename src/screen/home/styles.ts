@@ -197,6 +197,7 @@ export const MyStylesHome = () => {
                 borderTopLeftRadius: 10
             },
             newsContainer: {
+                paddingLeft: 10,
                 paddingTop: 10,
                 paddingBottom: 20
             },
