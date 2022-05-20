@@ -365,10 +365,12 @@ const Investment = observer(({ route }: { route: any }) => {
         setMoneyValueInvested(undefined);
     }, []);
 
-    const onCancelPopupFilter = useCallback(() => {
-        condition.current.timeInvestment = '';
-        condition.current.moneyInvest = '';
-    }, []);
+    const onCancelPopupFilter = useCallback(()=>{
+        condition.current.timeInvestment='';
+        condition.current.moneyInvest='';
+        setTimeValue(undefined);
+        setMoneyValueInvest(undefined);
+    },[]);
 
     const openTimeInvestment = useCallback(() => {
         refBottomSheetMoney.current.show();
@@ -423,7 +425,7 @@ const Investment = observer(({ route }: { route: any }) => {
             return (
                 <View style={styles.wrapNodata}>
                     <NoData img={<IMGNoData />}
-                    description={btnInvest === ENUM_INVEST_STATUS.INVESTING ? Languages.invest.emptyData2 : Languages.invest.emptyData1} />
+                        description={btnInvest === ENUM_INVEST_STATUS.INVESTING ? Languages.invest.emptyData2 : Languages.invest.emptyData1} />
                 </View>
             );
         }
@@ -460,7 +462,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 openBottomSheet={openBottomSheet}
                 timeInvestment={timeValue}
                 moneyInvestment={moneyValueInvest}
-                onCancel={onCancelPopupFilterInvested}
+                onCancel={onCancelPopupFilter}
             />
             <PopupFilterInvested
                 ref={popupInvestedRef}

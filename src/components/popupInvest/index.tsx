@@ -2,22 +2,19 @@ import React, { forwardRef, useCallback, useImperativeHandle, useRef, useState }
 import { Text, TextStyle, View } from 'react-native';
 import Modal from 'react-native-modal';
 
-import arrayIcon from '@/common/arrayIcon';
+import IcSelect from '@/assets/image/ic_select.svg';
 import Languages from '@/common/Languages';
 import { ItemProps } from '@/components/bottomSheet';
-import { MyTextInput } from '@/components/elements/textfield';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import { Touchable } from '@/components/elements/touchable';
 import { MyStylePupUp } from '@/components/popupInvest/styles';
-import { useAppStore } from '@/hooks';
-import { arrMoney, arrMonth } from '@/mocks/data';
 import { COLORS } from '@/theme';
 import { PopupActions } from './types';
-import IcSelect from '@/assets/image/ic_select.svg';
+
 
 export type PopupFilterProps = {
     onClose?: () => any;
-    onConfirm?: (txt1: string, txt2: string) => any;
+    onConfirm?: () => void;
     onChange?: (value: string, title: string) => any;
     onBackdropPress?: () => any;
     content?: string;
@@ -46,20 +43,11 @@ const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
         const styles = MyStylePupUp();
         const [visible, setVisible] = useState<boolean>(false);
         const refMonth = useRef<TextFieldActions>(null);
-        const [month, setMonth] = useState<string>();
         const refMoney = useRef<TextFieldActions>(null);
-        const [money, setMoney] = useState<string>();
-        const {
-            common
-        } = useAppStore();
 
         const show = useCallback(() => {
-            if (!common.isFocused) {
-                setMoney('');
-                setMonth('');
-            }
             setVisible(true);
-        }, [common.isFocused]);
+        }, []);
 
         const hide = useCallback(() => {
             setVisible(false);
@@ -75,40 +63,34 @@ const PopupFilter = forwardRef<PopupActions, PopupFilterProps>(
         }, [hide]);
 
         const actionYes = () => {
-            onConfirm?.(month, money);
+            onConfirm?.();
             hide();
         };
 
         const _onCancel =useCallback(()=>{
-            setMoney('');
-            setMoney('');
             _onClose();
             onCancel?.();
         },[_onClose, onCancel]);
 
-     
-
         const onOpenBottomSheet = useCallback((type: string) => {
             hide();
-
             openBottomSheet?.(type);
-
         }, [hide, openBottomSheet]);
 
-        const renderItem = useCallback((refItem: any, value: any, palaceholder: string) => {
+        const renderItem = useCallback((refItem: any, value: any, placeholder: string) => {
             const onPress = () => {
-                onOpenBottomSheet(palaceholder);
+                onOpenBottomSheet(placeholder);
             };
             const styleTxt = {
                 color: value ? COLORS.BLACK : COLORS.GRAY_16
             } as TextStyle;
             return (
                 <Touchable style={styles.inputPhone} onPress={onPress}>
-                    <Text style={[styles.txtPalaceholder, styleTxt]}>{value || palaceholder}</Text>
+                    <Text style={[styles.txtPlaceholder, styleTxt]}>{value || placeholder}</Text>
                     <IcSelect/>
                 </Touchable>
             );
-        }, [onOpenBottomSheet, styles.inputPhone, styles.txtPalaceholder]);
+        }, [onOpenBottomSheet, styles.inputPhone, styles.txtPlaceholder]);
 
         return (
             <Modal
