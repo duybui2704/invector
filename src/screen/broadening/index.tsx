@@ -79,7 +79,7 @@ export default function Broadening() {
                 }).start(transitionNext);
             } else {
                 SessionManager.setSkipOnboarding();
-                Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
+                Navigator.replaceScreen(ScreenName.tabs);
             }
         },
         [swipe.x, transitionNext]

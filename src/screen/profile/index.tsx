@@ -83,7 +83,7 @@ const Profile = observer(() => {
         if (isFocus) {
             setRating(1);
         }
-    }, [isFocus]);
+    }, [isFocus]);  
 
     const callPhone = useCallback(() => {
         Utils.callNumber(Languages.common.hotline);
