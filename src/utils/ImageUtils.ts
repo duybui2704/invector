@@ -15,7 +15,7 @@ function openCamera(onSelected: any) {
         await ImagePicker.openCamera({
             compressImageQuality: COMPRESS_CAMERA_QUALITY,
             cropping: true,
-            width: 300,
+            width: 400,
             height: 400
         }).then((image) => {
             onSelected(onImageSelected(image));
@@ -38,7 +38,7 @@ async function openLibrary(callback: any, max: number) {
             forceJpg: true,
             compressImageQuality: COMPRESS_IMAGE_QUALITY,
             cropping: true,
-            width: 300,
+            width: 400,
             height: 400
         } as Options;
         if (Platform.OS === 'android') {

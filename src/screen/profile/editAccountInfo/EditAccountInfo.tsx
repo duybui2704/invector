@@ -14,7 +14,6 @@ import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
 import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
 import { useAppStore } from '@/hooks';
-import SessionManager from '@/manager/SessionManager';
 import { typeGender, typePhoto } from '@/mocks/data';
 import { ItemProps, UpLoadImage } from '@/models/common-model';
 import FormValidate from '@/utils/FormValidate';
@@ -200,12 +199,13 @@ const EditAccountInfo = observer(() => {
                 emailUser,
                 addressUser,
                 jobUser,
-                avatarAcc ? {
-                    ...avatarAcc?.images?.[0],
-                    uri: isIOS ? avatarAcc?.images?.[0]?.path?.replace('file://', '') : avatarAcc?.images?.[0]?.path,
-                    type: avatarAcc?.images?.[0]?.mime,
-                    name: Utils.getFileName(avatarAcc?.images?.[0])
-                } : null
+                avatarAcc ?
+                    {
+                        ...avatarAcc?.images?.[0],
+                        uri: isIOS ? avatarAcc?.images?.[0]?.path?.replace('file://', '') : avatarAcc?.images?.[0]?.path,
+                        type: avatarAcc?.images?.[0]?.mime,
+                        name: Utils.getFileName(avatarAcc?.images?.[0])
+                    } : null
             );
             if (res.success) {
                 const resData = res.data as UpdateInfoModal;
@@ -215,7 +215,7 @@ const EditAccountInfo = observer(() => {
                     full_name: name,
                     avatar_user: resData?.url_avatar,
                     gender: genderUser,
-                    birth_date: birthdayValue,
+                    // birth_date: birthdayValue,
                     phone_number: phone,
                     email: emailUser,
                     address: addressUser,
@@ -258,7 +258,7 @@ const EditAccountInfo = observer(() => {
                             {renderPhotoPicker(avatarRef,
                                 avatarAcc,
                                 <AvatarIC />,
-                                SessionManager.userInfo?.avatar_user)}
+                                userManager.userInfo?.avatar_user)}
                         </View>
                         {renderInfoAcc}
                     </ScrollViewWithKeyboard>

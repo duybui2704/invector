@@ -130,9 +130,9 @@ export const MyStylesProfile = () => {
                 paddingHorizontal: 40
             },
             wrapBtn: {
-                marginVertical: 15,
+                marginVertical: 10,
                 width: SCREEN_WIDTH - 32,
-                height: SCREEN_HEIGHT * 0.1 - 40
+                height: SCREEN_HEIGHT * 0.1 - 32
             },
             txtAuthnFinger: {
                 ...Styles.typography.regular,

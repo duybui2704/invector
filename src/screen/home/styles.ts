@@ -152,7 +152,18 @@ export const MyStylesHome = () => {
                 marginVertical: SCREEN_HEIGHT * 0.005,
                 width: '60%'
             },
-            viewSmallMenuLogin: {
+            viewSmallMenuLoginAndroid: {
+                // ...Styles.shadow,
+                flexDirection: 'row',
+                width: '92%',
+                backgroundColor: COLORS.WHITE,
+                borderRadius: 25,
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                position: 'absolute',
+                top: SCREEN_HEIGHT / 3.55
+            },
+            viewSmallMenuLoginIOS: {
                 ...Styles.shadow,
                 flexDirection: 'row',
                 width: '92%',

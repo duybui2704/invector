@@ -24,13 +24,14 @@ export const MyStylesAccountLink = () => {
                 borderColor: COLORS.GRAY_2,
                 borderRadius: 18,
                 paddingHorizontal: 16,
-                marginTop: 16
+                marginTop: 16,
+                backgroundColor: COLORS.WHITE
             },
             wrapRightItemSocial: {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 flexDirection: 'row',
-                width: '80%'
+                width: '85%'
             },
             titleItemLink: {
                 ...Styles.typography.medium,

@@ -66,8 +66,8 @@ const ShareFriend = observer(() => {
                         swipeToDismiss={true}>
                         <QRCode
                             value={onLinkQR}
-                            size={SCREEN_WIDTH * 0.7}
-                            quietZone={Configs.FontSize.size10}
+                            size={SCREEN_WIDTH * 0.75}
+                            quietZone={Configs.FontSize.size16}
                         />
                     </Lightbox>
                 </View>

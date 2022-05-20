@@ -31,6 +31,7 @@ import PopupInvestFirst, { PopupActions } from '@/components/popupInvestFirst';
 import { MyImageView } from '@/components/image';
 import DateUtils from '@/utils/DateUtils';
 import { BaseModel } from '@/models/base-model';
+import { isIOS } from '@/common/Configs';
 
 const PAGE_SIZE = 3;
 
@@ -165,7 +166,7 @@ const Home = observer(() => {
     const renderNavigateScreen = useCallback((title: string) => {
         const onPress = () => {
             return gotoLogin(title);
-        };
+        }; 
         return (
             <Touchable style={styles.tobAuth} onPress={onPress}>
                 <Text style={styles.txtLogin}>{title}</Text>
@@ -313,13 +314,13 @@ const Home = observer(() => {
                     </>
                 }
                 {!userManager?.userInfo &&
-                    <View style={styles.viewSmallMenuLogin}>
+                    <View style={isIOS ?styles.viewSmallMenuLoginIOS :styles.viewSmallMenuLoginAndroid }>
                         {renderNavigateScreen(Languages.auth.txtLogin)}
                         {renderNavigateScreen(Languages.auth.txtSignUp)}
                     </View>}
             </View>
         );
-    }, [styles.viewForeground, styles.viewTopLogo, styles.logo, styles.viewRightTop, styles.imgNotify, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValue, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLogin, userManager?.userInfo, onNotifyInvest, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, renderNavigateScreen]);
+    }, [styles.viewForeground, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValueCenter, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.viewSumInvestValue, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopLogo, styles.logo, styles.viewRightTop, styles.imgNotify, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLoginIOS, styles.viewSmallMenuLoginAndroid, userManager?.userInfo, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, gotoProfile, onNotifyInvest, renderNavigateScreen]);
 
     const renderFooter = useMemo(() => {
         return (
