@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
+import { SCREEN_HEIGHT } from '../../../utils/DimensionUtils';
 import { COLORS, Styles } from '@/theme';
 
 export const MyStylesEditAccountInfo = () => {
@@ -21,7 +22,7 @@ export const MyStylesEditAccountInfo = () => {
                 paddingBottom: 20
             },
             topContainer: {
-                paddingVertical: 6,
+                marginVertical: SCREEN_HEIGHT * 0.02,
                 alignItems: 'center',
                 justifyContent: 'space-between'
             },
