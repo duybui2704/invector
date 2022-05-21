@@ -12,6 +12,7 @@ import {
     Image
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import FastImage from 'react-native-fast-image';
 
 import IcDraggable from '@/assets/image/home/ic_draggable.svg';
 import IcClose from '@/assets/image/home/ic_close.svg';
@@ -310,7 +311,7 @@ export default function Draggable(props: IProps) {
                         onPressIn={onPressIn}
                         onPressOut={handlePressOut}>
                         {/* <IcDraggable width={100} /> */}
-                        <Image source={{ uri: image }} resizeMode={'contain'} style={{ width: 100, height: 100 }} />
+                        <FastImage source={{ uri: image }} resizeMode={'contain'} style={styles.fastImage} />
                     </TouchableOpacity>
                     <View style={styles.iconExit}>
                         <TouchableOpacity onPress={onClose}>
@@ -351,5 +352,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 5,
         top: 0
+    },
+    fastImage: {
+        width: 100,
+        height: 100
     }
 });

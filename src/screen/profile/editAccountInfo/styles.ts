@@ -4,6 +4,7 @@ import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
 import { SCREEN_HEIGHT } from '../../../utils/DimensionUtils';
 import { COLORS, Styles } from '@/theme';
+import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 export const MyStylesEditAccountInfo = () => {
     return useMemo(() => {
@@ -24,7 +25,8 @@ export const MyStylesEditAccountInfo = () => {
             topContainer: {
                 marginVertical: SCREEN_HEIGHT * 0.02,
                 alignItems: 'center',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                marginTop: SCREEN_HEIGHT * 0.03
             },
             wrapInput: {
                 justifyContent: 'space-between',

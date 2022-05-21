@@ -113,5 +113,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Tienngay cần truy cập vào camera của bạn để chụp và đăng ảnh đại diện</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+	<string>Tienngay cần truy cập vào thư viện ảnh của bạn để đăng ảnh đại diện</string>
 </dict>
 </plist>

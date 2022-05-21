@@ -46,6 +46,20 @@ export const MyStylesHome = () => {
                 position: 'absolute',
                 top: 0
             },
+            circleWrap: {
+                width: SCREEN_WIDTH * 0.09,
+                height: SCREEN_WIDTH * 0.09,
+                borderRadius: SCREEN_WIDTH * 0.15 / 2,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: SCREEN_WIDTH * 0.05,
+                backgroundColor: COLORS.WHITE
+            },
+            fastImage: {
+                width: SCREEN_WIDTH * 0.08,
+                height: SCREEN_WIDTH * 0.08,
+                borderRadius: SCREEN_WIDTH * 0.15 / 2
+            },
             viewTopCenter: {
                 position: 'absolute',
                 left: '-2%',
@@ -280,7 +294,7 @@ export const MyStylesHome = () => {
             },
             viewRightTop: {
                 position: 'absolute',
-                right: 15
+                right: SCREEN_WIDTH * 0.05
             },
             logo: {
                 marginLeft: SCREEN_WIDTH * 0.05

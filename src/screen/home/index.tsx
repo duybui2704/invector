@@ -3,9 +3,10 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StatusBar, Text, View, FlatList, Image } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import FastImage from 'react-native-fast-image';
 
 import { LINKS } from '@/api/constants';
-import LogoWasLogin from '@/assets/image/home/logo_was_login.svg';
+import AvatarIC from '@/assets/image/ic_avatar.svg';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
@@ -47,7 +48,6 @@ const Home = observer(() => {
     const [showFloating, setShowFloating] = useState<boolean>(true);
     const refPopupFirst = useRef<PopupActions>();
     const [iconBanner, setIconBanner] = useState<BannerHome>();
-    const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(false);
     const [unMore, setUnMore] = useState<boolean>(false);
     const ref = useRef();
     const condition = useRef({
@@ -82,7 +82,6 @@ const Home = observer(() => {
     }, []);
 
     const fetchDataInvest = useCallback(async (isLoadMore?: boolean) => {
-        setCanLoadMoreUI(true);
         if (!isLoadMore) {
             setIsLoading(true);
         }
@@ -101,12 +100,12 @@ const Home = observer(() => {
                 }
                 condition.current.offset += dataSize;
             }
-            condition.current.isLoading = false;
             condition.current.canLoadMore = dataSize >= PAGE_SIZE;
             setUnMore(dataSize >= PAGE_SIZE);
-            setIsLoading(false);
-            setCanLoadMoreUI(condition.current.canLoadMore);
         }
+        condition.current.isLoading = false;
+        setIsLoading(false);
+
     }, [apiServices.common]);
 
     const fetchContractsDash = useCallback(async () => {
@@ -293,11 +292,21 @@ const Home = observer(() => {
                             </View>
                         </View>
                         <View style={styles.viewTopLogo}>
-                            <Touchable onPress={gotoProfile}>
-                                <LogoWasLogin style={styles.logo} />
+                            <Touchable onPress={gotoProfile} style={styles.circleWrap}>
+                                {!userManager.userInfo?.avatar_user ?
+                                    <AvatarIC width={SCREEN_WIDTH * 0.08} height={SCREEN_WIDTH * 0.08} />
+                                    :
+                                    <FastImage
+                                        style={styles.fastImage}
+                                        source={{
+                                            uri: userManager.userInfo?.avatar_user
+                                        }}
+                                        resizeMode={FastImage.resizeMode.cover}
+                                    />
+                                }
                             </Touchable>
                             <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
-                                <IcNotify style={styles.imgNotify} width={40} />
+                                <IcNotify style={styles.imgNotify} width={SCREEN_WIDTH * 0.08} />
                             </Touchable>
                         </View>
                     </>
@@ -378,6 +387,8 @@ const Home = observer(() => {
     }, []);
 
     const renderContent = useMemo(() => {
+
+        console.log('dataArr: ', dataArr);
         return (
             <View style={userManager?.userInfo ? [{ marginTop: - SCREEN_HEIGHT * 0.03 }] : {}}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>

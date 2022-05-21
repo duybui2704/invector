@@ -23,6 +23,7 @@ const Report = observer(() => {
     const styles = MyStylesReport();
     const { apiServices } = useAppStore();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isRefresh, setIsRefresh] = useState<boolean>(false);
     const [quarter, setQuarter] = useState<string>(DateUtils.getCurrentQuarter().toString());
     const [quarterList, setQuarterList] = useState<ItemProps[]>([]);
     const [year, setYear] = useState<string>(DateUtils.getCurrentYear().toString());
@@ -151,7 +152,7 @@ const Report = observer(() => {
                         height={SCREEN_HEIGHT * 0.35}
                         horizontal
                         theme={VictoryTheme.material}
-                        domainPadding={{ x: 50, y: 5 }}
+                        domainPadding={{ x: 20, y: 5 }}
                         containerComponent={
                             <VictoryZoomContainer
                                 allowZoom={true}
@@ -218,9 +219,9 @@ const Report = observer(() => {
     const renderMonthList = useMemo(() => {
 
         const onRefresh = () => {
-            setIsLoading(true);
+            setIsRefresh(true);
             fetchReport();
-            setIsLoading(false);
+            setIsRefresh(false);
         };
 
         return (
@@ -230,7 +231,7 @@ const Report = observer(() => {
                 renderItem={renderItem}
                 ListHeaderComponent={renderChart}
                 refreshControl={
-                    <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+                    <RefreshControl refreshing={isRefresh} onRefresh={onRefresh} />
                 }
                 style={styles.flatList}
                 showsVerticalScrollIndicator={false}

@@ -22,7 +22,7 @@ import LoginWithBiometry from './loginWithBiometrty';
 import SignUp from './signUp';
 import { myStylesAuth } from './styles';
 import Navigator from '@/routers/Navigator';
-import { TabsName } from '@/common/screenNames';
+import ScreenName, { TabsName } from '@/common/screenNames';
 import { ToastBottom } from '@/components/toastBottom';
 
 
@@ -86,7 +86,7 @@ const Auth = observer(({ route }: any) => {
     };
 
     const gotoHome = useCallback(async () => {
-        Navigator.navigateScreen(TabsName.homeTabs);
+        Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
     }, []);
 
     // const initUser = useCallback(

@@ -93,7 +93,7 @@ export const MyStylesProfile = () => {
             circleWrap: {
                 width: SCREEN_WIDTH * 0.2 - 10,
                 height: SCREEN_WIDTH * 0.2 - 10,
-                borderRadius: 70,
+                borderRadius: 100000,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderWidth: 2,
@@ -127,12 +127,13 @@ export const MyStylesProfile = () => {
                 ...Styles.typography.medium,
                 color: COLORS.GREEN,
                 fontSize: Configs.FontSize.size12,
-                paddingHorizontal: 40
+                textAlign: 'center',
+                paddingHorizontal: 5
             },
             wrapBtn: {
                 marginVertical: 10,
                 width: SCREEN_WIDTH - 32,
-                height: SCREEN_HEIGHT * 0.1 - 32
+                height: SCREEN_HEIGHT * 0.06
             },
             txtAuthnFinger: {
                 ...Styles.typography.regular,
