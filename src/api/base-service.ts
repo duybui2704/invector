@@ -170,6 +170,7 @@ export class BaseService {
                     formData.append(key, data[key]);
                 } else if (data[key]) {
                     formData.append(key, {
+                        ...data[key],
                         uri: data[key]?.path || data[key],
                         type: 'image/jpeg'
                     } as any);

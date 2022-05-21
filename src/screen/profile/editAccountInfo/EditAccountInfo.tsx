@@ -192,20 +192,23 @@ const EditAccountInfo = observer(() => {
     const onSaveInfo = useCallback(async () => {
         if (onValidate()) {
             const res = await apiServices.auth.updateUserInf(
+                avatarAcc ?
+                    {
+                        ...avatarAcc?.images?.[0],
+                        uri: isIOS ? avatarAcc?.images?.[0]?.path?.replace('file://', '') : avatarAcc?.images?.[0]?.path,
+                        type: avatarAcc?.images?.[0]?.mime,
+                        name: Utils.getFileName(avatarAcc?.images?.[0]),
+                        path: isIOS ? avatarAcc?.images?.[0]?.path?.replace('file://', '') : avatarAcc?.images?.[0]?.path
+                    } : null,
+                !avatarAcc ? userManager.userInfo?.avatar_user : '',
                 name,
                 genderUser,
                 birthdayValue,
                 phone,
                 emailUser,
                 addressUser,
-                jobUser,
-                avatarAcc ?
-                    {
-                        ...avatarAcc?.images?.[0],
-                        uri: isIOS ? avatarAcc?.images?.[0]?.path?.replace('file://', '') : avatarAcc?.images?.[0]?.path,
-                        type: avatarAcc?.images?.[0]?.mime,
-                        name: Utils.getFileName(avatarAcc?.images?.[0])
-                    } : null
+                jobUser
+
             );
             if (res.success) {
                 const resData = res.data as UpdateInfoModal;
@@ -213,7 +216,7 @@ const EditAccountInfo = observer(() => {
                 userManager.updateUserInfo({
                     ...userManager.userInfo,
                     full_name: name,
-                    avatar_user: resData?.url_avatar,
+                    avatar_user:  !avatarAcc ? userManager.userInfo?.avatar_user : resData?.url_avatar,
                     gender: genderUser,
                     // birth_date: birthdayValue,
                     phone_number: phone,
@@ -229,7 +232,7 @@ const EditAccountInfo = observer(() => {
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
-                {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', !!userManager.userInfo?.full_name, 50)}
+                {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', false, 50)}
                 {renderGender(!!userManager.userInfo?.gender)}
                 {renderBirthday(!!userManager.userInfo?.birth_date)}
                 {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', true, 10)}
@@ -246,14 +249,14 @@ const EditAccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [addressUser, emailUser, jobUser, name, onSaveInfo, phone, renderBirthday, renderGender, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.birth_date, userManager.userInfo?.email, userManager.userInfo?.full_name, userManager.userInfo?.gender]);
+    }, [addressUser, emailUser, jobUser, name, onSaveInfo, phone, renderBirthday, renderGender, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.birth_date, userManager.userInfo?.email, userManager.userInfo?.gender]);
 
     return (
         <View style={styles.container}>
             <View style={styles.container}>
                 <HeaderBar isLight={false} title={Languages.accountInfo.editAcc} hasBack />
                 <HideKeyboard>
-                    <ScrollViewWithKeyboard>
+                    <ScrollViewWithKeyboard  showsHorizontalScrollIndicator={false}>
                         <View style={styles.topContainer}>
                             {renderPhotoPicker(avatarRef,
                                 avatarAcc,
