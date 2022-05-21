@@ -76,7 +76,8 @@ export const MyStylesProfile = () => {
                 backgroundColor: COLORS.PINK,
                 borderRadius: 70,
                 alignItems: 'center',
-                paddingVertical: 5
+                paddingVertical: 5,
+                justifyContent: 'center'
             },
             waitAccuracyWrap: {
                 backgroundColor: COLORS.YELLOW_3,
@@ -88,7 +89,7 @@ export const MyStylesProfile = () => {
                 backgroundColor: COLORS.WHITE_GREEN,
                 borderRadius: 70,
                 alignItems: 'center',
-                paddingVertical: 5
+                justifyContent: 'center'
             },
             circleWrap: {
                 width: SCREEN_WIDTH * 0.2 - 10,
@@ -114,7 +115,7 @@ export const MyStylesProfile = () => {
                 ...Styles.typography.medium,
                 color: COLORS.RED_2,
                 fontSize: Configs.FontSize.size12,
-                paddingHorizontal: 60
+                paddingHorizontal: 5
             },
             txtWaitAccuracy: {
                 ...Styles.typography.medium,

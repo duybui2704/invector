@@ -1,5 +1,6 @@
 import apiSauce from 'apisauce';
 
+import Utils from '@/utils/Utils';
 import StorageUtils from '../utils/StorageUtils';
 import Validate from '../utils/Validate';
 import { Events } from '../common/constants';
@@ -173,7 +174,8 @@ export class BaseService {
                         ...data[key],
                         uri: isIOS ? `${'file://'}${data[key]?.path}` || data[key] : data[key]?.path || data[key],
                         type: 'image/jpeg',
-                        path: isIOS ? `${'file://'}${data[key]?.path}` : data[key]?.path
+                        path: isIOS ? `${'file://'}${data[key]?.path}` : data[key]?.path,
+                        name: Utils.getFileName(data[key])
                     } as any);
                 }
             });

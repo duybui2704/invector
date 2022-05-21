@@ -55,7 +55,7 @@ export const MyStylesEditAccountInfo = () => {
             circleWrap: {
                 width: SCREEN_WIDTH * 0.4 - 25,
                 height: SCREEN_WIDTH * 0.4 - 25,
-                borderRadius: 70,
+                borderRadius: SCREEN_WIDTH * 0.4 - 25,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderWidth: 0,
