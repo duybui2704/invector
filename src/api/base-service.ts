@@ -3,7 +3,7 @@ import apiSauce from 'apisauce';
 import StorageUtils from '../utils/StorageUtils';
 import Validate from '../utils/Validate';
 import { Events } from '../common/constants';
-import { TIMEOUT_API } from '../common/Configs';
+import { isIOS, TIMEOUT_API } from '../common/Configs';
 import Languages from '@/common/Languages';
 import { EventEmitter } from '../utils/EventEmitter';
 import ToastUtils from '../utils/ToastUtils';
@@ -171,8 +171,9 @@ export class BaseService {
                 } else if (data[key]) {
                     formData.append(key, {
                         ...data[key],
-                        uri: data[key]?.path || data[key],
-                        type: 'image/jpeg'
+                        uri: isIOS ? `${'file://'}${data[key]?.path}` || data[key] : data[key]?.path || data[key],
+                        type: 'image/jpeg',
+                        path: isIOS ? `${'file://'}${data[key]?.path}` : data[key]?.path
                     } as any);
                 }
             });
