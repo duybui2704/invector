@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
-import { SCREEN_HEIGHT } from '../../../utils/DimensionUtils';
 import { COLORS, Styles } from '@/theme';
 import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
