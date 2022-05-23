@@ -1,12 +1,9 @@
-
 import { useMemo } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH_ANDROID, SCREEN_HEIGHT_ANDROID } from '@/utils/DimensionUtils';
 import { COLORS } from '@/theme';
 import { Configs } from '@/common/Configs';
-
-const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
 export const MyStylesCard = () => {
     return useMemo(() =>
@@ -17,8 +14,8 @@ export const MyStylesCard = () => {
                 zIndex: -1
             },
             imageANDROID: {
-                width: screenWidth,
-                height:screenHeight
+                width: SCREEN_WIDTH_ANDROID,
+                height: SCREEN_HEIGHT_ANDROID
             },
             imageIOS: {
                 width: SCREEN_WIDTH,

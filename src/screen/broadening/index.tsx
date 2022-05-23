@@ -9,7 +9,6 @@ import IcIndex1 from '@/assets/image/broadening/ic_index1.svg';
 import IcIndex2 from '@/assets/image/broadening/ic_index2.svg';
 import IcIndex3 from '@/assets/image/broadening/ic_index3.svg';
 import Images from '@/assets/Images';
-import { isIOS } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
 import SessionManager from '@/manager/SessionManager';

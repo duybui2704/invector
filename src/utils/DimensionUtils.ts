@@ -5,6 +5,8 @@ const screenScale = Dimensions.get('window').scale;
 
 export const SCREEN_HEIGHT = Dimensions.get('window').height;
 export const SCREEN_WIDTH = Dimensions.get('window').width;
+export const SCREEN_WIDTH_ANDROID = Dimensions.get('screen').width;
+export const SCREEN_HEIGHT_ANDROID = Dimensions.get('screen').height;
 
 function deviceHasNotch() {
     const _height = height * screenScale;

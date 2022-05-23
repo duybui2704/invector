@@ -118,22 +118,19 @@ export const MyStylesProfile = () => {
             txtNotAccuracy: {
                 ...Styles.typography.medium,
                 color: COLORS.RED_2,
-                fontSize: Configs.FontSize.size12,
-                paddingHorizontal: 5
+                fontSize: Configs.FontSize.size12
             },
             txtWaitAccuracy: {
                 ...Styles.typography.medium,
                 color: COLORS.YELLOW_2,
                 fontSize: Configs.FontSize.size12,
-                textAlign: 'center',
-                paddingHorizontal: 16
+                textAlign: 'center'
             },
             txtAccuracy: {
                 ...Styles.typography.medium,
                 color: COLORS.GREEN,
                 fontSize: Configs.FontSize.size12,
-                textAlign: 'center',
-                paddingHorizontal: 5
+                textAlign: 'center'
             },
             wrapBtn: {
                 marginVertical: 10,
