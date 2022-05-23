@@ -64,13 +64,13 @@ const Home = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
+        condition.current.offset = 0;
         fetchDataInvest();
         fetchDataBanner();
     }, []);
 
     useEffect(() => {
         if (isFocused) {
-            condition.current.offset = 0;
             if (userManager.userInfo) {
                 fetchContractsDash();
             }
@@ -129,6 +129,7 @@ const Home = observer(() => {
         if (resBannerHome.success) {
             const bannerHome = resBannerHome?.data as BannerHome;
             setIconBanner(bannerHome);
+            showFirstPopup();
         }
         setIsLoading(false);
 
