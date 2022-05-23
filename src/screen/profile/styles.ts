@@ -77,19 +77,23 @@ export const MyStylesProfile = () => {
                 borderRadius: 70,
                 alignItems: 'center',
                 paddingVertical: 5,
-                justifyContent: 'center'
+                justifyContent: 'center',
+                width: SCREEN_WIDTH * 0.5
             },
             waitAccuracyWrap: {
                 backgroundColor: COLORS.YELLOW_3,
                 borderRadius: 70,
                 alignItems: 'center',
-                paddingVertical: 5
+                paddingVertical: 5,
+                width: SCREEN_WIDTH * 0.5
             },
             accuracyWrap: {
                 backgroundColor: COLORS.WHITE_GREEN,
                 borderRadius: 70,
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                paddingVertical: 5,
+                width: SCREEN_WIDTH * 0.5
             },
             circleWrap: {
                 width: SCREEN_WIDTH * 0.2 - 10,
