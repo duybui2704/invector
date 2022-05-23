@@ -7,7 +7,7 @@ import { MyStylesCard } from './styles';
 import { COLORS } from '@/theme';
 import { Touchable } from '@/components/elements/touchable';
 import Languages from '@/common/Languages';
-import { Configs } from '@/common/Configs';
+import { Configs, isIOS } from '@/common/Configs';
 import Images from '@/assets/Images';
 import LogoBroadening from '@/assets/image/broadening/logo_broadening.svg';
 
@@ -50,7 +50,7 @@ export default function Card({
         <Animated.View
             style={isFirst && [animatedCardStyle, styles.gradient]}
         >
-            <ImageBackground style={Platform.OS === 'ios' ? styles.imageIOS : styles.imageANDROID} source={Images.bg_board} resizeMode={'stretch'} >
+            <ImageBackground style={isIOS? styles.imageIOS : styles.imageANDROID} source={Images.bg_board} resizeMode={'stretch'} >
                 <Svg height="100%" width="100%"  >
                     <G id="circle">
                         <Circle
@@ -74,7 +74,7 @@ export default function Card({
                         <Text style={styles.txt}>{txt}</Text>
                     </View>
                 </View>
-                <Touchable style={styles.tob} onPress={handleChoice}>
+                <Touchable style={isIOS? styles.tobIOS : styles.tobANDROID} onPress={handleChoice}>
                     <Text style={styles.txtContinue}>{Languages.common.continue}</Text>
                 </Touchable>
             </ImageBackground>

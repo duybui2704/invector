@@ -1,23 +1,23 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Animated, ImageBackground, PanResponder, StatusBar, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, ImageBackground, StatusBar } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
-import Images from '@/assets/Images';
-import Languages from '@/common/Languages';
-import {  CARD, SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
-import Card from './card';
-import { MyStylesBoar } from './styles';
-import { COLORS, Styles } from '@/theme';
-import Navigator from '@/routers/Navigator';
-import ScreenName, { TabsName } from '@/common/screenNames';
 import IcBroad1 from '@/assets/image/broadening/ic_broad1.svg';
 import IcBroad2 from '@/assets/image/broadening/ic_broad2.svg';
 import IcBroad3 from '@/assets/image/broadening/ic_broad3.svg';
 import IcIndex1 from '@/assets/image/broadening/ic_index1.svg';
 import IcIndex2 from '@/assets/image/broadening/ic_index2.svg';
 import IcIndex3 from '@/assets/image/broadening/ic_index3.svg';
+import Images from '@/assets/Images';
+import { isIOS } from '@/common/Configs';
+import Languages from '@/common/Languages';
+import ScreenName from '@/common/screenNames';
 import SessionManager from '@/manager/SessionManager';
-
+import Navigator from '@/routers/Navigator';
+import { COLORS } from '@/theme';
+import { CARD, SCREEN_WIDTH } from '@/utils/DimensionUtils';
+import Card from './card';
+import { MyStylesBoar } from './styles';
 
 export default function Broadening() {
     const styles = MyStylesBoar();
@@ -29,7 +29,7 @@ export default function Broadening() {
                 width={SCREEN_WIDTH * 0.6}
                 height={SCREEN_WIDTH * 0.6}
             />,
-            icon: <IcIndex1 style={styles.iconSmall} />,
+            icon: <IcIndex1 style={isIOS ? styles.iconSmallIOS : styles.iconSmallANDROID} />,
             txt: Languages.board.txt1
         },
         {
@@ -39,7 +39,7 @@ export default function Broadening() {
                 width={SCREEN_WIDTH * 0.6}
                 height={SCREEN_WIDTH * 0.6}
             />,
-            icon: <IcIndex2 style={styles.iconSmall} />,
+            icon: <IcIndex2 style={isIOS ? styles.iconSmallIOS : styles.iconSmallANDROID} />,
             txt: Languages.board.txt2
         },
         {
@@ -49,7 +49,7 @@ export default function Broadening() {
                 width={SCREEN_WIDTH * 0.6}
                 height={SCREEN_WIDTH * 0.6}
             />,
-            icon: <IcIndex3 style={styles.iconSmall} />,
+            icon: <IcIndex3 style={isIOS ? styles.iconSmallIOS : styles.iconSmallANDROID} />,
             txt: Languages.board.txt3
         }
     ];

@@ -1,10 +1,12 @@
 
 import { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { COLORS } from '@/theme';
 import { Configs } from '@/common/Configs';
+
+const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 
 export const MyStylesCard = () => {
     return useMemo(() =>
@@ -15,8 +17,8 @@ export const MyStylesCard = () => {
                 zIndex: -1
             },
             imageANDROID: {
-                width: SCREEN_WIDTH,
-                height: SCREEN_HEIGHT * 1.05
+                width: screenWidth,
+                height:screenHeight
             },
             imageIOS: {
                 width: SCREEN_WIDTH,
@@ -55,13 +57,24 @@ export const MyStylesCard = () => {
             viewText: {
                 width: '100%'
             },
-            tob: {
+            tobIOS: {
                 width: '40%',
                 borderRadius: 25,
                 borderWidth: 1,
                 borderColor: COLORS.WHITE,
                 position: 'absolute',
                 bottom: SCREEN_HEIGHT * 0.06,
+                left: 10,
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
+            tobANDROID: {
+                width: '40%',
+                borderRadius: 25,
+                borderWidth: 1,
+                borderColor: COLORS.WHITE,
+                position: 'absolute',
+                bottom: SCREEN_HEIGHT * 0.1,
                 left: 10,
                 justifyContent: 'center',
                 alignItems: 'center'
