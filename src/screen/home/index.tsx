@@ -1,7 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { StatusBar, Text, View, FlatList, Image } from 'react-native';
+import { StatusBar, Text, View, FlatList, Image, ImageBackground } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import FastImage from 'react-native-fast-image';
 
@@ -12,7 +12,6 @@ import { ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
-import HeaderBar from '@/components/header';
 import ItemInvest from '@/components/ItemInvest';
 import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
@@ -33,6 +32,7 @@ import { MyImageView } from '@/components/image';
 import DateUtils from '@/utils/DateUtils';
 import { BaseModel } from '@/models/base-model';
 import { isIOS } from '@/common/Configs';
+import Images from '@/assets/Images';
 
 const PAGE_SIZE = 3;
 
@@ -407,7 +407,7 @@ const Home = observer(() => {
 
 
     const renderBackground = () => {
-        return (<HeaderBar exitApp imageBackground />);
+        return (<ImageBackground source={Images.bg_header_home} style={styles.imageBg} resizeMode='stretch' />);
     };
 
     const renderForeground = () => {
@@ -421,12 +421,6 @@ const Home = observer(() => {
     return (
         <NotificationListening>
             <View style={styles.container}>
-                <StatusBar
-                    barStyle={'light-content'}
-                    animated
-                    translucent
-                    backgroundColor={COLORS.TRANSPARENT}
-                />
                 <ParallaxScrollView
                     contentBackgroundColor={COLORS.TRANSPARENT}
                     backgroundColor={COLORS.TRANSPARENT}
