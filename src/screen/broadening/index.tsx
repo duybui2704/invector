@@ -29,7 +29,7 @@ export default function Broadening() {
                 width={SCREEN_WIDTH * 0.6}
                 height={SCREEN_WIDTH * 0.6}
             />,
-            icon: <IcIndex1 style={isIOS ? styles.iconSmallIOS : styles.iconSmallANDROID} />,
+            icon: <IcIndex1 />,
             txt: Languages.board.txt1
         },
         {
@@ -39,7 +39,7 @@ export default function Broadening() {
                 width={SCREEN_WIDTH * 0.6}
                 height={SCREEN_WIDTH * 0.6}
             />,
-            icon: <IcIndex2 style={isIOS ? styles.iconSmallIOS : styles.iconSmallANDROID} />,
+            icon: <IcIndex2 />,
             txt: Languages.board.txt2
         },
         {
@@ -49,7 +49,7 @@ export default function Broadening() {
                 width={SCREEN_WIDTH * 0.6}
                 height={SCREEN_WIDTH * 0.6}
             />,
-            icon: <IcIndex3 style={isIOS ? styles.iconSmallIOS : styles.iconSmallANDROID} />,
+            icon: <IcIndex3 />,
             txt: Languages.board.txt3
         }
     ];

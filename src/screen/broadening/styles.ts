@@ -23,7 +23,7 @@ export const MyStylesBoar = () => {
         },
         iconSmallIOS: {
             position: 'absolute',
-            bottom: SCREEN_HEIGHT * 0.085,
+            bottom: SCREEN_HEIGHT * 0.08,
             right: SCREEN_WIDTH * 0.2
         },
         iconSmallANDROID: {

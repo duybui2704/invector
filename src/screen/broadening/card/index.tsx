@@ -67,16 +67,18 @@ export default function Card({
                     height={SCREEN_WIDTH * 0.14}
                 />
                 {source}
-                {icons}
                 <View style={styles.viewBottom}>
                     <View style={styles.viewText}>
                         <Text style={styles.title}>{name}</Text>
                         <Text style={styles.txt}>{txt}</Text>
                     </View>
                 </View>
-                <Touchable style={isIOS? styles.tobIOS : styles.tobANDROID} onPress={handleChoice}>
-                    <Text style={styles.txtContinue}>{Languages.common.continue}</Text>
-                </Touchable>
+                <View style={isIOS ? styles.viewIOS : styles.viewANDROID} >
+                    <Touchable style={isIOS ? styles.tobIOS : styles.tobANDROID} onPress={handleChoice}>
+                        <Text style={styles.txtContinue}>{Languages.common.continue}</Text>
+                    </Touchable>
+                    {icons}
+                </View>
             </ImageBackground>
         </Animated.View>
     );

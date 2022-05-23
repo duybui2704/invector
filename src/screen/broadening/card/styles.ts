@@ -39,7 +39,7 @@ export const MyStylesCard = () => {
                 fontSize: Configs.FontSize.size16,
                 color: COLORS.WHITE,
                 fontFamily: Configs.FontFamily.regular,
-                paddingVertical: '5%',
+                paddingVertical: '3%',
                 textAlign: 'center'
             },
             txt: {
@@ -62,22 +62,38 @@ export const MyStylesCard = () => {
                 borderRadius: 25,
                 borderWidth: 1,
                 borderColor: COLORS.WHITE,
-                position: 'absolute',
-                bottom: SCREEN_HEIGHT * 0.06,
-                left: 10,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                flexDirection: 'row',
+                marginRight: SCREEN_WIDTH * 0.25
             },
             tobANDROID: {
                 width: '40%',
                 borderRadius: 25,
                 borderWidth: 1,
                 borderColor: COLORS.WHITE,
-                position: 'absolute',
-                bottom: SCREEN_HEIGHT * 0.1,
-                left: 10,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                flexDirection: 'row',
+                marginRight: SCREEN_WIDTH * 0.25
+            },
+            viewIOS: {
+                width: '100%',
+                borderColor: COLORS.WHITE,
+                position: 'absolute',
+                bottom: SCREEN_HEIGHT * 0.06,
+                left: 10,
+                alignItems: 'center',
+                flexDirection: 'row'
+            },
+            viewANDROID: {
+                width: '100%',
+                borderColor: COLORS.WHITE,
+                position: 'absolute',
+                bottom: SCREEN_HEIGHT * 0.12,
+                left: 10,
+                alignItems: 'center',
+                flexDirection: 'row'
             },
             logo: {
                 position: 'absolute',
