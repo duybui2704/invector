@@ -15,7 +15,7 @@ export const myStylesAuth = () => {
                 flex: 1,
                 backgroundColor: COLORS.GREEN,
                 width: SCREEN_WIDTH,
-                height: SCREEN_HEIGHT
+                height: SCREEN_HEIGHT * 1.5
             },
             tob: {
                 justifyContent: 'center',

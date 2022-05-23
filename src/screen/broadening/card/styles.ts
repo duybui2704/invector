@@ -14,7 +14,11 @@ export const MyStylesCard = () => {
                 top: 0,
                 zIndex: -1
             },
-            image: {
+            imageANDROID: {
+                width: SCREEN_WIDTH,
+                height: SCREEN_HEIGHT * 1.05
+            },
+            imageIOS: {
                 width: SCREEN_WIDTH,
                 height: SCREEN_HEIGHT
             },
@@ -33,7 +37,8 @@ export const MyStylesCard = () => {
                 fontSize: Configs.FontSize.size16,
                 color: COLORS.WHITE,
                 fontFamily: Configs.FontFamily.regular,
-                paddingVertical: '5%'
+                paddingVertical: '5%',
+                textAlign: 'center'
             },
             txt: {
                 fontSize: Configs.FontSize.size14,

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Animated, Image, ImageBackground, StatusBar, Text, View } from 'react-native';
+import { Animated, Image, ImageBackground, Platform, StatusBar, Text, View } from 'react-native';
 import Svg, { Circle, G } from 'react-native-svg';
 
 import { SCREEN_WIDTH, SCREEN_HEIGHT, ACTION_OFFSET } from '@/utils/DimensionUtils';
@@ -50,7 +50,7 @@ export default function Card({
         <Animated.View
             style={isFirst && [animatedCardStyle, styles.gradient]}
         >
-            <ImageBackground style={styles.image} source={Images.bg_board} resizeMode={'stretch'} >
+            <ImageBackground style={Platform.OS === 'ios' ? styles.imageIOS : styles.imageANDROID} source={Images.bg_board} resizeMode={'stretch'} >
                 <Svg height="100%" width="100%"  >
                     <G id="circle">
                         <Circle

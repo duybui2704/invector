@@ -125,7 +125,7 @@ const Auth = observer(({ route }: any) => {
         }
     }, [isNavigate, fastAuthInfo?.isEnableFastAuth, fastAuthInfo.isFocusLogin]);
     return (
-        <ImageBackground  style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
+        <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
             <StatusBar
                 animated
                 translucent
