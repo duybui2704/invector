@@ -76,7 +76,7 @@ const SvgComponent = observer((props: any) => {
         } else if (ratio >= 1.9) {
             setR(SCREEN_WIDTH * 0.63);
             setX(SCREEN_WIDTH * 0.22);
-            setDx(SCREEN_WIDTH * 0.63 * 0.04);
+            setDx(SCREEN_WIDTH * 0.63 * 0.025);
             setDx1(SCREEN_WIDTH * 0.63 * 6.07);
             setDx2(SCREEN_WIDTH * 0.63 * 5.17);
             setDx3(SCREEN_WIDTH * 0.63 * 0.55);

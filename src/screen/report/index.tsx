@@ -152,7 +152,7 @@ const Report = observer(() => {
                         height={SCREEN_HEIGHT * 0.35}
                         horizontal
                         theme={VictoryTheme.material}
-                        domainPadding={{ x: 20, y: 5 }}
+                        domainPadding={{ x: 30, y: 5 }}
                         containerComponent={
                             <VictoryZoomContainer
                                 allowZoom={true}
