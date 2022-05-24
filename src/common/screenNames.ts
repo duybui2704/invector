@@ -37,7 +37,7 @@ export default ScreenName;
 
 export const TabsName = {
     homeTabs: 'Trang chủ',
-    investTabs: 'Đẩu tư',
+    investTabs: 'Đầu tư',
     reportTabs: 'Báo cáo',
     paymentTabs: 'Giao dịch',
     accountTabs: 'Tài khoản'
