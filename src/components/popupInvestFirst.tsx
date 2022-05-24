@@ -1,19 +1,17 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useState } from 'react';
 import {
     Dimensions,
-    Image,
     StyleSheet,
     Text,
     TouchableOpacity,
     View
 } from 'react-native';
 import Modal from 'react-native-modal';
+import FastImage from 'react-native-fast-image';
 
 import { COLORS } from '@/theme';
-import Images from '@/assets/Images';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
-// import Promotion1 from '../resource/image/img_promotion1.jpg';
 
 export type PopupInvestFirstProps = {
     onConfirm?: () => any;
@@ -68,7 +66,7 @@ const PopupInvestFirst = forwardRef<PopupActions, PopupInvestFirstProps>(
 
         const renderInfo = useMemo(() => {
             return (
-                <Image
+                <FastImage
                     style={{
                         width: IMG_WIDTH,
                         height: IMG_HEIGHT
@@ -103,7 +101,6 @@ const styles = StyleSheet.create({
     mainContainer: {
         width: IMG_WIDTH,
         marginVertical: 10,
-        // backgroundColor: colors.white,
         borderRadius: 15,
         overflow: 'hidden',
         alignSelf: 'center'

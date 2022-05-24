@@ -13,6 +13,14 @@ export const MyStylesHome = () => {
                 flex: 1,
                 backgroundColor: COLORS.WHITE_GRAY1
             },
+            imageBg: {
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                left: 0,
+                width: SCREEN_WIDTH,
+                height: SCREEN_HEIGHT / 2.9
+            },
             txtCenter: {
                 ...Styles.typography.medium,
                 fontSize: Configs.FontSize.size16,

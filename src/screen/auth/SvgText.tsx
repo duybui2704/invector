@@ -76,7 +76,7 @@ const SvgComponent = observer((props: any) => {
         } else if (ratio >= 1.9) {
             setR(SCREEN_WIDTH * 0.63);
             setX(SCREEN_WIDTH * 0.22);
-            setDx(SCREEN_WIDTH * 0.63 * 0.025);
+            setDx(SCREEN_WIDTH * 0.63 * 0.015);
             setDx1(SCREEN_WIDTH * 0.63 * 6.07);
             setDx2(SCREEN_WIDTH * 0.63 * 5.17);
             setDx3(SCREEN_WIDTH * 0.63 * 0.55);
@@ -118,7 +118,7 @@ const SvgComponent = observer((props: any) => {
                     </G>
                     <Text fill={login ? COLORS.WHITE : COLORS.GRAY}
                         fontSize={Configs.FontSize.size20}
-                        onPress={onNavigateLogin}
+                        onPressIn={onNavigateLogin}
                         key='1'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}
@@ -127,14 +127,14 @@ const SvgComponent = observer((props: any) => {
 
                     >
                         <TextPath href="#circle" >
-                            <TSpan dx={dx2} dy={-15} fontStyle='oblique'>
+                            <TSpan dx={dx2} dy={-15} fontStyle='normal'>
                                 {Languages.auth.txtLogin}
                             </TSpan>
                         </TextPath>
                     </Text>
                     <Text fill={signUp ? COLORS.WHITE : COLORS.GRAY}
                         fontSize={Configs.FontSize.size20}
-                        onPress={onNavigateSignUp}
+                        onPressIn={onNavigateSignUp}
                         key='2'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}
@@ -142,7 +142,7 @@ const SvgComponent = observer((props: any) => {
                         stroke={COLORS.NO_BACKDROP}
                     >
                         <TextPath href="#circle" >
-                            <TSpan dx={dx1} dy={-15} fontStyle='oblique'>
+                            <TSpan dx={dx1} dy={-15} fontStyle='normal'>
                                 {Languages.auth.txtD}
                             </TSpan>
                         </TextPath>
@@ -150,7 +150,7 @@ const SvgComponent = observer((props: any) => {
 
                     <Text fill={signUp ? COLORS.WHITE : COLORS.GRAY}
                         fontSize={Configs.FontSize.size22}
-                        onPress={onNavigateSignUp}
+                        onPressIn={onNavigateSignUp}
                         key='3'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}
@@ -158,7 +158,7 @@ const SvgComponent = observer((props: any) => {
                         stroke={COLORS.NO_BACKDROP}
                     >
                         <TextPath href="#circle" >
-                            <TSpan dx={dx} dy={-15} fontStyle='oblique'>
+                            <TSpan dx={dx} dy={-15} fontStyle='normal'>
                                 {Languages.auth.txtK}
                             </TSpan>
                         </TextPath>
@@ -166,7 +166,7 @@ const SvgComponent = observer((props: any) => {
                 
                     <Text fill={forgotPwd ? COLORS.WHITE : COLORS.GRAY}
                         fontSize={Configs.FontSize.size22}
-                        onPress={onNavigateForgotPwd}
+                        onPressIn={onNavigateForgotPwd}
                         key='4'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}
@@ -174,7 +174,7 @@ const SvgComponent = observer((props: any) => {
                         stroke={COLORS.NO_BACKDROP}
                     >
                         <TextPath href="#circle" >
-                            <TSpan dx={dx3} dy={-15} fontStyle='oblique' >
+                            <TSpan dx={dx3} dy={-15} fontStyle='normal' >
                                 {Languages.auth.forgotPwd}
                             </TSpan>
                         </TextPath>

@@ -164,7 +164,11 @@ const SignUp = observer(() => {
                         <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
                         <IcLine width={'50%'} height={'10%'} />
                     </View>
-                    <ScrollView style={styles.scrollView}>
+                    <ScrollView
+                        style={styles.scrollView}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                    >
                         {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 50, false)}
                         {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER')}
                         {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL')}
