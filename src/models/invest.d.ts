@@ -72,5 +72,11 @@ export interface PagingConditionTypes {
     toDate: string,
     moneyInvested: string
 }
+export interface HistoryModel{
+    color: string,
+    ngay_tra_lai: string,
+    so_tien: string,
+    trang_thai: string
+}
 
 
