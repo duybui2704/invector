@@ -113,7 +113,6 @@ export const MyStylesReport = () => {
                 borderWidth: 1
             },
             flatList: {
-                marginBottom: 15,
                 marginHorizontal: 16
             },
             labelAxis: {
