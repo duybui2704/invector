@@ -217,7 +217,7 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [btnInvest]);
 
     const navigateToInvestNow = useCallback((item: any) => {
-        Navigator.pushScreen(ScreenName.invest, { status: btnInvest, id: item?.id });
+        Navigator.navigateToDeepScreen([ScreenName.packageInvestStack],ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
     }, [btnInvest]);
 
     const openBottomSheet = useCallback((type: string) => {

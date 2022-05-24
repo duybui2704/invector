@@ -377,6 +377,7 @@ const Languages = {
         method: 'Phương thức đầu tư',
         vimo: 'Tài khoản Vimo',
         nganLuong: 'Tài khoản Ngân Lượng',
+        bank: 'Tài khoản Ngân Hàng',
         linked: 'Đã liên kết',
         paid: 'Đã thanh toán',
         unpaid: 'Chưa thanh toán',
@@ -476,6 +477,21 @@ const Languages = {
         useFingerPrintError: 'Vân tay không khớp, vui lòng thử lại.',
         useFingerPrintManyTimesError:
             'Bạn đã nhập sai quá nhiều lần, vui lòng nhập mã pin.'
+    },
+    transferScreen: {
+        title: 'Chuyển khoản ngân hàng',
+        description: 'Để nạp tiền, bạn hãy dùng bất kỳ ngân hàng nào để chuyển khoản đến tài khoản sau: ',
+        bank: 'Ngân hàng nhận',
+        receiver: 'Tên tài khoản người nhận',
+        account: 'Số tài khoản nhận',
+        money: 'Số tiền cần chuyển',
+        content: 'Nội dung chuyển khoản',
+        copy: 'Sao chép',
+        alert: 'Nếu nội dung chuyển khoản thiếu hoặc không chính xác. Chúng tôi sẽ không thể nhận ra giao dịch của bạn.',
+        or: 'Hoặc thực hiện scan mã Qr code sau:',
+        company: 'Cong ty co phan cong nghe tai chinh Univest',
+        bankName: 'Ngân hàng',
+        bankAccount: 'Số tài khoản'
     }
 
 
