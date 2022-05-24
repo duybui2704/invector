@@ -107,11 +107,11 @@ export enum ENUM_PROVIDER {
     FACEBOOK = 'facebook',
     GOOGLE = 'google',
     APPLE = 'apple'
-  };
+};
 
 export const configGoogleSignIn = {
     webClientId:
-    '393388576958-sm1fbp2f3hk82bg654ku148hemhjpdhr.apps.googleusercontent.com'
+        '393388576958-sm1fbp2f3hk82bg654ku148hemhjpdhr.apps.googleusercontent.com'
 };
 
 export enum ENUM_INVEST_STATUS {
@@ -165,19 +165,25 @@ export enum COLOR_TRANSACTION {
     GREEN = 'green',
 };
 
-export enum STATE_LINK{
+export enum STATE_LINK {
     LINKING = 'Đang liên kết',
 };
 
-export enum TYPE_INTEREST_RECEIVE_ACC{
+export enum TYPE_INTEREST_RECEIVE_ACC {
     VIMO = 'vimo',
     BANK = 'bank',
     NGAN_LUONG = 'ngan_luong',
     MOMO = 'momo'
 };
 
-export enum STATE_VERIFY_ACC{
+export enum STATE_VERIFY_ACC {
     VERIFIED = 'Đã xác nhận thông tin',
     WAIT = 'Chờ TienNgay xác nhận thông tin',
     NO_VERIFIED = 'Cần xác thực thông tin CMT/CCCD'
 };
+export enum ENUM_STATUS_CONTRACT {
+    PAID = 'Đã thanh toán',
+    PROGRESSING='Đang xử lý',
+    LIMITATION='Đến hạn'
+
+}

@@ -384,7 +384,8 @@ const Languages = {
         rules: 'Điều khoản sử dụng và chính sách ',
         tienngay: 'của Tienngay.vn',
         error:'Không lấy được dữ liệu, vui lòng thử lại sau',
-        notLinked:'Chưa liên kết'
+        notLinked:'Chưa liên kết',
+        infoPayment:'Thông tin trả lãi'
     },
     changePwd: {
         title: 'Đổi mật khẩu',

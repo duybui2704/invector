@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     title: {
         ...Styles.typography.regular,
         textAlign: 'center',
-        fontSize: Configs.FontSize.size16,
+        fontSize: Configs.FontSize.size18,
         color: COLORS.GRAY_7,
         marginBottom: 10
     },
@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
     },
     txtValue: {
         ...Styles.typography.medium,
-        color: COLORS.GRAY_7
+        color: COLORS.GRAY_7,
+        fontSize:Configs.FontSize.size16
     },
     wrapIcon: {
         alignSelf: 'center',
