@@ -62,7 +62,7 @@ export const HeaderBar = ({
                     resizeMode='stretch'
                 />
             )}
-            {noStatusBar && isIOS ? null : <StatusBar
+            {noStatusBar ? null : <StatusBar
                 animated
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}

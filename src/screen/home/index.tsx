@@ -33,6 +33,7 @@ import DateUtils from '@/utils/DateUtils';
 import { BaseModel } from '@/models/base-model';
 import { isIOS } from '@/common/Configs';
 import Images from '@/assets/Images';
+import HeaderBar from '@/components/header';
 
 const PAGE_SIZE = 3;
 
@@ -409,9 +410,20 @@ const Home = observer(() => {
     }, [dataArr, keyExtractor, renderFooter, renderItemInvestPackage, styles.txtCenter, styles.viewCenter, userManager?.userInfo]);
 
 
-    const renderBackground = () => {
-        return (<ImageBackground source={Images.bg_header_home} style={styles.imageBg} resizeMode='stretch' />);
-    };
+    const renderBackground = useMemo(() => {
+        // return (<ImageBackground source={Images.bg_header_home} style={styles.imageBg} resizeMode='stretch' />);
+        return (
+            <>
+                <StatusBar
+                    animated
+                    translucent
+                    backgroundColor={COLORS.TRANSPARENT}
+                    barStyle={'light-content'}
+                />
+                < ImageBackground source={Images.bg_header_home} style={styles.imageBg} resizeMode='stretch' />
+            </>
+        );
+    }, [styles.imageBg]);
 
     const renderForeground = () => {
         return (renderTop);
@@ -429,7 +441,7 @@ const Home = observer(() => {
                     backgroundColor={COLORS.TRANSPARENT}
                     parallaxHeaderHeight={SCREEN_HEIGHT * 0.4}
                     stickyHeaderHeight={SCREEN_HEIGHT * 0.12}
-                    renderBackground={renderBackground}
+                    renderBackground={() => renderBackground}
                     renderForeground={renderForeground}
                 >
                     {renderContent}
