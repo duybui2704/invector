@@ -62,9 +62,9 @@ const Auth = observer(({ route }: any) => {
         if (ratio <= 1.7) {
             setWid(SCREEN_WIDTH * 0.65);
         }
-        else if (ratio >= 1.7 && ratio <= 1.9) {
+        else if (ratio >= 1.7 && ratio <= 2) {
             setWid(SCREEN_WIDTH * 0.71);
-        } else if (ratio > 1.9) {
+        } else if (ratio > 2) {
             setWid(SCREEN_WIDTH * 0.75);
         }
     }, []);

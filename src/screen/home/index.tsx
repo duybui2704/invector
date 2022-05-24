@@ -75,6 +75,7 @@ const Home = observer(() => {
                 fetchContractsDash();
             }
         }
+        console.log('ratiooooooooo: ', SCREEN_WIDTH);
     }, [isFocused]);
 
     const onOpenVPS = useCallback(() => {
@@ -129,7 +130,9 @@ const Home = observer(() => {
         if (resBannerHome.success) {
             const bannerHome = resBannerHome?.data as BannerHome;
             setIconBanner(bannerHome);
-            showFirstPopup();
+            setTimeout(() => {
+                showFirstPopup();
+            }, 500);
         }
         setIsLoading(false);
 
@@ -389,7 +392,6 @@ const Home = observer(() => {
 
     const renderContent = useMemo(() => {
 
-        console.log('dataArr: ', dataArr);
         return (
             <View style={userManager?.userInfo ? [{ marginTop: - SCREEN_HEIGHT * 0.03 }] : {}}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
