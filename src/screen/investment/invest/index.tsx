@@ -81,7 +81,7 @@ const Invest = observer(({ route }: any) => {
     const onInvest = useCallback(async () => {
         const res = await apiServices.invest.getInfoInvest();
         setIsLoading(true);
-        if (res.success) {
+        if (res?.success) {
             const data = res.data as InvestorInfoModel;
             if (data?.tra_lai && !data?.tra_lai?.type_interest_receiving_account) {
                 Alert.alert(

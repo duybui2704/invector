@@ -60,7 +60,7 @@ export enum API_CONFIG {
     CONTRACT_ALL = '/contract/contract_investor_app_all',
     CONTRACT_DETAIL_INVEST_NOW = '/contract/detail_contract_investor',
     GET_INFOR_INVESTOR = 'user/info_investor',
-    REQUEST_NGAN_LUONG = 'V2/contract/investment_ngan_luong',
+    REQUEST_NGAN_LUONG = 'contract/investment_ngan_luong',
     CONFIRM_INVEST = '/contract/financial_investment_new',
     LIST_CONTRACT_INVESTING = '/contract/contract_investor_disbursement',
     LIST_TIME_INVESTMENT = '/contract/loan_cycle',

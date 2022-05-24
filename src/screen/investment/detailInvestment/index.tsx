@@ -2,22 +2,22 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, Text, TextStyle, View } from 'react-native';
 import Dash from 'react-native-dash';
-import { FlatList } from 'react-native-gesture-handler';
 
-import { Touchable } from '@/components/elements/touchable';
 import IcBag from '@/assets/image/ic_bag.svg';
+import { ENUM_INVEST_STATUS, ENUM_STATUS_CONTRACT } from '@/common/constants';
 import Languages from '@/common/Languages';
+import ScreenName from '@/common/screenNames';
+import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
+import ItemInfoContract from '@/components/ItemInfoContract';
+import Loading from '@/components/loading';
+import { useAppStore } from '@/hooks';
+import { HistoryModel, PackageInvest } from '@/models/invest';
+import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
 import styles from './styles';
-import { ENUM_INVEST_STATUS, ENUM_STATUS_CONTRACT } from '@/common/constants';
-import Navigator from '@/routers/Navigator';
-import ScreenName from '@/common/screenNames';
-import ItemInfoContract from '@/components/ItemInfoContract';
-import { useAppStore } from '@/hooks';
-import { HistoryModel, PackageInvest } from '@/models/invest';
-import Loading from '@/components/loading';
+
 
 export const DetailInvestment = observer(({ route }: any) => {
 
@@ -78,19 +78,15 @@ export const DetailInvestment = observer(({ route }: any) => {
         }
     }, [apiServices.invest, id]);
 
-    const keyExtractor = useCallback((item: any, index: number) => {
-        return `${index}${item.id}`;
-    }, []);
-
     const renderInfoItem = useCallback((label: string, value: string, colorText?: string, visible?: boolean) => {
         return (
             <ItemInfoContract label={label} value={value} colorText={colorText} />
         );
     }, []);
 
-    const renderItem = useCallback((item?:HistoryModel) => {
+    const renderItem = useCallback((item?: HistoryModel) => {
         const txtDue = {
-            color:item?.trang_thai===ENUM_STATUS_CONTRACT.PAID? COLORS.GREEN: COLORS.GRAY_7
+            color: item?.trang_thai === ENUM_STATUS_CONTRACT.PAID ? COLORS.GREEN : COLORS.GRAY_7
         } as TextStyle;
 
         return (
@@ -129,7 +125,7 @@ export const DetailInvestment = observer(({ route }: any) => {
                     return (
                         <View style={styles.wrapInfo}>
                             <Text style={styles.title}>{Languages.detailInvest.infoPayment}</Text>
-                            {dataHistory?.map((item)=>renderItem(item))}
+                            {dataHistory?.map((item) => renderItem(item))}
                         </View>
                     );
                 }
@@ -152,7 +148,7 @@ export const DetailInvestment = observer(({ route }: any) => {
             default:
                 return null;
         }
-    }, [dataHistory, keyExtractor, navigateToInvest, renderItem, status]);
+    }, [dataHistory, navigateToInvest, renderItem, status]);
 
     const renderInfoContract = useMemo(() => {
         if (!isLoading) {
