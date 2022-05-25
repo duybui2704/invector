@@ -195,7 +195,7 @@ const SignUp = observer(() => {
                                 </Touchable>
                                 <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                             </View>
-                            <Touchable onPress={onSignIn} disabled={false}
+                            <Touchable onPress={onSignIn} disabled={isDisTouchable}
                                 style={isDisTouchable ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
                                 <Text style={isDisTouchable ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
                                     {Languages.auth.txtSignUp}
