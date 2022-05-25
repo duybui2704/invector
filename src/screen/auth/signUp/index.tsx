@@ -51,7 +51,7 @@ const SignUp = observer(() => {
         fetchData();
     }, [apiServices.auth]);
 
-    const onChangeText = (value: string, tag?: string) => {
+    const onChangeText = useCallback((value: string, tag?: string) => {
         switch (tag) {
             case Languages.auth.txtPhone:
                 setPhone(value);
@@ -71,7 +71,7 @@ const SignUp = observer(() => {
             default:
                 break;
         }
-    };
+    }, []);
 
     const fetchData = async () => {
         const res = await apiServices.auth.getChanelSource();
@@ -101,22 +101,22 @@ const SignUp = observer(() => {
     }, [checked]);
 
     const onValidate = useCallback(() => {
+        const errMsgName = FormValidate.userNameValidate(name);
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
         const errMsgPwd = FormValidate.passValidate(pass);
-        const errMsgName = FormValidate.userNameValidate(name);
         const errMsgPwdNew = FormValidate.passConFirmValidate(pass, passNew);
         const errMsgPwdEmail = FormValidate.emailValidate(email);
 
-        refPhone.current?.setErrorMsg(errMsgPhone);
-        refPass.current?.setErrorMsg(errMsgPwd);
         refName.current?.setErrorMsg(errMsgName);
-        refPassNew.current?.setErrorMsg(errMsgPwdNew);
+        refPhone.current?.setErrorMsg(errMsgPhone);
         refEmail.current?.setErrorMsg(errMsgPwdEmail);
-        if (`${errMsgPhone}${errMsgPwd}${errMsgName}`.length === 0) {
+        refPass.current?.setErrorMsg(errMsgPwd);
+        refPassNew.current?.setErrorMsg(errMsgPwdNew);
+        if (`${errMsgName}${errMsgPhone}${errMsgPwdEmail}${errMsgPwd}${errMsgPwdNew}`.length === 0) {
             return true;
         }
         return false;
-    }, [channel, email, name, pass, passNew, phone]);
+    }, [email, name, pass, passNew, phone]);
 
     const onSignIn = useCallback(async () => {
         if (onValidate()) {
@@ -127,7 +127,7 @@ const SignUp = observer(() => {
                 setNavigate(true);
             }
         }
-    }, [name, phone, pass, passNew, channel, email]);
+    }, [onValidate, apiServices.auth, phone, name, pass, passNew, email, channel?.value]);
 
     const onChangeChanel = (item: any) => {
         setChannel(item);
@@ -173,7 +173,7 @@ const SignUp = observer(() => {
                         {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER')}
                         {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL')}
                         {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true)}
-                        {renderInput(refName, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true)}
+                        {renderInput(refPassNew, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true)}
                         <View style={styles.inputPass}>
                             <PickerBottomSheet
                                 ref={refChannel}
@@ -195,7 +195,7 @@ const SignUp = observer(() => {
                                 </Touchable>
                                 <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                             </View>
-                            <Touchable onPress={onSignIn} disabled={!isDisTouchable}
+                            <Touchable onPress={onSignIn} disabled={false}
                                 style={isDisTouchable ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
                                 <Text style={isDisTouchable ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
                                     {Languages.auth.txtSignUp}
