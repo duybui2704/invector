@@ -169,7 +169,7 @@ const SignUp = observer(() => {
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                     >
-                        {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 50, false)}
+                        {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 30, false)}
                         {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER')}
                         {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL')}
                         {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true)}
