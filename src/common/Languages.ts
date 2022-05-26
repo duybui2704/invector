@@ -83,12 +83,12 @@ const Languages = {
         updateBankInfo:
             'Bạn chưa cập nhật hình thức nhận tiền lãi đầu tư. Bạn có muốn cập nhật ngay bây giờ không?',
         payFinished:
-        '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>',
-        error:'Không lấy được dữ liệu',
+            '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>',
+        error: 'Không lấy được dữ liệu',
         emptyData1: 'Không có gói đầu tư nào phù hợp.',
         emptyData2: 'Bạn chưa có gói đầu tư nào, cùng đầu tư ngay nào !!!',
-        fromDate:'Từ ngày',
-        toDate:'Đến ngày'
+        fromDate: 'Từ ngày',
+        toDate: 'Đến ngày'
     },
     account: {
         title: 'Tài khoản',
@@ -218,7 +218,9 @@ const Languages = {
         errSyntaxBank: 'Số thẻ ngân hàng phải từ 8 đến 16 kí tự số',
         errSyntaxATM: 'Số thẻ ATM phải bằng 16 kí tự số',
         errNotNumberBank: 'Số thẻ ngân hàng phải là kí tự số',
-        errNotNumberATM: 'Số thẻ ATM phải là kí tự số'
+        errNotNumberATM: 'Số thẻ ATM phải là kí tự số',
+        uploading: 'Đang tải ảnh lên',
+        uploadingError: 'Tải ảnh thất bại'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
@@ -292,7 +294,8 @@ const Languages = {
         save: 'Lưu lại',
         editAcc: 'Chỉnh sửa thông tin',
         successEdit: 'Chỉnh sửa thông tin thành công',
-        chooseAvatarUser: 'Chọn hình đại diện ứng dụng'
+        chooseAvatarUser: 'Chọn hình đại diện ứng dụng',
+        sendingInfo: 'Đang gửi thông tin...'
     },
     accountIdentify: {
         accountIdentify: 'Xác thực tài khoản',
@@ -383,9 +386,9 @@ const Languages = {
         agreeTermsWith: 'Tôi đã đọc và đồng ý với ',
         rules: 'Điều khoản sử dụng và chính sách ',
         tienngay: 'của Tienngay.vn',
-        error:'Không lấy được dữ liệu, vui lòng thử lại sau',
-        notLinked:'Chưa liên kết',
-        infoPayment:'Thông tin trả lãi'
+        error: 'Không lấy được dữ liệu, vui lòng thử lại sau',
+        notLinked: 'Chưa liên kết',
+        infoPayment: 'Thông tin trả lãi'
     },
     changePwd: {
         title: 'Đổi mật khẩu',
@@ -421,7 +424,7 @@ const Languages = {
         changeMethodVimo: 'Bạn có muốn chuyển sang liên kết Vimo',
         contentCancelLinkVimo: 'Bạn có thật sự muốn huỷ liên kết với ví Vimo. Nếu bạn huỷ liên kết bạn sẽ không thể đầu tư bằng ví Vimo',
         onPressToLink: 'Chạm để liên kết ví',
-        onPressToCancelLink:'Chạm để hủy liên kết ví'
+        onPressToCancelLink: 'Chạm để hủy liên kết ví'
     },
     accountBank: {
         bankChoose: 'Chọn ngân hàng',

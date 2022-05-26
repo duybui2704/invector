@@ -79,9 +79,10 @@ export enum API_CONFIG {
     GET_QUARTERS = 'investor/select_quarters_the_year', // get quarters for report
     REQUEST_FINANCE_REPORT = 'investor/financial_report', // bao cao tai chinh investor
 
-    // investor
-
-
+    // upload Image
+    UPLOAD_MEDIA = 'user/upload', // upload media
+    UPLOAD_IMAGE_IDENTIFY = 'user/image_identity_user', // upload anh CMT/CCCD
+    UPLOAD_PERSONAL_PHOTO = 'user/update_personal_photo', // upload anh ca nhan 
 }
 export const PAYMENT_URL = {
     NL_SUCCESSFULLY: `${API_CONFIG.BASE_URL}V2/contract/success_nl_`,

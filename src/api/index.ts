@@ -5,6 +5,7 @@ import { HistoryServices } from './history-service';
 import { PaymentMethodServices } from './payment-method-services';
 import { InvestServices } from './invest_services';
 import { NotificationServices } from './notification-services';
+import { ImageServices } from './image-services';
 
 export class ApiServices {
     auth = new AuthServices();
@@ -20,5 +21,7 @@ export class ApiServices {
     invest = new InvestServices();
 
     notification = new NotificationServices();
+
+    image = new ImageServices();
 
 }

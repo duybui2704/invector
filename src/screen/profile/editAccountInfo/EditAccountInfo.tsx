@@ -4,7 +4,6 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import AvatarIC from '@/assets/image/ic_edit_avatar_large.svg';
-import { isIOS } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
@@ -28,6 +27,7 @@ import DateUtils from '@/utils/DateUtils';
 import PickerBankValuation from '@/components/PickerBankValuation';
 import { PopupActionTypes } from '@/models/typesPopup';
 import Navigator from '@/routers/Navigator';
+import Loading from '@/components/loading';
 
 const EditAccountInfo = observer(() => {
     const { apiServices, userManager } = useAppStore();
@@ -41,7 +41,9 @@ const EditAccountInfo = observer(() => {
     const [birthday, setBirthday] = useState<any>(userManager.userInfo?.birth_date || '');
     const [birthdayValue, setBirthdayValue] = useState<string>(userManager.userInfo?.birth_date || '');
     const [avatarAcc, setAvatarAcc] = useState<UpLoadImage>();
+    const [avatarUrl, setAvatarUrl] = useState<string>(userManager.userInfo?.avatar_user || '');
     const [errText, setErrText] = useState<string>('');
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     const avatarRef = useRef<BottomSheetModal>();
     const nameRef = useRef<TextFieldActions>();
@@ -189,45 +191,59 @@ const EditAccountInfo = observer(() => {
         );
     }, [genderUser, onGenderChoose, styles.containerItemFilter, styles.labelBirthdayStyle, styles.placeHolderPicker, styles.rowItemFilter, styles.rowItemFilterDisable, styles.textErrorGender, styles.valuePicker, styles.valuePickerDisable, styles.wrapBirthday]);
 
+    const updateUserInfo = useCallback(async (avatar: any) => {
+        setLoading(true);
+        const res = await apiServices.auth.updateUserInf(
+            avatar,
+            name,
+            genderUser,
+            birthdayValue,
+            phone,
+            emailUser,
+            addressUser,
+            jobUser
+
+        );
+        setLoading(false);
+        if (res.success) {
+            const resData = res.data as UpdateInfoModal;
+            ToastUtils.showSuccessToast(Languages.accountInfo.successEdit);
+            userManager.updateUserInfo({
+                ...userManager.userInfo,
+                full_name: name,
+                avatar_user: avatar,
+                gender: genderUser,
+                // birth_date: birthdayValue,
+                phone_number: phone,
+                email: emailUser,
+                address: addressUser,
+                job: jobUser
+            });
+            Navigator.goBack();
+        }
+    }, [addressUser, apiServices.auth, birthdayValue, emailUser, genderUser, jobUser, name, phone, userManager]);
+
+    const uploadImages = useCallback(async (file: any) => {
+        const res = await apiServices?.image.uploadImage(
+            file,
+            Languages.errorMsg.uploading
+        );
+        if (res.success) {
+            const data = res?.data;
+            console.log('data = ', JSON.stringify(data));
+            setAvatarUrl(data);
+            updateUserInfo(data);
+        }else {
+            ToastUtils.showMsgToast(Languages.accountInfo.sendingInfo);
+            updateUserInfo(userManager.userInfo?.avatar_user);
+        }
+    }, [apiServices?.image, updateUserInfo, userManager.userInfo?.avatar_user]);
+
     const onSaveInfo = useCallback(async () => {
         if (onValidate()) {
-            const res = await apiServices.auth.updateUserInf(
-                avatarAcc ?
-                    {
-                        ...avatarAcc?.images?.[0],
-                        uri: isIOS ? avatarAcc?.images?.[0]?.path?.replace('file://', '') : avatarAcc?.images?.[0]?.path,
-                        type: avatarAcc?.images?.[0]?.mime,
-                        name: Utils.getFileName(avatarAcc?.images?.[0]),
-                        path: isIOS ? avatarAcc?.images?.[0]?.path?.replace('file://', '') : avatarAcc?.images?.[0]?.path
-                    } : null,
-                !avatarAcc ? userManager.userInfo?.avatar_user : '',
-                name,
-                genderUser,
-                birthdayValue,
-                phone,
-                emailUser,
-                addressUser,
-                jobUser
-
-            );
-            if (res.success) {
-                const resData = res.data as UpdateInfoModal;
-                ToastUtils.showSuccessToast(Languages.accountInfo.successEdit);
-                userManager.updateUserInfo({
-                    ...userManager.userInfo,
-                    full_name: name,
-                    avatar_user:  !avatarAcc ? userManager.userInfo?.avatar_user : resData?.url_avatar,
-                    gender: genderUser,
-                    // birth_date: birthdayValue,
-                    phone_number: phone,
-                    email: emailUser,
-                    address: addressUser,
-                    job: jobUser
-                });
-                Navigator.goBack();
-            }
+            uploadImages(avatarAcc?.images?.[0]);
         }
-    }, [addressUser, apiServices.auth, avatarAcc, birthdayValue, emailUser, genderUser, jobUser, name, onValidate, phone, userManager]);
+    }, [avatarAcc?.images, onValidate, uploadImages]);
 
     const renderInfoAcc = useMemo(() => {
         return (
@@ -256,7 +272,7 @@ const EditAccountInfo = observer(() => {
             <View style={styles.container}>
                 <HeaderBar isLight={false} title={Languages.accountInfo.editAcc} hasBack />
                 <HideKeyboard>
-                    <ScrollViewWithKeyboard  showsHorizontalScrollIndicator={false}>
+                    <ScrollViewWithKeyboard showsHorizontalScrollIndicator={false}>
                         <View style={styles.topContainer}>
                             {renderPhotoPicker(avatarRef,
                                 avatarAcc,
@@ -264,6 +280,7 @@ const EditAccountInfo = observer(() => {
                                 userManager.userInfo?.avatar_user)}
                         </View>
                         {renderInfoAcc}
+                        {isLoading && <Loading isOverview />}
                     </ScrollViewWithKeyboard>
                 </HideKeyboard>
             </View>

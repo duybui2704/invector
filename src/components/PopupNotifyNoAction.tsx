@@ -38,7 +38,8 @@ const PopupNotifyNoAction = forwardRef<
     containerAgreeBtn,
     textCancel,
     textAgree,
-    containerCancelBtn
+    containerCancelBtn,
+    onBackdropPress
 }: PopupNoActionProps, ref) => {
     const [visible, setVisible] = useState<boolean>(false);
     const show = useCallback(() => {
@@ -64,7 +65,7 @@ const PopupNotifyNoAction = forwardRef<
             isVisible={visible}
             animationIn="slideInUp"
             useNativeDriver={true}
-            onBackdropPress={hide}
+            onBackdropPress={onBackdropPress || hide}
             avoidKeyboard={true}
             hideModalContentWhileAnimating
         >

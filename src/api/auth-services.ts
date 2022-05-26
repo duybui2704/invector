@@ -13,8 +13,7 @@ export class AuthServices extends BaseService {
         );
 
     updateUserInf = async (
-        file?: any,
-        avatar?:string,  // anh guiw len  khi ko camera hoac thu vien
+        avatar?: string,  // anh guiw len  khi ko camera hoac thu vien
         full_name?: string,
         gender?: string,
         birth_date?: string,
@@ -26,7 +25,6 @@ export class AuthServices extends BaseService {
         this.api().post(
             API_CONFIG.UPDATE_USER_INFO,
             this.buildFormData({
-                file,
                 avatar,
                 full_name,
                 gender,
@@ -99,9 +97,9 @@ export class AuthServices extends BaseService {
 
     identityVerify = async (
         identity: string,
-        front_facing_card: any,
-        card_back: any,
-        avatar: any
+        front_facing_card: any | string,
+        card_back: any | string,
+        avatar: any | string
     ) =>
         this.api().post(
             API_CONFIG.IDENTITY_VERIFY,

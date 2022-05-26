@@ -27,11 +27,10 @@ import { MyStylesAccountIdentify } from './styles';
 import SessionManager from '@/manager/SessionManager';
 import { useAppStore } from '@/hooks';
 import ToastUtils from '@/utils/ToastUtils';
-import Utils from '@/utils/Utils';
-import { isIOS } from '@/common/Configs';
 import { UpLoadImage } from '@/models/common-model';
 import { UserInfoModal } from '@/models/user-models';
 import Loading from '@/components/loading';
+import Navigator from '@/routers/Navigator';
 
 const AccountIdentify = observer(() => {
     const { apiServices, userManager } = useAppStore();
@@ -53,48 +52,79 @@ const AccountIdentify = observer(() => {
         setIdentity(value || '');
     }, []);
 
-    const fetchIdentityVerify = useCallback(async () => {
-        setLoading(true);
-        const res = await apiServices.auth.identityVerify(
-            identityAcc,
-            {
-                ...frontIdentify?.images?.[0],
-                uri: isIOS ? frontIdentify?.images?.[0]?.path?.replace('file://', '') : frontIdentify?.images?.[0]?.path,
-                type: frontIdentify?.images?.[0]?.mime,
-                name: Utils.getFileName(frontIdentify?.images?.[0])
-            },
-            {
-                ...afterIdentify?.images?.[0],
-                uri: isIOS ? afterIdentify?.images?.[0]?.path?.replace('file://', '') : afterIdentify?.images?.[0]?.path,
-                type: afterIdentify?.images?.[0]?.mime,
-                name: Utils.getFileName(afterIdentify?.images?.[0])
-            },
-            {
-                ...avatar?.images?.[0],
-                uri: isIOS ? avatar?.images?.[0]?.path?.replace('file://', '') : avatar?.images?.[0]?.path,
-                type: avatar?.images?.[0]?.mime,
-                name: Utils.getFileName(avatar?.images?.[0])
-            }
+    const uploadImage = useCallback(async (file: any) => {
+        const res = await apiServices?.image.uploadImage(
+            file,
+            Languages.errorMsg.uploading
         );
         if (res.success) {
-            setLoading(false);
-            popupConfirmRef.current?.show();
-            const resUser = await apiServices.auth.getUserInfo();
-            if (resUser.success) {
-                const data = resUser.data as UserInfoModal;
-                userManager.updateUserInfo({
-                    ...userManager.userInfo,
-                    ...data,
-                    identity: identityAcc,
-                    avatar: avatar?.images?.[0]?.path,
-                    front_facing_card: frontIdentify?.images?.[0]?.path,
-                    card_back: afterIdentify?.images?.[0]?.path
-                });
-            }
-
+            const data = res?.data;
+            console.log('data = ', JSON.stringify(data));
+            return {
+                ...data
+            };
         }
-        setLoading(false);
+        ToastUtils.showErrorToast(Languages.errorMsg.uploadingError);
+        return '';
+    }, [apiServices?.image]);
+
+    const uploadIdentification = useCallback(async (imgFront: any, imgAvatar: any, imgBehind: any) => {
+
+        if (imgAvatar && imgFront && imgBehind) {
+            setLoading(true);
+            const res = await apiServices?.auth?.identityVerify(
+                identityAcc,
+                imgFront,
+                imgBehind,
+                imgAvatar
+            );
+            setLoading(false);
+            if (res.success) {
+                popupConfirmRef.current?.show();
+                const resUser = await apiServices.auth.getUserInfo();
+                if (resUser.success) {
+                    const data = resUser.data as UserInfoModal;
+                    userManager.updateUserInfo({
+                        ...userManager.userInfo,
+                        ...data,
+                        identity: identityAcc,
+                        avatar: avatar?.images?.[0]?.path,
+                        front_facing_card: frontIdentify?.images?.[0]?.path,
+                        card_back: afterIdentify?.images?.[0]?.path
+                    });
+                }
+            }
+        }
+        else {
+            ToastUtils.showErrorToast(Languages.errorMsg.uploadingError);
+        }
     }, [afterIdentify?.images, apiServices.auth, avatar?.images, frontIdentify?.images, identityAcc, userManager]);
+
+    const getDataUpload = useCallback(
+        async (response: any) => {
+            let imgFront;
+            let imgBehind;
+            let imgAvatar;
+            if (response?.length === 3) {
+                imgFront = Object.values(response[0]).join('');
+                imgBehind = Object.values(response[1]).join('');
+                imgAvatar = Object.values(response[2]).join('');
+
+                uploadIdentification(
+                    imgFront,
+                    imgBehind,
+                    imgAvatar);
+            }
+        }, [uploadIdentification]);
+
+    const uploadKYC = useCallback(() => {
+        Promise.all([
+            uploadImage(frontIdentify?.images?.[0]),
+            uploadImage(afterIdentify?.images?.[0]),
+            uploadImage(avatar?.images?.[0])
+        ]).then((value) => { getDataUpload(value); });
+
+    }, [afterIdentify?.images, avatar?.images, frontIdentify?.images, getDataUpload, uploadImage]);
 
     const renderInput = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, length?: number) => {
         return (
@@ -125,23 +155,29 @@ const AccountIdentify = observer(() => {
         } return false;
     }, [identityAcc]);
 
+    const onBackDrop = useCallback(() => {
+        popupConfirmRef.current?.hide();
+        setTimeout(() => { Navigator.goBack(); }, 600);
+    }, []);
+
     const renderPopupConfirm = useCallback((ref?: any) => {
         return <PopupNotifyNoAction
             ref={ref}
             renderIcon={<WarnIC />}
             renderTitle={Languages.accountIdentify.waitVerify}
             renderContent={Languages.accountIdentify.waitVerifyContent}
+            onBackdropPress={onBackDrop}
         />;
-    }, []);
+    }, [onBackDrop]);
 
     const onVerify = useCallback(async () => {
         if (onValidate() && avatar && frontIdentify && afterIdentify) {
-            fetchIdentityVerify();
+            uploadKYC();
         }
         else {
             ToastUtils.showMsgToast(Languages.errorMsg.errEmptyIdentity);
         }
-    }, [afterIdentify, avatar, fetchIdentityVerify, frontIdentify, onValidate]);
+    }, [afterIdentify, avatar, frontIdentify, onValidate, uploadKYC]);
 
     const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, imageSource?: string, disable?: boolean) => {
         return <PhotoPickerBottomSheet
@@ -258,7 +294,7 @@ const AccountIdentify = observer(() => {
                 {renderPhoto}
                 {SessionManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED && renderBottom}
                 {renderPopupConfirm(popupConfirmRef)}
-                {isLoading && <Loading isOverview/>}
+                {isLoading && <Loading isOverview />}
             </ScrollView>
         </View >
 
