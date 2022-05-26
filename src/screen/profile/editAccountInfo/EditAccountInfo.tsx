@@ -191,7 +191,7 @@ const EditAccountInfo = observer(() => {
         );
     }, [genderUser, onGenderChoose, styles.containerItemFilter, styles.labelBirthdayStyle, styles.placeHolderPicker, styles.rowItemFilter, styles.rowItemFilterDisable, styles.textErrorGender, styles.valuePicker, styles.valuePickerDisable, styles.wrapBirthday]);
 
-    const updateUserInfo = useCallback(async (avatar: any) => {
+    const updateUserInformation = useCallback(async (avatar: any) => {
         setLoading(true);
         const res = await apiServices.auth.updateUserInf(
             avatar,
@@ -232,18 +232,18 @@ const EditAccountInfo = observer(() => {
             const data = res?.data;
             console.log('data = ', JSON.stringify(data));
             setAvatarUrl(data);
-            updateUserInfo(data);
-        }else {
-            ToastUtils.showMsgToast(Languages.accountInfo.sendingInfo);
-            updateUserInfo(userManager.userInfo?.avatar_user);
+            updateUserInformation(data);
         }
-    }, [apiServices?.image, updateUserInfo, userManager.userInfo?.avatar_user]);
+    }, [apiServices?.image, updateUserInformation]);
 
     const onSaveInfo = useCallback(async () => {
         if (onValidate()) {
-            uploadImages(avatarAcc?.images?.[0]);
+            if (avatarAcc) {
+                uploadImages(avatarAcc?.images?.[0]);
+            }
+            else updateUserInformation(userManager.userInfo?.avatar_user);
         }
-    }, [avatarAcc?.images, onValidate, uploadImages]);
+    }, [avatarAcc, onValidate, updateUserInformation, uploadImages, userManager.userInfo?.avatar_user]);
 
     const renderInfoAcc = useMemo(() => {
         return (
