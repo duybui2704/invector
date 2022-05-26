@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
     txtValue: {
         ...Styles.typography.medium,
-        color: COLORS.GRAY_7,
+        color: COLORS.GREEN,
         maxWidth: '70%',
         fontSize: Configs.FontSize.size13
     }

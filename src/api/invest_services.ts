@@ -14,7 +14,12 @@ export class InvestServices extends BaseService {
         uriSegment
     }));
 
-    getListContractInvesting = async (textSearch: string, money: string, fdate: string, toDate: string, uriSegment: number, per_page: number) => this.api().post(API_CONFIG.LIST_CONTRACT_INVESTING, this.buildFormData({
+    getListContractInvesting = async (option:string,textSearch: string, money: string, fdate: string, tdate: string, uriSegment: number, per_page: number) => this.api().post(API_CONFIG.LIST_CONTRACT_INVESTING, this.buildFormData({
+        option,
+        fdate,
+        tdate,
+        money,
+        text:textSearch,
         per_page,
         uriSegment
     }));

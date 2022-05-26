@@ -12,14 +12,15 @@ export type PopupProps = {
     data?: [],
     value?: string,
     openBottomSheet?: (type: string) => void,
-    timeInvestment?:ItemProps,
-    moneyInvestment?:ItemProps
+    timeInvestment?: ItemProps,
+    moneyInvestment?: ItemProps
 };
 
 export type PopupActions = {
     show: (content?: string) => any;
     hide: (content?: string) => any;
-    setContent?: (message: string) => void
+    setContent?: (message: string) => void;
+    clear?: () => void
 };
 
 
