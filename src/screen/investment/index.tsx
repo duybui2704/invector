@@ -27,6 +27,7 @@ import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
 import { HeaderBar } from '../../components/header';
 import styles from './styles';
+import { TextFieldActions } from '@/components/elements/textfield/types';
 
 const PAGE_SIZE = 10;
 
@@ -63,6 +64,8 @@ const Investment = observer(({ route }: { route: any }) => {
         toDate: '',
         moneyInvested: ''
     });
+
+    const inputRef = useRef<TextFieldActions>(null);
 
     const { apiServices } = useAppStore();
 
@@ -174,10 +177,11 @@ const Investment = observer(({ route }: { route: any }) => {
         condition.current.timeInvestment = '';
         condition.current.moneyInvest = '';
         condition.current.textSearch = '';
+        setTextSearch('');
+        inputRef.current?.setValue('');
         setIsRefreshing(true);
         fetchData(btnInvest);
         setIsRefreshing(false);
-        setTextSearch(undefined);
     }, [btnInvest, fetchData]);
 
     const fetchDataTimeInvestment = useCallback(async () => {
@@ -397,6 +401,7 @@ const Investment = observer(({ route }: { route: any }) => {
                         placeHolder={Languages.invest.enter}
                         keyboardType={'NUMBER'}
                         value={textSearch}
+                        ref={inputRef}
                     />
                     <Touchable
                         style={styles.iconFilter}
@@ -430,7 +435,7 @@ const Investment = observer(({ route }: { route: any }) => {
             );
         }
         return null;
-    }, [isLoading, listStore?.length]);
+    }, [btnInvest, isLoading, listStore?.length]);
 
     return (
         <View style={styles.main}>
