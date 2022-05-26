@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native';
 
 import LinkIC from '@/assets/image/ic_isChecked_save_acc.svg';
-import ViettinIC from '@/assets/image/ic_logo_viettin_bank.svg';
+import BankIC from '@/assets/image/ic_bank.svg';
 import ArrowIC from '@/assets/image/ic_right_arrow.svg';
 import NotLinkIC from '@/assets/image/ic_unchecked_save_acc.svg';
 import { TYPE_INTEREST_RECEIVE_ACC } from '@/common/constants';
@@ -224,7 +224,7 @@ const AccountBank = observer(() => {
                                         isValueBank
                                         styleText={styles.valuePicker}
                                         stylePlaceholder={styles.placeHolderPicker}
-                                        leftIcon={<ViettinIC />}
+                                        leftIcon={<BankIC  width={30} height={30}/>}
                                         rightIcon={<ArrowIC />}
                                     />
                                     <View style={styles.rowContainerAllInputChoose}>
