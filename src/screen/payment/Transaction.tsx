@@ -90,7 +90,7 @@ const Transaction = observer(() => {
     }, [apiServices.history]);
 
     const onRefresh = useCallback((startDate?: Date, endDate?: Date, option?: string, isRefreshDate?: boolean) => {
-        setIsFreshing(true);
+        setFilterLoading(true);
         condition.current.canLoadMore = false;
         condition.current.offset = 0;
         condition.current.startDate = startDate || '';

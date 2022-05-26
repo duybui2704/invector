@@ -10,6 +10,7 @@ import { Events } from '@/common/constants';
 import { TOAST_POSITION } from '../../common/Configs';
 import { COLORS } from '../../theme';
 import { PopupContext } from './context';
+import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 configure({
     enforceActions: 'never'
@@ -81,17 +82,17 @@ export const PopupsProvider = ({ children }: any) => {
                 color = COLORS.GRAY;
                 break;
             case 'SUCCESS':
-                color = COLORS.GREEN;
+                color = COLORS.DARK_GREEN;
                 break;
             default: break;
         }
-        return [styles.toast, { backgroundColor: color }];
+        return [styles.toast, { backgroundColor: color, top: SCREEN_HEIGHT / 15, height: 35 }];
     }, [toastType]);
 
     const renderToast = useMemo(() => {
         return <Toast
             ref={toastRef}
-            position={'bottom'}
+            position={'top'}
             style={toastBackground}
             positionValue={TOAST_POSITION}
         />;

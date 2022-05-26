@@ -31,6 +31,7 @@ import MyWebView from '@/screen/profile/myWedView/MyWebView';
 import { NotifyInvest } from '@/screen/home/notifyInvest';
 import PaymentWebview from '@/screen/investment/paymentWebview';
 import LinkWallet from '@/screen/profile/linkWallet/LinkWallet';
+import TransferScreen from '@/screen/investment/tranfer Bank';
 
 const TabsData = [
     {
@@ -75,9 +76,7 @@ const HomeStack = () => {
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.home} component={Home} />
             <Stack.Screen name={ScreenName.notifyInvest} component={NotifyInvest} />
-            <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
-            <Stack.Screen name={ScreenName.invest} component={Invest} />
-            <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
+            <Stack.Screen name={ScreenName.packageInvestStack} component={PackageInvestStack} />
             <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
         </Stack.Navigator>
     );
@@ -88,8 +87,18 @@ const InvestStack = () => {
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.investment} component={Investment} />
             <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
+            <Stack.Screen name={ScreenName.packageInvestStack} component={PackageInvestStack} />
+        </Stack.Navigator>
+    );
+};
+
+const PackageInvestStack= ()=>{
+    return(
+        <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
             <Stack.Screen name={ScreenName.invest} component={Invest} />
             <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
+            <Stack.Screen name={ScreenName.transferScreen} component={TransferScreen} />
         </Stack.Navigator>
     );
 };

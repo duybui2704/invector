@@ -68,6 +68,10 @@ export const MyStylesOtp = () => {
                 ...Styles.typography.regular,
                 color: COLORS.WHITE
             },
+            disTxtConfirm: {
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_12
+            },
             sentOtp: {
                 width: SCREEN_WIDTH * 0.5,
                 height: SCREEN_HEIGHT * 0.05,

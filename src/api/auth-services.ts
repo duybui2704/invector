@@ -1,3 +1,4 @@
+import { CancelToken } from '../common/@types/apisauce.d';
 import { BaseService } from './base-service';
 import { API_CONFIG } from './constants';
 
@@ -88,6 +89,15 @@ export class AuthServices extends BaseService {
             API_CONFIG.ACTIVE_ACCOUNT,
             this.buildFormData({
                 token,
+                phone_number
+            })
+        );
+
+    validateToken = async (token: any, phone_number: string) =>
+        this.api().post(
+            API_CONFIG.VALIDATE_TOKEN,
+            this.buildFormData({
+                token_reset_password: token,
                 phone_number
             })
         );

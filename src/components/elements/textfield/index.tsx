@@ -143,7 +143,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             if (onEndEditing) {
                 onEndEditing(`${textfieldVal}`, placeHolder || testID);
             }
-        }, [onEndEditing, placeHolder, textfieldVal, testID, value]);
+        }, [onEndEditing, placeHolder, textfieldVal, testID]);
 
         const onFocus = useCallback(() => {
             onFocusCallback?.(placeHolder);
@@ -188,7 +188,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         }, [animation]);
 
         const errorMessage = useMemo(() => {
-            const paddingText = { paddingBottom: 0 };
+            const paddingText = { marginTop: -10, paddingBottom: 5 };
             if (!Validate.isStringEmpty(errMsg)) {
                 return <View style={paddingText}>
                     <Text

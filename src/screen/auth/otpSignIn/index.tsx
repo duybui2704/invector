@@ -13,6 +13,7 @@ import { UserInfoModal } from '@/models/user-models';
 import Navigator from '@/routers/Navigator';
 import { MyStylesOtp } from '@/screen/auth/otpSignIn/styles';
 import ChangePass from '../changePass';
+import { COLORS } from '@/theme';
 
 const OtpSignIn = (props: any) => {
     let timer = 0;
@@ -57,7 +58,10 @@ const OtpSignIn = (props: any) => {
 
     const onPressOtp = async () => {
         if (props?.isChangePass) {
-            setIsNavigate(true);
+            const res = await apiServices.auth.validateToken(token, phone);
+            if (res.success) {
+                setIsNavigate(true);
+            }
         } else {
             setIsLoading(true);
             const res = await apiServices.auth.activeAccount(
@@ -100,6 +104,13 @@ const OtpSignIn = (props: any) => {
     }, [getTime]);
 
     const renderOTP = () => {
+        let isDisTouchable: boolean;
+        if (token?.length === 6) {
+            isDisTouchable = false;
+        } else {
+            isDisTouchable = true;
+        }
+
         return (
             <View style={styles.container}>
                 <View style={styles.viewTop}>
@@ -115,10 +126,9 @@ const OtpSignIn = (props: any) => {
                         inputStyles={styles.viewOtp}
                     />
                 </View>
-                <Touchable style={styles.tobConfirm}
-                    onPress={onPressOtp} disabled={false}>
-                    <Text
-                        style={styles.txtConfirm}>{Languages.auth.conFirm}</Text>
+                <Touchable style={isDisTouchable ? [styles.tobConfirm, { backgroundColor: COLORS.GRAY_13 }] : styles.tobConfirm}
+                    onPress={onPressOtp} disabled={isDisTouchable}>
+                    <Text style={isDisTouchable ? styles.disTxtConfirm : styles.txtConfirm}>{Languages.auth.conFirm}</Text>
                 </Touchable>
 
 

@@ -5,6 +5,7 @@ import { Alert, Platform, ScrollView, Text, View, ViewStyle } from 'react-native
 import IcBag from '@/assets/image/ic_bag.svg';
 import IcNganLuong from '@/assets/image/ic_ngan_luong.svg';
 import IcVimo from '@/assets/image/ic_vimo.svg';
+import IcBank from '@/assets/image/ic_bank.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
 import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
 import { Configs } from '@/common/Configs';
@@ -79,6 +80,11 @@ const Invest = observer(({ route }: any) => {
     }, [apiServices.invest, dataInvestment?.id]);
 
     const onInvest = useCallback(async () => {
+        if(methodPayment===ENUM_METHOD_PAYMENT.BANK)
+        {
+            Navigator.navigateScreen(ScreenName.transferScreen);
+            return;
+        }
         const res = await apiServices.invest.getInfoInvest();
         setIsLoading(true);
         if (res?.success) {
@@ -95,7 +101,7 @@ const Invest = observer(({ route }: any) => {
                             text: Languages.common.agree,
                             style: 'default',
                             onPress: () => {
-                                Navigator.navigateScreen(TabsName.accountTabs);
+                                Navigator.resetScreen([TabsName.investTabs,TabsName.accountTabs]);
                             }
                         }
                     ]
@@ -179,6 +185,7 @@ const Invest = observer(({ route }: any) => {
                 <Text style={styles.headerText}>{Languages.detailInvest.method}</Text>
                 {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, statusVimo)}
                 {renderMethod(<IcNganLuong />, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
+                {renderMethod(<IcBank />, Languages.detailInvest.bank, ENUM_METHOD_PAYMENT.BANK)}
                 <View style={styles.viewBottom}>
                     <Touchable onPress={checkBox}>
                         {!isCheckBox ? <IcCheckBoxOff width={25} height={25} /> : <IcCheckBoxOn width={25} height={25} />}

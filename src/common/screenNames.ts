@@ -29,7 +29,9 @@ export const ScreenName = {
     myWedView: 'MyWedView',
     splash: 'Slash',
     paymentWebview:'PaymentWebview',
-    linkWallet: 'LinkWallet'
+    linkWallet: 'LinkWallet',
+    transferScreen:'TransferScreen',
+    packageInvestStack:'PackageInvestStack'
 };
 
 export default ScreenName;

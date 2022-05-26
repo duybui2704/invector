@@ -134,7 +134,8 @@ export enum ENUM_INVEST_NOTIFY {
 
 export enum ENUM_METHOD_PAYMENT {
     VIMO = 'VIMO',
-    NGAN_LUONG = 'NGAN_LUONG'
+    NGAN_LUONG = 'NGAN_LUONG',
+    BANK='BANK'
 };
 
 export enum ENUM_TYPE_CARD_BANK {

@@ -23,7 +23,7 @@ import SignUp from './signUp';
 import { myStylesAuth } from './styles';
 import Navigator from '@/routers/Navigator';
 import ScreenName, { TabsName } from '@/common/screenNames';
-import { ToastBottom } from '@/components/toastBottom';
+import ToastUtils from '@/utils/ToastUtils';
 
 
 const Auth = observer(({ route }: any) => {
@@ -32,7 +32,6 @@ const Auth = observer(({ route }: any) => {
     const [wid, setWid] = useState<number>(0);
     const [isNavigate, setIsNavigate] = useState<string>(Languages.auth.txtLogin);
     const isFocused = useIsFocused();
-    const toastRef = useRef();
     const {
         fastAuthInfoManager: fastAuthInfo,
         common
@@ -40,7 +39,7 @@ const Auth = observer(({ route }: any) => {
 
     useLayoutEffect(() => {
         if (common.successChangePass) {
-            toastRef?.current?.showToast(Languages.auth.successChangePass, 2000);
+            ToastUtils.showSuccessToast(Languages.auth.successChangePass);
         }
     }, [common.successChangePass]);
 
@@ -162,7 +161,6 @@ const Auth = observer(({ route }: any) => {
                    
                 </View>
             </View>
-            <ToastBottom ref={toastRef} />
         </ImageBackground>
     );
 });
