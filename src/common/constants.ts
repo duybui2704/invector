@@ -135,7 +135,7 @@ export enum ENUM_INVEST_NOTIFY {
 export enum ENUM_METHOD_PAYMENT {
     VIMO = 'VIMO',
     NGAN_LUONG = 'NGAN_LUONG',
-    BANK='BANK'
+    BANK = 'BANK'
 };
 
 export enum ENUM_TYPE_CARD_BANK {
@@ -184,7 +184,11 @@ export enum STATE_VERIFY_ACC {
 };
 export enum ENUM_STATUS_CONTRACT {
     PAID = 'Đã thanh toán',
-    PROGRESSING='Đang xử lý',
-    LIMITATION='Đến hạn'
+    PROGRESSING = 'Đang xử lý',
+    LIMITATION = 'Đến hạn'
 
+}
+export enum ENUM_INVESTED_TYPE {
+    INVESTING = '1',
+    INVESTED = '2'
 }

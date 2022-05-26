@@ -70,7 +70,8 @@ export interface PagingConditionTypes {
     textSearch: string,
     fromDate: string,
     toDate: string,
-    moneyInvested: string
+    moneyInvested: string,
+    option:string
 }
 export interface HistoryModel{
     color: string,

@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import { cond, debounce } from 'lodash';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
@@ -7,7 +7,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import IMGNoData from '@/assets/image/img_no_data_invest.svg';
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
 import arrayIcon from '@/common/arrayIcon';
-import { ENUM_INVEST_STATUS } from '@/common/constants';
+import { ENUM_INVESTED_TYPE, ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
 import { ItemProps } from '@/components/bottomsheet';
@@ -33,7 +33,6 @@ const PAGE_SIZE = 10;
 
 const Investment = observer(({ route }: { route: any }) => {
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
-    const [textSearch, setTextSearch] = useState<string>();
     const [listStore, setListStore] = useState<PackageInvest[]>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -62,7 +61,8 @@ const Investment = observer(({ route }: { route: any }) => {
         textSearch: '',
         fromDate: '',
         toDate: '',
-        moneyInvested: ''
+        moneyInvested: '',
+        option: ''
     });
 
     const inputRef = useRef<TextFieldActions>(null);
@@ -83,15 +83,19 @@ const Investment = observer(({ route }: { route: any }) => {
             setIsLoading(true);
         }
 
+        if (btnInvest === ENUM_INVEST_STATUS.INVESTING) condition.current.option = ENUM_INVESTED_TYPE.INVESTING;
+        else condition.current.option = ENUM_INVESTED_TYPE.INVESTED;
         condition.current.isLoading = true;
+
         const resInvest = await apiServices.invest.getListContractInvesting(
+            condition.current.option,
             condition.current.textSearch,
-            condition.current.moneyInvest,
+            condition.current.moneyInvested,
             condition.current.fromDate,
             condition.current.toDate,
             isLoadMore ? condition.current.offset : 0,
-            PAGE_SIZE);
-
+            PAGE_SIZE
+        );
         const newData = resInvest.data as PackageInvest[];
         const newSize = newData?.length;
 
@@ -111,7 +115,7 @@ const Investment = observer(({ route }: { route: any }) => {
         condition.current.canLoadMore = newSize >= PAGE_SIZE;
         setIsLoading(false);
         setCanLoadMoreUI(condition.current.canLoadMore);
-    }, [apiServices.invest]);
+    }, [apiServices.invest, btnInvest]);
 
     const fetchAllDataInvest = useCallback(async (isLoadMore?: boolean) => {
         setCanLoadMoreUI(true);
@@ -154,12 +158,17 @@ const Investment = observer(({ route }: { route: any }) => {
             case ENUM_INVEST_STATUS.INVEST_NOW:
                 fetchAllDataInvest(isLoadMore);
                 break;
-            case ENUM_INVEST_STATUS.INVESTING:
-                fetchDataInvested(isLoadMore);
-                break;
-            case ENUM_INVEST_STATUS.HISTORY:
-                break;
             default:
+                condition.current.fromDate='';
+                condition.current.toDate='';
+                condition.current.moneyInvest='';
+                condition.current.moneyInvested='';
+                condition.current.textSearch='';
+                popupInvestedRef.current.clear();
+                inputRef.current?.setValue('');
+                setMoneyValueInvested({});
+                setMoneyValueInvest({});
+                fetchDataInvested(isLoadMore);
                 break;
         }
     }, [fetchAllDataInvest, fetchDataInvested]);
@@ -177,7 +186,10 @@ const Investment = observer(({ route }: { route: any }) => {
         condition.current.timeInvestment = '';
         condition.current.moneyInvest = '';
         condition.current.textSearch = '';
-        setTextSearch('');
+        condition.current.fromDate = '';
+        condition.current.toDate = '';
+        condition.current.moneyInvested = '';
+        setMoneyValueInvested({});
         inputRef.current?.setValue('');
         setIsRefreshing(true);
         fetchData(btnInvest);
@@ -221,7 +233,7 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [btnInvest]);
 
     const navigateToInvestNow = useCallback((item: any) => {
-        Navigator.navigateToDeepScreen([ScreenName.packageInvestStack],ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
+        Navigator.navigateToDeepScreen([ScreenName.packageInvestStack], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
     }, [btnInvest]);
 
     const openBottomSheet = useCallback((type: string) => {
@@ -241,9 +253,10 @@ const Investment = observer(({ route }: { route: any }) => {
                 setMoneyValueInvest(item);
                 condition.current.moneyInvest = item.id;
             }
-            if (btnInvest === ENUM_INVEST_STATUS.INVESTING) {
+            else {
                 setMoneyValueInvested(item);
                 condition.current.moneyInvested = item.id;
+                console.log('condition.current.moneyInvested', condition.current.moneyInvested);
             }
         }
 
@@ -255,20 +268,22 @@ const Investment = observer(({ route }: { route: any }) => {
         }
     }, [btnInvest]);
 
-    const debounceSearchItem = useCallback(debounce(() => {
-        fetchData(btnInvest);
-    }, 500), [btnInvest]);
+
 
     const handleInputOnChange = useCallback(
         (value: string) => {
             const trimValue = value.trim();
-            setTextSearch(trimValue ? Utils.formatMoney(trimValue) : '');
+            inputRef.current?.setValue(trimValue ? Utils.formatMoney(trimValue) : '');
             setShowSuggestion(true);
             setDataSuggestion(Utils.updateSuggestions(trimValue));
-            condition.current.textSearch = trimValue ? Utils.formatTextToNumber(trimValue) : '';
-            debounceSearchItem();
+            console.log('trimValue',Number(Utils.formatTextToNumber(trimValue)));
+            if(Number(Utils.formatTextToNumber(trimValue))>=10e5)
+            {
+                condition.current.textSearch = trimValue;
+                fetchDataInvested(isLoading);
+            }
         },
-        [debounceSearchItem]
+        [fetchDataInvested, isLoading]
     );
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
@@ -340,24 +355,27 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [btnInvest, fetchData]);
 
     const onConfirmFilter = useCallback(() => {
+        inputRef.current?.setValue('');
+        condition.current.textSearch = '';
         fetchData(btnInvest);
     }, [btnInvest, fetchData]);
 
     const onConfirmFilterInvested = useCallback((fromDate: string, toDate: string) => {
         condition.current.fromDate = fromDate;
         condition.current.toDate = toDate;
-        condition.current.moneyInvested = moneyValueInvested?.value || '';
-    }, [moneyValueInvested]);
+        condition.current.moneyInvested = moneyValueInvested?.id || '';
+        inputRef.current?.setValue('');
+        condition.current.textSearch = '';
+        fetchDataInvested(isLoading);
+    }, [fetchDataInvested, isLoading, moneyValueInvested?.id]);
 
     const onPopupInvest = useCallback(() => {
         switch (btnInvest) {
             case ENUM_INVEST_STATUS.INVEST_NOW:
                 popupInvestRef.current.show();
                 break;
-            case ENUM_INVEST_STATUS.INVESTING:
-                popupInvestedRef.current.show();
-                break;
             default:
+                popupInvestedRef.current.show();
                 break;
         }
 
@@ -369,23 +387,37 @@ const Investment = observer(({ route }: { route: any }) => {
         setMoneyValueInvested(undefined);
     }, []);
 
-    const onCancelPopupFilter = useCallback(()=>{
-        condition.current.timeInvestment='';
-        condition.current.moneyInvest='';
+    const onCancelPopupFilter = useCallback(() => {
+        condition.current.timeInvestment = '';
+        condition.current.moneyInvest = '';
         setTimeValue(undefined);
         setMoneyValueInvest(undefined);
-    },[]);
+    }, []);
 
     const openTimeInvestment = useCallback(() => {
         refBottomSheetMoney.current.show();
     }, []);
 
-    const onPressSuggestItem = useCallback(() => {
+    const onPressSuggestItem = useCallback((item: string) => {
         setShowSuggestion(false);
-    }, []);
+        inputRef.current?.setValue(item);
+        condition.current.textSearch = item;
+        condition.current.fromDate = '';
+        condition.current.toDate = '';
+        condition.current.moneyInvest = '';
+        condition.current.moneyInvested = '';
+        console.log('btnInvest', btnInvest);
+        popupInvestedRef.current.clear();
+        if (btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) fetchAllDataInvest(isLoading);
+        else fetchDataInvested(isLoading);
+    }, [btnInvest, fetchAllDataInvest, fetchDataInvested, isLoading]);
+
 
     const renderSuggestionItem = useCallback(({ item }: any) => {
-        return <Touchable onPress={onPressSuggestItem} style={styles.itemSuggestion}>
+        const onPress = () => {
+            onPressSuggestItem(item);
+        };
+        return <Touchable onPress={onPress} style={styles.itemSuggestion}>
             <Text style={styles.txtSuggest}>{Utils.formatMoney(item)}</Text>
         </Touchable>;
     }, [onPressSuggestItem]);
@@ -400,7 +432,6 @@ const Investment = observer(({ route }: { route: any }) => {
                         containerInput={styles.input}
                         placeHolder={Languages.invest.enter}
                         keyboardType={'NUMBER'}
-                        value={textSearch}
                         ref={inputRef}
                     />
                     <Touchable
@@ -419,7 +450,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 </View>}
             </>
         );
-    }, [dataSuggestion, handleInputOnChange, onPopupInvest, renderSuggestionItem, showSuggestion, textSearch]);
+    }, [dataSuggestion, handleInputOnChange, onPopupInvest, renderSuggestionItem, showSuggestion]);
 
     const renderLoading = useMemo(() => {
         return <View >{canLoadMoreUI && <Loading />}</View>;

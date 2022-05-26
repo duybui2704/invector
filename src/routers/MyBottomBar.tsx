@@ -87,7 +87,9 @@ const InvestStack = () => {
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name={ScreenName.investment} component={Investment} />
             <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
-            <Stack.Screen name={ScreenName.packageInvestStack} component={PackageInvestStack} />
+            <Stack.Screen name={ScreenName.invest} component={Invest} />
+            <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
+            <Stack.Screen name={ScreenName.transferScreen} component={TransferScreen} />
         </Stack.Navigator>
     );
 };

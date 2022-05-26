@@ -54,9 +54,15 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             setVisibleToDatePicker(false);
         }, []);
 
+        const clear = useCallback(() => {
+            setStartDate(undefined);
+            setEndDate(undefined);
+        }, []);
+
         useImperativeHandle(ref, () => ({
             show,
-            hide
+            hide,
+            clear
         }));
 
         const _onClose = useCallback(() => {
@@ -73,16 +79,6 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             onCancel?.();
             _onClose();
         }, [_onClose, onCancel]);
-
-        const onOpenBottomSheet = useCallback((type: string) => {
-
-
-
-            hide();
-
-            openDatePicker?.(type);
-
-        }, [hide, openDatePicker]);
 
         const renderItem = useCallback((value: any, palaceholder: string) => {
             const onPress = () => {
@@ -117,7 +113,7 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
 
         }, []);
 
-        const renderDatePicker = useCallback((isVisible: boolean, date: Date, label?: string, maximumDate?: string, minimumDate?: string) => {
+        const renderDatePicker = useCallback((isVisible: boolean, date: Date, label?: string) => {
 
             const onConfirmPicker = (value: Date) => {
                 if (label === Languages.invest.fromDate) {
