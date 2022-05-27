@@ -30,11 +30,15 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>app.appsflyer.com</string>
-				<string>sandboxcpanelv2.tienngay.vn</string>
 				<string>tienngay.vn.investor</string>
-				<string>fb922820401777127</string>
 			</array>
 		</dict>
+         <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb945443669696174</string>
+            </array>
+        </dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
