@@ -1,11 +1,10 @@
-import { cond, debounce } from 'lodash';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
-import IMGNoData from '@/assets/image/img_no_data_invest.svg';
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
+import IMGNoData from '@/assets/image/img_no_data_invest.svg';
 import arrayIcon from '@/common/arrayIcon';
 import { ENUM_INVESTED_TYPE, ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
@@ -13,21 +12,22 @@ import ScreenName from '@/common/screenNames';
 import { ItemProps } from '@/components/bottomsheet';
 import BottomSheetComponentInvest from '@/components/BottomSheetInvest';
 import { MyTextInput } from '@/components/elements/textfield';
+import { TextFieldActions } from '@/components/elements/textfield/types';
 import { Touchable } from '@/components/elements/touchable';
 import ItemInvest from '@/components/ItemInvest';
 import Loading from '@/components/loading';
 import MyFlatList from '@/components/MyFlatList';
+import NoData from '@/components/NoData';
 import PopupFilterInvested from '@/components/PopupFilterInvested';
 import PopupInvest from '@/components/popupInvest';
 import { useAppStore } from '@/hooks';
 import { PackageInvest, PagingConditionTypes } from '@/models/invest';
-import NoData from '@/components/NoData';
 import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
 import { HeaderBar } from '../../components/header';
 import styles from './styles';
-import { TextFieldActions } from '@/components/elements/textfield/types';
+
 
 const PAGE_SIZE = 10;
 
@@ -159,15 +159,6 @@ const Investment = observer(({ route }: { route: any }) => {
                 fetchAllDataInvest(isLoadMore);
                 break;
             default:
-                condition.current.fromDate='';
-                condition.current.toDate='';
-                condition.current.moneyInvest='';
-                condition.current.moneyInvested='';
-                condition.current.textSearch='';
-                popupInvestedRef.current.clear();
-                inputRef.current?.setValue('');
-                setMoneyValueInvested({});
-                setMoneyValueInvest({});
                 fetchDataInvested(isLoadMore);
                 break;
         }
@@ -256,7 +247,6 @@ const Investment = observer(({ route }: { route: any }) => {
             else {
                 setMoneyValueInvested(item);
                 condition.current.moneyInvested = item.id;
-                console.log('condition.current.moneyInvested', condition.current.moneyInvested);
             }
         }
 
@@ -276,14 +266,19 @@ const Investment = observer(({ route }: { route: any }) => {
             inputRef.current?.setValue(trimValue ? Utils.formatMoney(trimValue) : '');
             setShowSuggestion(true);
             setDataSuggestion(Utils.updateSuggestions(trimValue));
-            console.log('trimValue',Number(Utils.formatTextToNumber(trimValue)));
-            if(Number(Utils.formatTextToNumber(trimValue))>=10e5)
-            {
-                condition.current.textSearch = trimValue;
-                fetchDataInvested(isLoading);
+            if (Number(Utils.formatTextToNumber(trimValue)) >= 10e5) {
+                condition.current.textSearch = Number(Utils.formatTextToNumber(trimValue)).toString();
+                switch (btnInvest) {
+                    case ENUM_INVEST_STATUS.INVEST_NOW:
+                        fetchAllDataInvest(false);
+                        break;
+                    default:
+                        fetchDataInvested(false);
+                        break;
+                }
             }
         },
-        [fetchDataInvested, isLoading]
+        [btnInvest, fetchAllDataInvest, fetchDataInvested]
     );
     const keyExtractor = useCallback((item: any, index: number) => {
         return `${index}${item.id}`;
@@ -328,10 +323,20 @@ const Investment = observer(({ route }: { route: any }) => {
         } as TextStyle;
 
         const onPress = () => {
+            inputRef.current?.setValue('');
             setBtnInvest(type);
-            fetchData(type);
             condition.current.offset = 0;
+            condition.current.fromDate = '';
+            condition.current.toDate = '';
+            condition.current.moneyInvest = '';
+            condition.current.moneyInvested = '';
+            condition.current.textSearch = '';
+            popupInvestedRef.current.clear();
+            setMoneyValueInvested({});
+            setMoneyValueInvest({});
             setListStore([]);
+            fetchData(type);
+
         };
 
         const getTitle = () => {
@@ -406,7 +411,6 @@ const Investment = observer(({ route }: { route: any }) => {
         condition.current.toDate = '';
         condition.current.moneyInvest = '';
         condition.current.moneyInvested = '';
-        console.log('btnInvest', btnInvest);
         popupInvestedRef.current.clear();
         if (btnInvest === ENUM_INVEST_STATUS.INVEST_NOW) fetchAllDataInvest(isLoading);
         else fetchDataInvested(isLoading);

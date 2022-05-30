@@ -155,7 +155,7 @@ const Home = observer(() => {
 
     const navigateToInvestNow = useCallback((item: PackageInvest) => {
         if (userManager?.userInfo) {
-            Navigator.navigateToDeepScreen([ScreenName.packageInvestStack],ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
+            Navigator.navigateToDeepScreen([ScreenName.packageInvestStack],ScreenName.invest, { status: btnInvest, id: item?.id });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
@@ -231,7 +231,7 @@ const Home = observer(() => {
                 keyExtractor={keyExtractorBanner}
             />
         );
-    }, [banners, keyExtractorBanner, renderNewsItem]);
+    }, [banners, keyExtractorBanner, renderNewsItem, styles.newsContainer]);
 
     const renderTop = useMemo(() => {
         return (
