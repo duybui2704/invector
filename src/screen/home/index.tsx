@@ -147,7 +147,7 @@ const Home = observer(() => {
 
     const navigateToDetail = useCallback((item: PackageInvest) => {
         if (userManager?.userInfo) {
-            Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
+            Navigator.navigateToDeepScreen([ScreenName.packageInvestStack], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }

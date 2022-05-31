@@ -8,7 +8,7 @@ import IMGNoData from '@/assets/image/img_no_data_invest.svg';
 import arrayIcon from '@/common/arrayIcon';
 import { ENUM_INVESTED_TYPE, ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
-import ScreenName from '@/common/screenNames';
+import ScreenName, { TabsName } from '@/common/screenNames';
 import { ItemProps } from '@/components/bottomsheet';
 import BottomSheetComponentInvest from '@/components/BottomSheetInvest';
 import { MyTextInput } from '@/components/elements/textfield';
@@ -27,7 +27,6 @@ import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
 import { HeaderBar } from '../../components/header';
 import styles from './styles';
-
 
 const PAGE_SIZE = 10;
 
@@ -224,7 +223,7 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [btnInvest]);
 
     const navigateToInvestNow = useCallback((item: any) => {
-        Navigator.navigateToDeepScreen([ScreenName.packageInvestStack], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
+        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.invest, { status: btnInvest, id: item?.id });
     }, [btnInvest]);
 
     const openBottomSheet = useCallback((type: string) => {
@@ -301,6 +300,7 @@ const Investment = observer(({ route }: { route: any }) => {
             case ENUM_INVEST_STATUS.INVESTING:
                 return <ItemInvest
                     onPress={navigateScreen}
+                    onPressInvestNow={onPressToInvestNowScreen}
                     data={item}
                     title={ENUM_INVEST_STATUS.INVESTING} />;
             case ENUM_INVEST_STATUS.HISTORY:
