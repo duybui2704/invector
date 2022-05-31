@@ -6,7 +6,7 @@ import HTMLView from 'react-native-htmlview';
 import Lightbox from 'react-native-lightbox-v2';
 import QRCode from 'react-native-qrcode-svg';
 
-import ShareIC from '@/assets/image/ic_share_round.svg';
+import ShareIC from '@/assets/image/ic_share_friends.svg';
 import { Configs, isIOS } from '@/common/Configs';
 import { GET_LINK_INVESTOR } from '@/common/constants';
 import Languages from '@/common/Languages';
@@ -50,11 +50,8 @@ const ShareFriend = observer(() => {
                 />
                 <Text style={styles.txtMyQrCode}>{Languages.shareFriend.introduceCode}</Text>
                 <View style={styles.row}>
-                    <View style={styles.wrapMyCode}>
-                        <Text style={styles.textCode}>{code}</Text>
-
-                    </View>
-                    <Touchable onPress={share}>
+                    <Text style={styles.textCode}>{code}</Text>
+                    <Touchable onPress={share} style={styles.wrapBtnShare}>
                         <ShareIC />
                     </Touchable>
                 </View>
