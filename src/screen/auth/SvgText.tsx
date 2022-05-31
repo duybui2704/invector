@@ -127,6 +127,7 @@ const SvgComponent = observer((props: any) => {
                     <Text fill={login ? COLORS.WHITE : COLORS.GRAY}
                         fontSize={Configs.FontSize.size20}
                         onPressIn={onNavigateLogin}
+                        delayPressIn={2}
                         key='1'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}
@@ -142,6 +143,7 @@ const SvgComponent = observer((props: any) => {
                     </Text>
                     <Text fill={signUp ? COLORS.WHITE : COLORS.GRAY}
                         fontSize={Configs.FontSize.size20}
+                        delayPressIn={2}
                         onPressIn={onNavigateSignUp}
                         key='2'
                         fontFamily={Configs.FontFamily.regular}
@@ -159,6 +161,7 @@ const SvgComponent = observer((props: any) => {
                     <Text fill={signUp ? COLORS.WHITE : COLORS.GRAY}
                         fontSize={Configs.FontSize.size22}
                         onPressIn={onNavigateSignUp}
+                        delayPressIn={2}
                         key='3'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}
@@ -175,6 +178,7 @@ const SvgComponent = observer((props: any) => {
                     <Text fill={forgotPwd ? COLORS.WHITE : COLORS.GRAY}
                         fontSize={Configs.FontSize.size22}
                         onPressIn={onNavigateForgotPwd}
+                        delayPressIn={2}
                         key='4'
                         fontFamily={Configs.FontFamily.regular}
                         letterSpacing={Configs.FontSize.size4}

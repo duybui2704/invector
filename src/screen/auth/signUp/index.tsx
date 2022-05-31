@@ -150,12 +150,6 @@ const SignUp = observer(() => {
     }, [styles.inputPass]);
 
     const renderView = () => {
-        let isDisTouchable: boolean;
-        if (!(phone !== '' && pass !== '' && passNew !== '' && email !== '' && channel !== '' && name !== '')) {
-            isDisTouchable = false;
-        } else {
-            isDisTouchable = true;
-        }
 
         return (
             <HideKeyboard>
@@ -195,9 +189,9 @@ const SignUp = observer(() => {
                                 </Touchable>
                                 <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                             </View>
-                            <Touchable onPress={onSignIn} disabled={isDisTouchable}
-                                style={isDisTouchable ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
-                                <Text style={isDisTouchable ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                            <Touchable onPress={onSignIn}
+                                style={styles.tobLogin}>
+                                <Text style={styles.txtSubmit}>
                                     {Languages.auth.txtSignUp}
                                 </Text>
                             </Touchable>
