@@ -38,7 +38,7 @@ const EditAccountInfo = observer(() => {
     const [genderUser, setGender] = useState<string>(userManager.userInfo?.gender || '');
     const [addressUser, setAddress] = useState<string>(userManager.userInfo?.address || '');
     const [jobUser, setJob] = useState<string>(userManager.userInfo?.job || '');
-    const [birthday, setBirthday] = useState<any>(userManager.userInfo?.birth_date || '');
+    const [birthday, setBirthday] = useState<any>(userManager.userInfo?.birth_date || '6/1/1999');
     const [birthdayValue, setBirthdayValue] = useState<string>(userManager.userInfo?.birth_date || '');
     const [avatarAcc, setAvatarAcc] = useState<UpLoadImage>();
     const [avatarUrl, setAvatarUrl] = useState<string>(userManager.userInfo?.avatar_user || '');
@@ -129,10 +129,10 @@ const EditAccountInfo = observer(() => {
             <View style={styles.wrapBirthday}>
                 <Text style={styles.labelBirthdayStyle}>{Languages.accountInfo.birthday}</Text>
                 <DatePickerTransaction
-                    title={Languages.accountInfo.birthday}
+                    title={userManager.userInfo?.birth_date ? userManager.userInfo?.birth_date : Languages.accountInfo.birthday}
                     onConfirmDatePicker={onConfirmValue}
                     onDateChangeDatePicker={setBirthday}
-                    date={birthday || new Date()}
+                    date={new Date(birthday) || new Date()}
                     maximumDate={new Date()}
                     errMessage={errText}
                     containerDate={disable ? styles.containerDateDisable : styles.containerDate}
@@ -141,7 +141,7 @@ const EditAccountInfo = observer(() => {
                 />
             </View>
         );
-    }, [birthday, birthdayValue, errText, styles.containerDate, styles.containerDateDisable, styles.labelBirthdayStyle, styles.placeHolderBirthday, styles.placeHolderValueBirthday, styles.wrapBirthday]);
+    }, [birthday, birthdayValue, errText, styles.containerDate, styles.containerDateDisable, styles.labelBirthdayStyle, styles.placeHolderBirthday, styles.placeHolderValueBirthday, styles.wrapBirthday, userManager.userInfo?.birth_date]);
 
     const onGenderChoose = useCallback((item?: any) => {
         setGender(item?.value || '');
@@ -213,7 +213,7 @@ const EditAccountInfo = observer(() => {
                 full_name: name,
                 avatar_user: avatar,
                 gender: genderUser,
-                // birth_date: birthdayValue,
+                birth_date: birthdayValue,
                 phone_number: phone,
                 email: emailUser,
                 address: addressUser,
