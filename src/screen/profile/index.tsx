@@ -65,8 +65,7 @@ const Profile = observer(() => {
     const { userManager, fastAuthInfoManager } = useAppStore();
     const { supportedBiometry } = fastAuthInfoManager;
     const popupError = useRef<PopupActionTypes>(null);
-    const isEnable = SessionManager?.isEnableFastAuthentication;
-    const [isEnabledSwitch, setIsEnabledSwitch] = useState(isEnable || false);
+    const [isEnabledSwitch, setIsEnabledSwitch] = useState(SessionManager?.isEnableFastAuthentication||false);
     const popupConfirm = useRef<PopupActionTypes>(null);
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const animationConfigs = useBottomSheetTimingConfigs({
@@ -83,7 +82,7 @@ const Profile = observer(() => {
         if (isFocus) {
             setRating(1);
         }
-    }, [isFocus]);  
+    }, [isFocus]);
 
     const callPhone = useCallback(() => {
         Utils.callNumber(Languages.common.hotline);
@@ -106,12 +105,14 @@ const Profile = observer(() => {
 
     const onAgreeLogout = useCallback(() => {
         SessionManager.logout();
+        fastAuthInfoManager.setEnableFastAuthentication(false);
         userManager.updateUserInfo(undefined);
+        setIsEnabledSwitch(false);
         popupLogout.current?.hide();
         Navigator.navigateToDeepScreen(
             [ScreenName.tabs], TabsName.homeTabs
         );
-    }, [userManager]);
+    }, [fastAuthInfoManager, userManager]);
 
     const renderPopupLogout = useMemo(() => {
         return (

@@ -31,7 +31,7 @@ import MyWebView from '@/screen/profile/myWedView/MyWebView';
 import { NotifyInvest } from '@/screen/home/notifyInvest';
 import PaymentWebview from '@/screen/investment/paymentWebview';
 import LinkWallet from '@/screen/profile/linkWallet/LinkWallet';
-import TransferScreen from '@/screen/investment/tranfer Bank';
+import TransferScreen from '@/screen/investment/tranferBank';
 
 const TabsData = [
     {

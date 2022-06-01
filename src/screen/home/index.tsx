@@ -38,7 +38,7 @@ import HeaderBar from '@/components/header';
 const PAGE_SIZE = 3;
 
 const Home = observer(() => {
-    const { apiServices, userManager } = useAppStore();
+    const { apiServices, userManager, fastAuthInfoManager } = useAppStore();
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
     const isFocused = useIsFocused();
     const styles = MyStylesHome();
@@ -146,20 +146,20 @@ const Home = observer(() => {
     }, [fetchDataInvest]);
 
     const navigateToDetail = useCallback((item: PackageInvest) => {
-        if (userManager?.userInfo) {
+        if (userManager?.userInfo && !fastAuthInfoManager?.isEnableFastAuth) {
             Navigator.navigateToDeepScreen([ScreenName.packageInvestStack], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, [userManager?.userInfo, btnInvest]);
+    }, [userManager?.userInfo, fastAuthInfoManager?.isEnableFastAuth, btnInvest]);
 
     const navigateToInvestNow = useCallback((item: PackageInvest) => {
-        if (userManager?.userInfo) {
-            Navigator.navigateToDeepScreen([ScreenName.packageInvestStack],ScreenName.invest, { status: btnInvest, id: item?.id });
+        if (userManager?.userInfo && !fastAuthInfoManager?.isEnableFastAuth) {
+            Navigator.navigateToDeepScreen([ScreenName.packageInvestStack], ScreenName.invest, { status: btnInvest, id: item?.id });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, [btnInvest, userManager?.userInfo]);
+    }, [btnInvest, fastAuthInfoManager?.isEnableFastAuth, userManager?.userInfo]);
 
     const gotoLogin = useCallback((titleAuth: string) => {
         setTimeout(() => {
@@ -170,7 +170,7 @@ const Home = observer(() => {
     const renderNavigateScreen = useCallback((title: string) => {
         const onPress = () => {
             return gotoLogin(title);
-        }; 
+        };
         return (
             <Touchable style={styles.tobAuth} onPress={onPress}>
                 <Text style={styles.txtLogin}>{title}</Text>
@@ -236,7 +236,7 @@ const Home = observer(() => {
     const renderTop = useMemo(() => {
         return (
             <View style={styles.viewForeground}>
-                {userManager?.userInfo ?
+                {(userManager?.userInfo && !fastAuthInfoManager.isEnableFastAuth) ?
                     <>
                         <View style={styles.viewTop}>
                             <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
@@ -327,8 +327,8 @@ const Home = observer(() => {
                         </View>
                     </>
                 }
-                {!userManager?.userInfo &&
-                    <View style={isIOS ?styles.viewSmallMenuLoginIOS :styles.viewSmallMenuLoginAndroid }>
+                {!userManager?.userInfo && fastAuthInfoManager.isEnableFastAuth &&
+                    <View style={isIOS ? styles.viewSmallMenuLoginIOS : styles.viewSmallMenuLoginAndroid}>
                         {renderNavigateScreen(Languages.auth.txtLogin)}
                         {renderNavigateScreen(Languages.auth.txtSignUp)}
                     </View>}

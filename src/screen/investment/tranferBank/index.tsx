@@ -126,11 +126,11 @@ const TransferScreen = observer(({ route }: any) => {
                     </View>
                     <Text style={styles.label}>{Languages.transferScreen.or}</Text>
                     <View style={styles.wrapQr}>
-                        <MyImageView
+                        {!!link&&<MyImageView
                             style={styles.qr}
                             imageUrl={link}
                             resizeMode={'stretch'}
-                        />
+                        />}
                         <View style={styles.wrapInfo}>
                             <Text style={styles.txtCompany}>{data?.name_account?.toLocaleUpperCase()}</Text>
                             {renderItemBank(Languages.transferScreen.bankName, data?.name_bank)}

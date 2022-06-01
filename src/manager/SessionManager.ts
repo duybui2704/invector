@@ -162,7 +162,6 @@ class SessionManager {
     }
 
     setEnableFastAuthentication(enable?: boolean) {
-        this.isEnableFastAuthentication = enable;
         if (enable) StorageUtils.saveDataToKey(StorageKeys.KEY_ENABLE_FAST_AUTHENTICATION, JSON.stringify(true));
         else StorageUtils.clearDataOfKey(StorageKeys.KEY_ENABLE_FAST_AUTHENTICATION);
     }
@@ -178,7 +177,7 @@ class SessionManager {
         this.setUserInfo();
         this.setAccessToken();
         this.setRatingPoint(0);
-        this.setEnableFastAuthentication(false);
+        this.setEnableFastAuthentication();
         this.lastTabIndexBeforeOpenAuthTab = 0;
     }
 }
