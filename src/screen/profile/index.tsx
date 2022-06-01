@@ -227,7 +227,7 @@ const Profile = observer(() => {
     }, [callPhone, styles.featureContainer, styles.txtTitleKeyValue]);
 
     const onToggleBiometry = useCallback(
-        (value) => {
+        (value:any) => {
             if (value)
                 TouchID.isSupported(configTouchId)
                     .then(() => {

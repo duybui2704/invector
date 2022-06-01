@@ -158,7 +158,7 @@ const AccountBank = observer(() => {
     const onValidate = useCallback(() => {
         const errMsgBank = FormValidate.inputEmpty(banks, Languages.errorMsg.errBankEmpty);
         const errMsgAccNumber = FormValidate.inputValidate(accountNumber, Languages.errorMsg.errStkEmpty, Languages.errorMsg.errStk, 16, true);
-        const errMsgATMNumber = FormValidate.inputValidate(ATMNumber, Languages.errorMsg.errStkEmpty, Languages.errorMsg.errStk, 16, false, true);
+        const errMsgATMNumber = FormValidate.inputValidate(ATMNumber, Languages.errorMsg.errStkEmpty, Languages.errorMsg.errStk, 19, false, true);
         const errMsgName = FormValidate.inputNameEmpty(Utils.formatForEachWordCase(accountProvider), Languages.errorMsg.errNameEmpty, Languages.errorMsg.userNameRegex);
 
         accountNumberRef.current?.setErrorMsg(errMsgAccNumber);
@@ -167,7 +167,7 @@ const AccountBank = observer(() => {
         bankRef.current?.setErrorMsg(errMsgBank);
 
         if (
-            `${errMsgName}${errMsgBank}`.length === 0 && (`${errMsgAccNumber}`.length === 0 ||`${errMsgATMNumber}`.length === 0 )
+            `${errMsgName}${errMsgBank}`.length === 0 && (`${errMsgAccNumber}`.length === 0 || `${errMsgATMNumber}`.length === 0)
         ) {
             return true;
         }
@@ -224,7 +224,7 @@ const AccountBank = observer(() => {
                                         isValueBank
                                         styleText={styles.valuePicker}
                                         stylePlaceholder={styles.placeHolderPicker}
-                                        leftIcon={<BankIC  width={30} height={30}/>}
+                                        leftIcon={<BankIC width={30} height={30} />}
                                         rightIcon={<ArrowIC />}
                                     />
                                     <View style={styles.rowContainerAllInputChoose}>
@@ -239,7 +239,7 @@ const AccountBank = observer(() => {
                                         typeCard === 1 ? accountNumber : ATMNumber,
                                         typeCard === 1 ? accountNumberRef : ATMNumberRef,
                                         'NUMBER',
-                                        16
+                                        typeCard === 1 ? 16 : 19
                                     )}
                                     {renderInput(
                                         Languages.accountBank.accountProvider,
@@ -254,7 +254,7 @@ const AccountBank = observer(() => {
                                     value={Languages.accountBank.noteAccountBank}
                                     stylesheet={HtmlStyles || undefined} />
 
-                                <Button label={Languages.accountBank.addAccount}
+                                <Button label={Languages.accountBank.updateAccBank}
                                     buttonStyle={nameBank && accountProvider && (accountNumber || ATMNumber) ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
                                     isLowerCase
                                     onPress={onAddAccount}

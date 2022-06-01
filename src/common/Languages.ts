@@ -216,7 +216,7 @@ const Languages = {
         sessionExpired: 'Kết nối bị gián đoạn, vui lòng thử lại!',
         errEmptyIdentity: 'Bạn cần điền đầy đủ thông tin trước khi xác thực',
         errSyntaxBank: 'Số thẻ ngân hàng phải từ 8 đến 16 kí tự số',
-        errSyntaxATM: 'Số thẻ ATM phải bằng 16 kí tự số',
+        errSyntaxATM: 'Số thẻ ATM phải đủ 16 hoặc 19 kí tự số',
         errNotNumberBank: 'Số thẻ ngân hàng phải là kí tự số',
         errNotNumberATM: 'Số thẻ ATM phải là kí tự số',
         uploading: 'Đang tải ảnh lên',
@@ -435,7 +435,8 @@ const Languages = {
         accountProvider: 'Chủ tài khoản',
         accountProviderName: 'Tên chủ tài khoản',
         noteAccountBank: '<p><r>Chú ý:</r> <s>Đây là tài khoản ngân hàng để nhận lãi, bạn cần đảm bảo chính xác thông tin tài khoản ngân hàng bạn cung cấp là chính xác.</s> <g>TienNgay.vn</g><s> sẽ không chịu trách nghiệm khi bạn nhập sai thông tin.</s></p>',
-        addAccount: 'Thêm tài khoản'
+        addAccount: 'Thêm tài khoản',
+        updateAccBank: 'Cập nhật tài khoản'
     },
     confirmPhone: {
         confirmPhone: 'Xác nhận số điện thoại',

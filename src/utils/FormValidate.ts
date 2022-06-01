@@ -175,7 +175,7 @@ function inputValidate(
         errMsg = Languages.errorMsg.errSyntaxBank;
     } else if (isBankAccount && validateNumber(`${value}`)){
         errMsg = Languages.errorMsg.errNotNumberBank;
-    } else if (isATM && value.length !== 16) {
+    } else if (isATM && (value.length !== 16 && value.length !== 19 )) {
         errMsg = Languages.errorMsg.errSyntaxATM;
     } else if (isATM && validateNumber(`${value}`)){
         errMsg = Languages.errorMsg.errNotNumberATM;

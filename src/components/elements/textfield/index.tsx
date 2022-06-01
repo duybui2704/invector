@@ -97,7 +97,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         }, [textfieldVal]);
 
         const setValue = useCallback(
-            (text) => {
+            (text:any) => {
                 if (maxLength) {
                     text = `${text}`.slice(0, maxLength);
                 }
@@ -108,7 +108,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         );
 
         const fillValue = useCallback(
-            (text) => {
+            (text:any) => {
                 setValue(text);
             },
             [setValue]
