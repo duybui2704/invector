@@ -1,7 +1,7 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { StatusBar, Text, View, FlatList, Image, ImageBackground } from 'react-native';
+import { StatusBar, Text, View, FlatList, ImageBackground } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import FastImage from 'react-native-fast-image';
 
@@ -33,7 +33,6 @@ import DateUtils from '@/utils/DateUtils';
 import { BaseModel } from '@/models/base-model';
 import { isIOS } from '@/common/Configs';
 import Images from '@/assets/Images';
-import HeaderBar from '@/components/header';
 
 const PAGE_SIZE = 3;
 
@@ -327,14 +326,15 @@ const Home = observer(() => {
                         </View>
                     </>
                 }
-                {!userManager?.userInfo && fastAuthInfoManager.isEnableFastAuth &&
+                {(!userManager?.userInfo && !fastAuthInfoManager.isEnableFastAuth) &&
                     <View style={isIOS ? styles.viewSmallMenuLoginIOS : styles.viewSmallMenuLoginAndroid}>
                         {renderNavigateScreen(Languages.auth.txtLogin)}
                         {renderNavigateScreen(Languages.auth.txtSignUp)}
-                    </View>}
+                    </View>
+                }
             </View>
         );
-    }, [styles.viewForeground, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValueCenter, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.viewSumInvestValue, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopLogo, styles.logo, styles.viewRightTop, styles.imgNotify, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLoginIOS, styles.viewSmallMenuLoginAndroid, userManager?.userInfo, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, gotoProfile, onNotifyInvest, renderNavigateScreen]);
+    }, [styles.viewForeground, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValueCenter, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.viewSumInvestValue, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopLogo, styles.circleWrap, styles.fastImage, styles.viewRightTop, styles.imgNotify, styles.logo, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLoginIOS, styles.viewSmallMenuLoginAndroid, userManager.userInfo, fastAuthInfoManager.isEnableFastAuth, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, gotoProfile, onNotifyInvest, renderNavigateScreen]);
 
     const renderFooter = useMemo(() => {
         return (
@@ -356,7 +356,7 @@ const Home = observer(() => {
                 {renderNews}
             </>
         );
-    }, [dataArr, unMore, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.viewBanner, styles.txtCenter, onMore, onOpenVPS, renderNews]);
+    }, [styles.marginHorizontal, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.txtNews, dataArr, unMore, onMore, onOpenVPS, renderNews]);
 
 
     const renderItem = useCallback((item: any) => {
@@ -376,7 +376,7 @@ const Home = observer(() => {
                 />
             </View>
         );
-    }, [navigateToDetail, navigateToInvestNow]);
+    }, [navigateToDetail, navigateToInvestNow, styles.marginHorizontal]);
 
     const renderItemInvestPackage = useCallback((item: any) => {
         return renderItem(item?.item);
@@ -389,7 +389,7 @@ const Home = observer(() => {
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, []);
+    }, [userManager?.userInfo]);
 
     const renderContent = useMemo(() => {
 
@@ -407,11 +407,10 @@ const Home = observer(() => {
                 />
             </View>
         );
-    }, [dataArr, keyExtractor, renderFooter, renderItemInvestPackage, styles.txtCenter, styles.viewCenter, userManager?.userInfo]);
+    }, [dataArr, keyExtractor, renderFooter, renderItemInvestPackage, styles.txtCenter, userManager?.userInfo]);
 
 
     const renderBackground = useMemo(() => {
-        // return (<ImageBackground source={Images.bg_header_home} style={styles.imageBg} resizeMode='stretch' />);
         return (
             <>
                 <StatusBar
