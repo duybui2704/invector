@@ -239,8 +239,8 @@ const Languages = {
         passcodeConfirm:
             'Quý khách có muốn sử dụng mã pin làm phương thức xác thực chính',
         description: 'Đăng nhập bằng vân tay của bạn',
-        useFaceID: 'Sử dụng Face ID để đăng nhập vào Univest',
-        useTouchID: 'Sử dụng Touch ID để đăng nhập vào Univest',
+        useFaceID: 'Sử dụng Face ID để đăng nhập vào Đầu tư và tích luỹ',
+        useTouchID: 'Sử dụng Touch ID để đăng nhập vào  Đầu tư và tích luỹ',
 
         goToSetting: 'Cài đặt',
         desSetPasscode: 'Vui lòng thêm mã PIN để cài đặt xác thực nhanh',
