@@ -2,6 +2,7 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { useIsFocused } from '@react-navigation/core';
 
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
 import IMGNoData from '@/assets/image/img_no_data_invest.svg';
@@ -47,7 +48,6 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const popupInvestRef = useRef<any>();
     const popupInvestedRef = useRef<any>();
-
     const refBottomSheetMonth = useRef<any>(null);
     const refBottomSheetMoney = useRef<any>(null);
     const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(true);

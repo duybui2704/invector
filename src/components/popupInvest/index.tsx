@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Text, TextStyle, View } from 'react-native';
 import Modal from 'react-native-modal';
 
@@ -10,6 +10,7 @@ import { Touchable } from '@/components/elements/touchable';
 import { MyStylePupUp } from '@/components/popupInvest/styles';
 import { COLORS } from '@/theme';
 import { PopupActions } from './types';
+import { useAppStore } from '@/hooks';
 
 
 export type PopupFilterProps = {

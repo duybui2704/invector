@@ -4,6 +4,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ViewStyle } from 'react-native';
 import appsFlyer from 'react-native-appsflyer';
+import CodePush from 'react-native-code-push';
 
 import { AppStoreProvider } from '../provider/app-provider/index';
 import { COLORS } from '../theme/colors';
@@ -81,6 +82,10 @@ const App = () => {
     );
 };
 
+const codePushOptions = {
+    installMode: CodePush.InstallMode.IMMEDIATE,
+    checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME
+};
 
-export default App;
+export default CodePush(codePushOptions)(App);
 

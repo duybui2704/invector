@@ -41,10 +41,10 @@ target 'investorV2' do
   
   pod 'react-native-fbsdk-next', :path => '../node_modules/react-native-fbsdk-next'
 
-  target 'investorV2Tests' do
-    inherit! :complete
-    # Pods for testing
-  end
+#   target 'investorV2' do
+#     inherit! :complete
+#     # Pods for testing
+#   end
 
   # Enables Flipper.
   #
