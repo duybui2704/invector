@@ -61,7 +61,6 @@ export const DetailInvestment = observer(({ route }: any) => {
         if (resInvesting.success) {
             const res = resInvesting.data as PackageInvest;
             const history = resInvesting?.history as HistoryModel[];
-            console.log('history', history);
             setDataHistory(history);
             setData(res);
 
@@ -74,6 +73,8 @@ export const DetailInvestment = observer(({ route }: any) => {
         setIsLoading(false);
         if (resInvestHistory.success) {
             const res = resInvestHistory.data as PackageInvest;
+            const history = resInvestHistory.history as HistoryModel[];
+            setDataHistory(history);
             setData(res);
         }
     }, [apiServices.invest, id]);
@@ -132,17 +133,9 @@ export const DetailInvestment = observer(({ route }: any) => {
                 return null;
             case ENUM_INVEST_STATUS.HISTORY:
                 return (
-                    <View style={styles.center}>
-                        <View style={styles.wrapInfo}>
-                            <Text style={styles.title}>{Languages.detailInvest.infoPayment}</Text>
-                            {renderItem()}
-                            {renderItem()}
-                            {renderItem()}
-                            {renderItem()}
-                        </View>
-                        <Touchable style={styles.button} onPress={navigateToInvest}>
-                            <Text style={styles.txtBt}>{Languages.detailInvest.reinvest}</Text>
-                        </Touchable>
+                    <View style={styles.wrapInfo}>
+                        <Text style={styles.title}>{Languages.detailInvest.infoPayment}</Text>
+                        {dataHistory?.map((item) => renderItem(item))}
                     </View>
                 );
             default:

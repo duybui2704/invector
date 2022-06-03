@@ -82,17 +82,22 @@ function share(text: string) {
 }
 
 function openURL(url: string) {
-    Linking.canOpenURL(url)
-        .then((supported) => {
-            if (!supported) {
-                console.error(`Unsupported url: ${url}`);
-            } else {
-                Linking.openURL(url);
-            }
-        })
-        .catch((err) => {
-            console.error('An error occurred', err);
-        });
+    if (Platform.OS === 'ios') {
+        Linking.canOpenURL(url)
+            .then((supported) => {
+                if (!supported) {
+                    console.error(`Unsupported url: ${url}`);
+                } else {
+                    Linking.openURL(url);
+                }
+            })
+            .catch((err) => {
+                console.error('An error occurred', err);
+            });
+    }
+    else {
+        Linking.openURL(url);
+    }
 };
 
 function encodePhone(phoneNumber: string) {

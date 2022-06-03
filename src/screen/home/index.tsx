@@ -326,7 +326,7 @@ const Home = observer(() => {
                         </View>
                     </>
                 }
-                {(!userManager?.userInfo && !fastAuthInfoManager.isEnableFastAuth) &&
+                {(!userManager?.userInfo || fastAuthInfoManager.isEnableFastAuth)  &&
                     <View style={isIOS ? styles.viewSmallMenuLoginIOS : styles.viewSmallMenuLoginAndroid}>
                         {renderNavigateScreen(Languages.auth.txtLogin)}
                         {renderNavigateScreen(Languages.auth.txtSignUp)}
@@ -384,12 +384,12 @@ const Home = observer(() => {
 
 
     const focusContracts = useCallback(() => {
-        if (userManager?.userInfo) {
+        if (userManager?.userInfo && !fastAuthInfoManager.isEnableFastAuth) {
             Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVEST_NOW });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
-    }, [userManager?.userInfo]);
+    }, [fastAuthInfoManager.isEnableFastAuth, userManager?.userInfo]);
 
     const renderContent = useMemo(() => {
 

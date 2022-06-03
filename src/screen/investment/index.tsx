@@ -53,7 +53,7 @@ const Investment = observer(({ route }: { route: any }) => {
     const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(true);
     const condition = useRef<PagingConditionTypes>({
         isLoading: true,
-        offset: 0,
+        offset: 1,
         canLoadMore: true,
         timeInvestment: '',
         moneyInvest: '',
@@ -81,11 +81,8 @@ const Investment = observer(({ route }: { route: any }) => {
         if (!isLoadMore) {
             setIsLoading(true);
         }
-
-        if (btnInvest === ENUM_INVEST_STATUS.INVESTING) condition.current.option = ENUM_INVESTED_TYPE.INVESTING;
-        else condition.current.option = ENUM_INVESTED_TYPE.INVESTED;
         condition.current.isLoading = true;
-
+        console.log('test',condition.current.option);
         const resInvest = await apiServices.invest.getListContractInvesting(
             condition.current.option,
             condition.current.textSearch,
@@ -172,7 +169,7 @@ const Investment = observer(({ route }: { route: any }) => {
     const onRefresh = useCallback(() => {
         setTimeValue({});
         setMoneyValueInvest({});
-        condition.current.offset = 1;
+        condition.current.offset = 0;
         condition.current.timeInvestment = '';
         condition.current.moneyInvest = '';
         condition.current.textSearch = '';
@@ -323,14 +320,16 @@ const Investment = observer(({ route }: { route: any }) => {
         } as TextStyle;
 
         const onPress = () => {
-            inputRef.current?.setValue('');
             setBtnInvest(type);
+            inputRef.current?.setValue('');
             condition.current.offset = 0;
             condition.current.fromDate = '';
             condition.current.toDate = '';
             condition.current.moneyInvest = '';
             condition.current.moneyInvested = '';
             condition.current.textSearch = '';
+            if(type===ENUM_INVEST_STATUS.HISTORY) condition.current.option=ENUM_INVESTED_TYPE.INVESTED;
+            if(type===ENUM_INVEST_STATUS.INVESTING) condition.current.option=ENUM_INVESTED_TYPE.INVESTING;
             popupInvestedRef.current.clear();
             setMoneyValueInvested({});
             setMoneyValueInvest({});
