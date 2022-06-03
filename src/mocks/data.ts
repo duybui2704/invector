@@ -113,8 +113,8 @@ export const arrMonth = [
 ];
 
 export const typeGender = [
-    { id: '1', value: 'Nam' },
-    { id: '2', value: 'Nữ' }
+    { id: '1', value: 'Nam', text: 'male' },
+    { id: '2', value: 'Nữ', text: 'female' }
 ];
 
 export const dataRatingPoint = [

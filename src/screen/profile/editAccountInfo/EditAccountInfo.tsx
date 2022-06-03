@@ -22,8 +22,6 @@ import Utils from '@/utils/Utils';
 import { MyStylesEditAccountInfo } from './styles';
 import { UpdateInfoModal } from '@/models/user-models';
 import ScrollViewWithKeyboard from '@/components/scrollViewWithKeyboard';
-import DatePickerTransaction from '@/components/DatePicker';
-import DateUtils from '@/utils/DateUtils';
 import PickerBankValuation from '@/components/PickerBankValuation';
 import { PopupActionTypes } from '@/models/typesPopup';
 import Navigator from '@/routers/Navigator';
@@ -36,22 +34,18 @@ const EditAccountInfo = observer(() => {
     const [emailUser, setEmail] = useState<string>(userManager.userInfo?.email || '');
     const [phone, setPhone] = useState<string>(userManager.userInfo?.phone_number || '');
     const [genderUser, setGender] = useState<string>(userManager.userInfo?.gender || '');
+    const [fetchGender, setFetchGender] = useState<string>(userManager.userInfo?.gender || '');
     const [addressUser, setAddress] = useState<string>(userManager.userInfo?.address || '');
-    const [jobUser, setJob] = useState<string>(userManager.userInfo?.job || '');
-    const [birthday, setBirthday] = useState<any>(userManager.userInfo?.birth_date || '6/1/1999');
-    const [birthdayValue, setBirthdayValue] = useState<string>(userManager.userInfo?.birth_date || '');
     const [avatarAcc, setAvatarAcc] = useState<UpLoadImage>();
     const [avatarUrl, setAvatarUrl] = useState<string>(userManager.userInfo?.avatar_user || '');
-    const [errText, setErrText] = useState<string>('');
     const [isLoading, setLoading] = useState<boolean>(false);
 
     const avatarRef = useRef<BottomSheetModal>();
     const nameRef = useRef<TextFieldActions>();
-    const emailRef = useRef<TextFieldActions>();
     const phoneRef = useRef<TextFieldActions>();
+    const emailRef = useRef<TextFieldActions>();
     const genderRef = useRef<PopupActionTypes>();
     const addressRef = useRef<TextFieldActions>();
-    const jobRef = useRef<TextFieldActions>();
 
     const onChangeText = useCallback((value?: any, tag?: any) => {
         switch (tag) {
@@ -69,9 +63,6 @@ const EditAccountInfo = observer(() => {
                 break;
             case Languages.accountInfo.address:
                 setAddress(value);
-                break;
-            case Languages.accountInfo.job:
-                setJob(value);
                 break;
             default:
                 break;
@@ -120,54 +111,24 @@ const EditAccountInfo = observer(() => {
         />;
     }, [onPressItemFrontPhoto, styles.circleWrap, styles.noCircleWrap]);
 
-    const renderBirthday = useCallback((disable?: boolean) => {
-        const onConfirmValue = async (date: Date) => {
-            setBirthday(date);
-            setBirthdayValue(`${DateUtils.formatMMDDYYYYPicker(date?.toDateString())}`);
-        };
-        return (
-            <View style={styles.wrapBirthday}>
-                <Text style={styles.labelBirthdayStyle}>{Languages.accountInfo.birthday}</Text>
-                <DatePickerTransaction
-                    title={userManager.userInfo?.birth_date ? userManager.userInfo?.birth_date : Languages.accountInfo.birthday}
-                    onConfirmDatePicker={onConfirmValue}
-                    onDateChangeDatePicker={setBirthday}
-                    date={new Date(birthday) || new Date()}
-                    maximumDate={new Date()}
-                    errMessage={errText}
-                    containerDate={disable ? styles.containerDateDisable : styles.containerDate}
-                    placeHolderStyle={!birthdayValue ? styles.placeHolderBirthday : styles.placeHolderValueBirthday}
-                    disabled={disable}
-                />
-            </View>
-        );
-    }, [birthday, birthdayValue, errText, styles.containerDate, styles.containerDateDisable, styles.labelBirthdayStyle, styles.placeHolderBirthday, styles.placeHolderValueBirthday, styles.wrapBirthday, userManager.userInfo?.birth_date]);
-
     const onGenderChoose = useCallback((item?: any) => {
         setGender(item?.value || '');
+        setFetchGender(item?.text || '');
     }, []);
 
     const onValidate = useCallback(() => {
         const errMsgName = FormValidate.userNameValidate(name);
         const errMsgGender = FormValidate.genderValidate(genderUser);
-        const errMsgBirthday = FormValidate.birthdayValidate(birthdayValue);
-        const errMsgPhone = FormValidate.passConFirmPhone(phone);
-        const errMsgPwdEmail = FormValidate.emailValidate(emailUser);
         const errMsgAddress = FormValidate.addressValidate(addressUser);
-        const errMsgJob = FormValidate.jobValidate(jobUser);
 
         genderRef.current?.setErrorMsg(errMsgGender);
         nameRef.current?.setErrorMsg(errMsgName);
-        setErrText(errMsgBirthday);
-        phoneRef.current?.setErrorMsg(errMsgPhone);
-        emailRef.current?.setErrorMsg(errMsgPwdEmail);
         addressRef.current?.setErrorMsg(errMsgAddress);
-        jobRef.current?.setErrorMsg(errMsgJob);
 
-        if (`${errMsgName}${errMsgGender}${errMsgBirthday}${errMsgPhone}${errMsgPwdEmail}${errMsgAddress}${errMsgJob}`.length === 0) {
+        if (`${errMsgName}${errMsgGender}${errMsgAddress}`.length === 0) {
             return true;
         } return false;
-    }, [addressUser, birthdayValue, emailUser, genderUser, jobUser, name, phone]);
+    }, [addressUser, genderUser, name]);
 
     const renderGender = useCallback((disable?: boolean) => {
         return (
@@ -196,13 +157,8 @@ const EditAccountInfo = observer(() => {
         const res = await apiServices.auth.updateUserInf(
             avatar,
             name,
-            genderUser,
-            birthdayValue,
-            phone,
-            emailUser,
-            addressUser,
-            jobUser
-
+            fetchGender,
+            addressUser
         );
         setLoading(false);
         if (res.success) {
@@ -213,15 +169,11 @@ const EditAccountInfo = observer(() => {
                 full_name: name,
                 avatar_user: avatar,
                 gender: genderUser,
-                birth_date: birthdayValue,
-                phone_number: phone,
-                email: emailUser,
-                address: addressUser,
-                job: jobUser
+                address: addressUser
             });
             Navigator.goBack();
         }
-    }, [addressUser, apiServices.auth, birthdayValue, emailUser, genderUser, jobUser, name, phone, userManager]);
+    }, [addressUser, apiServices.auth, fetchGender, genderUser, name, userManager]);
 
     const uploadImages = useCallback(async (file: any) => {
         const res = await apiServices?.image.uploadImage(
@@ -249,12 +201,10 @@ const EditAccountInfo = observer(() => {
         return (
             <View style={styles.wrapContent}>
                 {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', false, 50)}
-                {renderGender(!!userManager.userInfo?.gender)}
-                {renderBirthday(!!userManager.userInfo?.birth_date)}
-                {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', true, 10)}
+                {renderGender(false)}
+                {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', !!userManager.userInfo?.phone_number, 10)}
                 {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL', !!userManager.userInfo?.email, 50)}
                 {renderKeyFeature(addressRef, Languages.accountInfo.address, Utils.formatForEachWordCase(addressUser), 'DEFAULT', false, 100)}
-                {renderKeyFeature(jobRef, Languages.accountInfo.job, Utils.formatForEachWordCase(jobUser), 'DEFAULT', false, 50)}
                 <View style={styles.wrapEdit}>
                     <Button
                         style={styles.accuracyWrap}
@@ -265,7 +215,7 @@ const EditAccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [addressUser, emailUser, jobUser, name, onSaveInfo, phone, renderBirthday, renderGender, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.birth_date, userManager.userInfo?.email, userManager.userInfo?.gender]);
+    }, [addressUser, emailUser, name, onSaveInfo, phone, renderGender, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.email, userManager.userInfo?.phone_number]);
 
     return (
         <View style={styles.container}>

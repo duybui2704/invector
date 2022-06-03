@@ -17,11 +17,7 @@ export class AuthServices extends BaseService {
         avatar?: string,  // anh guiw len  khi ko camera hoac thu vien
         full_name?: string,
         gender?: string,
-        birth_date?: string,
-        phone?: string,
-        email?: string,
-        address?: string,
-        job?: string
+        address?: string
     ) =>
         this.api().post(
             API_CONFIG.UPDATE_USER_INFO,
@@ -29,11 +25,7 @@ export class AuthServices extends BaseService {
                 avatar,
                 full_name,
                 gender,
-                birth_date,
-                phone,
-                email,
-                address,
-                job
+                address
             })
         );
 

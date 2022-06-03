@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -15,10 +15,30 @@ import { MyStylesAccountInfo } from './styles';
 import { useAppStore } from '@/hooks';
 import { STATE_VERIFY_ACC } from '@/common/constants';
 import KeyValueReport from '@/components/KeyValueReport';
+import { typeGender } from '@/mocks/data';
 
 const AccountInfo = observer(() => {
     const { userManager } = useAppStore();
     const styles = MyStylesAccountInfo();
+
+    useEffect(() => {
+        switch (userManager.userInfo?.gender) {
+            case typeGender?.[0]?.text:
+                userManager.updateUserInfo({
+                    ...userManager.userInfo,
+                    gender: typeGender?.[0]?.value
+                });
+                break;
+            case typeGender?.[1]?.text:
+                userManager.updateUserInfo({
+                    ...userManager.userInfo,
+                    gender: typeGender?.[1]?.value
+                });
+                break;
+            default:
+                break;
+        }
+    }, [userManager]);
 
     const onNavigateKYC = useCallback(() => {
         return Navigator.pushScreen(ScreenName.accountIdentify);
@@ -75,9 +95,7 @@ const AccountInfo = observer(() => {
                 {renderKeyFeature(Languages.accountInfo.email, userManager.userInfo?.email, true)}
                 {renderKeyFeature(Languages.accountInfo.fullName, userManager.userInfo?.full_name)}
                 {renderKeyFeature(Languages.accountInfo.gender, userManager.userInfo?.gender)}
-                {renderKeyFeature(Languages.accountInfo.birthday, userManager.userInfo?.birth_date)}
                 {renderKeyFeature(Languages.accountInfo.address, userManager.userInfo?.address)}
-                {renderKeyFeature(Languages.accountInfo.job, userManager.userInfo?.job)}
                 <View style={styles.wrapEdit}>
                     <Touchable style={styles.accuracyWrap} onPress={onNavigateEdit}>
                         <Text style={styles.txtAccuracy}>{Languages.accountInfo.edit}</Text>
@@ -85,7 +103,7 @@ const AccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.address, userManager.userInfo?.birth_date, userManager.userInfo?.email, userManager.userInfo?.full_name, userManager.userInfo?.gender, userManager.userInfo?.job, userManager.userInfo?.phone_number]);
+    }, [onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.address, userManager.userInfo?.email, userManager.userInfo?.full_name, userManager.userInfo?.gender, userManager.userInfo?.phone_number]);
 
     return (
         <View style={styles.container}>

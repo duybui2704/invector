@@ -29,6 +29,7 @@ const Login = observer(() => {
 
     const [phone, setPhone] = useState<string>('');
     const [pass, setPass] = useState<string>('');
+    const [genderUser, setGender] = useState<string>('');
     const [userData, setUserData] = useState<UserInfoModal>();
     const styles = MyStylesLogin();
     const refPhone = useRef<TextFieldActions>(null);
@@ -113,7 +114,9 @@ const Login = observer(() => {
                 fastAuthInfo.setEnableFastAuthentication(false);
                 const data = resInfoAcc?.data as UserInfoModal;
                 setUserData(data);
-                userManager.updateUserInfo(data);
+                userManager.updateUserInfo({
+                    ...data
+                } );
             }
             setTimeout(() => {
                 if (SessionManager.accessToken) {
