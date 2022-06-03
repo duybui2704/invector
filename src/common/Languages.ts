@@ -59,7 +59,7 @@ const Languages = {
         history: 'Đã đáo hạn',
         enter: 'Nhập số tiền mà bạn muốn tìm kiếm',
         time: 'Thời gian đầu tư',
-        formalPayment: 'Hình thức trả lại',
+        formalPayment: 'Hình thức trả lãi',
         investNow: 'Đầu tư ngay',
         interest: 'Lãi suất tháng',
         attractInvest: 'Đầu tư hấp dẫn',
