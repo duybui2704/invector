@@ -112,4 +112,15 @@ export class AuthServices extends BaseService {
                 avatar
             })
         );
+
+    changePwd = async (
+        password_old?: string,
+        password_new?: string) =>
+        this.api().post(
+            API_CONFIG.CHANGE_PWD,
+            this.buildFormData({
+                password_old,
+                password_new
+            })
+        );
 }

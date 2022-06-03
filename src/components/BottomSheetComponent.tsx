@@ -129,7 +129,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
         );
 
         const renderItem = useCallback(
-            ({ item }) => {
+            ({ item }: any) => {
                 const onPress = () => {
                     onPressItem?.(item);
                     hide?.();
@@ -163,7 +163,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             setFocus(false);
         }, []);
 
-        const keyExtractor = useCallback((item, index) => {
+        const keyExtractor = useCallback((item:any, index: any) => {
             return `${item.id}${index}`;
         }, []);
 

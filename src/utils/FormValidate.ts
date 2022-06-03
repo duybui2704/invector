@@ -93,11 +93,11 @@ function passValidate(pwd: string) {
     }
     return errMsg;
 }
-function passConFirmValidate(pwd: string, conFirmPwd: string) {
+function passConFirmValidate(conFirmPwd: string, pwd?: string) {
     let errMsg = '';
     if (Validate.isStringEmpty(conFirmPwd)) {
         errMsg = Languages.errorMsg.pwdNull;
-    } else if (pwd !== conFirmPwd) {
+    } else if (conFirmPwd !== pwd  ) {
         errMsg = Languages.errorMsg.conFirmPwd;
     }
     return errMsg;

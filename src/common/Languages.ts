@@ -196,7 +196,7 @@ const Languages = {
         cardCheck: 'Số CMND/CCCD không hợp lệ',
         pwdNull: 'Mật khẩu không được để trống',
         pwdCheck: 'Mật khẩu không được ít hơn 8 ký tự',
-        conFirmPwd: 'Xác nhận mật khẩu không trùng khớp với mật khẩu',
+        conFirmPwd: 'Xác nhận mật khẩu nhập lại không trùng khớp',
         phoneIsEmpty: 'Số điện thoại không được để trống',
         phoneRegex: 'Số điện thoại không đúng định dạng',
         phoneCount: 'Số điện thoại chỉ được 10 số',
@@ -403,7 +403,8 @@ const Languages = {
         button: 'Xác nhận đổi mật khẩu',
         notifyContent: 'Xác nhận đổi mật khẩu',
         notify: 'Thông báo',
-        successNotify: 'Xác nhận đổi mật khẩu thành công'
+        successNotify: 'Xác nhận đổi mật khẩu thành công',
+        failOldPwdNotify: 'Mật khẩu cũ không đúng'
     },
     linkSocialAcc: {
         linked: 'Đã liên kết',

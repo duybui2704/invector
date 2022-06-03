@@ -171,10 +171,7 @@ const Transaction = observer(() => {
     }, []);
 
     const renderItem = useCallback(({ item }: { item: TransactionModel }) => {
-        const _onPress = () => {
-
-        };
-        return (<Touchable onPress={_onPress}>
+        return (<Touchable disabled={true}>
             <KeyValueTransaction
                 title={item?.so_tien}
                 content={item?.hinh_thuc}

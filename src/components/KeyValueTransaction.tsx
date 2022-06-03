@@ -8,8 +8,15 @@ import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
 import { COLOR_TRANSACTION } from '@/common/constants';
 
-const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor, debtNow }:
-    { noIndicator?: boolean, title?: string, dateTime?: string, content?: string, styleColor?: string, debtNow?: number }) => {
+const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor, debtNow}:
+    {
+        noIndicator?: boolean,
+        title?: string,
+        dateTime?: string,
+        content?: string,
+        styleColor?: string,
+        debtNow?: number
+    }) => {
 
     const renderColor = useCallback((_styleColor?: string, _title?: string) => {
         switch (_styleColor) {
@@ -43,7 +50,7 @@ const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, s
                 dashColor={COLORS.GRAY_13} />}
             <View style={styles.rowDebt}>
                 <Text style={styles.debtText}>{`${Languages.transaction.allInvestNow}: `}</Text>
-                <Text style={styles.debtNumber}>{`${debtNow}`|| ''}</Text>
+                <Text style={styles.debtNumber}>{`${debtNow}` || ''}</Text>
             </View>
         </View>
     );
@@ -67,7 +74,7 @@ const styles = StyleSheet.create({
     },
     rowDebt: {
         flexDirection: 'row',
-        paddingVertical:2
+        paddingVertical: 2
     },
     leftText: {
         ...Styles.typography.medium,

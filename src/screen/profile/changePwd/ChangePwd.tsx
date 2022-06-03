@@ -2,7 +2,6 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useRef, useState } from 'react';
 import { KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
 
-import { Events } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 import { Button } from '@/components/elements/button/index';
@@ -12,21 +11,23 @@ import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
 import { useAppStore } from '@/hooks';
 import Navigator from '@/routers/Navigator';
-import { EventEmitter } from '@/utils/EventEmitter';
 import FormValidate from '@/utils/FormValidate';
 import ToastUtils from '@/utils/ToastUtils';
 import { MyStylesChangePwd } from './styles';
 import arrayIcon from '@/common/arrayIcon';
 import { isIOS } from '@/common/Configs';
+import Loading from '@/components/loading';
 
 const ChangePwd = observer(() => {
     const styles = MyStylesChangePwd();
-    const { userManager } = useAppStore();
+    const { userManager, apiServices } = useAppStore();
 
     const [oldPwd, setOldPwd] = useState<string>('');
     const [newPwd, setNewPwd] = useState<string>('');
     const [currentNewPwd, setCurrentNewPwd] = useState<string>('');
+
     const [hasPass, setHasPass] = useState<boolean>(!!userManager.userInfo?.password);
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     const oldRef = useRef<TextFieldActions>(null);
     const newRef = useRef<TextFieldActions>(null);
@@ -79,7 +80,7 @@ const ChangePwd = observer(() => {
         () => {
             const oldPwdValidation = FormValidate.passValidate(oldPwd);
             const newPwdValidation = FormValidate.passValidate(newPwd);
-            const currentPwdValidation = FormValidate.passConFirmValidate(newPwd, currentNewPwd);
+            const currentPwdValidation = FormValidate.passConFirmValidate(currentNewPwd, newPwd);
             oldRef.current?.setErrorMsg(oldPwdValidation);
             newRef.current?.setErrorMsg(newPwdValidation);
             currentRef.current?.setErrorMsg(currentPwdValidation);
@@ -99,11 +100,17 @@ const ChangePwd = observer(() => {
 
     const onPressChange = useCallback(async () => {
         if (onChangeValidation()) {
-            // EventEmitter.emit(Events.LOGOUT, logout);
-            Navigator.goBack();
-            ToastUtils.showSuccessToast(Languages.changePwd.successNotify);
+            setLoading(true);
+            const res = await apiServices.auth.changePwd(oldPwd, currentNewPwd);
+            if (res.success) {
+                setLoading(false);
+                Navigator.goBack();
+                ToastUtils.showSuccessToast(Languages.changePwd.successNotify);
+            }
+            // ToastUtils.showSuccessToast(Languages.changePwd.failOldPwdNotify);
+            setLoading(false);
         }
-    }, [onChangeValidation]);
+    }, [apiServices.auth, currentNewPwd, oldPwd, onChangeValidation]);
 
     return (
         <HideKeyboard style={styles.container}>
@@ -113,9 +120,26 @@ const ChangePwd = observer(() => {
                 <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'}>
                     <ScrollView>
                         <View style={styles.group}>
-                            {renderInput(Languages.changePwd.oldPass, Languages.changePwd.placeOldPass, oldPwd, oldRef, !hasPass, false)}
-                            {renderInput(Languages.changePwd.newPass, Languages.changePwd.placeNewPass, newPwd, newRef, true, false)}
-                            {renderInput(Languages.changePwd.currentNewPass, Languages.changePwd.currentNewPass, currentNewPwd, currentRef, true, !newPwd)}
+                            {!userManager.userInfo?.id_google &&
+                                renderInput(Languages.changePwd.oldPass,
+                                    Languages.changePwd.placeOldPass,
+                                    oldPwd,
+                                    oldRef,
+                                    !hasPass,
+                                    false)
+                            }
+                            {renderInput(Languages.changePwd.newPass,
+                                Languages.changePwd.placeNewPass,
+                                newPwd,
+                                newRef,
+                                true,
+                                false)}
+                            {renderInput(Languages.changePwd.currentNewPass,
+                                Languages.changePwd.currentNewPass,
+                                currentNewPwd,
+                                currentRef,
+                                true,
+                                !newPwd)}
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
@@ -129,6 +153,7 @@ const ChangePwd = observer(() => {
                         disabled={`${oldPwd}`.length === 0 || `${newPwd}`.length === 0 || `${currentNewPwd}`.length === 0}
                     />
                 </View>
+                {isLoading && <Loading isOverview />}
             </View>
         </HideKeyboard>
     );

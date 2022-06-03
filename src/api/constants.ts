@@ -37,6 +37,7 @@ export enum API_CONFIG {
     UPDATE_USER_INFO = 'user/update_profile_investor', // update user account
     ACTIVE_ACCOUNT = '/auth/active_account',    // kich hoat OTP dang ki
     OTP_RESET_PWD = '/auth/reset_password',
+    CHANGE_PWD = '/user/change_password', // thay doi mat khau
     VALIDATE_TOKEN = 'auth/validate_token',
     UPDATE_PWD = 'auth/new_password',
     IDENTITY_VERIFY = 'user/identity_verification', //  xac thuc CCCD/CMT
