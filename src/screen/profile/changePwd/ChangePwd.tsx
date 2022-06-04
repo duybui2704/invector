@@ -26,7 +26,6 @@ const ChangePwd = observer(() => {
     const [newPwd, setNewPwd] = useState<string>('');
     const [currentNewPwd, setCurrentNewPwd] = useState<string>('');
 
-    const [hasPass, setHasPass] = useState<boolean>(!!userManager.userInfo?.password);
     const [isLoading, setLoading] = useState<boolean>(false);
 
     const oldRef = useRef<TextFieldActions>(null);
@@ -78,10 +77,14 @@ const ChangePwd = observer(() => {
 
     const onChangeValidation = useCallback(
         () => {
-            const oldPwdValidation = FormValidate.passValidate(oldPwd);
+            let oldPwdValidation = '';
+            if (userManager.userInfo?.password) {
+                oldPwdValidation = FormValidate.passValidate(oldPwd);
+            }
+            oldRef.current?.setErrorMsg(oldPwdValidation);
             const newPwdValidation = FormValidate.passValidate(newPwd);
             const currentPwdValidation = FormValidate.passConFirmValidate(currentNewPwd, newPwd);
-            oldRef.current?.setErrorMsg(oldPwdValidation);
+
             newRef.current?.setErrorMsg(newPwdValidation);
             currentRef.current?.setErrorMsg(currentPwdValidation);
 
@@ -90,13 +93,8 @@ const ChangePwd = observer(() => {
             }
             return false;
         },
-        [newPwd, currentNewPwd, oldPwd]
+        [userManager.userInfo?.password, newPwd, currentNewPwd, oldPwd]
     );
-
-    const logout = useCallback(() => {
-        // userManager.updateUserInfo(undefined);
-        Navigator.goBack();
-    }, []);
 
     const onPressChange = useCallback(async () => {
         if (onChangeValidation()) {
@@ -107,7 +105,6 @@ const ChangePwd = observer(() => {
                 Navigator.goBack();
                 ToastUtils.showSuccessToast(Languages.changePwd.successNotify);
             }
-            // ToastUtils.showSuccessToast(Languages.changePwd.failOldPwdNotify);
             setLoading(false);
         }
     }, [apiServices.auth, currentNewPwd, oldPwd, onChangeValidation]);
@@ -116,18 +113,16 @@ const ChangePwd = observer(() => {
         <HideKeyboard style={styles.container}>
             <View style={styles.container}>
                 <HeaderBar
-                    title={hasPass ? Languages.changePwd.title : Languages.changePwd.title} hasBack />
+                    title={Languages.changePwd.title} hasBack />
                 <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'}>
                     <ScrollView>
                         <View style={styles.group}>
-                            {!userManager.userInfo?.id_google &&
-                                renderInput(Languages.changePwd.oldPass,
-                                    Languages.changePwd.placeOldPass,
-                                    oldPwd,
-                                    oldRef,
-                                    !hasPass,
-                                    false)
-                            }
+                            {renderInput(Languages.changePwd.oldPass,
+                                Languages.changePwd.placeOldPass,
+                                oldPwd,
+                                oldRef,
+                                userManager.userInfo?.password,
+                                false)}
                             {renderInput(Languages.changePwd.newPass,
                                 Languages.changePwd.placeNewPass,
                                 newPwd,
@@ -146,11 +141,17 @@ const ChangePwd = observer(() => {
                 <View style={styles.button}>
                     <Button
                         label={`${Languages.changePwd.confirmPwd}`}
-                        buttonStyle={!!oldPwd && newPwd && currentNewPwd ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
+                        buttonStyle={userManager.userInfo?.password
+                            ? !!oldPwd && newPwd && currentNewPwd ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY
+                            : newPwd && currentNewPwd ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY
+                        }
                         onPress={onPressChange}
                         isLowerCase
                         style={styles.btnStyle}
-                        disabled={`${oldPwd}`.length === 0 || `${newPwd}`.length === 0 || `${currentNewPwd}`.length === 0}
+                        disabled={userManager.userInfo?.password
+                            ? `${oldPwd}`.length === 0 || `${newPwd}`.length === 0 || `${currentNewPwd}`.length === 0
+                            : `${newPwd}`.length === 0 || `${currentNewPwd}`.length === 0
+                        }
                     />
                 </View>
                 {isLoading && <Loading isOverview />}

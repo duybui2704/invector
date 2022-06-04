@@ -7,7 +7,7 @@ export interface UserInfoModal {
     tinh_trang?: StateUserInfo;
     tra_lai?: RePay;
     phone_number?: string;
-    password?: string;
+    password?: boolean;
     full_name?: string;
     email?: string;
     loan_purpose?: string;
