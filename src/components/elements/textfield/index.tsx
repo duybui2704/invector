@@ -7,7 +7,7 @@ import React, {
     useRef,
     useState
 } from 'react';
-import { Animated, TextInput, TextStyle, View, Text } from 'react-native';
+import { Animated, TextInput, View, Text } from 'react-native';
 
 import { isIOS } from '../../../common/Configs';
 import { COLORS } from '../../../theme';
@@ -24,7 +24,6 @@ import IcHidePass from '@/assets/image/auth/ic_hide_pass.svg';
 import IcShowPass from '@/assets/image/auth/ic_show_pass.svg';
 import IcSearch from '@/assets/image/ic_search.svg';
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
-import Languages from '@/common/Languages';
 
 export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
     (
@@ -35,8 +34,6 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             isPassword,
             disabled,
             inputStyle,
-            inputStylePwDIcon,
-            hideIconClear = false,
             onChangeText,
             onEndEditing,
             maxLength,
@@ -45,13 +42,12 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             onFocusCallback,
             containerInput,
             rightIcon,
-            iconSize,
             testID,
             autoFocus,
             onKeyPress,
             placeHolderColor,
             defaultValue,
-            isPhoneNumber
+            autoCapitalized
         }: TextFieldProps,
         ref?: any
     ) => {
@@ -97,7 +93,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         }, [textfieldVal]);
 
         const setValue = useCallback(
-            (text:any) => {
+            (text: any) => {
                 if (maxLength) {
                     text = `${text}`.slice(0, maxLength);
                 }
@@ -108,7 +104,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         );
 
         const fillValue = useCallback(
-            (text:any) => {
+            (text: any) => {
                 setValue(text);
             },
             [setValue]
@@ -133,10 +129,10 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
         }, []);
 
         const eventTextChange = useCallback(
-            (text: string, tag? : string) => {
+            (text: string) => {
                 setValue(text);
             },
-            [value]
+            [setValue]
         );
 
         const eventEndEditing = useCallback(() => {
@@ -239,7 +235,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                 case arrayIcon.login.search:
                     return <IcSearch />;
                 case arrayIcon.login.channel:
-                    return <ICUnderArrow/>;
+                    return <ICUnderArrow />;
                 default:
                     return null;
             }
@@ -258,12 +254,12 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
                             {...defInputProps}
                             style={[styles.inputStyle, _inputStyle]}
                             placeholder={placeHolder}
-                            placeholderTextColor={placeHolderColor||COLORS.GRAY_4}
+                            placeholderTextColor={placeHolderColor || COLORS.GRAY_4}
                             selectionColor={COLORS.GRAY_4}
                             numberOfLines={1}
                             secureTextEntry={isPassword ? iconPass : false}
                             autoCorrect={false}
-                            autoCapitalize="none"
+                            autoCapitalize={autoCapitalized || 'none'}
                             value={`${textfieldVal}`}
                             maxLength={maxLength}
                             multiline={multiline}

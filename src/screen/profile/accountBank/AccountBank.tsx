@@ -101,6 +101,7 @@ const AccountBank = observer(() => {
             <Text style={styles.title}>{_title}</Text>
             <MyTextInput
                 ref={_ref}
+                autoCapitalized={'words'}
                 placeHolder={_placeHolder}
                 keyboardType={typeKeyboard}
                 containerInput={styles.containerStyle}

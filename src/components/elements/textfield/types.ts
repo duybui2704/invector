@@ -27,26 +27,27 @@ export type TextFieldProps = {
     verified?: boolean;
     showRestriction?: boolean;
     priceSuffix?: string;
-    placeHolderColor?:string;
+    placeHolderColor?: string;
     // true:  unit  vndong: 'VNĐ', false: unit dong: 'đ',
     backgroundColor?: any;
     leftIcon?: any;
     iconSize?: number;
     inputStyle?: any;
-    inputStylePwDIcon?:ViewStyle,
-    containerInput?:ViewStyle;
+    inputStylePwDIcon?: ViewStyle,
+    containerInput?: ViewStyle;
     hideIconClear?: boolean;
     minHeight?: number | string;
     maxHeight?: number | string;
     testID?: string;
-    autoFocus?:boolean;
+    autoFocus?: boolean;
     onKeyPress?: (text: any, tag?: any) => any
     onChangeText?: (text: string, tag?: string) => any;
     onEndEditing?: (text: string, tag?: string) => any;
     onClickRightIcon?: (text: string) => any;
     onFocusCallback?: (tag?: string) => any;
-    defaultValue?:string;
+    defaultValue?: string;
     isPhoneNumber?: boolean;
+    autoCapitalized?: any
 }
 
 export type TextFieldActions = {
