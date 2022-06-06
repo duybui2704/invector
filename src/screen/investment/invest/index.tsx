@@ -209,7 +209,12 @@ const Invest = observer(({ route }: any) => {
                 />
 
             </ScrollView>
-            <PopupInvestOTP idContract={dataInvestment?.id?.toString()} getOTPcode={getOtpVimo} ref={refModal} />
+            <PopupInvestOTP
+                idContract={dataInvestment?.id?.toString()}
+                getOTPcode={getOtpVimo}
+                ref={refModal}
+                title={Languages.otp.completionOtp}
+            />
             <PopupConfirmPolicy
                 onConfirm={onConfirmPopup}
                 ref={refPopupPolicy}

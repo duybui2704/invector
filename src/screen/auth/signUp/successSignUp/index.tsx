@@ -5,7 +5,7 @@ import Images from '@/assets/Images';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { COLORS } from '@/theme';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { Touchable } from '@/components/elements/touchable';
 import Navigator from '@/routers/Navigator';
 import ScreenName, { TabsName } from '@/common/screenNames';
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         color: COLORS.WHITE,
         marginVertical: 15,
         fontSize: Configs.FontSize.size16,
-        fontFamily: Configs.FontFamily.regular,
+        fontFamily: Configs.FontFamily.regular
     },
     txtNotifySuccess: {
         fontSize: Configs.FontSize.size14,

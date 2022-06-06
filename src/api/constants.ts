@@ -41,6 +41,9 @@ export enum API_CONFIG {
     VALIDATE_TOKEN = 'auth/validate_token',
     UPDATE_PWD = 'auth/new_password',
     IDENTITY_VERIFY = 'user/identity_verification', //  xac thuc CCCD/CMT
+    LOGIN_THIRD_PARTY = 'auth/link_social',
+    UPDATE_PHONE = 'auth/phone_login_social',
+    ACTIVE_PHONE = 'auth/active_phone_social',
 
     // history
     HISTORY = '/investor/history_transaction_investor',

@@ -22,19 +22,32 @@ import LoginWithBiometry from './loginWithBiometrty';
 import SignUp from './signUp';
 import { myStylesAuth } from './styles';
 import Navigator from '@/routers/Navigator';
-import ScreenName, { TabsName } from '@/common/screenNames';
+import ScreenName, { TabNamesArray, TabsName } from '@/common/screenNames';
 import ToastUtils from '@/utils/ToastUtils';
+import { UserManager } from '@/manager/UserManager';
+import SessionManager from '@/manager/SessionManager';
+import { LoginWithThirdPartyModel } from '@/models/auth';
+import { UserInfoModal } from '@/models/user-models';
+import { ENUM_PROVIDER } from '@/common/constants';
+import { PopupInvestOTP } from '@/components/popupOTPLogin';
+import { PopupActionTypes } from '@/models/typesPopup';
 
 
 const Auth = observer(({ route }: any) => {
     const styles = myStylesAuth();
     const ratio = SCREEN_HEIGHT / SCREEN_WIDTH;
     const [wid, setWid] = useState<number>(0);
+    const [data, setData] = useState<LoginWithThirdPartyModel>();
+    const [dataGoogle, setDataGoogle] = useState<LoginWithThirdPartyModel>();
     const [isNavigate, setIsNavigate] = useState<string>(Languages.auth.txtLogin);
     const isFocused = useIsFocused();
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const refModal = useRef<PopupActionTypes>(null);
     const {
         fastAuthInfoManager: fastAuthInfo,
-        common
+        common,
+        apiServices,
+        userManager
     } = useAppStore();
 
     useLayoutEffect(() => {
@@ -88,26 +101,81 @@ const Auth = observer(({ route }: any) => {
         Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
     }, []);
 
-    // const initUser = useCallback(
-    //     async (typeLogin: string, providerId: string) => {
-    //         const res = await apiServices?.auth?.loginWithThirdParty(
-    //             typeLogin,
-    //             providerId
-    //         );
-    //     }, [apiServices?.auth, userManager]);
+    // const onLoginFacebook = useCallback(async () => {
+    //     const data = await loginWithFacebook();
+    // }, []);
 
+    const initUser = useCallback(
+        async (type_social: string, providerId: string, email: string, name: string) => {
+            setLoading(true);
+            const res = await apiServices?.auth?.loginWithThirdParty(
+                type_social,
+                providerId,
+                email,
+                name
+            );
+            setLoading(false);
+            if (res.success) {
+                const dataLogin = res.data as LoginWithThirdPartyModel;
+                setDataGoogle(dataLogin);
+                if (dataLogin?.token) {
+                    SessionManager.setAccessToken(dataLogin?.token);
+                    userManager.updateUserInfo(res.data as UserInfoModal);
+                    fastAuthInfo.setEnableFastAuthentication(false);
+                    if (SessionManager.accessToken) {
+                        if (SessionManager.accessToken) {
+                            Navigator.navigateToDeepScreen(
+                                [ScreenName.tabs],
+                                TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+                            );
+                        }
+                    }
+                } else {
+                    common.setSuccessGetOTP(false);
+                    refModal.current?.show();
+                }
+            }
+        }, [apiServices?.auth, fastAuthInfo, userManager]);
 
-    const onLoginFacebook = useCallback(async () => {
-        const data = await loginWithFacebook();
-    }, []);
+    const getOTPLogin = useCallback(async (phone: string) => {
+        setLoading(true);
+        const resUpdate = await apiServices?.auth?.updatePhone(dataGoogle?.id, phone, dataGoogle?.checksum);
+        setLoading(false);
+        if (resUpdate.success) {
+            const dataUpdate = resUpdate?.data as LoginWithThirdPartyModel;
+            setData(dataUpdate);
+            common.setSuccessGetOTP(true);
+        }
+    }, [apiServices?.auth, common, dataGoogle]);
+
+    const activePhoneLogin = useCallback(async (otp: string) => {
+        setLoading(true);
+        const resActive = await apiServices?.auth?.activePhone(data?.id, otp, data?.checksum);
+        setLoading(false);
+        if (resActive.success) {
+            const resData = resActive.data as LoginWithThirdPartyModel;
+            refModal.current?.hide();
+            common.setSuccessGetOTP(false);
+            SessionManager.setAccessToken(resData?.token);
+            userManager.updateUserInfo(resActive.data as UserInfoModal);
+            fastAuthInfo.setEnableFastAuthentication(false);
+            if (SessionManager.accessToken) {
+                if (SessionManager.accessToken) {
+                    setTimeout(() => {
+                        Navigator.navigateScreen(ScreenName.success);
+                    }, 500);
+                }
+            }
+        }
+    }, [apiServices?.auth, common, data?.checksum, data?.id]);
 
     const onLoginGoogle = useCallback(async () => {
         const userInfo = await loginWithGoogle();
-        // if (userInfo) initUser(ENUM_PROVIDER.GOOGLE, userInfo?.user?.id);
+        if (userInfo) initUser(ENUM_PROVIDER.GOOGLE, userInfo?.user?.id, userInfo.user.email, userInfo?.user?.name);
     }, []);
 
     const onLoginApple = useCallback(async () => {
-        const data = await loginWithApple();
+        const userInfo = await loginWithApple();
     }, []);
 
     const renderContent = useMemo(() => {
@@ -149,9 +217,9 @@ const Auth = observer(({ route }: any) => {
             <View style={styles.viewBottom}>
                 <Text style={styles.txtLogin}>{Languages.auth.txtLoginWith}</Text>
                 <View style={styles.viewIcon}>
-                    <Touchable style={styles.icon} onPress={onLoginFacebook}>
+                    {/* <Touchable style={styles.icon} onPress={onLoginFacebook}>
                         <IcFaceAuth />
-                    </Touchable>
+                    </Touchable> */}
                     <Touchable style={styles.icon} onPress={onLoginGoogle}>
                         <IcGoogleAuth />
                     </Touchable>
@@ -161,6 +229,12 @@ const Auth = observer(({ route }: any) => {
                    
                 </View>
             </View>
+            <PopupInvestOTP
+                getOTPcode={getOTPLogin}
+                ref={refModal}
+                title={Languages.otp.completionOtpLogin}
+                onPressConfirm={activePhoneLogin}
+            />
         </ImageBackground>
     );
 });

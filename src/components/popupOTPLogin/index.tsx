@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import OtpInputs from 'react-native-otp-inputs';
 
@@ -8,34 +8,37 @@ import LogoOtpInvest from '@/assets/image/invest/logo_otp_invest.svg';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
-import { CheckVimoWalletModel } from '@/models/invest';
 import { PopupActionTypes, PopupPropsTypes } from '@/models/typesPopup';
 import { COLORS } from '@/theme/colors';
 import { Styles } from '@/theme/styles';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import { Touchable } from '../elements/touchable';
 import Utils from '@/utils/Utils';
+import { MyTextInput } from '../elements/textfield';
+import arrayIcon from '@/common/arrayIcon';
+import FormValidate from '@/utils/FormValidate';
+import { TextFieldActions } from '../elements/textfield/types';
 
 interface PopupOTPProps extends PopupPropsTypes {
-    getOTPcode?: () => any,
-    idContract?: string,
-    title?: string,
+    getOTPcode?: (phone: string) => any,
+    onPressConfirm?: (otp: string) => any
 }
 
 export const PopupInvestOTP = forwardRef<
     PopupActionTypes,
     PopupOTPProps
->(({  getOTPcode,
-    idContract, title }: PopupOTPProps, ref) => {
-    const { apiServices } = useAppStore();
+>(({ getOTPcode, onPressConfirm }: PopupOTPProps, ref) => {
+    const { common } = useAppStore();
     const [visible, setVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-
+    const refPhone = useRef<TextFieldActions>();
     const [startCount, setStartCount] = useState<boolean>(true);
     const [timer, setTimer] = useState<number>(0);
     const [pin, setPin] = useState<string>('');
-    const [erroMsg, setErrMsg] = useState<string>('');
+    const [errMsg, setErrMsg] = useState<string>('');
+    const [phone, setPhone] = useState<string>('');
     const intervalRef = useRef<any>();
+
     useEffect(() => {
         intervalRef.current = setInterval(() => {
             setTimer((t) => t - 1);
@@ -48,7 +51,6 @@ export const PopupInvestOTP = forwardRef<
             clearInterval(intervalRef.current);
             setStartCount(true);
         };
-
     }, [timer]);
 
     const _onCancel = useCallback(() => {
@@ -59,6 +61,7 @@ export const PopupInvestOTP = forwardRef<
     }, []);
 
     const show = useCallback(() => {
+        setPhone('');
         setVisible(true);
         setTimer(120);
     }, []);
@@ -75,29 +78,30 @@ export const PopupInvestOTP = forwardRef<
 
     useEffect(() => {
         if (pin.toString().length === 6) {
-            onConfirm();
+            onPressConfirm(pin);
         }
     }, [pin]);
 
+    const onValidate = useCallback(() => {
+        const errMsgPhone = FormValidate.passConFirmPhone(phone);
+        refPhone.current?.setErrorMsg(errMsgPhone);
+        if (`${errMsgPhone}`.length === 0) {
+            return true;
+        }
+        return false;
+    }, [phone]);
+
     const onConfirm = useCallback(async () => {
-        setLoading(true);
-        const res = await apiServices.invest.confirmInvest(idContract || '', pin);
-        if (res?.success) {
-            const data = res?.data as CheckVimoWalletModel;
-            if (data?.status === 200 || data?.status === 201) {
-                Alert.alert(data.message || '');
-                _onCancel();
-                hide();
-            }
-            else {
-                setErrMsg(data?.message);
-            }
+        if (onValidate()) {
+            await getOTPcode?.(phone);
+            setStartCount(true);
+            setTimer(120);
         }
-        else {
-            setErrMsg(res?.message || '');
-        }
-        setLoading(false);
-    }, [_onCancel, apiServices.invest, hide, idContract, pin]);
+    }, [getOTPcode, hide, onValidate, phone]);
+
+    const onChangeText = useCallback((value: string) => {
+        setPhone(value);
+    }, [phone]);
 
     const onChangeCode = useCallback((code: string) => {
         setPin(code);
@@ -105,23 +109,16 @@ export const PopupInvestOTP = forwardRef<
     }, []);
 
     const onResend = useCallback(async () => {
-        await getOTPcode?.();
+        await getOTPcode?.(phone);
         setStartCount(true);
         setTimer(120);
-    }, [getOTPcode]);
+    }, [getOTPcode, phone]);
 
     const renderBtConfirm = useMemo(() => {
-        if (!loading) {
-            return (
-                <Touchable onPress={onConfirm} style={styles.btConfirm}>
-                    <Text style={styles.txtBt}>{ Languages.otp.keyOtp.toUpperCase()}</Text>
-                </Touchable>
-            );
-        }
         return (
-            <View style={styles.btConfirm}>
-                <ActivityIndicator size="small" color={COLORS.WHITE} />
-            </View>
+            <Touchable onPress={onConfirm} style={styles.btConfirm}>
+                <Text style={[styles.txtBt, { color: COLORS.WHITE }]}>{Languages.confirmPhone.sendOTP}</Text>
+            </Touchable>
         );
     }, [loading, onConfirm]);
 
@@ -129,7 +126,7 @@ export const PopupInvestOTP = forwardRef<
         if (startCount) {
             return (
                 <View style={styles.btResend}>
-                    <Text style={styles.txtBt}>{`${Languages.otp.resentCode.toUpperCase()} SAU ${Utils.convertSecondToMinutes(timer)}s`}</Text>
+                    <Text style={styles.txtBt}>{`${Utils.convertSecondToMinutes(timer)}s`}</Text>
                 </View>
             );
         }
@@ -154,22 +151,40 @@ export const PopupInvestOTP = forwardRef<
                         <IcClose width={20} height={20} />
                     </Touchable>
                     <LogoOtpInvest width={200} />
-                    <Text style={styles.title}>{Languages.otp.title}</Text>
-                    <Text style={styles.txt}>{title}</Text>
-                    <View style={styles.boxOtp}>
-                        <OtpInputs
-                            handleChange={onChangeCode}
-                            numberOfInputs={6}
-                            style={styles.wrapOTP}
-                            inputStyles={styles.viewOtp}
-                            focusStyles={styles.focusStyle}
-                        />
-                    </View>
-                    {!!erroMsg && <Text style={styles.errTxt}>{erroMsg}</Text>}
-                    <View>
-                        {renderBtConfirm}
-                        {renderResend}
-                    </View>
+                    <Text style={styles.title}>{!common.successGetOTP ? Languages.otp.accuracyPhone : Languages.otp.title}</Text>
+                    <Text style={styles.txt}>{!common.successGetOTP ? Languages.otp.completionPhoneLogin : Languages.otp.completionOtpLogin}</Text>
+                    {!common.successGetOTP ?
+                        <>
+                            <MyTextInput
+                                ref={refPhone}
+                                value={phone}
+                                isPhoneNumber={true}
+                                maxLength={10}
+                                rightIcon={arrayIcon.login.phone}
+                                placeHolder={Languages.auth.txtPhone}
+                                containerInput={styles.inputPhone}
+                                onChangeText={onChangeText}
+                                keyboardType={'NUMBER'}
+                            />
+                            {renderBtConfirm}
+                        </>
+                        :
+                        <>
+                            <View style={styles.boxOtp}>
+                                <OtpInputs
+                                    handleChange={onChangeCode}
+                                    numberOfInputs={6}
+                                    style={styles.wrapOTP}
+                                    inputStyles={styles.viewOtp}
+                                    focusStyles={styles.focusStyle}
+                                />
+                            </View>
+                            {!!errMsg && <Text style={styles.errTxt}>{errMsg}</Text>}
+                            <View>
+                                {renderResend}
+                            </View>
+                        </>
+                    }
                 </View>
             </View>
         </Modal>
@@ -230,6 +245,15 @@ const styles = StyleSheet.create({
         marginTop: SCREEN_WIDTH * 0.01,
         marginBottom: SCREEN_WIDTH * 0.01
     },
+    inputPhone: {
+        marginTop: 10,
+        borderRadius: 30,
+        paddingVertical: 10,
+        width: SCREEN_WIDTH * 0.7,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
     tobModal: {
         backgroundColor: COLORS.WHITE,
         borderRadius: 10,
@@ -256,39 +280,40 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     btConfirm: {
-        paddingVertical: 16,
+        paddingVertical: 10,
         backgroundColor: COLORS.GREEN,
-        borderRadius: 40,
-        width: 240,
+        borderRadius: 30,
+        width: SCREEN_WIDTH * 0.7,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 10,
-        marginTop: 10
+        marginTop: 20
     },
     btResend: {
         paddingVertical: 16,
-        backgroundColor: COLORS.GRAY_6,
+        backgroundColor: COLORS.WHITE,
         borderRadius: 40,
         width: 240,
         alignItems: 'center'
     },
     btResendActive: {
         paddingVertical: 16,
-        backgroundColor: COLORS.GREEN,
+        backgroundColor: COLORS.WHITE,
         borderRadius: 40,
         width: 240,
         alignItems: 'center'
     },
     txtBt: {
         ...Styles.typography.medium,
-        color: COLORS.WHITE
+        color: COLORS.RED_2
     },
     ic_close: {
         position: 'absolute',
         right: 16,
         top: 16
     },
-    errTxt:{
+    errTxt: {
         ...Styles.typography.regular,
-        color:COLORS.RED    }
+        color: COLORS.RED
+    }
 });

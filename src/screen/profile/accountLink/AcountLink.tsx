@@ -90,7 +90,7 @@ const AccountLink = observer(() => {
             <HeaderBar isLight={false} title={Languages.linkSocialAcc.titleSocial} hasBack />
             <View style={styles.wrapAllContent}>
                 {renderItemLink(<FaceBookIC />, Languages.linkSocialAcc.fb)}
-                {renderItemLink(<GoogleIC />, Languages.linkSocialAcc.google, !!dataUser.id_google)}
+                {renderItemLink(<GoogleIC />, Languages.linkSocialAcc.google)}
                 {isIOS &&
                     renderItemLink(<AppleIC />, Languages.linkSocialAcc.fb)}
             </View>
