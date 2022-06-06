@@ -17,7 +17,8 @@ export const loginWithGoogle = async () => {
         if (idToken) {
             const userInfo = await GoogleSignin.signInSilently();
             if (userInfo) GoogleSignin.signOut();
-            return userInfo;
+            console.log(userInfo?.user);
+            return userInfo?.user.email;
         }
         return null;
     } catch (err) {
@@ -59,6 +60,7 @@ export const loginWithApple = async () => {
 
 
         const data = appleAuthRequestResponse;
+        console.log('email',data);
         if (data?.identityToken) {
             console.log('token', data?.identityToken);
             return data;

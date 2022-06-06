@@ -36,7 +36,7 @@
          <dict>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>fb362286402494282</string>
+                <string>fb744279786599103</string>
             </array>
         </dict>
 		<dict>
@@ -51,9 +51,9 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>362286402494282</string>
+	<string>744279786599103</string>
 	<key>FacebookClientToken</key>
-	<string>569c7d3b54342bf0fac39dd4b5a1bcc4</string>
+	<string>5492496c087f12a38a2bc647869d7f32</string>
 	<key>FacebookDisplayName</key>
 	<string>Tienngay.vn</string>
 	<key>LSApplicationCategoryType</key>

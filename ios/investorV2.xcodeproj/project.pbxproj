@@ -17,6 +17,7 @@
 		1A2F456C27FE84AC0082D213 /* tienngay.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A2F456B27FE84AC0082D213 /* tienngay.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		88FC7F5D2836526500C29151 /* logo-slogan.png in Resources */ = {isa = PBXBuildFile; fileRef = 88FC7F5C2836526500C29151 /* logo-slogan.png */; };
+		AC695A2D284A0B3B007C5A6E /* sourcemap.js in Resources */ = {isa = PBXBuildFile; fileRef = AC695A2C284A0B3A007C5A6E /* sourcemap.js */; };
 		ACD838EE2820EA720013916C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACD838ED2820EA720013916C /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		88FC7F5C2836526500C29151 /* logo-slogan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo-slogan.png"; path = "investorV2/Images.xcassets/logo-slogan.png"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-investorV2-investorV2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investorV2-investorV2Tests.release.xcconfig"; path = "Target Support Files/Pods-investorV2-investorV2Tests/Pods-investorV2-investorV2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		A10DBF20A91745C6A426E149 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		AC695A2C284A0B3A007C5A6E /* sourcemap.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = sourcemap.js; path = ../sourcemap.js; sourceTree = "<group>"; };
 		ACB1B2B628323D9D00194FB0 /* investorV2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = investorV2.entitlements; path = investorV2/investorV2.entitlements; sourceTree = "<group>"; };
 		ACD838ED2820EA720013916C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B0468020BD6B47F69D243FFE /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				AC695A2C284A0B3A007C5A6E /* sourcemap.js */,
 				ACD838ED2820EA720013916C /* GoogleService-Info.plist */,
 				1A2F455E27FE7E920082D213 /* Resources */,
 				13B07FAE1A68108700A75B9A /* investorV2 */,
@@ -236,6 +239,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC695A2D284A0B3B007C5A6E /* sourcemap.js in Resources */,
 				1A2F456C27FE84AC0082D213 /* tienngay.ttf in Resources */,
 				1A2F456827FE7EFF0082D213 /* OpenSans-Regular.ttf in Resources */,
 				1A2F456927FE7EFF0082D213 /* OpenSans-SemiBold.ttf in Resources */,
