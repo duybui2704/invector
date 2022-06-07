@@ -94,7 +94,6 @@ const Home = observer(() => {
     const getInfo = useCallback(async () => {
         const resInfoAcc = await apiServices.auth.getUserInfo();
         if (resInfoAcc.success) {
-            fastAuthInfoManager.setEnableFastAuthentication(false);
             const data = resInfoAcc?.data as UserInfoModal;
             userManager.updateUserInfo({
                 ...data

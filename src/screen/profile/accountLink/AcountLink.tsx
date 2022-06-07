@@ -18,24 +18,24 @@ import { MyStylesAccountLink } from './styles';
 const AccountLink = observer(() => {
     const styles = MyStylesAccountLink();
     const [isLoading, setLoading] = useState(false);
-    const { userManager, apiServices, fastAuthInfoManager: fastAuthInfo } = useAppStore();
+    const { userManager, apiServices } = useAppStore();
 
     useEffect(() => {
         console.log('userManager.userInfo?.id_google:', userManager.userInfo?.id_google);
     }, [userManager.userInfo?.id_google]);
 
-    const renderStateLink = useCallback((status?:boolean) => {
+    const renderStateLink = useCallback((status?: boolean) => {
         return (
             <>
                 {status ?
                     <Text style={styles.stateItemLink}>{Languages.linkSocialAcc.linked}</Text> :
-                    <Text style={[styles.stateItemLink,styles.redText]}>{Languages.linkSocialAcc.notLinked}</Text>
+                    <Text style={[styles.stateItemLink, styles.redText]}>{Languages.linkSocialAcc.notLinked}</Text>
                 }
             </>
         );
     }, [styles.redText, styles.stateItemLink]);
 
-    const renderRightIcon = useCallback((status?:boolean) => {
+    const renderRightIcon = useCallback((status?: boolean) => {
         return (
             <>
                 {status ?
@@ -55,13 +55,12 @@ const AccountLink = observer(() => {
         const resInfoAcc = await apiServices.auth.getUserInfo();
         setLoading(false);
         if (resInfoAcc.success) {
-            fastAuthInfo.setEnableFastAuthentication(false);
             const data = resInfoAcc?.data as UserInfoModal;
             userManager.updateUserInfo({
                 ...data
             });
         }
-    }, [apiServices.auth, fastAuthInfo, userManager]);
+    }, [apiServices.auth, userManager]);
 
     const initUser = useCallback(
         async (type_social: string, providerId: string) => {
@@ -79,7 +78,7 @@ const AccountLink = observer(() => {
     const onLoginGoogle = useCallback(async () => {
         const userInfo = await loginWithGoogle();
         if (userInfo) initUser(ENUM_PROVIDER.GOOGLE, userInfo?.user?.id);
-    }, []);
+    }, [initUser]);
 
     const onLoginFacebook = useCallback(async () => {
         const data = await loginWithFacebook();
