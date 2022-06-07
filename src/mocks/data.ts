@@ -124,3 +124,8 @@ export const dataRatingPoint = [
     { id: '4', value: 'Tốt' },
     { id: '5', value: 'Xuất sắc' }
 ];
+
+export const typeTransaction = [
+    { id: '1', value: 'Trả lãi' },
+    { id: '2', value: 'Đầu tư ' }
+];

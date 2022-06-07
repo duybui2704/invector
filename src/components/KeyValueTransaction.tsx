@@ -7,8 +7,9 @@ import Languages from '@/common/Languages';
 import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
 import { COLOR_TRANSACTION } from '@/common/constants';
+import { typeTransaction } from '@/mocks/data';
 
-const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor, debtNow}:
+const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor, debtNow }:
     {
         noIndicator?: boolean,
         title?: string,
@@ -48,9 +49,11 @@ const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, s
                 dashLength={10}
                 dashGap={5}
                 dashColor={COLORS.GRAY_13} />}
-            <View style={styles.rowDebt}>
-                <Text style={styles.debtText}>{`${Languages.transaction.allInvestNow}: `}</Text>
-                <Text style={styles.debtNumber}>{`${debtNow}` || ''}</Text>
+            <View style={styles.wrapBottom}>
+                {content === typeTransaction?.[0]?.value
+                    ? <Text style={styles.commentText}>{Languages.msgNotify.successReceivedCongratulation}</Text>
+                    : <Text style={styles.commentText}>{Languages.msgNotify.successInvestedCongratulation}</Text>
+                }
             </View>
         </View>
     );
@@ -72,8 +75,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    rowDebt: {
-        flexDirection: 'row',
+    wrapBottom: {
         paddingVertical: 2
     },
     leftText: {
@@ -93,16 +95,15 @@ const styles = StyleSheet.create({
         ...Styles.typography.medium,
         color: COLORS.GRAY_7,
         alignSelf: 'flex-end',
-        paddingVertical: 2
+        paddingVertical: 6
     },
     dash: {
-        marginVertical: 4
+        marginVertical: 1
     },
-    debtText: {
-        ...Styles.typography.regular
-    },
-    debtNumber: {
-        ...Styles.typography.medium
+    commentText: {
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_12,
+        paddingVertical: 4
     },
     red: {
         color: COLORS.RED

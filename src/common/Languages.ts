@@ -470,7 +470,9 @@ const Languages = {
         successReOTPVimo: 'Mã OTP đã được gửi lại',
         failReOTPVimo: 'Không thể gửi lại mã OTP',
         successChangeMethod: 'Bạn đã chuyển liên kết thành công',
-        failChangeMethod: 'Bạn không thể chuyển liên kết'
+        failChangeMethod: 'Bạn không thể chuyển liên kết',
+        successReceivedCongratulation: 'Chúc mừng bạn đã nhận lãi đầu tư về tài khoản!',
+        successInvestedCongratulation: 'Chúc mừng bạn đã đầu tư thành công!'
     },
     loginWithBiometry: {
         hello: '<e>Xin chào,</e>',
