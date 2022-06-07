@@ -53,7 +53,7 @@ const AccountLink = observer(() => {
     const getInfo = useCallback(async () => {
         setLoading(true);
         const resInfoAcc = await apiServices.auth.getUserInfo();
-        setLoading(true);
+        setLoading(false);
         if (resInfoAcc.success) {
             fastAuthInfo.setEnableFastAuthentication(false);
             const data = resInfoAcc?.data as UserInfoModal;

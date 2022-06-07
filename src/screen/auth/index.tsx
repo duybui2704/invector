@@ -222,10 +222,10 @@ const Auth = observer(({ route }: any) => {
                     <Touchable style={styles.icon} onPress={onLoginGoogle}>
                         <IcGoogleAuth />
                     </Touchable>
-                    {Platform.OS === 'ios' && <Touchable style={styles.icon} onPress={onLoginApple}>
+                    {/* {Platform.OS === 'ios' && <Touchable style={styles.icon} onPress={onLoginApple}>
                         <IcApple />
-                    </Touchable>}
-
+                    </Touchable>} */}
+                   
                 </View>
             </View>
             <PopupInvestOTP
