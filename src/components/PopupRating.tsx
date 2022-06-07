@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 16,
-        marginTop: 20,
+        marginTop: 20
     },
     wrapComment: {
         width: SCREEN_WIDTH * 0.75,

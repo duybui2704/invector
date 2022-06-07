@@ -142,8 +142,9 @@ const Languages = {
         yourRate: 'Đánh giá của bạn',
         comment: 'Nội dung đánh giá',
         descriptionRating: 'Chúng tôi rất hi vọng nhận được đánh giá từ bạn nhằm nâng cao chất lượng phục vụ.',
-        thanksRating: 'Cám ơn bạn đã đóng góp ý kiến !',
-        send: 'Gửi'
+        thanksRating: 'Cám ơn bạn đã đóng góp ý kiến!',
+        send: 'Gửi',
+        ratedNote: 'Bạn không thể đánh giá lại vì đã đánh giá trước đó!'
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng Tienngay',

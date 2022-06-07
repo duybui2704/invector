@@ -45,6 +45,7 @@ export enum API_CONFIG {
     UPDATE_PHONE = 'auth/phone_login_social',
     ACTIVE_PHONE = 'auth/active_phone_social',
     LINK_GOOGLE = 'user/link_account_social',
+    RATING_APP = 'user/rate_app',
 
     // history
     HISTORY = '/investor/history_transaction_investor',

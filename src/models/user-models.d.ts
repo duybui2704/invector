@@ -39,6 +39,7 @@ export interface UserInfoModal {
     address?: string;
     job?: string;
     infoLinkVimo?: InfoLinkVimoModal;
+    rate?:number;
 }
 interface OtpModal {
     otp1: any;

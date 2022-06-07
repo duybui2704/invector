@@ -86,7 +86,7 @@ export const PopupsProvider = ({ children }: any) => {
                 break;
             default: break;
         }
-        return [styles.toast, { backgroundColor: color, top: SCREEN_HEIGHT / 15, height: 35 }];
+        return [styles.toast, { backgroundColor: color, top: SCREEN_HEIGHT / 15, height: 35, justifyContent: 'center' }];
     }, [toastType]);
 
     const renderToast = useMemo(() => {
@@ -113,7 +113,7 @@ export const PopupsProvider = ({ children }: any) => {
 const styles = StyleSheet.create({
     toast: {
         borderRadius: 10,
-        padding: 10,
+        padding: 2,
         position: 'absolute',
         bottom: 5
     }

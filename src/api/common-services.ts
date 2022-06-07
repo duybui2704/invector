@@ -19,5 +19,14 @@ export class CommonServices extends BaseService {
     getBannerHome = async () => this.api().post(API_CONFIG.GET_BANNERS_HOME, {});
 
     getAppInReview = async () => this.api().post(API_CONFIG.CHECK_APP_REVIEW);
+
+    ratingApp = async (point: number, note: string) =>
+        this.api().post(
+            API_CONFIG.RATING_APP,
+            this.buildFormData({
+                point,
+                note
+            })
+        );
 }
 

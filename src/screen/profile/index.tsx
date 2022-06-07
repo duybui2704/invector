@@ -62,10 +62,10 @@ const configTouchId = {
 const Profile = observer(() => {
     const styles = MyStylesProfile();
     const customStyles = MyStylesPinCodeProfile();
-    const { userManager, fastAuthInfoManager } = useAppStore();
+    const { userManager, fastAuthInfoManager, apiServices } = useAppStore();
     const { supportedBiometry } = fastAuthInfoManager;
     const popupError = useRef<PopupActionTypes>(null);
-    const [isEnabledSwitch, setIsEnabledSwitch] = useState(SessionManager?.isEnableFastAuthentication||false);
+    const [isEnabledSwitch, setIsEnabledSwitch] = useState(SessionManager?.isEnableFastAuthentication || false);
     const popupConfirm = useRef<PopupActionTypes>(null);
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const animationConfigs = useBottomSheetTimingConfigs({
@@ -75,7 +75,7 @@ const Profile = observer(() => {
     const popupLogout = useRef<PopupActionTypes>();
     const popupRating = useRef<PopupActionTypes>();
     const [text, setText] = useState<string>('');
-    const [ratingPoint, setRating] = useState<number>(1);
+    const [ratingPoint, setRating] = useState<number>(userManager.userInfo?.rate || 1);
     const isFocus = useIsFocused();
 
     useEffect(() => {
@@ -135,14 +135,26 @@ const Profile = observer(() => {
         popupRating.current?.show();
     }, []);
 
-    const onAgreeRating = useCallback(() => {
-        popupRating.current?.hide();
-        if (ratingPoint > 3) {
-            onLinkRate();
-        } else {
-            ToastUtils.showSuccessToast(Languages.common.thanksRating);
+    const onToastRating = useCallback(() => {
+        ToastUtils.showSuccessToast(Languages.common.ratedNote);
+    }, []);
+
+    const onAgreeRating = useCallback(async () => {
+        const res = await apiServices.common.ratingApp(ratingPoint, text);
+        if (res.success) {
+            popupRating.current?.hide();
+            userManager.updateUserInfo({
+                ...userManager.userInfo,
+                rate: ratingPoint
+            });
+            if (ratingPoint > 3) {
+                onLinkRate();
+            } else {
+                ToastUtils.showSuccessToast(Languages.common.thanksRating);
+            }
         }
-    }, [onLinkRate, ratingPoint]);
+
+    }, [apiServices.common, onLinkRate, ratingPoint, text, userManager]);
 
     const renderPopupRating = useMemo(() => {
         const onChangeTextComment = async (_commentText?: string) => {
@@ -228,7 +240,7 @@ const Profile = observer(() => {
     }, [callPhone, styles.featureContainer, styles.txtTitleKeyValue]);
 
     const onToggleBiometry = useCallback(
-        (value:any) => {
+        (value: any) => {
             if (value)
                 TouchID.isSupported(configTouchId)
                     .then(() => {
@@ -409,14 +421,14 @@ const Profile = observer(() => {
     const renderViewRating = useMemo(() => {
         return (
             <Touchable style={styles.feedBack}
-                onPress={openPopupRating}
-                disabled={SessionManager.getRatingPoint() > 3}>
+                onPress={userManager.userInfo?.rate!! > 3 ? onToastRating : openPopupRating}
+            >
                 <View style={styles.starLeft}>
                     <Text style={styles.textTitleFeed}>{Languages.common.yourRate}</Text>
                     <Text style={styles.textTitleDescriptionFeed}>{Languages.common.descriptionRating}</Text>
                     <AirbnbRating
                         count={5}
-                        defaultRating={ratingPoint || 0}
+                        defaultRating={userManager.userInfo?.rate}
                         size={20}
                         showRating={false}
                         isDisabled={false}
@@ -425,7 +437,7 @@ const Profile = observer(() => {
                 <WomanIC />
             </Touchable>
         );
-    }, [openPopupRating, ratingPoint, styles.feedBack, styles.starLeft, styles.textTitleDescriptionFeed, styles.textTitleFeed]);
+    }, [onToastRating, openPopupRating, styles.feedBack, styles.starLeft, styles.textTitleDescriptionFeed, styles.textTitleFeed, userManager.userInfo?.rate]);
 
     return (
         <View style={styles.container}>
