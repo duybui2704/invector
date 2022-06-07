@@ -3,7 +3,6 @@ import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetModal, useBot
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import HTMLView from 'react-native-htmlview';
 import TouchID from 'react-native-touch-id';
 import FastImage from 'react-native-fast-image';
@@ -30,7 +29,6 @@ import Navigator from '@/routers/Navigator';
 import { COLORS, HtmlStyles } from '@/theme';
 import StorageUtils from '@/utils/StorageUtils';
 import { MyStylesLogin } from './styles';
-
 
 const customTexts = {
     set: Languages.setPassCode
@@ -82,7 +80,7 @@ const LoginWithBiometry = observer(() => {
                 cancelTextManyTime: Languages.common.agree,
                 passcodeFallback: true
             })
-                .then((data: any) => {
+                .then(() => {
                     onLoginSuccess();
                 })
                 .catch((error: any) => {

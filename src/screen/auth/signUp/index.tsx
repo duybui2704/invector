@@ -16,11 +16,9 @@ import { ChannelModal } from '@/models/ChannelModal';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import { MyTextInput } from '@/components/elements/textfield';
 import { Touchable } from '@/components/elements/touchable';
-import { COLORS } from '@/theme';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
 import { MyStylesSign } from './styles';
 import OtpSignIn from '../otpSignIn';
-import { UserInfoModal } from '@/models/user-models';
 import Loading from '@/components/loading';
 import HideKeyboard from '@/components/HideKeyboard';
 
@@ -44,8 +42,6 @@ const SignUp = observer(() => {
     const refPassNew = useRef<TextFieldActions>(null);
     const [checked, setCheck] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(false);
-    const [userData, setUserData] = useState<UserInfoModal>();
-
 
     useEffect(() => {
         fetchData();
@@ -146,7 +142,7 @@ const SignUp = observer(() => {
             keyboardType={keyboardType}
             isPassword={isPassword}
         />;
-    }, [styles.inputPass]);
+    }, [onChangeText, styles.inputPass]);
 
     const renderView = () => {
 

@@ -136,7 +136,7 @@ const Profile = observer(() => {
     }, []);
 
     const onToastRating = useCallback(() => {
-        ToastUtils.showSuccessToast(Languages.common.ratedNote);
+        // ToastUtils.showSuccessToast(Languages.common.ratedNote);
     }, []);
 
     const onAgreeRating = useCallback(async () => {
@@ -421,7 +421,8 @@ const Profile = observer(() => {
     const renderViewRating = useMemo(() => {
         return (
             <Touchable style={styles.feedBack}
-                onPress={userManager.userInfo?.rate!! > 3 ? onToastRating : openPopupRating}
+                onPress={userManager.userInfo?.rate !!> 3 ? onToastRating : openPopupRating}
+                disabled={userManager.userInfo?.rate !!> 3}
             >
                 <View style={styles.starLeft}>
                     <Text style={styles.textTitleFeed}>{Languages.common.yourRate}</Text>

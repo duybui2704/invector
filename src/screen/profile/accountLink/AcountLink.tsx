@@ -3,23 +3,17 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import LinkIC from '@/assets/image/ic_linked_acc_social.svg';
-import AppleIC from '@/assets/image/ic_link_apple_store.svg';
-import FaceBookIC from '@/assets/image/ic_link_fb.svg';
 import GoogleIC from '@/assets/image/ic_link_gg.svg';
 import NotLinkIC from '@/assets/image/ic_not_linked_acc_social.svg';
-import { isIOS } from '@/common/Configs';
+import { ENUM_PROVIDER } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
-import { dataUser } from '@/mocks/data';
+import Loading from '@/components/loading';
+import { useAppStore } from '@/hooks';
+import { UserInfoModal } from '@/models/user-models';
 import { loginWithApple, loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
 import { MyStylesAccountLink } from './styles';
-import { useAppStore } from '@/hooks';
-import { LoginWithThirdPartyModel } from '@/models/auth';
-import SessionManager from '@/manager/SessionManager';
-import { UserInfoModal } from '@/models/user-models';
-import { ENUM_PROVIDER } from '@/common/constants';
-import Loading from '@/components/loading';
 
 const AccountLink = observer(() => {
     const styles = MyStylesAccountLink();
@@ -96,7 +90,7 @@ const AccountLink = observer(() => {
         const data = await loginWithApple();
     }, []);
 
-    const renderItemLink = useCallback((leftIcon?: any, titleLink?: string, status: boolean) => {
+    const renderItemLink = useCallback((leftIcon?: any, titleLink?: string, status?: boolean) => {
         const _onPress = () => {
             switch (titleLink) {
                 case Languages.linkSocialAcc.fb:
@@ -124,14 +118,14 @@ const AccountLink = observer(() => {
                 </View>
             </Touchable>
         );
-    }, [onLoginApple, onLoginFacebook, onLoginGoogle, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemSocial, styles.wrapRightItemSocial, userManager.userInfo?.id_google]);
+    }, [onLoginApple, onLoginFacebook, onLoginGoogle, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemSocial, styles.wrapRightItemSocial]);
 
     return (
         <View style={styles.container}>
             <HeaderBar isLight={false} title={Languages.linkSocialAcc.titleSocial} hasBack />
             <View style={styles.wrapAllContent}>
                 {/* {renderItemLink(<FaceBookIC />, Languages.linkSocialAcc.fb)} */}
-                {renderItemLink(<GoogleIC />, Languages.linkSocialAcc.google, userManager.userInfo?.id_google)}
+                {renderItemLink(<GoogleIC />, Languages.linkSocialAcc.google, !!userManager.userInfo?.id_google)}
                 {/* {isIOS &&
                     renderItemLink(<AppleIC />, Languages.linkSocialAcc.fb)} */}
             </View>

@@ -24,7 +24,6 @@ import { myStylesAuth } from './styles';
 import Navigator from '@/routers/Navigator';
 import ScreenName, { TabNamesArray, TabsName } from '@/common/screenNames';
 import ToastUtils from '@/utils/ToastUtils';
-import { UserManager } from '@/manager/UserManager';
 import SessionManager from '@/manager/SessionManager';
 import { LoginWithThirdPartyModel } from '@/models/auth';
 import { UserInfoModal } from '@/models/user-models';
@@ -135,11 +134,11 @@ const Auth = observer(({ route }: any) => {
                     refModal.current?.show();
                 }
             }
-        }, [apiServices?.auth, fastAuthInfo, userManager]);
+        }, [apiServices?.auth, common, fastAuthInfo, userManager]);
 
     const getOTPLogin = useCallback(async (phone: string) => {
         setLoading(true);
-        const resUpdate = await apiServices?.auth?.updatePhone(dataGoogle?.id, phone, dataGoogle?.checksum);
+        const resUpdate = await apiServices?.auth?.updatePhone(dataGoogle?.id || '', phone, dataGoogle?.checksum || '');
         setLoading(false);
         if (resUpdate.success) {
             const dataUpdate = resUpdate?.data as LoginWithThirdPartyModel;
@@ -150,7 +149,7 @@ const Auth = observer(({ route }: any) => {
 
     const activePhoneLogin = useCallback(async (otp: string) => {
         setLoading(true);
-        const resActive = await apiServices?.auth?.activePhone(data?.id, otp, data?.checksum);
+        const resActive = await apiServices?.auth?.activePhone(data?.id || '', otp, data?.checksum || '');
         setLoading(false);
         if (resActive.success) {
             const resData = resActive.data as LoginWithThirdPartyModel;
@@ -171,8 +170,8 @@ const Auth = observer(({ route }: any) => {
 
     const onLoginGoogle = useCallback(async () => {
         const userInfo = await loginWithGoogle();
-        if (userInfo) initUser(ENUM_PROVIDER.GOOGLE, userInfo?.user?.id, userInfo.user.email, userInfo?.user?.name);
-    }, []);
+        if (userInfo) initUser(ENUM_PROVIDER.GOOGLE, userInfo?.user?.id, userInfo.user.email, userInfo?.user?.name || '');
+    }, [initUser]);
 
     const onLoginApple = useCallback(async () => {
         const userInfo = await loginWithApple();
@@ -211,7 +210,7 @@ const Auth = observer(({ route }: any) => {
             <View style={styles.viewSvg}>
                 <SvgComponent onNavigate={onNavigate} title={isNavigate} />
             </View>
-            <View  style={[styles.wrapAll, { width: wid }]}>
+            <View style={[styles.wrapAll, { width: wid }]}>
                 {renderContent}
             </View>
             <View style={styles.viewBottom}>
@@ -226,7 +225,7 @@ const Auth = observer(({ route }: any) => {
                     {Platform.OS === 'ios' && <Touchable style={styles.icon} onPress={onLoginApple}>
                         <IcApple />
                     </Touchable>}
-                   
+
                 </View>
             </View>
             <PopupInvestOTP
