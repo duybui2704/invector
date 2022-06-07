@@ -176,7 +176,6 @@ const Transaction = observer(() => {
                 title={item?.so_tien}
                 content={item?.hinh_thuc}
                 dateTime={item?.created_at}
-                debtNow={item?.so_du}
                 styleColor={item?.color}
             />
         </Touchable>);

@@ -9,14 +9,13 @@ import { Configs } from '@/common/Configs';
 import { COLOR_TRANSACTION } from '@/common/constants';
 import { typeTransaction } from '@/mocks/data';
 
-const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor, debtNow }:
+const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor}:
     {
         noIndicator?: boolean,
         title?: string,
         dateTime?: string,
         content?: string,
         styleColor?: string,
-        debtNow?: number
     }) => {
 
     const renderColor = useCallback((_styleColor?: string, _title?: string) => {
