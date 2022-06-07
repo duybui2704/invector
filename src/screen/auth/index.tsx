@@ -126,7 +126,7 @@ const Auth = observer(({ route }: any) => {
                         if (SessionManager.accessToken) {
                             Navigator.navigateToDeepScreen(
                                 [ScreenName.tabs],
-                                TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+                                TabNamesArray[0]
                             );
                         }
                     }
@@ -167,7 +167,7 @@ const Auth = observer(({ route }: any) => {
                 }
             }
         }
-    }, [apiServices?.auth, common, data?.checksum, data?.id]);
+    }, [apiServices?.auth, common, data?.checksum, data?.id, fastAuthInfo, userManager]);
 
     const onLoginGoogle = useCallback(async () => {
         const userInfo = await loginWithGoogle();

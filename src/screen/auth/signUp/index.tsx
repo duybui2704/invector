@@ -90,7 +90,6 @@ const SignUp = observer(() => {
 
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
-
     }, []);
 
     const checkbox = useMemo(() => {
@@ -182,21 +181,21 @@ const SignUp = observer(() => {
                                 placeholderStyle={styles.containerPlaceholderPicker}
                             />
                         </View>
-                        <View style={styles.rowInfo}>
-                            <View style={styles.row}>
-                                <Touchable style={styles.checkbox} onPress={onChangeChecked}>
-                                    {checkbox}
-                                </Touchable>
-                                <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
-                            </View>
-                            <Touchable onPress={onSignIn}
-                                style={styles.tobLogin}>
-                                <Text style={styles.txtSubmit}>
-                                    {Languages.auth.txtSignUp}
-                                </Text>
-                            </Touchable>
-                        </View>
                     </ScrollView>
+                    <View style={styles.rowInfo}>
+                        {/* <View style={styles.row}>
+                            <Touchable style={styles.checkbox} onPress={onChangeChecked}>
+                                {checkbox}
+                            </Touchable>
+                            <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
+                        </View> */}
+                        <Touchable onPress={onSignIn}
+                            style={styles.tobLogin}>
+                            <Text style={styles.txtSubmit}>
+                                {Languages.auth.txtSignUp}
+                            </Text>
+                        </Touchable>
+                    </View>
                     {isLoading && <Loading isOverview />}
                 </View>
             </HideKeyboard>

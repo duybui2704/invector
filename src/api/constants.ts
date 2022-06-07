@@ -44,6 +44,7 @@ export enum API_CONFIG {
     LOGIN_THIRD_PARTY = 'auth/link_social',
     UPDATE_PHONE = 'auth/phone_login_social',
     ACTIVE_PHONE = 'auth/active_phone_social',
+    LINK_GOOGLE = 'user/link_account_social',
 
     // history
     HISTORY = '/investor/history_transaction_investor',

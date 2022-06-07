@@ -24,6 +24,15 @@ export class AuthServices extends BaseService {
             })
         );
 
+    linkGoogle = async (type_social: string, provider_id: string) =>
+        this.api().post(
+            API_CONFIG.LINK_GOOGLE,
+            this.buildFormData({
+                provider_id,
+                type_social
+            })
+        );
+
     updatePhone = async (id: string, phone_number: string, checksum: string) =>
         this.api().post(
             API_CONFIG.UPDATE_PHONE,

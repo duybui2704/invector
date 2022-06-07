@@ -20,8 +20,8 @@ export const MyStylesSign = () => {
                 height: SCREEN_HEIGHT
             },
             scrollView: {
-                backgroundColor: COLORS.TRANSPARENT,
-                marginTop: SCREEN_HEIGHT * 0.035,
+                backgroundColor: COLORS.WHITE,
+                marginTop: SCREEN_HEIGHT * 0.01,
                 width: '95%'
             },
             wrapLoginTxt: {
@@ -40,7 +40,7 @@ export const MyStylesSign = () => {
                 flexDirection: 'row',
                 width: '100%',
                 height: Configs.FontSize.size40,
-                marginBottom: 10
+                marginTop: 10
             },
             containerOverViewPicker: {
                 borderRadius: 20,
@@ -68,7 +68,8 @@ export const MyStylesSign = () => {
             rowInfo: {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                marginBottom: 5
+                marginTop: 10,
+                height: '20%'
             },
             wrapIcon: {
                 flexDirection: 'row',
@@ -102,7 +103,7 @@ export const MyStylesSign = () => {
             content: {
                 justifyContent: 'center',
                 width: '100%',
-                height: '100%'
+                height: '120%'
             },
             hisLop: {
                 paddingVertical: 10,

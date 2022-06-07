@@ -33,11 +33,17 @@ import DateUtils from '@/utils/DateUtils';
 import { BaseModel } from '@/models/base-model';
 import { isIOS } from '@/common/Configs';
 import Images from '@/assets/Images';
+import { UserInfoModal } from '@/models/user-models';
+import SessionManager from '@/manager/SessionManager';
 
 const PAGE_SIZE = 3;
 
 const Home = observer(() => {
-    const { apiServices, userManager, fastAuthInfoManager } = useAppStore();
+    const {
+        apiServices,
+        userManager,
+        fastAuthInfoManager
+    } = useAppStore();
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
     const isFocused = useIsFocused();
     const styles = MyStylesHome();
@@ -71,12 +77,30 @@ const Home = observer(() => {
 
     useEffect(() => {
         if (isFocused) {
+            if (SessionManager.accessToken) {
+                getInfo();
+            }
+        }
+    }, [isFocused]);
+
+    useEffect(() => {
+        if (isFocused) {
             if (userManager.userInfo) {
                 fetchContractsDash();
             }
         }
-        console.log('ratiooooooooo: ', SCREEN_WIDTH);
     }, [isFocused]);
+
+    const getInfo = useCallback(async () => {
+        const resInfoAcc = await apiServices.auth.getUserInfo();
+        if (resInfoAcc.success) {
+            fastAuthInfoManager.setEnableFastAuthentication(false);
+            const data = resInfoAcc?.data as UserInfoModal;
+            userManager.updateUserInfo({
+                ...data
+            });
+        }
+    }, []);
 
     const onOpenVPS = useCallback(() => {
         Utils.openURL(LINKS.VPS);

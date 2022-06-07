@@ -18,7 +18,7 @@ export const loginWithGoogle = async () => {
             const userInfo = await GoogleSignin.signInSilently();
             if (userInfo) GoogleSignin.signOut();
             console.log(userInfo?.user);
-            return userInfo?.user.email;
+            return userInfo;
         }
         return null;
     } catch (err) {
