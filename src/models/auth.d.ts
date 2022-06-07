@@ -2,10 +2,10 @@ import { Id } from './id';
 
 export interface LoginWithThirdPartyModel {
     id: string;
-    message: string;
-    status: number;
-    token_app: string;
+    checksum: string;
+    token: string;
 }
+
 export interface ActiveAccountSocialModel {
     created_at: number;
     created_by: string;

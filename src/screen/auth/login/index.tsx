@@ -19,6 +19,7 @@ import { COLORS } from '@/theme';
 import { MyStylesLogin } from './styles';
 import { UserInfoModal } from '@/models/user-models';
 import HideKeyboard from '@/components/HideKeyboard';
+import FormValidate from '@/utils/FormValidate';
 
 const Login = observer(() => {
     const {
@@ -29,7 +30,6 @@ const Login = observer(() => {
 
     const [phone, setPhone] = useState<string>('');
     const [pass, setPass] = useState<string>('');
-    const [genderUser, setGender] = useState<string>('');
     const [userData, setUserData] = useState<UserInfoModal>();
     const styles = MyStylesLogin();
     const refPhone = useRef<TextFieldActions>(null);
@@ -65,6 +65,18 @@ const Login = observer(() => {
         }
     }, []);
 
+    const onValidate = useCallback(() => {
+        const errMsgPhone = FormValidate.passConFirmPhone(phone);
+        const errMsgPwd = FormValidate.passValidate(pass);
+
+        refPhone.current?.setErrorMsg(errMsgPhone);
+        refPass.current?.setErrorMsg(errMsgPwd);
+        if (`${errMsgPhone}${errMsgPwd}`.length === 0) {
+            return true;
+        }
+        return false;
+    }, [pass, phone]);
+
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
     }, []);
@@ -95,40 +107,40 @@ const Login = observer(() => {
 
 
     const onLoginPhone = useCallback(async () => {
-        setLoading(true);
-        const res = await apiServices.auth.loginPhone(phone, pass);
-
-        if (res.success) {
+        if (onValidate()) {
+            setLoading(true);
+            const res = await apiServices.auth.loginPhone(phone, pass);
             setLoading(false);
-            const resData = res.data as UserInfoModal;
-            SessionManager.setAccessToken(resData?.token);
-            const resInfoAcc = await apiServices.auth.getUserInfo();
-            if (resInfoAcc.success) {
-                if (!checked) {
-                    SessionManager.setSavePhoneLogin('');
-                    SessionManager.setSavePassLogin('');
-                } else {
-                    SessionManager.setSavePhoneLogin(phone);
-                    SessionManager.setSavePassLogin(pass);
+            if (res.success) {
+                setLoading(false);
+                const resData = res.data as UserInfoModal;
+                SessionManager.setAccessToken(resData?.token);
+                const resInfoAcc = await apiServices.auth.getUserInfo();
+                if (resInfoAcc.success) {
+                    if (!checked) {
+                        SessionManager.setSavePhoneLogin('');
+                        SessionManager.setSavePassLogin('');
+                    } else {
+                        SessionManager.setSavePhoneLogin(phone);
+                        SessionManager.setSavePassLogin(pass);
+                    }
+                    fastAuthInfo.setEnableFastAuthentication(false);
+                    const data = resInfoAcc?.data as UserInfoModal;
+                    setUserData(data);
+                    userManager.updateUserInfo({
+                        ...data
+                    });
                 }
-                fastAuthInfo.setEnableFastAuthentication(false);
-                const data = resInfoAcc?.data as UserInfoModal;
-                setUserData(data);
-                userManager.updateUserInfo({
-                    ...data
-                } );
+                setTimeout(() => {
+                    if (SessionManager.accessToken) {
+                        Navigator.navigateToDeepScreen(
+                            [ScreenName.tabs],
+                            TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
+                        );
+                    }
+                }, 200);
             }
-            setTimeout(() => {
-                if (SessionManager.accessToken) {
-                    Navigator.navigateToDeepScreen(
-                        [ScreenName.tabs],
-                        TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
-                    );
-                }
-            }, 200);
         }
-        setLoading(false);
-
     }, [apiServices.auth, phone, pass, checked, fastAuthInfo, userManager]);
 
     return (

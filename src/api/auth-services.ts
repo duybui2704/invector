@@ -13,6 +13,46 @@ export class AuthServices extends BaseService {
             })
         );
 
+    loginWithThirdParty = async (type_social: string, provider_id: string, email: string, name: string) =>
+        this.api().post(
+            API_CONFIG.LOGIN_THIRD_PARTY,
+            this.buildFormData({
+                type_social,
+                provider_id,
+                email,
+                name
+            })
+        );
+
+    linkGoogle = async (type_social: string, provider_id: string) =>
+        this.api().post(
+            API_CONFIG.LINK_GOOGLE,
+            this.buildFormData({
+                provider_id,
+                type_social
+            })
+        );
+
+    updatePhone = async (id: string, phone_number: string, checksum: string) =>
+        this.api().post(
+            API_CONFIG.UPDATE_PHONE,
+            this.buildFormData({
+                id,
+                phone_number,
+                checksum
+            })
+        );
+
+    activePhone = async (id: string, otp: string, checksum: string) =>
+        this.api().post(
+            API_CONFIG.ACTIVE_PHONE,
+            this.buildFormData({
+                id,
+                otp,
+                checksum
+            })
+        );
+
     updateUserInf = async (
         avatar?: string,  // anh guiw len  khi ko camera hoac thu vien
         full_name?: string,

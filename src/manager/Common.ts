@@ -7,6 +7,8 @@ export class Common {
 
     @observable successChangePass = false;
 
+    @observable successGetOTP = false;
+
     constructor() {
         makeObservable(this);
     }
@@ -17,6 +19,10 @@ export class Common {
 
     @action setRefresh(refresh: boolean) {
         this.refresh = refresh;
+    }
+
+    @action setSuccessGetOTP(successGetOTP: boolean) {
+        this.successGetOTP = successGetOTP;
     }
 
     @action setSuccessChangePass(successChangePass: boolean) {

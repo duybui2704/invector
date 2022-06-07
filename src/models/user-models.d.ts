@@ -20,6 +20,8 @@ export interface UserInfoModal {
     created_by?: string;
     token_app?: string;
     token?: string;
+    id?: string;
+    checksum?: string;
     _id?: Id;
     role_user?: string;
     updated_at?: string;
