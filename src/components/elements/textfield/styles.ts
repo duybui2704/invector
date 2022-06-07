@@ -39,7 +39,7 @@ export const myTextFieldStyle = () => {
                 inputFont: {
                     ...Styles.typography.regular,
                     color: COLORS.DARK_GRAY,
-                    fontSize: Configs.FontSize.size14
+                    fontSize: Configs.FontSize.size13
                 },
                 showHidePassContainer: {
                     position: 'absolute',

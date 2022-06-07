@@ -194,7 +194,7 @@ export const MyStylesHome = () => {
                 justifyContent: 'space-around',
                 alignItems: 'center',
                 position: 'absolute',
-                top: SCREEN_HEIGHT / 3.55
+                top: SCREEN_HEIGHT / 3.45
             },
             tab: {
                 flex: 1,

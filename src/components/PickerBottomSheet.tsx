@@ -17,6 +17,7 @@ import {
 import { COLORS, Styles } from '@/theme';
 import BottomSheetComponent from './BottomSheetComponent';
 import { ItemProps } from '@/models/common-model';
+import { Configs } from '@/common/Configs';
 
 type PickerProps = {
     containerStyle?: ViewStyle;
@@ -123,7 +124,8 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         ...Styles.typography.regular,
-        color: COLORS.GRAY_4
+        color: COLORS.GRAY_4,
+        fontSize: Configs.FontSize.size13
     },
     wrapContent:{
         alignItems:'center',
