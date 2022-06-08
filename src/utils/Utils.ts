@@ -1,5 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
-import { PushNotification } from 'react-native-push-notification';
+import  {Importance,PushNotification } from 'react-native-push-notification';
 import { Linking, Platform, Share } from 'react-native';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 
@@ -161,9 +161,10 @@ const createChannel = () => {
     if(Platform.OS === 'android'){
         PushNotification.createChannel(
             {
-                channelId: 'noti', // (required)
+                channelId: 'TienNgay.vn-chanel', // (required)
                 channelName: 'TienNgay.vn', // (required)
-                channelDescription: 'A channel to categorise your notifications' // (optional) default: undefined.
+                channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+                importance: Importance.HIGH
             },
             (created: any) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
         );
@@ -209,6 +210,7 @@ async function configNotification(onNotification: () => void) {
             },
             popInitialNotification: true,
             requestPermissions: true
+            
         });
     }
 }

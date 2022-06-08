@@ -59,22 +59,21 @@ const NotificationListening = observer(({ children }: any) => {
                 PushNotificationIOS.addNotificationRequest({
                     id: 'notificationWithSound',
                     title: remoteMessage?.notification?.title,
-                    subtitle: 'Sample Subtitle',
+                    // subtitle: 'Sample Subtitle',
                     body: remoteMessage?.notification?.body,
                     sound: 'customSound.wav'
                 });
             } else {
                 PushNotification.localNotification({
                     autoCancel: true,
-                    data: 'test',
-                    channelId: 'noti',
+                    // data: 'test',
+                    channelId: 'TienNgay.vn-chanel',
                     showWhen: true,
                     message: remoteMessage?.notification?.body,
                     vibrate: true,
                     vibration: 300,
                     playSound: true,
-                    soundName: 'default',
-                    badge: 10
+                    soundName: 'default'
                 });
             }
         },
