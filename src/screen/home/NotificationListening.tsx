@@ -35,7 +35,6 @@ const NotificationListening = observer(({ children }: any) => {
 
     const createToken = useCallback(async () => {
         const fcmToken = await Utils.getFcmToken();
-        console.log('fcmtoken: ', fcmToken);
         if (fcmToken && SessionManager.accessToken) {
             apiServices?.notification?.createFcmToken(fcmToken);
         }
@@ -44,6 +43,7 @@ const NotificationListening = observer(({ children }: any) => {
     const getUnreadNotify = useCallback(async () => {
         if (userManager.userInfo) {
             const res = await apiServices.notification?.getUnreadNotify();
+            console.log('res',res);
             if (res.success) {
                 const data = res.data as NotificationTotalModel;
                 notificationManager.setUnReadNotifyCount(data?.total_unRead);
@@ -54,7 +54,6 @@ const NotificationListening = observer(({ children }: any) => {
 
     const pushNotificationLocal = useCallback(
         async (remoteMessage: any) => {
-            await getUnreadNotify();
             if (isIOS) {
                 PushNotificationIOS.addNotificationRequest({
                     id: 'notificationWithSound',
@@ -66,7 +65,7 @@ const NotificationListening = observer(({ children }: any) => {
             } else {
                 PushNotification.localNotification({
                     autoCancel: true,
-                    // data: 'test',
+                    data: 'test',
                     channelId: 'TienNgay.vn-chanel',
                     showWhen: true,
                     message: remoteMessage?.notification?.body,
@@ -76,6 +75,7 @@ const NotificationListening = observer(({ children }: any) => {
                     soundName: 'default'
                 });
             }
+            getUnreadNotify();
         },
         [getUnreadNotify]
     );

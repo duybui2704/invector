@@ -1,5 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
-import  {Importance,PushNotification } from 'react-native-push-notification';
+import PushNotification, { Importance } from 'react-native-push-notification';
 import { Linking, Platform, Share } from 'react-native';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 
@@ -158,7 +158,7 @@ async function getFcmToken() {
 }
 
 const createChannel = () => {
-    if(Platform.OS === 'android'){
+    if (Platform.OS === 'android') {
         PushNotification.createChannel(
             {
                 channelId: 'TienNgay.vn-chanel', // (required)
@@ -188,14 +188,14 @@ async function configNotification(onNotification: () => void) {
     requestUserPermissionNotify();
     createChannel();
 
-    if(Platform.OS === 'android'){
+    if (Platform.OS === 'android') {
         PushNotification.configure({
             async onNotification(notification: any) {
                 if (notification.channelId) {
                     onNotification();
                 }
             },
-    
+
             onAction(notification: any) {
                 console.log('ACTION:', notification.action);
                 console.log('NOTIFICATION:', notification);
@@ -210,7 +210,7 @@ async function configNotification(onNotification: () => void) {
             },
             popInitialNotification: true,
             requestPermissions: true
-            
+
         });
     }
 }
@@ -226,7 +226,7 @@ function formatForEachWordCase(str: string) {
     return splitStr.join(' ');
 }
 
-function updateSuggestions (text:string) {
+function updateSuggestions(text: string) {
     const suggest = [];
     let inputNo = Number(text);
     while (true && inputNo > 0) {
