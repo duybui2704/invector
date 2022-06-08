@@ -92,6 +92,6 @@ export enum API_CONFIG {
     UPLOAD_PERSONAL_PHOTO = 'user/update_personal_photo', // upload anh ca nhan 
 }
 export const PAYMENT_URL = {
-    NL_SUCCESSFULLY: `${API_CONFIG.BASE_URL}V2/contract/success_nl_`,
-    NL_FAILED: `${API_CONFIG.BASE_URL}V2/contract/cancel?bill=`
+    NL_SUCCESSFULLY: `${API_CONFIG.BASE_URL}contract/success_nl_`,
+    NL_FAILED: `${API_CONFIG.BASE_URL}contract/cancel?bill=`
 };

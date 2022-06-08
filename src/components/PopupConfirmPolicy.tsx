@@ -13,6 +13,7 @@ import { Configs } from '@/common/Configs';
 import { PopupActionTypes, PopupPropsTypes } from '../models/typesPopup';
 import { Touchable } from './elements/touchable';
 import Languages from '@/common/Languages';
+import { LINKS } from '@/api/constants';
 
 
 
@@ -54,7 +55,7 @@ const PopupConfirmPolicy = forwardRef<
                 </View>
                 <WebView
                     source={{
-                        uri: 'https://tienngay.vn/template/dieukhoansudung'
+                        uri: LINKS.POLICY_INVESTOR
                     }}
                     javaScriptEnabledAndroid={true}
                     startInLoadingState
@@ -106,7 +107,6 @@ const styles = StyleSheet.create({
     btAgree:{
         backgroundColor:COLORS.GREEN,
         paddingVertical:8,
-        paddingHorizontal:40,
         borderRadius:20,
         width:'45%',
         alignItems:'center',
