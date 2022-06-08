@@ -1,5 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/core';
 
 import IcBack from '../../assets/image/header/ic_back_header.svg';
 import Images from '../../assets/Images';
@@ -9,6 +10,7 @@ import { Touchable } from '../elements/touchable';
 import { HeaderProps } from './types';
 import { COLORS } from '../../theme';
 import { MyStylesHeader } from './styles';
+import { useAppStore } from '@/hooks';
 
 export const HeaderBar = ({
     onBackPressed,
@@ -23,6 +25,18 @@ export const HeaderBar = ({
 }: HeaderProps) => {
 
     const styles = MyStylesHeader();
+    const isFocused = useIsFocused();
+
+    useLayoutEffect(() => {
+        if (isFocused) {
+            setTimeout(() => {
+
+            }, 50);
+            StatusBar.setBarStyle(isFocused ? 'dark-content' : 'light-content', true);
+        }
+
+    }, [isFocused]);
+
     const _onBackPressed = useCallback(() => {
         if (!exitApp) {
             if (hasBack && onBackPressed) {
@@ -71,10 +85,6 @@ export const HeaderBar = ({
             {!noHeader && !exitApp && <View style={styles.headerContainer}>
                 {renderTitle}
                 {(!exitApp) && (hasBack ? renderBack : null)}
-                {/* {title === Languages.invest.title &&
-                    <Touchable style={styles.viewRight} >
-                        <IcNotifyInvest width={22} height={22} />
-                    </Touchable>} */}
             </View>}
         </View>
     );

@@ -1,9 +1,10 @@
-import { useIsFocused } from '@react-navigation/native';
+
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { StatusBar, Text, View, FlatList, ImageBackground } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import FastImage from 'react-native-fast-image';
+import { useIsFocused } from '@react-navigation/core';
 
 import { LINKS } from '@/api/constants';
 import AvatarIC from '@/assets/image/ic_avatar.svg';
@@ -35,6 +36,7 @@ import { isIOS } from '@/common/Configs';
 import Images from '@/assets/Images';
 import { UserInfoModal } from '@/models/user-models';
 import SessionManager from '@/manager/SessionManager';
+import HeaderBar from '@/components/header';
 
 const PAGE_SIZE = 3;
 
@@ -42,7 +44,8 @@ const Home = observer(() => {
     const {
         apiServices,
         userManager,
-        fastAuthInfoManager
+        fastAuthInfoManager,
+        common
     } = useAppStore();
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
     const isFocused = useIsFocused();
@@ -62,11 +65,15 @@ const Home = observer(() => {
         canLoadMore: true
     });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
+
         setShowFloating(true);
-        setTimeout(() => {
-            StatusBar.setBarStyle(isFocused ? 'light-content' : 'dark-content', true);
-        }, 10);
+        if (isFocused) {
+            setTimeout(() => {
+                StatusBar.setBarStyle(isFocused ? 'light-content' : 'dark-content', true);
+            }, 500);
+        }
+
     }, [isFocused]);
 
     useEffect(() => {
@@ -433,15 +440,21 @@ const Home = observer(() => {
     }, [dataArr, keyExtractor, renderFooter, renderItemInvestPackage, styles.txtCenter, userManager?.userInfo]);
 
 
+    const renderStatusBar = useMemo(() => {
+        return (
+            <StatusBar
+                animated
+                translucent
+                backgroundColor={COLORS.TRANSPARENT}
+                barStyle={'light-content'}
+            />
+        );
+    }, [isFocused]);
+
     const renderBackground = useMemo(() => {
         return (
             <>
-                <StatusBar
-                    animated
-                    translucent
-                    backgroundColor={COLORS.TRANSPARENT}
-                    barStyle={'light-content'}
-                />
+                {renderStatusBar}
                 < ImageBackground source={Images.bg_header_home} style={styles.imageBg} resizeMode='stretch' />
             </>
         );
@@ -458,6 +471,7 @@ const Home = observer(() => {
     return (
         <NotificationListening>
             <View style={styles.container}>
+                {renderStatusBar}
                 <ParallaxScrollView
                     contentBackgroundColor={COLORS.TRANSPARENT}
                     backgroundColor={COLORS.TRANSPARENT}
