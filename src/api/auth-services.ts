@@ -100,6 +100,14 @@ export class AuthServices extends BaseService {
             })
         );
 
+    otpResendToken = async (phone_number: string) =>
+        this.api().post(
+            API_CONFIG.OTP_RESEND_TOKEN,
+            this.buildFormData({
+                phone_number
+            })
+        );
+
     updateNewPwd = async (
         phone_number: string,
         token_reset_password: string,

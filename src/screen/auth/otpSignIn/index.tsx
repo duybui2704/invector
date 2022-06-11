@@ -93,14 +93,24 @@ const OtpSignIn = (props: any) => {
 
     const sendOTP = useCallback(async () => {
         setIsLoading(true);
-        const resSendOTP = await apiServices.auth.otpResetPwd(phone);
-        setIsLoading(false);
-        if (resSendOTP.success) {
-            setCheck(true);
-            setIsActive(true);
-            timer = getTime() + 60;
-            refreshCountdown();
+        if (!props?.isChangePass) {
+            const resSendOTP = await apiServices.auth.otpResendToken(phone);
+            if (resSendOTP.success) {
+                setCheck(true);
+                setIsActive(true);
+                timer = getTime() + 60;
+                refreshCountdown();
+            }
+        } else {
+            const resSendOTP = await apiServices.auth.otpResetPwd(phone);
+            if (resSendOTP.success) {
+                setCheck(true);
+                setIsActive(true);
+                timer = getTime() + 60;
+                refreshCountdown();
+            }
         }
+        setIsLoading(false);
     }, [getTime]);
 
     const renderOTP = () => {
