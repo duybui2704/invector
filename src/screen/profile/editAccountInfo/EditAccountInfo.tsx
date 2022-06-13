@@ -118,17 +118,12 @@ const EditAccountInfo = observer(() => {
 
     const onValidate = useCallback(() => {
         const errMsgName = FormValidate.userNameValidate(name);
-        const errMsgGender = FormValidate.genderValidate(genderUser);
-        const errMsgAddress = FormValidate.addressValidate(addressUser);
-
-        genderRef.current?.setErrorMsg(errMsgGender);
         nameRef.current?.setErrorMsg(errMsgName);
-        addressRef.current?.setErrorMsg(errMsgAddress);
 
-        if (`${errMsgName}${errMsgGender}${errMsgAddress}`.length === 0) {
+        if (`${errMsgName}`.length === 0) {
             return true;
         } return false;
-    }, [addressUser, genderUser, name]);
+    }, [name]);
 
     const renderGender = useCallback((disable?: boolean) => {
         return (
