@@ -268,7 +268,7 @@ const Transaction = observer(() => {
                     onConfirmDatePicker={onConfirmValue}
                     onDateChangeDatePicker={onChange}
                     date={condition.current.endDate || new Date()}
-                    minimumDate={condition.current.startDate || new Date()}
+                    // minimumDate={condition.current.startDate || new Date()}
                     maximumDate={new Date()}
                 />
             </View>

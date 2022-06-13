@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Keyboard, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/core';
 
@@ -63,6 +63,7 @@ const Investment = observer(({ route }: { route: any }) => {
         moneyInvested: '',
         option: ''
     });
+    const [isReset, setIsReset] = useState<boolean>(false);
 
     const inputRef = useRef<TextFieldActions>(null);
 
@@ -167,6 +168,7 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [btnInvest, fetchData]);
 
     const onRefresh = useCallback(() => {
+        setIsReset(!isReset);
         setTimeValue({});
         setMoneyValueInvest({});
         condition.current.offset = 0;
@@ -181,7 +183,7 @@ const Investment = observer(({ route }: { route: any }) => {
         setIsRefreshing(true);
         fetchData(btnInvest);
         setIsRefreshing(false);
-    }, [btnInvest, fetchData]);
+    }, [btnInvest, fetchData, isReset]);
 
     const fetchDataTimeInvestment = useCallback(async () => {
         const res = await apiServices.invest.getListTimeInvestment();
@@ -281,6 +283,7 @@ const Investment = observer(({ route }: { route: any }) => {
     }, []);
 
     const renderItem = useCallback(({ item }: any) => {
+        console.log('item',item);
         const navigateScreen = () => {
             navigateToDetail(item);
         };
@@ -374,6 +377,7 @@ const Investment = observer(({ route }: { route: any }) => {
     }, [fetchDataInvested, isLoading, moneyValueInvested?.id]);
 
     const onPopupInvest = useCallback(() => {
+        Keyboard.dismiss();
         switch (btnInvest) {
             case ENUM_INVEST_STATUS.INVEST_NOW:
                 popupInvestRef.current.show();
@@ -510,6 +514,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 openTimeInvestment={openTimeInvestment}
                 money={moneyValueInvested?.value}
                 onCancel={onCancelPopupFilterInvested}
+                isRefresh={isReset}
             />
             <BottomSheetComponentInvest
                 ref={refBottomSheetMoney}
