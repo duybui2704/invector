@@ -8,14 +8,14 @@ import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
 import { COLOR_TRANSACTION } from '@/common/constants';
 
-const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor, contract}:
+const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor, contract }:
     {
         noIndicator?: boolean,
         title?: string,
         dateTime?: string,
         content?: string,
         styleColor?: string,
-        contract?:string
+        contract?: string
     }) => {
 
     const renderColor = useCallback((_styleColor?: string, _title?: string) => {
@@ -49,8 +49,8 @@ const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, s
                 dashGap={5}
                 dashColor={COLORS.GRAY_13} />}
             <View style={styles.wrapBottom}>
-                <Text style={styles.contractText}>{`${Languages.common.contract}`}</Text> 
-                <Text style={styles.contractCodeText}>{`${contract}`}</Text>            
+                <Text style={styles.contractText}>{`${Languages.common.contract}`}</Text>
+                <Text style={styles.contractCodeText}>{`${contract}`}</Text>
             </View>
         </View>
     );
@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     wrapBottom: {
-        paddingVertical: 2
+        paddingVertical: 2,
+        flexDirection: 'row'
     },
     leftText: {
         ...Styles.typography.medium,
