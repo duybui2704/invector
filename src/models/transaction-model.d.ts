@@ -4,6 +4,7 @@ export interface TransactionModel {
     so_du: number;
     created_at: string;
     color: string;
+    ma_hop_dong: string;
 }
 
 export interface TransactionTypeModel {

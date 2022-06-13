@@ -177,6 +177,7 @@ const Transaction = observer(() => {
                 content={item?.hinh_thuc}
                 dateTime={item?.created_at}
                 styleColor={item?.color}
+                contract={item?.ma_hop_dong}
             />
         </Touchable>);
     }, []);

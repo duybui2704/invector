@@ -7,15 +7,15 @@ import Languages from '@/common/Languages';
 import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
 import { COLOR_TRANSACTION } from '@/common/constants';
-import { typeTransaction } from '@/mocks/data';
 
-const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor}:
+const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, styleColor, contract}:
     {
         noIndicator?: boolean,
         title?: string,
         dateTime?: string,
         content?: string,
         styleColor?: string,
+        contract?:string
     }) => {
 
     const renderColor = useCallback((_styleColor?: string, _title?: string) => {
@@ -49,10 +49,8 @@ const KeyValueTransaction = observer(({ title, dateTime, content, noIndicator, s
                 dashGap={5}
                 dashColor={COLORS.GRAY_13} />}
             <View style={styles.wrapBottom}>
-                {content === typeTransaction?.[0]?.value
-                    ? <Text style={styles.commentText}>{Languages.msgNotify.successReceivedCongratulation}</Text>
-                    : <Text style={styles.commentText}>{Languages.msgNotify.successInvestedCongratulation}</Text>
-                }
+                <Text style={styles.contractText}>{`${Languages.common.contract}`}</Text> 
+                <Text style={styles.contractCodeText}>{`${contract}`}</Text>            
             </View>
         </View>
     );
@@ -99,9 +97,14 @@ const styles = StyleSheet.create({
     dash: {
         marginVertical: 1
     },
-    commentText: {
+    contractText: {
         ...Styles.typography.regular,
         color: COLORS.GRAY_12,
+        paddingVertical: 4
+    },
+    contractCodeText: {
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_7,
         paddingVertical: 4
     },
     red: {
