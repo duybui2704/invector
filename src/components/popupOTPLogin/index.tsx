@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import OtpInputs from 'react-native-otp-inputs';
 
@@ -11,20 +11,21 @@ import { useAppStore } from '@/hooks';
 import { PopupActionTypes, PopupPropsTypes } from '@/models/typesPopup';
 import { COLORS } from '@/theme/colors';
 import { Styles } from '@/theme/styles';
-import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import { Touchable } from '../elements/touchable';
 import Utils from '@/utils/Utils';
 import { MyTextInput } from '../elements/textfield';
 import arrayIcon from '@/common/arrayIcon';
 import FormValidate from '@/utils/FormValidate';
 import { TextFieldActions } from '../elements/textfield/types';
+import Validate from '@/utils/Validate';
 
 interface PopupOTPProps extends PopupPropsTypes {
     getOTPcode?: (phone: string) => any,
     onPressConfirm?: (otp: string) => any
 }
 
-export const PopupInvestOTP = forwardRef<
+export const PopupOTPLogin = forwardRef<
     PopupActionTypes,
     PopupOTPProps
 >(({ getOTPcode, onPressConfirm }: PopupOTPProps, ref) => {
@@ -37,6 +38,9 @@ export const PopupInvestOTP = forwardRef<
     const [pin, setPin] = useState<string>('');
     const [errMsg, setErrMsg] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
+    const [animation] = useState(new Animated.Value(0));
+    const [isFocusing, setFocus] = useState<boolean>(false);
+    const refOTP = useRef<any>();
     const intervalRef = useRef<any>();
 
     useEffect(() => {
@@ -73,7 +77,9 @@ export const PopupInvestOTP = forwardRef<
 
     useImperativeHandle(ref, () => ({
         show,
-        hide
+        hide,
+        setErrorMsg,
+        setErrorOTP
     }));
 
     useEffect(() => {
@@ -81,6 +87,10 @@ export const PopupInvestOTP = forwardRef<
             onPressConfirm(pin);
         }
     }, [pin]);
+
+    const setErrorMsg = useCallback((err) => {
+        refPhone.current?.setErrorMsg(err);
+    }, []);
 
     const onValidate = useCallback(() => {
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
@@ -106,7 +116,7 @@ export const PopupInvestOTP = forwardRef<
     const onChangeCode = useCallback((code: string) => {
         setPin(code);
         setErrMsg('');
-    }, []);
+    }, [pin]);
 
     const onResend = useCallback(async () => {
         await getOTPcode?.(phone);
@@ -120,7 +130,7 @@ export const PopupInvestOTP = forwardRef<
                 <Text style={[styles.txtBt, { color: COLORS.WHITE }]}>{Languages.confirmPhone.sendOTP}</Text>
             </Touchable>
         );
-    }, [loading, onConfirm]);
+    }, [onConfirm]);
 
     const renderResend = useMemo(() => {
         if (startCount) {
@@ -136,6 +146,62 @@ export const PopupInvestOTP = forwardRef<
             </Touchable>
         );
     }, [onResend, startCount, timer]);
+
+    const onFocus = useCallback(() => {
+        setFocus(true);
+    }, []);
+
+    const onBlur = useCallback(() => {
+        setFocus(false);
+    }, []);
+
+    const containerStyle = useMemo(() => {
+        return [styles.container, { transform: [{ translateX: animation }] }];
+    }, [animation]);
+
+    const styleOTP = useMemo(() => {
+        const borderStyle = {
+            borderColor: isFocusing ? COLORS.GREEN : COLORS.GRAY_2
+        };
+
+        const style = {
+            backgroundColor: COLORS.TRANSPARENT
+        };
+
+        const backgroundStyle = {
+            backgroundColor: isFocusing ? COLORS.WHITE : COLORS.GRAY_2
+        };
+
+        if (errMsg !== '') {
+            borderStyle.borderColor = COLORS.RED;
+        }
+        return [styles.viewOtp, borderStyle, backgroundStyle, style];
+    }, [errMsg, isFocusing]);
+
+    const startShake = useCallback(() => {
+        Animated.sequence([
+            Animated.timing(animation, { toValue: 10, duration: 50, useNativeDriver: true }),
+            Animated.timing(animation, { toValue: -10, duration: 50, useNativeDriver: true }),
+            Animated.timing(animation, { toValue: 10, duration: 50, useNativeDriver: true }),
+            Animated.timing(animation, { toValue: 0, duration: 50, useNativeDriver: true })
+        ]).start();
+    }, [animation]);
+
+    const errorMessage = useMemo(() => {
+        const paddingText = { marginTop: - SCREEN_HEIGHT * 0.01 };
+        return <View style={paddingText}>
+            <Text
+                style={styles.errorMessage}>{errMsg}</Text>
+        </View>;
+    }, [errMsg]);
+
+    const setErrorOTP = useCallback((msg: string) => {
+        if (Validate.isStringEmpty(msg)) {
+            return;
+        }
+        setErrMsg(msg);
+        startShake();
+    }, [startShake]);
 
     return (
         <Modal
@@ -170,19 +236,26 @@ export const PopupInvestOTP = forwardRef<
                         </>
                         :
                         <>
-                            <View style={styles.boxOtp}>
-                                <OtpInputs
-                                    handleChange={onChangeCode}
-                                    numberOfInputs={6}
-                                    style={styles.wrapOTP}
-                                    inputStyles={styles.viewOtp}
-                                    focusStyles={styles.focusStyle}
-                                />
-                            </View>
-                            {!!errMsg && <Text style={styles.errTxt}>{errMsg}</Text>}
-                            <View>
-                                {renderResend}
-                            </View>
+                            <Animated.View style={containerStyle} >
+                                <View style={styles.boxOtp}>
+                                    <OtpInputs
+                                        ref={refOTP}
+                                        handleChange={onChangeCode}
+                                        numberOfInputs={6}
+                                        style={styles.wrapOTP}
+                                        inputStyles={styleOTP}
+                                        focusStyles={styles.focusStyle}
+                                        onFocus={onFocus}
+                                        onBlur={onBlur}
+                                        onLayout={() => refOTP.current.focus()}
+                                    />
+                                </View>
+                                {errorMessage}
+                                <View>
+                                    {renderResend}
+                                </View>
+                            </Animated.View>
+
                         </>
                     }
                 </View>
@@ -207,10 +280,8 @@ const styles = StyleSheet.create({
         ...Styles.typography.regular,
         fontSize: Configs.FontSize.size14,
         color: COLORS.GRAY_12,
-        marginHorizontal: 16,
         textAlign: 'center',
         padding: 10
-
     },
     inputOtp: {
         ...Styles.typography.regular,
@@ -231,19 +302,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingLeft: ((SCREEN_WIDTH - 64 - 5 * 5) / 6) / 2 - 4,
-        borderColor: COLORS.GRAY_6,
-        color: COLORS.BLACK,
         fontSize: Configs.FontSize.size18
     },
     focusStyle: {
 
     },
     boxOtp: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: SCREEN_WIDTH * 0.01,
-        marginBottom: SCREEN_WIDTH * 0.01
+        marginTop: SCREEN_WIDTH * 0.01
     },
     inputPhone: {
         marginTop: 10,
@@ -259,8 +327,9 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: 16
-
+        paddingVertical: 10,
+        paddingHorizontal: SCREEN_WIDTH * 0.1 - 10,
+        width: SCREEN_WIDTH * 0.9
     },
     underlineStyleBase: {
         width: SCREEN_WIDTH * 0.13,
@@ -273,11 +342,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     wrapOTP: {
-        backgroundColor: COLORS.WHITE,
-        height: SCREEN_WIDTH * 0.14,
+        backgroundColor: COLORS.TRANSPARENT,
+        height: SCREEN_WIDTH * 0.18,
+        width: SCREEN_WIDTH * 0.9,
         paddingHorizontal: 10,
-        flexDirection: 'row',
-        marginBottom: 10
+        flexDirection: 'row'
     },
     btConfirm: {
         paddingVertical: 10,
@@ -315,5 +384,12 @@ const styles = StyleSheet.create({
     errTxt: {
         ...Styles.typography.regular,
         color: COLORS.RED
+    },
+    errorMessage: {
+        fontSize: Configs.FontSize.size12,
+        fontFamily: Configs.FontFamily.medium,
+        color: COLORS.RED,
+        marginHorizontal: 10,
+        paddingTop: 10
     }
 });

@@ -28,7 +28,7 @@ import SessionManager from '@/manager/SessionManager';
 import { LoginWithThirdPartyModel } from '@/models/auth';
 import { UserInfoModal } from '@/models/user-models';
 import { ENUM_PROVIDER } from '@/common/constants';
-import { PopupInvestOTP } from '@/components/popupOTPLogin';
+import { PopupInvestOTP, PopupOTPLogin } from '@/components/popupOTPLogin';
 import { PopupActionTypes } from '@/models/typesPopup';
 
 
@@ -124,8 +124,7 @@ const Auth = observer(({ route }: any) => {
                     if (SessionManager.accessToken) {
                         if (SessionManager.accessToken) {
                             Navigator.navigateToDeepScreen(
-                                [ScreenName.tabs],
-                                TabNamesArray[0]
+                                [ScreenName.tabs], TabNamesArray[4]
                             );
                         }
                     }
@@ -144,6 +143,8 @@ const Auth = observer(({ route }: any) => {
             const dataUpdate = resUpdate?.data as LoginWithThirdPartyModel;
             setData(dataUpdate);
             common.setSuccessGetOTP(true);
+        } else {
+            refModal.current?.setErrorMsg(resUpdate.message);
         }
     }, [apiServices?.auth, common, dataGoogle]);
 
@@ -161,10 +162,12 @@ const Auth = observer(({ route }: any) => {
             if (SessionManager.accessToken) {
                 if (SessionManager.accessToken) {
                     setTimeout(() => {
-                        Navigator.navigateScreen(ScreenName.success);
+                        Navigator.pushScreen(ScreenName.success, { isCheckLoginGoogle: true });
                     }, 500);
                 }
             }
+        } else {
+            refModal.current?.setErrorOTP(resActive.message);
         }
     }, [apiServices?.auth, common, data?.checksum, data?.id, fastAuthInfo, userManager]);
 
@@ -228,7 +231,7 @@ const Auth = observer(({ route }: any) => {
                    
                 </View>
             </View>
-            <PopupInvestOTP
+            <PopupOTPLogin
                 getOTPcode={getOTPLogin}
                 ref={refModal}
                 title={Languages.otp.completionOtpLogin}

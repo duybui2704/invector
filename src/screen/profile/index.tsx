@@ -51,6 +51,7 @@ import { LINKS } from '@/api/constants';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 import PopupRating from '@/components/PopupRating';
 import { MyStylesPinCodeProfile, MyStylesProfile } from './styles';
+import { UserInfoModal } from '@/models/user-models';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -81,8 +82,19 @@ const Profile = observer(() => {
     useEffect(() => {
         if (isFocus) {
             setRating(1);
+            getInfo();
         }
     }, [isFocus]);
+
+    const getInfo = useCallback(async () => {
+        const resInfoAcc = await apiServices.auth.getUserInfo();
+        if (resInfoAcc.success) {
+            const data = resInfoAcc?.data as UserInfoModal;
+            userManager.updateUserInfo({
+                ...data
+            });
+        }
+    }, []);
 
     const callPhone = useCallback(() => {
         Utils.callNumber(Languages.common.hotline);

@@ -34,7 +34,7 @@ export class AuthServices extends BaseService {
         );
 
     updatePhone = async (id: string, phone_number: string, checksum: string) =>
-        this.api().post(
+        this.api(true).post(
             API_CONFIG.UPDATE_PHONE,
             this.buildFormData({
                 id,
@@ -44,7 +44,7 @@ export class AuthServices extends BaseService {
         );
 
     activePhone = async (id: string, otp: string, checksum: string) =>
-        this.api().post(
+        this.api(true).post(
             API_CONFIG.ACTIVE_PHONE,
             this.buildFormData({
                 id,

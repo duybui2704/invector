@@ -86,7 +86,7 @@ const OtpSignIn = (props: any) => {
                         userManager.updateUserInfo(resData);
                     }
                 }
-                Navigator.navigateScreen(ScreenName.success);
+                Navigator.navigateScreen(ScreenName.success, { isCheckLoginGoogle: false });
             }
         }
     };

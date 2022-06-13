@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 import Images from '@/assets/Images';
@@ -10,10 +10,14 @@ import { Touchable } from '@/components/elements/touchable';
 import Navigator from '@/routers/Navigator';
 import ScreenName, { TabsName } from '@/common/screenNames';
 
-export const SuccessSignUp = () => {
+export const SuccessSignUp = (props: any) => {
 
     const gotoHome = () => {
-        Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
+        if (props.route.params.isCheckLoginGoogle) {
+            Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.accountTabs);
+        } else {
+            Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
+        }
     };
 
     return (
