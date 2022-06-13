@@ -73,7 +73,7 @@ const AccountInfo = observer(() => {
         }
     }, [renderTopAcc, styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy, styles.txtWaitAccuracy, styles.waitAccuracyWrap, userManager.userInfo?.tinh_trang?.status]);
 
-    const renderKeyFeature = useCallback((title: string, content?: string, isTicked?: boolean) => {
+    const renderKeyFeature = useCallback((title: string, content?: string, isTicked?: boolean, numberOfLine?: number) => {
         return (
             <KeyValueReport title={title}
                 content={content || undefined}
@@ -84,6 +84,7 @@ const AccountInfo = observer(() => {
                 noIndicator
                 rightIcon={content && isTicked ? <TickedIcon /> : null}
                 hasDashBottom
+                numberOfLine={numberOfLine}
             />
         );
     }, [styles.styleTextInfo, styles.styleValueCheckedInfo, styles.styleValueUnCheckedInfo, styles.wrapAllItemInfo, styles.wrapCheckedInfo, styles.wrapUnCheckedInfo]);
@@ -93,9 +94,9 @@ const AccountInfo = observer(() => {
             <View style={styles.wrapContent}>
                 {renderKeyFeature(Languages.accountInfo.phoneNumber, userManager.userInfo?.phone_number, true)}
                 {renderKeyFeature(Languages.accountInfo.email, userManager.userInfo?.email, true)}
-                {renderKeyFeature(Languages.accountInfo.fullName, userManager.userInfo?.full_name)}
+                {renderKeyFeature(Languages.accountInfo.fullName, userManager.userInfo?.full_name, false, 2)}
                 {renderKeyFeature(Languages.accountInfo.gender, userManager.userInfo?.gender)}
-                {renderKeyFeature(Languages.accountInfo.address, userManager.userInfo?.address)}
+                {renderKeyFeature(Languages.accountInfo.address, userManager.userInfo?.address, false, 2)}
                 <View style={styles.wrapEdit}>
                     <Touchable style={styles.accuracyWrap} onPress={onNavigateEdit}>
                         <Text style={styles.txtAccuracy}>{Languages.accountInfo.edit}</Text>

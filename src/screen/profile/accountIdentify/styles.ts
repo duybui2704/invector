@@ -40,7 +40,6 @@ export const MyStylesAccountIdentify = () => {
             },
             inputStyle: {
                 borderWidth: 1,
-                borderColor: COLORS.GRAY_11,
                 borderRadius: 30,
                 marginVertical: 5
             },

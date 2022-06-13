@@ -195,7 +195,7 @@ const EditAccountInfo = observer(() => {
     const renderInfoAcc = useMemo(() => {
         return (
             <View style={styles.wrapContent}>
-                {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', false, 50)}
+                {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', false, 30)}
                 {renderGender(false)}
                 {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', !!userManager.userInfo?.phone_number, 10)}
                 {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL', !!userManager.userInfo?.email, 50)}

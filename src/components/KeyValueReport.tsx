@@ -7,7 +7,7 @@ import { COLORS, Styles } from '@/theme';
 const KeyValueReport = (
     { title, content, noIndicator, styleColor,
         styleContainer, leftIcon, rightIcon, hasDashBottom,
-        styleTouchable, styleTitle, containerContent, defaultValue }:
+        styleTouchable, styleTitle, containerContent, defaultValue, numberOfLine }:
         {
             noIndicator?: boolean,
             title: string,
@@ -21,7 +21,8 @@ const KeyValueReport = (
             onPress?: any,
             styleTitle?: TextStyle,
             containerContent?: ViewStyle,
-            defaultValue?:string| number| undefined
+            defaultValue?: string | number | undefined,
+            numberOfLine?: number
         }
 ) => {
 
@@ -38,7 +39,7 @@ const KeyValueReport = (
                 {leftIcon || null}
                 <View style={[styles.rowCenter, containerContent]}>
                     <Text style={[styles.leftText, styleTitle]}>{title}</Text>
-                    <Text style={[styles.contentText, styleColor]}>{content || defaultValue}</Text>
+                    <Text numberOfLines={numberOfLine || 1} style={[styles.contentText, styleColor]}>{content || defaultValue}</Text>
                 </View>
                 {rightIcon || null}
             </View>
@@ -46,7 +47,7 @@ const KeyValueReport = (
                 dashThickness={1}
                 dashLength={10}
                 dashGap={5}
-                dashColor={COLORS.GRAY_13} 
+                dashColor={COLORS.GRAY_13}
             />
             }
         </View>

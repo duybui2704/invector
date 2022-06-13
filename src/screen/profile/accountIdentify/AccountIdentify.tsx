@@ -147,7 +147,6 @@ const AccountIdentify = observer(() => {
 
     const onValidate = useCallback(() => {
         const errMsgIdentify = FormValidate.cardValidate(identityAcc);
-
         identifyRef.current?.setErrorMsg(errMsgIdentify);
 
         if (`${errMsgIdentify}`.length === 0) {

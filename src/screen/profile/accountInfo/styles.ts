@@ -48,7 +48,9 @@ export const MyStylesAccountInfo = () => {
             },
             styleValueUnCheckedInfo: {
                 ...Styles.typography.regular,
-                color: COLORS.GRAY_7
+                color: COLORS.GRAY_7,
+                textAlign: 'right',
+                width: '70%'
             },
             wrapAllItemInfo: {
                 width: '100%',
