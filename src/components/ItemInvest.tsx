@@ -49,7 +49,7 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
                         </View> :
                         <View style={styles.wrapText}>
                             <Text style={styles.txtInterest}>{Languages.invest.intent}</Text>
-                            <Text style={styles.greenText}>{Utils.formatMoney(data?.lai_hang_thang)}</Text>
+                            <Text style={styles.greenText}>{Utils.formatMoney(data?.tong_lai_du_kien)}</Text>
                         </View>
                     }
                 </View>
@@ -66,7 +66,7 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
                     {title !== ENUM_INVEST_STATUS.INVEST_NOW &&
                         <View style={styles.wrapText}>
                             <Text style={styles.txtInterest} >{Languages.invest.getMoney}</Text>
-                            <Text style={styles.txtYellow}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
+                            <Text style={styles.txtYellow}>{Utils.formatMoney(data?.tong_lai_da_tra)}</Text>
                         </View>}
                 </View>
             </Touchable>

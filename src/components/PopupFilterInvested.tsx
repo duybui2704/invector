@@ -1,17 +1,16 @@
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
-import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { StyleSheet, Text, TextStyle, View } from 'react-native';
-import Modal from 'react-native-modal';
 import DatePicker from 'react-native-date-picker';
-import { last } from 'lodash';
+import Modal from 'react-native-modal';
 
+import ICCalender from '@/assets/image/ic_calender.svg';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
 import { COLORS, Styles } from '@/theme';
-import { PopupActions } from './popupInvest/types';
 import DateUtils from '@/utils/DateUtils';
-import ICCalender from '@/assets/image/ic_calender.svg';
+import { PopupActions } from './popupInvest/types';
 
 
 
@@ -25,7 +24,8 @@ export type PopupFilterProps = {
     toDate?: string,
     money?: string,
     openTimeInvestment?: () => void;
-    onCancel?: () => void
+    onCancel?: () => void;
+    isRefresh?: boolean
 };
 
 
@@ -36,7 +36,8 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
         openDatePicker,
         money,
         openTimeInvestment,
-        onCancel
+        onCancel,
+        isRefresh
     }: PopupFilterProps, ref) => {
 
         const [visible, setVisible] = useState<boolean>(false);
@@ -44,6 +45,11 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
         const [visibleToDatePicker, setVisibleToDatePicker] = useState<boolean>(false);
         const [startDate, setStartDate] = useState<Date>();
         const [endDate, setEndDate] = useState<Date>();
+
+        useEffect(() => {
+            _onCancel();
+        }, [isRefresh]);
+
         const show = useCallback(() => {
             setVisible(true);
         }, []);
@@ -80,7 +86,7 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             _onClose();
         }, [_onClose, onCancel]);
 
-        const renderItem = useCallback((value: any, palaceholder: string) => {
+        const renderItem = useCallback((value: any, palaceholder: string,visible?:boolean) => {
             const onPress = () => {
                 if (palaceholder === Languages.invest.fromDate) {
                     setVisibleFromDatePicker(true);
@@ -98,7 +104,7 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             return (
                 <Touchable style={styles.inputPhone} onPress={onPress}>
                     <Text style={[styles.txtPalaceholder, styleTxt]}>{value || palaceholder}</Text>
-                    <ICCalender />
+                    {!visible&&<ICCalender />}
                 </Touchable>
             );
         }, [hide, openTimeInvestment]);
@@ -154,9 +160,9 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             >
                 <View style={styles.viewFL}>
                     <Text style={styles.textModel}>{title}</Text>
-                    {renderItem(DateUtils.formatMMDDYYYYPicker(startDate)||'', Languages.invest.fromDate)}
-                    {renderItem(DateUtils.formatMMDDYYYYPicker(endDate)||'', Languages.invest.toDate)}
-                    {renderItem(money, Languages.invest.chooseMoney)}
+                    {renderItem(DateUtils.formatMMDDYYYYPicker(startDate) || '', Languages.invest.fromDate)}
+                    {renderItem(DateUtils.formatMMDDYYYYPicker(endDate) || '', Languages.invest.toDate)}
+                    {renderItem(money, Languages.invest.chooseMoney,visible)}
                     <View style={styles.viewBottom}>
                         <Touchable style={styles.tobConfirm} onPress={actionYes}>
                             <Text style={styles.textConfirm}>{Languages.invest.search}</Text>
