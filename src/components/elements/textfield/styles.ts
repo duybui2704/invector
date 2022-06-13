@@ -51,7 +51,7 @@ export const myTextFieldStyle = () => {
                     fontSize: Configs.FontSize.size12,
                     fontFamily: Configs.FontFamily.medium,
                     color: COLORS.RED,
-                    marginLeft:10,
+                    marginHorizontal: 10,
                     paddingTop: 10
                 },
                 flexRow: {

@@ -51,15 +51,15 @@ const getHeader = (tokenNotRequired?: boolean) => {
 export class BaseService {
     latestParamBeforeEncrypted = null; // use for case resume current request
 
-    api = (baseURL = API_CONFIG.BASE_URL) => {
+    api = (isDontShowToast = false) => {
         const defHeader = getHeader();
         const _api = apiSauce.create({
-            baseURL,
+            baseURL: API_CONFIG.BASE_URL,
             headers: defHeader,
             timeout: TIMEOUT_API
         });
         _api.addAsyncResponseTransform(async (response: any) => {
-            const { data, message, code, success, history, total } = await this.checkResponseAPI(response);
+            const { data, message, code, success, history, total } = await this.checkResponseAPI(response, isDontShowToast);
 
             if (typeof data !== 'undefined') {
                 try {
@@ -80,8 +80,8 @@ export class BaseService {
         return _api;
     };
 
-    checkResponseAPI(response: any) {
-        console.log('API: ', JSON.stringify(response));
+    checkResponseAPI(response: any, isDontShowToast: boolean) {
+        console.log('API: ', response);
         if (
             response.problem === 'NETWORK_ERROR' ||
             response.problem === 'TIMEOUT_ERROR'
@@ -106,7 +106,7 @@ export class BaseService {
                     if (endPoint === API_CONFIG.TOKEN) {
                         // join error message & code for display in login form
                         message = `${response.data.error}-${response.data.error_description}`;
-                    } else {
+                    } else if (!isDontShowToast) {
                         ToastUtils.showErrorToast(response.data.error_description);
                     }
                 } else {
@@ -135,7 +135,7 @@ export class BaseService {
                 ToastUtils.showErrorToast(Languages.errorMsg.noInternet);
                 return { success: false, data: null };
             default:
-                if (response.data?.message && showToast) {
+                if (response.data?.message && showToast && !isDontShowToast) {
                     ToastUtils.showErrorToast(response.data?.message);
                 }
                 break;
