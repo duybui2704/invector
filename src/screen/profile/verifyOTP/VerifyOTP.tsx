@@ -46,7 +46,7 @@ const VerifyOTP = observer(({ route }: { route: any }) => {
         }
     }, [overTime]);
 
-    const onCodeChanged = useCallback((code) => {
+    const onCodeChanged = useCallback((code:string) => {
         setOTP(code);
     }, []);
 

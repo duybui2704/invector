@@ -81,7 +81,7 @@ export class BaseService {
     };
 
     checkResponseAPI(response: any) {
-        console.log('API: ', response);
+        console.log('API: ', JSON.stringify(response));
         if (
             response.problem === 'NETWORK_ERROR' ||
             response.problem === 'TIMEOUT_ERROR'
