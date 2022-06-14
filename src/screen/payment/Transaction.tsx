@@ -87,7 +87,7 @@ const Transaction = observer(() => {
         setIsFreshing(false);
         setLoadMore(condition.current.canLoadMore);
 
-    }, [apiServices.history]);
+    }, [apiServices.history, isLoadMore]);
 
     const onRefresh = useCallback((startDate?: Date, endDate?: Date, option?: string, isRefreshDate?: boolean) => {
         setFilterLoading(true);
@@ -207,9 +207,9 @@ const Transaction = observer(() => {
         }
     }, [fetchHistory]);
 
-    const onFreshing = () => {
+    const onFreshing = useCallback(() => {
         onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
-    };
+    },[onRefresh]);
 
     const renderTransaction = useMemo(() => {
         return (
@@ -225,7 +225,7 @@ const Transaction = observer(() => {
                 ListFooterComponent={renderFooter}
             />
         );
-    }, [dataHistory, keyExtractor, renderItem, isFreshing, onEndReached, renderEmptyData, renderFooter, onRefresh]);
+    }, [dataHistory, keyExtractor, renderItem, isFreshing, onFreshing, onEndReached, renderEmptyData, renderFooter]);
 
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {
@@ -248,6 +248,12 @@ const Transaction = observer(() => {
 
     const onConfirmValue = (date: Date, tag?: string) => {
         onChange(date, tag);
+        fetchHistory(
+            `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}` || '',
+            `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}` || '',
+            condition.current.option,
+            false
+        );
     };
 
     return (
@@ -260,7 +266,7 @@ const Transaction = observer(() => {
                     onConfirmDatePicker={onConfirmValue}
                     onDateChangeDatePicker={onChange}
                     date={condition.current.startDate || new Date()}
-                    maximumDate={condition.current.endDate || new Date()}
+                    maximumDate={new Date()}
                 />
                 <ICCalender style={styles.arrow} />
                 <DatePickerTransaction
@@ -268,8 +274,8 @@ const Transaction = observer(() => {
                     onConfirmDatePicker={onConfirmValue}
                     onDateChangeDatePicker={onChange}
                     date={condition.current.endDate || new Date()}
-                    // minimumDate={condition.current.startDate || new Date()}
                     maximumDate={new Date()}
+                    minimumDate={condition.current.startDate}
                 />
             </View>
             {renderTransaction}
