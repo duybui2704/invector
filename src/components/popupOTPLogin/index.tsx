@@ -66,6 +66,7 @@ export const PopupOTPLogin = forwardRef<
 
     const show = useCallback(() => {
         setPhone('');
+        setPin('');
         setVisible(true);
         setTimer(120);
     }, []);
