@@ -81,8 +81,7 @@ const styles = StyleSheet.create({
     contentText: {
         ...Styles.typography.medium,
         color: COLORS.GRAY_7,
-        alignSelf: 'flex-end',
-        width:'70%'
+        alignSelf: 'flex-end'
     }
 
 });
