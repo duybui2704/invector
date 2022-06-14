@@ -132,6 +132,23 @@ const Transaction = observer(() => {
                         condition.current.option
                     );
                     setFilterLoading(false);
+
+                } else if (condition.current.startDate && !condition.current.endDate) {
+                    setFilterLoading(true);
+                    fetchHistory(
+                        `${DateUtils.formatMMDDYYYYPicker(condition.current.startDate)}`,
+                        '',
+                        condition.current.option
+                    );
+                    setFilterLoading(false);
+                } else if (!condition.current.startDate && condition.current.endDate) {
+                    setFilterLoading(true);
+                    fetchHistory(
+                        '',
+                        `${DateUtils.formatMMDDYYYYPicker(condition.current.endDate)}`,
+                        condition.current.option
+                    );
+                    setFilterLoading(false);
                 } else {
                     setFilterLoading(true);
                     fetchHistory(
@@ -209,7 +226,7 @@ const Transaction = observer(() => {
 
     const onFreshing = useCallback(() => {
         onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
-    },[onRefresh]);
+    }, [onRefresh]);
 
     const renderTransaction = useMemo(() => {
         return (
@@ -266,7 +283,7 @@ const Transaction = observer(() => {
                     onConfirmDatePicker={onConfirmValue}
                     onDateChangeDatePicker={onChange}
                     date={condition.current.startDate || new Date()}
-                    maximumDate={new Date()}
+                    maximumDate={condition.current.endDate || new Date()}
                 />
                 <ICCalender style={styles.arrow} />
                 <DatePickerTransaction
