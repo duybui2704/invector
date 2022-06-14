@@ -76,12 +76,13 @@ const Profile = observer(() => {
     const popupLogout = useRef<PopupActionTypes>();
     const popupRating = useRef<PopupActionTypes>();
     const [text, setText] = useState<string>('');
-    const [ratingPoint, setRating] = useState<number>(userManager.userInfo?.rate || 1);
+    const [ratingPoint, setRating] = useState<number>(userManager.userInfo?.rate || 0);
+    const [ratingPointPopup, setRatingPointPopup] = useState<number>(0);
     const isFocus = useIsFocused();
 
     useEffect(() => {
         if (isFocus) {
-            setRating(1);
+            setRating(0);
             getInfo();
         }
     }, [isFocus]);
@@ -94,7 +95,7 @@ const Profile = observer(() => {
                 ...data
             });
         }
-    }, []);
+    }, [apiServices.auth, userManager]);
 
     const callPhone = useCallback(() => {
         Utils.callNumber(Languages.common.hotline);
@@ -147,26 +148,38 @@ const Profile = observer(() => {
         popupRating.current?.show();
     }, []);
 
+    const onValidateRating = useCallback(() => {
+        if (ratingPointPopup !== 0 ) {
+            return true;
+        } return false;
+    }, [ratingPointPopup]);
+
     const onToastRating = useCallback(() => {
         // ToastUtils.showSuccessToast(Languages.common.ratedNote);
     }, []);
 
     const onAgreeRating = useCallback(async () => {
-        const res = await apiServices.common.ratingApp(ratingPoint, text);
-        if (res.success) {
-            popupRating.current?.hide();
-            userManager.updateUserInfo({
-                ...userManager.userInfo,
-                rate: ratingPoint
-            });
-            if (ratingPoint > 3) {
-                onLinkRate();
-            } else {
-                ToastUtils.showSuccessToast(Languages.common.thanksRating);
+        if (onValidateRating()) {
+            const res = await apiServices.common.ratingApp(ratingPoint, text);
+            setRatingPointPopup(0);
+            if (res.success) {
+                popupRating.current?.hide();
+                userManager.updateUserInfo({
+                    ...userManager.userInfo,
+                    rate: ratingPoint
+                });
+                if (ratingPoint > 3) {
+                    onLinkRate();
+                } else {
+                    ToastUtils.showSuccessToast(Languages.common.thanksRating);
+                }
             }
-        }
-
-    }, [apiServices.common, onLinkRate, ratingPoint, text, userManager]);
+        } else {
+            popupRating.current?.hide();
+            setRatingPointPopup(0);
+            ToastUtils.showErrorToast(Languages.errorMsg.emptyRatingPoint);
+        };
+    }, [apiServices.common, onLinkRate, onValidateRating, ratingPoint, text, userManager]);
 
     const renderPopupRating = useMemo(() => {
         const onChangeTextComment = async (_commentText?: string) => {
@@ -174,6 +187,7 @@ const Profile = observer(() => {
         };
         const onRating = async (rating?: number) => {
             setRating(rating || 0);
+            setRatingPointPopup(rating || 0);
         };
         return (
             <PopupRating
@@ -433,8 +447,8 @@ const Profile = observer(() => {
     const renderViewRating = useMemo(() => {
         return (
             <Touchable style={styles.feedBack}
-                onPress={userManager.userInfo?.rate !!> 3 ? onToastRating : openPopupRating}
-                disabled={userManager.userInfo?.rate !!> 3}
+                onPress={userManager.userInfo?.rate!! > 3 ? onToastRating : openPopupRating}
+                disabled={userManager.userInfo?.rate!! > 3}
             >
                 <View style={styles.starLeft}>
                     <Text style={styles.textTitleFeed}>{Languages.common.yourRate}</Text>

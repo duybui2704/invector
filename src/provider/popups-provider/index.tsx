@@ -79,7 +79,7 @@ export const PopupsProvider = ({ children }: any) => {
                 color = COLORS.BLACK;
                 break;
             case 'ERR':
-                color = COLORS.GRAY;
+                color = COLORS.RED_1;
                 break;
             case 'SUCCESS':
                 color = COLORS.DARK_GREEN;

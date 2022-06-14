@@ -222,7 +222,8 @@ const Languages = {
         errNotNumberBank: 'Số thẻ ngân hàng phải là kí tự số',
         errNotNumberATM: 'Số thẻ ATM phải là kí tự số',
         uploading: 'Đang tải ảnh lên',
-        uploadingError: 'Tải ảnh thất bại'
+        uploadingError: 'Tải ảnh thất bại',
+        emptyRatingPoint: 'Bạn cần phải đánh số sao để đánh giá'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',

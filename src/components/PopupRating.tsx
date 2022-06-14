@@ -35,7 +35,7 @@ const PopupRating = forwardRef<
 }: PopupNoActionProps, ref) => {
     const [visible, setVisible] = useState<boolean>(false);
     const [text, setText] = useState<string>('');
-    const [ratingPoint, setRating] = useState<number>(1);
+    const [ratingPoint, setRating] = useState<number>(0);
     const show = useCallback(() => {
         setVisible(true);
     }, []);
@@ -43,7 +43,7 @@ const PopupRating = forwardRef<
     const hide = useCallback(() => {
         setVisible(false);
         setText('');
-        setRating('' || 1);
+        setRating('' || 0);
     }, []);
 
     const _onClose = useCallback(() => {
@@ -58,8 +58,8 @@ const PopupRating = forwardRef<
     }, [onChangeTextComment]);
 
     const ratingCompleted = useCallback((rating?: any) => {
-        setRating(rating || 1);
-        ratingSwipeComplete?.(rating || 1);
+        setRating(rating || 0);
+        ratingSwipeComplete?.(rating || 0);
     }, [ratingSwipeComplete]);
 
     useImperativeHandle(ref, () => ({
@@ -102,8 +102,8 @@ const PopupRating = forwardRef<
                         imageSize={40}
                         onFinishRating={ratingCompleted}
                         style={styles.wrapStarRate}
-                        startingValue={ratingPoint || 1}
-                        minValue={1}
+                        startingValue={ratingPoint || 0}
+                        minValue={0}
                     />
                     {renderDescribeRating}
                     <View>
