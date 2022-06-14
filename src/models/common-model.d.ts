@@ -4,11 +4,12 @@ export type ItemProps = {
     value?: string;
     text?: string;
     id?: string;
+    icon?: string;
 };
 
 export type IMAGES = {
     CropRect: CropRect | undefined;
-    path ?: string | undefined;
+    path?: string | undefined;
     size: number | undefined;
     width: number | undefined;
     height: number | undefined;

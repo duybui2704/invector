@@ -70,7 +70,7 @@ const AccountBank = observer(() => {
         if (res.success) {
             const data = res.data as DataBanksModal[];
             const temp = data?.map((item) => {
-                return { id: item?.bank_code, value: item?.name, text: item?.short_name };
+                return { id: item?.bank_code, value: item?.name, text: item?.short_name, icon: item?.icon };
             }) as ItemProps[];
             const firstName = temp?.filter((item) => {
                 return item?.id === nameBank;

@@ -11,6 +11,7 @@ import React, {
 import { StyleSheet, Text, View } from 'react-native';
 import Dash from 'react-native-dash';
 import { useIsFocused } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import Languages from '@/common/Languages';
@@ -96,13 +97,13 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
         const searchItem = useCallback(
             (text: string) => {
                 if (text) {
-                    if(!isValueBank){
+                    if (!isValueBank) {
                         setDataFilter(
                             data?.filter((item) =>
                                 item?.value?.toUpperCase().includes(text.toUpperCase())
                             )
                         );
-                    }else{
+                    } else {
                         setDataFilter(
                             data?.filter((item) =>
                                 `${item?.value}${' - '}${item?.text}`?.toUpperCase().includes(text.toUpperCase())
@@ -138,8 +139,10 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
                     <>
                         <Touchable onPress={onPress} style={styles.valueContainer}>
                             <View style={styles.row}>
-                                {leftIcon}
-                                <Text style={!leftIcon ? styles.value : styles.noLeftIconValue}>{isValueBank? `${item.value}${' - '}${item.text}`: item.value }</Text>
+                                {isValueBank && item.icon ?
+                                    <FastImage source={{ uri: item.icon }} resizeMode={'contain'} style={styles.fastImage} />
+                                    : leftIcon}
+                                <Text style={!leftIcon ? styles.value : styles.noLeftIconValue}>{isValueBank ? `${item.value}${' - '}${item.text}` : item.value}</Text>
                                 {rightIcon}
                             </View>
                         </Touchable>
@@ -163,7 +166,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             setFocus(false);
         }, []);
 
-        const keyExtractor = useCallback((item:any, index: any) => {
+        const keyExtractor = useCallback((item: any, index: any) => {
             return `${item.id}${index}`;
         }, []);
 
@@ -291,5 +294,9 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.TRANSPARENT,
         color: COLORS.GREEN,
         marginHorizontal: 16
+    },
+    fastImage: {
+        width: 30,
+        height: 30
     }
 });

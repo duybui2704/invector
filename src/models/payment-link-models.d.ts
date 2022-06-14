@@ -18,4 +18,5 @@ export interface DataBanksModal {
     bank_account: number;
     account_type: string;
     status: string;
+    icon?: string;
 }
