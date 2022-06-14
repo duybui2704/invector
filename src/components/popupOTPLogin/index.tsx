@@ -244,10 +244,8 @@ export const PopupOTPLogin = forwardRef<
                                         numberOfInputs={6}
                                         style={styles.wrapOTP}
                                         inputStyles={styleOTP}
-                                        focusStyles={styles.focusStyle}
                                         onFocus={onFocus}
                                         onBlur={onBlur}
-                                        onLayout={() => refOTP.current.focus()}
                                     />
                                 </View>
                                 {errorMessage}
@@ -346,6 +344,8 @@ const styles = StyleSheet.create({
         height: SCREEN_WIDTH * 0.18,
         width: SCREEN_WIDTH * 0.9,
         paddingHorizontal: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
         flexDirection: 'row'
     },
     btConfirm: {
