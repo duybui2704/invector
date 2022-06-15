@@ -1,5 +1,7 @@
 import apiSauce from 'apisauce';
 
+import { useAppStore } from '@/hooks';
+import { ApiServices } from './index';
 import Utils from '@/utils/Utils';
 import StorageUtils from '../utils/StorageUtils';
 import Validate from '../utils/Validate';
@@ -51,10 +53,10 @@ const getHeader = (tokenNotRequired?: boolean) => {
 export class BaseService {
     latestParamBeforeEncrypted = null; // use for case resume current request
 
-    api = (isDontShowToast = false) => {
+    api = (isDontShowToast = false, baseURL = API_CONFIG.BASE_URL) => {
         const defHeader = getHeader();
         const _api = apiSauce.create({
-            baseURL: API_CONFIG.BASE_URL,
+            baseURL,
             headers: defHeader,
             timeout: TIMEOUT_API
         });
@@ -75,6 +77,13 @@ export class BaseService {
             response.code = code;
             response.history = history;
             response.total = total;
+
+            // send error notify when encounter 5xx code
+            if (code > 500 && code < 600) {
+                //
+                this.api(false, API_CONFIG.BASE_URL_ERROR)
+                    .post(API_CONFIG.NOTIF_ERROR, { message });
+            }
         });
 
         return _api;

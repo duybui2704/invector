@@ -19,8 +19,11 @@ export enum CONTACT {
 export const STORE_APP_LINK = isIOS ? LINKS.STORE_IOS : LINKS.STORE_ANDROID;
 
 export enum API_CONFIG {
-    BASE_URL = 'https://sandboxappndt.tienngay.vn/V2/',
-    // BASE_URL = 'https://appndt.tienngay.vn/',
+    // BASE_URL_ERROR = 'https://sandboxapindt.tienngay.vn/',
+    BASE_URL_ERROR = 'https://apindt.tienngay.vn/',
+
+    // BASE_URL = 'https://sandboxappndt.tienngay.vn/V2/',
+    BASE_URL = 'https://appndt.tienngay.vn/',
 
     // common
     GET_BANNERS = '/banner/news', // banner app
@@ -91,6 +94,9 @@ export enum API_CONFIG {
     UPLOAD_MEDIA = 'user/upload', // upload media
     UPLOAD_IMAGE_IDENTIFY = 'user/image_identity_user', // upload anh CMT/CCCD
     UPLOAD_PERSONAL_PHOTO = 'user/update_personal_photo', // upload anh ca nhan 
+
+    // notify
+    NOTIF_ERROR = 'bot/send_error',
 }
 export const PAYMENT_URL = {
     NL_SUCCESSFULLY: `${API_CONFIG.BASE_URL}contract/success_nl_`,
