@@ -380,6 +380,7 @@ const Languages = {
         moneyInvest: 'Số tiền đầu tư',
         amountReceived: 'Tổng lãi đã nhận',
         expectedDate: 'Ngày đáo hạn dự kiến',
+        dateDue: 'Ngày đáo hạn',
         reinvest: 'Đầu tư lại',
         interestMonth: 'Lãi hàng tháng',
         money: 'Số tiền cần đầu tư',
