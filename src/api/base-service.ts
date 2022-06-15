@@ -61,7 +61,7 @@ export class BaseService {
             timeout: TIMEOUT_API
         });
         _api.addAsyncResponseTransform(async (response: any) => {
-            const { data, message, code, success, history, total } = await this.checkResponseAPI(response, isDontShowToast);
+            const { data, message, code, success, history, total, endPoint } = await this.checkResponseAPI(response, isDontShowToast);
 
             if (typeof data !== 'undefined') {
                 try {
@@ -82,7 +82,7 @@ export class BaseService {
             if (code > 500 && code < 600) {
                 //
                 this.api(false, API_CONFIG.BASE_URL_ERROR)
-                    .post(API_CONFIG.NOTIF_ERROR, { message });
+                    .post(API_CONFIG.NOTIF_ERROR, { message: `${endPoint}: ${message}` });
             }
         });
 
@@ -155,7 +155,8 @@ export class BaseService {
             success:
                 !Validate.isEmpty(response.data?.token) ||
                 code === ResponseCodes.Success,
-            code
+            code,
+            endPoint
         };
     }
 
