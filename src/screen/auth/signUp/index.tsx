@@ -21,8 +21,6 @@ import { MyStylesSign } from './styles';
 import OtpSignIn from '../otpSignIn';
 import Loading from '@/components/loading';
 import HideKeyboard from '@/components/HideKeyboard';
-import Navigator from '@/routers/Navigator';
-import ScreenName from '@/common/screenNames';
 
 const SignUp = observer(() => {
     const { apiServices } = useAppStore();
@@ -116,15 +114,14 @@ const SignUp = observer(() => {
     }, [email, name, pass, passNew, phone]);
 
     const onSignIn = useCallback(async () => {
-        // if (onValidate()) {
-        //     setLoading(true);
-        //     const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, channel?.value);
-        //     setLoading(false);
-        //     if (res.success) {
-        //         setNavigate(true);
-        //     }
-        // }
-        Navigator.navigateScreen(ScreenName.success);
+        if (onValidate()) {
+            setLoading(true);
+            const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, channel?.value);
+            setLoading(false);
+            if (res.success) {
+                setNavigate(true);
+            }
+        }
     }, [onValidate, apiServices.auth, phone, name, pass, passNew, email, channel?.value]);
 
     const onChangeChanel = (item: any) => {
