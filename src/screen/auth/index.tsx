@@ -124,7 +124,7 @@ const Auth = observer(({ route }: any) => {
                     if (SessionManager.accessToken) {
                         if (SessionManager.accessToken) {
                             Navigator.navigateToDeepScreen(
-                                [ScreenName.tabs], TabNamesArray[4]
+                                [ScreenName.tabs], TabNamesArray[0]
                             );
                         }
                     }

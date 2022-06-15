@@ -12,18 +12,16 @@ import { COLORS } from '@/theme';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import { Touchable } from '@/components/elements/touchable';
 import Navigator from '@/routers/Navigator';
-import ScreenName, { TabsName } from '@/common/screenNames';
+import ScreenName, { TabNamesArray } from '@/common/screenNames';
 import { MyStylesSignSuccess } from './styles';
 
 export const SuccessSignUp = (props: any) => {
     const styles = MyStylesSignSuccess();
 
     const gotoHome = () => {
-        if (props.route.params.isCheckLoginGoogle) {
-            Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.accountTabs);
-        } else {
-            Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
-        }
+        Navigator.navigateToDeepScreen(
+            [ScreenName.tabs], TabNamesArray[0]
+        );
     };
 
     return (
