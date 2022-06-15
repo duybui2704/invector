@@ -183,7 +183,7 @@ const Languages = {
         txtChange: 'Thay đổi mật khẩu của bạn và đăng nhập lại',
         change: 'Thay đổi',
         succuss: 'Đăng ký thành công',
-        notifySuccess: 'Chúc mừng bạn đã đăng ký thành công TienNgay.vn Đầu tư & Tích luỹ. Tiến hành đầu tư ngay và nhận lãi khủng hàng tháng',
+        notifySuccess: 'Chúc mừng bạn đã đăng ký thành công TienNgay.vn Đầu tư & Tích luỹ. Tiến hành đầu tư ngay và nhận lãi khủng hàng tháng.',
         continue: 'Tiếp tục',
         successChangePass: 'Đổi mật khẩu thành công !'
     },
