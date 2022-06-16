@@ -102,9 +102,10 @@ const Auth = observer(({ route }: any) => {
         );
     }, []);
 
-    // const onLoginFacebook = useCallback(async () => {
-    //     const data = await loginWithFacebook();
-    // }, []);
+    const onLoginFacebook = useCallback(async () => {
+        const test = await loginWithFacebook();
+        console.log(test);
+    }, []);
 
     const initUser = useCallback(
         async (type_social: string, providerId: string, email: string, name: string) => {

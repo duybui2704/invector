@@ -265,6 +265,8 @@ const Investment = observer(({ route }: { route: any }) => {
             setShowSuggestion(true);
             setDataSuggestion(Utils.updateSuggestions(trimValue));
             if (Number(Utils.formatTextToNumber(trimValue)) >= 10e5) {
+                condition.current.fromDate='';
+                condition.current.toDate='';
                 condition.current.textSearch = Number(Utils.formatTextToNumber(trimValue)).toString();
                 switch (btnInvest) {
                     case ENUM_INVEST_STATUS.INVEST_NOW:

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">TienNgay.vn ĐầuTưTíchLuỹ</string>
-    <string name="facebook_app_id">744279786599103</string>
-    <string name="facebook_client_token">5492496c087f12a38a2bc647869d7f32</string>
+    <string name="facebook_app_id">1195066377984969</string>
+    <string name="facebook_client_token">dafd31c7b833e336ebd74f1ee202d6c2</string>
     <string moduleConfig="true" name="CodePushDeploymentKey">6U3T9vuB-MHhv5qdFelqhdxcQP-r1nrWQRcFD</string>
 </resources>
