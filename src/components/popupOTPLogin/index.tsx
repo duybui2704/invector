@@ -68,7 +68,7 @@ export const PopupOTPLogin = forwardRef<
         setPhone('');
         setPin('');
         setVisible(true);
-        setTimer(120);
+        setTimer(60);
     }, []);
 
     const hide = useCallback(() => {
@@ -106,7 +106,7 @@ export const PopupOTPLogin = forwardRef<
         if (onValidate()) {
             await getOTPcode?.(phone);
             setStartCount(true);
-            setTimer(120);
+            setTimer(60);
         }
     }, [getOTPcode, hide, onValidate, phone]);
 
@@ -122,7 +122,7 @@ export const PopupOTPLogin = forwardRef<
     const onResend = useCallback(async () => {
         await getOTPcode?.(phone);
         setStartCount(true);
-        setTimer(120);
+        setTimer(60);
     }, [getOTPcode, phone]);
 
     const renderBtConfirm = useMemo(() => {

@@ -97,7 +97,9 @@ const Auth = observer(({ route }: any) => {
     };
 
     const gotoHome = useCallback(async () => {
-        Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.homeTabs);
+        Navigator.navigateScreen(
+            ScreenName.home
+        );
     }, []);
 
     // const onLoginFacebook = useCallback(async () => {

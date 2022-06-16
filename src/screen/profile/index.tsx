@@ -10,6 +10,7 @@ import PasscodeAuth from '@el173/react-native-passcode-auth';
 import { useIsFocused } from '@react-navigation/native';
 
 import WomanIC from '@/assets/image/ic_large_woman.svg';
+import IcWallet from '@/assets/image/ic_wallet.svg';
 import WarnIC from '@/assets/image/ic_warn_vimo_red_round.svg';
 import ChangePwdIC from '@/assets/image/ic_change_pwd.svg';
 import FaceIdIC from '@/assets/image/ic_faceid_big.svg';
@@ -492,7 +493,7 @@ const Profile = observer(() => {
                     </View>
                 </Touchable>
                 <View style={styles.containerPayMethodFeature}>
-                    {renderKeyValue(Languages.account.linkWallet, <PayMethodIC />)}
+                    {renderKeyValue(Languages.account.linkWallet, <IcWallet />)}
                     {renderKeyValue(Languages.account.payMethod, <PayMethodIC />, true)}
                 </View>
                 <View style={styles.containerFeature}>

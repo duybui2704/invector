@@ -60,7 +60,7 @@ export const PopupInvestOTP = forwardRef<
 
     const show = useCallback(() => {
         setVisible(true);
-        setTimer(120);
+        setTimer(60);
     }, []);
 
     const hide = useCallback(() => {
@@ -107,7 +107,7 @@ export const PopupInvestOTP = forwardRef<
     const onResend = useCallback(async () => {
         await getOTPcode?.();
         setStartCount(true);
-        setTimer(120);
+        setTimer(60);
     }, [getOTPcode]);
 
     const renderBtConfirm = useMemo(() => {

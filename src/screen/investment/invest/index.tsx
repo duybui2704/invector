@@ -73,10 +73,10 @@ const Invest = observer(({ route }: any) => {
         if (resOtp.success && resOtp.data) {
             refModal.current?.show();
         }
-        else {
-            const infor = resOtp?.data as CheckVimoWalletModel;
-            Alert.alert(infor.message || Languages.detailInvest.error);
-        }
+        // else {
+        //     const infor = resOtp?.data as CheckVimoWalletModel;
+        //     // Alert.alert(infor.message || Languages.detailInvest.error);
+        // }
     }, [apiServices.invest, dataInvestment?.id]);
 
     const onInvest = useCallback(async () => {
@@ -109,7 +109,7 @@ const Invest = observer(({ route }: any) => {
             }
             else if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
                 const resPayment = await apiServices.invest.requestNganLuong(dataInvestment?.id?.toString() || '', Platform.OS);
-                if (res.success && resPayment.data) {
+                if (resPayment.success && resPayment.data) {
                     Navigator.pushScreen(ScreenName.paymentWebview, {
                         url: resPayment?.data
                     });
