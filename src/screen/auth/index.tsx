@@ -97,8 +97,8 @@ const Auth = observer(({ route }: any) => {
     };
 
     const gotoHome = useCallback(async () => {
-        Navigator.navigateScreen(
-            ScreenName.home
+        Navigator.navigateToDeepScreen(
+            [TabNamesArray[0]], ScreenName.home
         );
     }, []);
 
