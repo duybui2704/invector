@@ -101,7 +101,7 @@ const Invest = observer(({ route }: any) => {
                             text: Languages.common.agree,
                             style: 'default',
                             onPress: () => {
-                                Navigator.resetScreen([TabsName.accountTabs,ScreenName.account]);
+                                Navigator.resetScreen([TabsName.investTabs, TabsName.accountTabs]);
                             }
                         }
                     ]

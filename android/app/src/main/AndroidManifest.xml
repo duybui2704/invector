@@ -23,6 +23,8 @@
         <meta-data
             android:name="com.bugsnag.android.ENDPOINT_SESSIONS"
             android:value="https://sessions.bugsnag.com" />
+          <meta-data android:name="com.bugsnag.android.API_KEY"
+             android:value="aedc2cb6b0f00f100a45fc1efd934053"/>
 
       <activity
         android:name=".MainActivity"

@@ -21,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -33,12 +33,12 @@
 				<string>tienngay.vn.investor</string>
 			</array>
 		</dict>
-         <dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>fb1195066377984969</string>
-            </array>
-        </dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1195066377984969</string>
+			</array>
+		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -50,6 +50,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>CodePushDeploymentKey</key>
+	<string>2IuQnEoOhUA0HpABTbrAil0lR_ox8ovtFhe_0</string>
 	<key>FacebookAppID</key>
 	<string>1195066377984969</string>
 	<key>FacebookClientToken</key>
@@ -92,14 +94,19 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Tienngay cần truy cập vào camera của bạn để chụp và đăng ảnh đại diện</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Enabling Face ID allows you quick and secure access to your account.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+    <key>bugsnag</key>
+    <dict>
+    <key>apiKey</key>
+    <string>aedc2cb6b0f00f100a45fc1efd934053</string>
+    </dict>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Tienngay cần truy cập vào thư viện ảnh của bạn để đăng ảnh đại diện</string>
-    <key>NSFaceIDUsageDescription</key>
-    <string>Enabling Face ID allows you quick and secure access to your account.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-SemiBold.ttf</string>
@@ -120,17 +127,9 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+    
 	<false/>
     <key>CodePushDeploymentKey</key>
 	<string>4Xv2LJXGaQ-16gL2PqcA3CkgExtY921q8x2Q3</string>
 </dict>
 </plist>
-
-
-
-
-
-
-
-
-
