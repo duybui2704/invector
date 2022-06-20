@@ -112,7 +112,7 @@ const Investment = observer(({ route }: { route: any }) => {
         condition.current.canLoadMore = newSize >= PAGE_SIZE;
         setIsLoading(false);
         setCanLoadMoreUI(condition.current.canLoadMore);
-    }, [apiServices.invest, btnInvest]);
+    }, [apiServices.invest]);
 
     const fetchAllDataInvest = useCallback(async (isLoadMore?: boolean) => {
         setCanLoadMoreUI(true);
@@ -326,6 +326,7 @@ const Investment = observer(({ route }: { route: any }) => {
 
         const onPress = () => {
             setBtnInvest(type);
+            setTimeValue(undefined);
             inputRef.current?.setValue('');
             condition.current.offset = 0;
             condition.current.fromDate = '';
@@ -333,6 +334,7 @@ const Investment = observer(({ route }: { route: any }) => {
             condition.current.moneyInvest = '';
             condition.current.moneyInvested = '';
             condition.current.textSearch = '';
+            condition.current.timeInvestment='';
             if(type===ENUM_INVEST_STATUS.HISTORY) condition.current.option=ENUM_INVESTED_TYPE.INVESTED;
             if(type===ENUM_INVEST_STATUS.INVESTING) condition.current.option=ENUM_INVESTED_TYPE.INVESTING;
             popupInvestedRef.current.clear();
