@@ -41,16 +41,14 @@ function capitalizeFirstLetter(text: string) {
 }
 
 function callNumber(phone: string) {
-    const phoneNumber = `tel://${phone}`;
-    Linking.canOpenURL(phoneNumber)
-        .then((supported) => {
-            if (supported) {
-                Linking.openURL(phoneNumber);
-            } else {
-                console.log(`Don't know how to go: ${phoneNumber}`);
-            }
-        })
-        .catch((err) => console.error('An error occurred', err));
+    let phoneNumber ;
+    
+    if (Platform.OS === 'android') {
+        phoneNumber = `tel:${phone}`;   
+    } else {
+        phoneNumber = `telprompt:${phone}`;
+    }
+    Linking.openURL(phoneNumber);
 };
 
 function openSetting() {
