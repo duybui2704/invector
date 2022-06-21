@@ -145,7 +145,8 @@ const Languages = {
         thanksRating: 'Cám ơn bạn đã đóng góp ý kiến!',
         send: 'Gửi',
         ratedNote: 'Bạn không thể đánh giá lại vì đã đánh giá trước đó!',
-        contract: 'Hợp đồng '
+        contract: 'Hợp đồng ',
+        skip: 'Bỏ qua'
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng Tienngay',
@@ -506,8 +507,12 @@ const Languages = {
         company: 'Cong ty co phan cong nghe tai chinh Univest',
         bankName: 'Ngân hàng',
         bankAccount: 'Số tài khoản'
+    },
+    update: {
+        title: 'Cập nhật phiên bản mới',
+        description:
+            'Đã có phiên bản cập nhật mới cho ứng dụng. Bạn vui lòng cập nhật để có trải nghiệm tốt hơn.\n\nXin cám ơn.',
+        update: 'Cập nhật'
     }
-
-
 };
 export default Languages;

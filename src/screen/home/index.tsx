@@ -66,7 +66,6 @@ const Home = observer(() => {
     });
 
     useLayoutEffect(() => {
-
         setShowFloating(true);
         if (isFocused) {
             setTimeout(() => {
