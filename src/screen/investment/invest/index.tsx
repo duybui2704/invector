@@ -38,10 +38,19 @@ const Invest = observer(({ route }: any) => {
     const refPopupPolicy = useRef<PopupActionTypes>(null);
     const { apiServices } = useAppStore();
     const [statusVimo, setStatusVimo] = useState<boolean>(false);
+    const refInvestId = useRef<any>(null);
+    const refScreen = useRef<any>(null);
 
     useEffect(() => {
-        fetchDetailInvestNow();
-        fetchInfoVimoLink();
+        if (route?.params?.id) {
+            refInvestId.current = route?.params?.id;
+            refScreen.current = route?.params?.screen;
+        }
+
+        if (refInvestId.current) {
+            fetchDetailInvestNow();
+            fetchInfoVimoLink();
+        }
     }, []);
 
     const fetchInfoVimoLink = useCallback(async () => {
@@ -56,13 +65,13 @@ const Invest = observer(({ route }: any) => {
 
     const fetchDetailInvestNow = useCallback(async () => {
         setIsLoading(true);
-        const resInvestNow = await apiServices.invest.getDetailInvestNow(route.params.id);
+        const resInvestNow = await apiServices.invest.getDetailInvestNow(refInvestId.current);
         setIsLoading(false);
         if (resInvestNow.success) {
             const res = resInvestNow.data as PackageInvest;
             setDataInvestment(res);
         }
-    }, [apiServices.invest, route.params.id]);
+    }, [apiServices.invest]);
 
     const checkBox = useCallback(() => {
         setIsCheckBox(!isCheckBox);
@@ -78,6 +87,17 @@ const Invest = observer(({ route }: any) => {
         //     // Alert.alert(infor.message || Languages.detailInvest.error);
         // }
     }, [apiServices.invest, dataInvestment?.id]);
+
+    const goback = useCallback(() => {
+        if (refInvestId.current) {
+            Navigator.resetScreen([ScreenName.account]);
+            if (refScreen.current) {
+                Navigator.resetScreen([ScreenName.home]);
+            } else {
+                Navigator.resetScreen([ScreenName.invest]);
+            }
+        }
+    }, []);
 
     const onInvest = useCallback(async () => {
         if(methodPayment===ENUM_METHOD_PAYMENT.BANK)
@@ -101,7 +121,7 @@ const Invest = observer(({ route }: any) => {
                             text: Languages.common.agree,
                             style: 'default',
                             onPress: () => {
-                                Navigator.resetScreen([TabsName.investTabs, TabsName.accountTabs]);
+                                Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.paymentMethod, { goback, screen: refScreen.current });
                             }
                         }
                     ]

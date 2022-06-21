@@ -1,7 +1,5 @@
 import apiSauce from 'apisauce';
 
-import { useAppStore } from '@/hooks';
-import { ApiServices } from './index';
 import Utils from '@/utils/Utils';
 import StorageUtils from '../utils/StorageUtils';
 import Validate from '../utils/Validate';

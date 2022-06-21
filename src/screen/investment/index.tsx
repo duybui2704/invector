@@ -217,12 +217,12 @@ const Investment = observer(({ route }: { route: any }) => {
 
     const navigateToDetail = useCallback((item: any) => {
         if (item) {
-            Navigator.pushScreen(ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
+            Navigator.pushScreen(ScreenName.detailInvestment, { status: btnInvest, id: item?.id, screen: 'invest' });
         }
     }, [btnInvest]);
 
     const navigateToInvestNow = useCallback((item: any) => {
-        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.invest, { status: btnInvest, id: item?.id });
+        Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.invest, { status: btnInvest, id: item?.id, screen: 'invest' });
     }, [btnInvest]);
 
     const openBottomSheet = useCallback((type: string) => {

@@ -109,7 +109,7 @@ export const DetailInvestment = observer(({ route }: any) => {
     }, []);
     const navigateToInvest = useCallback(() => {
         if (data) {
-            Navigator.pushScreen(ScreenName.invest, { id: data?.id });
+            Navigator.pushScreen(ScreenName.invest, { id: data?.id, screen: route?.params?.screen });
         }
     }, [data]);
 

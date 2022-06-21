@@ -7,7 +7,7 @@ import LinkIC from '@/assets/image/ic_isChecked_save_acc.svg';
 import NotLinkIC from '@/assets/image/ic_unchecked_save_acc.svg';
 import VimoIC from '@/assets/image/ic_vimo.svg';
 import Languages from '@/common/Languages';
-import ScreenName from '@/common/screenNames';
+import ScreenName, { TabsName } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import Navigator from '@/routers/Navigator';
@@ -17,7 +17,8 @@ import { TYPE_INTEREST_RECEIVE_ACC } from '@/common/constants';
 import ToastUtils from '@/utils/ToastUtils';
 import Loading from '@/components/loading';
 
-const PaymentMethod = observer(() => {
+const PaymentMethod = observer(({ route }: any) => {
+    console.log('route aaaa:', route.params);
     const { apiServices, userManager } = useAppStore();
     const styles = MyStylesPaymentMethod();
     const [isLoading, setLoading] = useState<boolean>(false);
@@ -87,9 +88,21 @@ const PaymentMethod = observer(() => {
         );
     }, [onBank, onChangeMethodVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapItemPaymentChooser, styles.wrapRightItemPayment]);
 
+    const onGoBack = useCallback(() => {
+        if (route?.params?.goback) {
+            route.params.goback();
+        }
+        if (route?.params?.screen) {
+            console.log('aaaa');
+            Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.invest);
+            return;
+        }
+        Navigator.goBack();
+    }, []);
+
     return (
         <View style={styles.container}>
-            <HeaderBar isLight={false} title={Languages.account.payMethod} hasBack />
+            <HeaderBar isLight={false} title={Languages.account.payMethod} hasBack onBackPressed={onGoBack} />
             <View style={styles.wrapAllContent}>
                 <Text style={styles.txtMethodChoose}>{Languages.paymentMethod.methodChoose}</Text>
                 {renderItemMethod(<VimoIC />,
