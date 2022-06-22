@@ -5,11 +5,12 @@ import { StatusBar, Text, View, FlatList, ImageBackground } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import FastImage from 'react-native-fast-image';
 import { useIsFocused } from '@react-navigation/core';
+import PasscodeAuth from '@el173/react-native-passcode-auth';
 
 import { LINKS } from '@/api/constants';
 import AvatarIC from '@/assets/image/ic_avatar.svg';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
-import { ENUM_INVEST_STATUS } from '@/common/constants';
+import { ENUM_BIOMETRIC_TYPE, ENUM_INVEST_STATUS } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
@@ -79,6 +80,7 @@ const Home = observer(() => {
         condition.current.offset = 0;
         fetchDataInvest();
         fetchDataBanner();
+        auth();
     }, []);
 
     useEffect(() => {
@@ -88,6 +90,18 @@ const Home = observer(() => {
             }
         }
     }, [isFocused]);
+
+
+    const auth = useCallback(() => {
+        if (fastAuthInfoManager.isEnableFastAuth && fastAuthInfoManager?.supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
+
+            PasscodeAuth.authenticate(Languages.quickAuThen.description)
+                .then(() => {
+                    fastAuthInfoManager.setEnableFastAuthentication(false);
+                })
+                .catch(() => { });
+        }
+    }, [fastAuthInfoManager]);
 
     useEffect(() => {
         if (isFocused) {
