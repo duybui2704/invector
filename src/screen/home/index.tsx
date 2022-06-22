@@ -423,7 +423,7 @@ const Home = observer(() => {
     const renderContent = useMemo(() => {
 
         return (
-            <View style={userManager?.userInfo ? [{ marginTop: - SCREEN_HEIGHT * 0.03 }] : {}}>
+            <View style={!userManager?.userInfo || fastAuthInfoManager.isEnableFastAuth ? {} : [{ marginTop: - SCREEN_HEIGHT * 0.04 }]}>
                 <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
                 <FlatList
                     showsVerticalScrollIndicator={false}
