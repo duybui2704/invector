@@ -105,7 +105,6 @@ const Login = observer(() => {
         );
     }, [onChangeText, styles.inputPhone]);
 
-
     const onLoginPhone = useCallback(async () => {
         if (onValidate()) {
             setLoading(true);
@@ -141,7 +140,7 @@ const Login = observer(() => {
                 }, 200);
             }
         }
-    }, [apiServices.auth, phone, pass, checked, fastAuthInfo, userManager]);
+    }, [onValidate, apiServices.auth, phone, pass, checked, fastAuthInfo, userManager]);
 
     return (
         <HideKeyboard>

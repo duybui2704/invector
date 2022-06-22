@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -15,30 +15,10 @@ import { MyStylesAccountInfo } from './styles';
 import { useAppStore } from '@/hooks';
 import { STATE_VERIFY_ACC } from '@/common/constants';
 import KeyValueReport from '@/components/KeyValueReport';
-import { typeGender } from '@/mocks/data';
 
 const AccountInfo = observer(() => {
     const { userManager } = useAppStore();
     const styles = MyStylesAccountInfo();
-
-    useEffect(() => {
-        switch (userManager.userInfo?.gender) {
-            case typeGender?.[0]?.text:
-                userManager.updateUserInfo({
-                    ...userManager.userInfo,
-                    gender: typeGender?.[0]?.value
-                });
-                break;
-            case typeGender?.[1]?.text:
-                userManager.updateUserInfo({
-                    ...userManager.userInfo,
-                    gender: typeGender?.[1]?.value
-                });
-                break;
-            default:
-                break;
-        }
-    }, [userManager]);
 
     const onNavigateKYC = useCallback(() => {
         return Navigator.pushScreen(ScreenName.accountIdentify);
