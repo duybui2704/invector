@@ -55,6 +55,7 @@ const LoginWithBiometry = observer(() => {
         if (SessionManager.getPwdLogin()) {
             setCheck(true);
         }
+        autoLogin();
     }, []);
 
     const onLoginSuccess = useCallback(() => {
@@ -63,6 +64,18 @@ const LoginWithBiometry = observer(() => {
             [ScreenName.tabs],
             TabNamesArray[SessionManager.lastTabIndexBeforeOpenAuthTab || 0]
         );
+    }, [fastAuthInfo]);
+
+    const autoLogin = useCallback(() => {
+        if (fastAuthInfo.isEnableFastAuth && fastAuthInfo?.supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
+
+            PasscodeAuth.authenticate(Languages.quickAuThen.description)
+                .then(() => {
+                    fastAuthInfo.setEnableFastAuthentication(false);
+                    Navigator.goBack();
+                })
+                .catch(() => { });
+        }
     }, [fastAuthInfo]);
 
     const onLoginOther = useCallback(() => {
