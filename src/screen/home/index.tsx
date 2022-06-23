@@ -495,7 +495,7 @@ const Home = observer(() => {
                 >
                     {renderContent}
                 </ParallaxScrollView>
-                {showFloating && (
+                {showFloating && iconBanner?.icon && (
                     <DraggableComponent
                         image={iconBanner?.icon}
                         x={SCREEN_WIDTH - 110}
