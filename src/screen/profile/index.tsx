@@ -52,8 +52,6 @@ import { LINKS } from '@/api/constants';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 import PopupRating from '@/components/PopupRating';
 import { MyStylesPinCodeProfile, MyStylesProfile } from './styles';
-import { UserInfoModal } from '@/models/user-models';
-import { typeGender } from '@/mocks/data';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -83,39 +81,11 @@ const Profile = observer(() => {
     const isFocus = useIsFocused();
 
     useEffect(() => {
-        getUser();
-    }, []);
-
-    useEffect(() => {
         if (isFocus) {
             setRating(0);
         }
     }, [isFocus]);
-
-    const updateGender = useCallback((gender?: string) => {
-        switch (gender) {
-            case typeGender[0].text:
-                return typeGender?.[0]?.value;
-            case typeGender[1].text:
-                return typeGender?.[1]?.value;
-            default:
-                return '';
-        }
-
-    }, []);
-
-    const getUser = useCallback(async () => {
-        const resInfoAcc = await apiServices.auth.getUserInfo();
-        if (resInfoAcc.success) {
-            const data = resInfoAcc?.data as UserInfoModal;
-            userManager.updateUserInfo({
-                ...data,
-                gender: data?.gender && updateGender(data?.gender)
-            });
-
-        }
-    }, [apiServices.auth, updateGender, userManager]);
-
+    
     const callPhone = useCallback(() => {
         Utils.callNumber(Languages.common.hotline);
     }, []);

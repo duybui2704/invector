@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -15,10 +15,40 @@ import { MyStylesAccountInfo } from './styles';
 import { useAppStore } from '@/hooks';
 import { STATE_VERIFY_ACC } from '@/common/constants';
 import KeyValueReport from '@/components/KeyValueReport';
+import { typeGender } from '@/mocks/data';
+import { UserInfoModal } from '@/models/user-models';
 
 const AccountInfo = observer(() => {
-    const { userManager } = useAppStore();
+    const { userManager, apiServices } = useAppStore();
     const styles = MyStylesAccountInfo();
+
+    useEffect(() => {
+        getUser();
+    }, []);
+
+    const updateGender = useCallback((gender: string) => {
+        switch (gender) {
+            case typeGender[0].text || typeGender[0].value:
+                return typeGender?.[0]?.value;
+            case typeGender[1].text || typeGender[1].value:
+                return typeGender?.[1]?.value;
+            default:
+                return '';
+        }
+
+    }, []);
+
+    const getUser = useCallback(async () => {
+        const resInfoAcc = await apiServices.auth.getUserInfo();
+        if (resInfoAcc.success) {
+            const data = resInfoAcc?.data as UserInfoModal;
+            userManager.updateUserInfo({
+                ...data,
+                gender: data?.gender && updateGender(data?.gender)
+            });
+
+        }
+    }, [apiServices.auth, updateGender, userManager]);
 
     const onNavigateKYC = useCallback(() => {
         return Navigator.pushScreen(ScreenName.accountIdentify);

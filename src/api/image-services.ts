@@ -15,7 +15,7 @@ export class ImageServices extends BaseService {
             uri: isIOS ? `${'file://'}${file?.path}` || file : file?.path || file,
             name: Utils.getFileName(file),
             type: 'image/jpeg',
-            path: isIOS ? `${'file://'}${file?.path}` : file?.path
+            path: isIOS ? `${'file:/'}${file?.path}` : file?.path
         } as any);
 
         console.log('form upload= ', JSON.stringify(form));

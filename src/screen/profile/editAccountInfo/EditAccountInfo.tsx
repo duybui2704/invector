@@ -152,7 +152,7 @@ const EditAccountInfo = observer(() => {
         const res = await apiServices.auth.updateUserInf(
             avatar,
             name,
-            fetchGender,
+            fetchGender ? fetchGender === typeGender[0].value ? typeGender[0].text : typeGender[1].value : '',
             addressUser
         );
         setLoading(false);

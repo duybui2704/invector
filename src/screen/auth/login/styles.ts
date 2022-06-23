@@ -60,6 +60,9 @@ export const MyStylesLogin = () => {
                 alignItems: 'center',
                 flexDirection: 'row'
             },
+            checkboxBtn: {
+                borderRadius: 10
+            },
             row: {
                 flexDirection: 'row',
                 justifyContent: 'space-between',

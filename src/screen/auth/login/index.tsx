@@ -153,10 +153,10 @@ const Login = observer(() => {
                 {renderInput(refPhone, phone, true, Languages.auth.txtPhone, arrayIcon.login.phone, 'PHONE', 10)}
                 {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true)}
                 <View style={styles.rowInfo}>
-                    <Touchable style={styles.checkbox} onPress={onChangeChecked}>
-                        {checkbox}
+                    <View style={styles.checkbox} >
+                        <Touchable style={styles.checkboxBtn} onPress={onChangeChecked}>{checkbox}</Touchable>
                         <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
-                    </Touchable>
+                    </View>
 
                     <Touchable onPress={onLoginPhone} disabled={!(phone !== '' && pass !== '')}
                         style={(phone !== '' && pass !== '') ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>

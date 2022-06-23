@@ -29,6 +29,26 @@ function openCamera(onSelected: any) {
     });
 };
 
+function openGarelly(callback: any, max: number) {
+    const defaultOptionsLimited = {
+        multiple: max > 1,
+        maxFiles: max,
+        mediaType: 'photo',
+        forceJpg: true,
+        compressImageQuality: COMPRESS_IMAGE_QUALITY,
+        cropping: true,
+        width: 400,
+        height: 400
+    } as Options;
+    ImagePicker.openPicker(defaultOptionsLimited)
+        .then((response) => {
+            callback(onImageSelected(response));
+        })
+        .catch(() => {
+            callback(null);
+        });
+}
+
 async function openLibrary(callback: any, max: number) {
     CheckPermission.requestPhotoLibraryPermission(async () => {
         const defaultOptions = {
@@ -63,7 +83,12 @@ async function openLibrary(callback: any, max: number) {
                 });
         }
     }, (permission: any) => {
-        displayPermissionAlert(0, permission, () => openLibrary(callback, max));
+        console.log('permission', permission);
+        if (permission === 'limited') {
+            openGarelly(callback, max);
+        } else if (permission === 'blocked') {
+            displayPermissionAlert(0, permission, () => openLibrary(callback, max));
+        }
     });
 };
 
@@ -147,5 +172,6 @@ function displayPermissionAlert(type: number, permission: string, callback: any)
 export default {
     openCamera,
     openLibrary,
-    displayPermissionAlert
+    displayPermissionAlert,
+    openGarelly
 };
