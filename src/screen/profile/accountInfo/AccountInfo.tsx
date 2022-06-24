@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -16,39 +16,22 @@ import { useAppStore } from '@/hooks';
 import { STATE_VERIFY_ACC } from '@/common/constants';
 import KeyValueReport from '@/components/KeyValueReport';
 import { typeGender } from '@/mocks/data';
-import { UserInfoModal } from '@/models/user-models';
 
 const AccountInfo = observer(() => {
-    const { userManager, apiServices } = useAppStore();
+    const { userManager } = useAppStore();
     const styles = MyStylesAccountInfo();
+    const [genderUser, setGender] = useState<string>('');
 
     useEffect(() => {
-        getUser();
-    }, []);
-
-    const updateGender = useCallback((gender: string) => {
-        switch (gender) {
-            case typeGender[0].text || typeGender[0].value:
-                return typeGender?.[0]?.value;
-            case typeGender[1].text || typeGender[1].value:
-                return typeGender?.[1]?.value;
+        switch (userManager.userInfo?.gender) {
+            case typeGender[0].text:
+                return setGender(typeGender[0].value);
+            case typeGender[1].text:
+                return setGender(typeGender[1].value);
             default:
-                return '';
+                return setGender('');
         }
-
-    }, []);
-
-    const getUser = useCallback(async () => {
-        const resInfoAcc = await apiServices.auth.getUserInfo();
-        if (resInfoAcc.success) {
-            const data = resInfoAcc?.data as UserInfoModal;
-            userManager.updateUserInfo({
-                ...data,
-                gender: data?.gender && updateGender(data?.gender)
-            });
-
-        }
-    }, [apiServices.auth, updateGender, userManager]);
+    }, [userManager.userInfo?.gender]);
 
     const onNavigateKYC = useCallback(() => {
         return Navigator.pushScreen(ScreenName.accountIdentify);
@@ -105,7 +88,10 @@ const AccountInfo = observer(() => {
                 {renderKeyFeature(Languages.accountInfo.phoneNumber, userManager.userInfo?.phone_number, true)}
                 {renderKeyFeature(Languages.accountInfo.email, userManager.userInfo?.email, true)}
                 {renderKeyFeature(Languages.accountInfo.fullName, userManager.userInfo?.full_name, false, 2)}
-                {renderKeyFeature(Languages.accountInfo.gender, userManager.userInfo?.gender)}
+                {renderKeyFeature(
+                    Languages.accountInfo.gender,
+                    genderUser
+                )}
                 {renderKeyFeature(Languages.accountInfo.address, userManager.userInfo?.address, false, 2)}
                 <View style={styles.wrapEdit}>
                     <Touchable style={styles.accuracyWrap} onPress={onNavigateEdit}>
@@ -114,7 +100,7 @@ const AccountInfo = observer(() => {
                 </View>
             </View>
         );
-    }, [onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.address, userManager.userInfo?.email, userManager.userInfo?.full_name, userManager.userInfo?.gender, userManager.userInfo?.phone_number]);
+    }, [genderUser, onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.address, userManager.userInfo?.email, userManager.userInfo?.full_name, userManager.userInfo?.phone_number]);
 
     return (
         <View style={styles.container}>

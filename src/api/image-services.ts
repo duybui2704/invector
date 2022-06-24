@@ -13,7 +13,7 @@ export class ImageServices extends BaseService {
         form.append('file', {
             ...file,
             uri: isIOS ? `${'file://'}${file?.path}` || file : file?.path || file,
-            name: Utils.getFileName(file),
+            // name: file?.filename.replace(/HEIC/g, 'jpg'),
             type: 'image/jpeg',
             path: isIOS ? `${'file:/'}${file?.path}` : file?.path
         } as any);

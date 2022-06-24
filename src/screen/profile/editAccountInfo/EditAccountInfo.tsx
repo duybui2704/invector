@@ -1,6 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import AvatarIC from '@/assets/image/ic_edit_avatar_large.svg';
@@ -29,11 +29,24 @@ import Loading from '@/components/loading';
 
 const EditAccountInfo = observer(() => {
     const { apiServices, userManager } = useAppStore();
+    const [genderUser, setGender] = useState<string>('');
+
+    useEffect(() => {
+        switch (userManager.userInfo?.gender) {
+            case typeGender[0].text:
+                return setGender(typeGender[0].value);
+            case typeGender[1].text:
+                return setGender(typeGender[1].value);
+            default:
+                return setGender('');
+        }
+    }, [userManager.userInfo?.gender]);
+
     const styles = MyStylesEditAccountInfo();
     const [name, setName] = useState<string>(userManager.userInfo?.full_name || '');
     const [emailUser, setEmail] = useState<string>(userManager.userInfo?.email || '');
     const [phone, setPhone] = useState<string>(userManager.userInfo?.phone_number || '');
-    const [genderUser, setGender] = useState<string>(userManager.userInfo?.gender || '');
+
     const [fetchGender, setFetchGender] = useState<string>(userManager.userInfo?.gender || '');
     const [addressUser, setAddress] = useState<string>(userManager.userInfo?.address || '');
     const [avatarAcc, setAvatarAcc] = useState<UpLoadImage>();
@@ -152,7 +165,7 @@ const EditAccountInfo = observer(() => {
         const res = await apiServices.auth.updateUserInf(
             avatar,
             name,
-            fetchGender ? fetchGender === typeGender[0].value ? typeGender[0].text : typeGender[1].value : '',
+            fetchGender,
             addressUser
         );
         setLoading(false);
@@ -163,12 +176,12 @@ const EditAccountInfo = observer(() => {
                 ...userManager.userInfo,
                 full_name: name,
                 avatar_user: avatar,
-                gender: genderUser,
+                gender: fetchGender,
                 address: addressUser
             });
             Navigator.goBack();
         }
-    }, [addressUser, apiServices.auth, fetchGender, genderUser, name, userManager]);
+    }, [addressUser, apiServices.auth, fetchGender, name, userManager]);
 
     const uploadImages = useCallback(async (file: any) => {
         const res = await apiServices?.image.uploadImage(
