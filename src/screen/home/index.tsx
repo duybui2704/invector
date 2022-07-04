@@ -37,7 +37,6 @@ import { isIOS } from '@/common/Configs';
 import Images from '@/assets/Images';
 import { UserInfoModal } from '@/models/user-models';
 import SessionManager from '@/manager/SessionManager';
-import HeaderBar from '@/components/header';
 
 const PAGE_SIZE = 3;
 
@@ -45,8 +44,7 @@ const Home = observer(() => {
     const {
         apiServices,
         userManager,
-        fastAuthInfoManager,
-        common
+        fastAuthInfoManager
     } = useAppStore();
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
     const isFocused = useIsFocused();
@@ -67,7 +65,6 @@ const Home = observer(() => {
     });
 
     useLayoutEffect(() => {
-        setShowFloating(true);
         if (isFocused) {
             setTimeout(() => {
                 StatusBar.setBarStyle(isFocused ? 'light-content' : 'dark-content', true);
@@ -173,9 +170,12 @@ const Home = observer(() => {
         if (resBannerHome.success) {
             const bannerHome = resBannerHome?.data as BannerHome;
             setIconBanner(bannerHome);
-            setTimeout(() => {
-                showFirstPopup();
-            }, 500);
+            if (bannerHome && bannerHome.icon && bannerHome.image) {
+                setTimeout(() => {
+                    setShowFloating(true);
+                    showFirstPopup();
+                }, 500);
+            }
         }
         setIsLoading(false);
 
@@ -495,7 +495,7 @@ const Home = observer(() => {
                 >
                     {renderContent}
                 </ParallaxScrollView>
-                {showFloating && iconBanner?.icon && (
+                {(showFloating && iconBanner?.icon && iconBanner?.image) ?
                     <DraggableComponent
                         image={iconBanner?.icon}
                         x={SCREEN_WIDTH - 110}
@@ -505,7 +505,7 @@ const Home = observer(() => {
                         onShortPressRelease={showFirstPopup}
                         onClose={() => setShowFloating(false)}
                     />
-                )}
+                    : <View></View>}
                 <PopupInvestFirst
                     ref={refPopupFirst}
                     image={iconBanner?.image}

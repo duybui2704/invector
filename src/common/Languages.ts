@@ -136,7 +136,7 @@ const Languages = {
         continue: 'Tiếp tục',
         vnd: 'VNĐ',
         million: '(Triệu)',
-        hotline: '18006907',
+        hotline: '19006907',
         notice: 'Thông báo',
         rate: 'Đánh giá',
         yourRate: 'Đánh giá của bạn',
