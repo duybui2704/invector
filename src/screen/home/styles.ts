@@ -120,6 +120,21 @@ export const MyStylesHome = () => {
                 color: COLORS.GRAY_7,
                 marginRight: 8
             },
+            txtReason: {
+                ...Styles.typography.regular,
+                color: COLORS.GRAY_7,
+                paddingVertical: 5
+            },
+            viewReason: {
+                marginBottom: 20,
+                backgroundColor: COLORS.WHITE,
+                marginHorizontal: 16,
+                padding: 8,
+                borderRadius: 8
+            },
+            viewBottom: {
+                marginBottom: 15
+            },
             txtTotalInterestReceived: {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size20,

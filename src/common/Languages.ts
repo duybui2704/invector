@@ -1,9 +1,9 @@
 const Languages = {
     board: {
-        title1: 'Đầu tư an toàn cùng Tienngay.vn',
+        title1: 'Đầu tư an toàn cùng TienNgay.vn',
         txt1: 'TienNgay.vn có giấy phép kinh doanh và hoạt động theo quy định của pháp luật và đồng nhất trên toàn hệ thống. Số tiền lãi được trả đúng hạn theo cam kết, giải quyết thắc mắc (nếu có) tận tình, nhanh chóng.',
-        title2: 'Lãi suất hấp dẫn cùng Tienngay ',
-        txt2: 'Tham gia gửi tiền có kỳ hạn Online tại Tienngay để có thêm thời gian tận hưởng cuộc sống và luôn an tâm rằng tiền của bạn đang sinh lời với lãi suất hấp dẫn.',
+        title2: 'Lãi suất hấp dẫn cùng TienNgay ',
+        txt2: 'Tham gia gửi tiền có kỳ hạn Online tại TienNgay để có thêm thời gian tận hưởng cuộc sống và luôn an tâm rằng tiền của bạn đang sinh lời với lãi suất hấp dẫn.',
         title3: 'Rõ ràng - Minh bạch',
         txt3: 'Tất cả các thao tác của Nhà đầu tư được ghi lại bằng hệ thống của TienNgay.vn, đảm bảo số tiền lãi nhận về rõ ràng, minh bạch.'
     },
@@ -37,8 +37,8 @@ const Languages = {
         stockVfs: 'Chứng khoán VFS',
         question: 'Câu hỏi thường gặp',
         signFree: 'Đăng ký mở tài khoản miễn phí',
-        todoInvest: 'Làm thế nào để đầu tư vào Tienngay.vn?',
-        todoWithDrawMoney: 'Làm thế nào để rút tiền từ Tienngay.vn?',
+        todoInvest: 'Làm thế nào để đầu tư vào TienNgay.vn?',
+        todoWithDrawMoney: 'Làm thế nào để rút tiền từ TienNgay.vn?',
         percentCalculated: 'Phần trăm lãi đầu tư được tính như thế nào?',
         paymentMethod: 'Hình thức trả tiền như thế nào?',
         interestRateMonth: 'Lãi xuất tháng',
@@ -50,7 +50,13 @@ const Languages = {
         investAndAccumulate: 'Đầu tư & Tích luỹ',
         newMedia: 'Tin tức truyền thông',
         investNowFloral: 'ĐẦU TƯ NGAY',
-        noNotify: 'Bạn không có thông báo nào'
+        noNotify: 'Bạn không có thông báo nào',
+        reasonInvest: 'Vì sao bạn nên đầu tư vào TienNgay.vn?',
+        reasonOne: '1. Đầu tư dễ dàng chỉ từ 3 triệu đồng.',
+        reasonTwo: '2. Lợi nhuận cạnh tranh: lãi suất tiền gửi lên đến 18%/năm.',
+        reasonThree: '3. Linh hoạt thời hạn, vòng đầu tư ngắn 3 tháng - 24 tháng.',
+        reasonFour: '4. Tài sản của bạn được quản lý minh bạch và bảo vệ bởi công ty thuộc tập đoàn công nghệ hàng đầu NextTech.',
+        reasonFive: '5. Quản lý dòng tiền thông minh với ứng dụng công nghệ.'
 
     },
     invest: {
@@ -149,11 +155,11 @@ const Languages = {
         skip: 'Bỏ qua'
     },
     introduce: {
-        txtIntroduce1: 'Đầu tư an toàn cùng Tienngay',
+        txtIntroduce1: 'Đầu tư an toàn cùng TienNgay',
         txtIntroduce2: 'TienNgay.vn có giấy phép kinh doanh và hoạt động theo quy định của pháp luật và đồng nhất trên toàn hệ thống. Số tiền lãi được trả đúng hạn theo cam kết, giải quyết thắc mắc (nếu có) tận tình, nhanh chóng',
         txtContinue: 'Tiếp tục',
-        txtIntroduce3: 'Lãi suất hấp dẫn cùng Tienngay',
-        txtIntroduce4: 'Tham gia gửi tiền có kỳ hạn Online tại Tienngay để có thêm thời gian tận hưởng cuộc sống và luôn an tâm rằng tiền của bạn đang sinh lời với lãi suất hấp dẫn.',
+        txtIntroduce3: 'Lãi suất hấp dẫn cùng TienNgay',
+        txtIntroduce4: 'Tham gia gửi tiền có kỳ hạn Online tại TienNgay để có thêm thời gian tận hưởng cuộc sống và luôn an tâm rằng tiền của bạn đang sinh lời với lãi suất hấp dẫn.',
         introduce5: 'Rõ ràng - Minh bạch',
         introduce6: 'Tất cả các thao tác của Nhà đầu tư được ghi lại bằng hệ thống của TienNgay.vn, đảm bảo số tiền lãi nhận về rõ ràng, minh bạch.'
     },
@@ -394,7 +400,7 @@ const Languages = {
         unpaid: 'Chưa thanh toán',
         agreeTermsWith: 'Tôi đã đọc và đồng ý với ',
         rules: 'Điều khoản sử dụng và chính sách ',
-        tienngay: 'của Tienngay.vn',
+        tienngay: 'của TienNgay.vn',
         error: 'Không lấy được dữ liệu, vui lòng thử lại sau',
         notLinked: 'Chưa liên kết',
         infoPayment: 'Thông tin trả lãi'

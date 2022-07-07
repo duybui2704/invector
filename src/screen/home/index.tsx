@@ -6,6 +6,7 @@ import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import FastImage from 'react-native-fast-image';
 import { useIsFocused } from '@react-navigation/core';
 import PasscodeAuth from '@el173/react-native-passcode-auth';
+import Dash from 'react-native-dash';
 
 import { LINKS } from '@/api/constants';
 import AvatarIC from '@/assets/image/ic_avatar.svg';
@@ -434,6 +435,25 @@ const Home = observer(() => {
         }
     }, [fastAuthInfoManager.isEnableFastAuth, userManager?.userInfo]);
 
+    const renderBottom = useMemo(() => {
+        return (
+            <View style={styles.viewBottom}>
+                <Text style={styles.txtCenter}>{Languages.home.reasonInvest}</Text>
+                <View style={styles.viewReason}>
+                    <Text style={styles.txtReason}>{Languages.home.reasonOne}</Text>
+                    <Dash dashThickness={1} dashLength={10} dashGap={5} dashColor={COLORS.GRAY_13} />
+                    <Text style={styles.txtReason}>{Languages.home.reasonTwo}</Text>
+                    <Dash dashThickness={1} dashLength={10} dashGap={5} dashColor={COLORS.GRAY_13} />
+                    <Text style={styles.txtReason}>{Languages.home.reasonThree}</Text>
+                    <Dash dashThickness={1} dashLength={10} dashGap={5} dashColor={COLORS.GRAY_13} />
+                    <Text style={styles.txtReason}>{Languages.home.reasonFour}</Text>
+                    <Dash dashThickness={1} dashLength={10} dashGap={5} dashColor={COLORS.GRAY_13} />
+                    <Text style={styles.txtReason}>{Languages.home.reasonFive}</Text>
+                </View>
+            </View>
+        );
+    }, []);
+
     const renderContent = useMemo(() => {
 
         return (
@@ -448,6 +468,7 @@ const Home = observer(() => {
                     keyExtractor={keyExtractor}
                     nestedScrollEnabled
                 />
+                {renderBottom}
             </View>
         );
     }, [dataArr, keyExtractor, renderFooter, renderItemInvestPackage, styles.txtCenter, userManager?.userInfo]);
