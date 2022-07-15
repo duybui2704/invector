@@ -34,7 +34,7 @@ const Languages = {
         investPackages: 'Các gói đầu tư nổi bật',
         investNow: 'Đầu tư ngay',
         more: 'Xem thêm',
-        stockVfs: 'Chứng khoán VFS',
+        stockVfs: 'Chứng khoán VPS',
         question: 'Câu hỏi thường gặp',
         signFree: 'Đăng ký mở tài khoản miễn phí',
         todoInvest: 'Làm thế nào để đầu tư vào TienNgay.vn?',
