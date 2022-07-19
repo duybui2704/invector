@@ -21,112 +21,121 @@ import { dataRatingPoint } from '@/mocks/data';
 import { ItemProps } from '@/models/common-model';
 
 interface PopupNoActionProps extends PopupPropsTypes {
-    onChangeTextComment?: (_text?: string) => void;
-    ratingSwipeComplete?: (_rating?: any) => void;
+  onChangeTextComment?: (_text?: string) => void;
+  ratingSwipeComplete?: (_rating?: any) => void;
 }
 
-const PopupRating = forwardRef<
-    PopupActionTypes,
-    PopupNoActionProps
->(({ onClose,
-    onConfirm,
-    onChangeTextComment,
-    ratingSwipeComplete
-}: PopupNoActionProps, ref) => {
-    const [visible, setVisible] = useState<boolean>(false);
-    const [text, setText] = useState<string>('');
-    const [ratingPoint, setRating] = useState<number>(0);
-    const show = useCallback(() => {
-        setVisible(true);
-    }, []);
+const PopupRating = forwardRef<PopupActionTypes, PopupNoActionProps>(
+    (
+        {
+            onClose,
+            onConfirm,
+            onChangeTextComment,
+            ratingSwipeComplete
+        }: PopupNoActionProps,
+        ref
+    ) => {
+        const [visible, setVisible] = useState<boolean>(false);
+        const [text, setText] = useState<string>('');
+        const [ratingPoint, setRating] = useState<number>(0);
+        const show = useCallback(() => {
+            setVisible(true);
+        }, []);
 
-    const hide = useCallback(() => {
-        setVisible(false);
-        setText('');
-        setRating('' || 0);
-    }, []);
+        const hide = useCallback(() => {
+            setVisible(false);
+            setText('');
+            setRating('' || 0);
+        }, []);
 
-    const _onClose = useCallback(() => {
-        hide();
-        onClose?.();
-    }, [hide, onClose]);
+        const _onClose = useCallback(() => {
+            hide();
+            onClose?.();
+        }, [hide, onClose]);
 
-    const onChangeText = useCallback((_text?: string) => {
-        setText(_text || '');
-        onChangeTextComment?.(_text || '');
-
-    }, [onChangeTextComment]);
-
-    const ratingCompleted = useCallback((rating?: any) => {
-        setRating(rating || 0);
-        ratingSwipeComplete?.(rating || 0);
-    }, [ratingSwipeComplete]);
-
-    useImperativeHandle(ref, () => ({
-        show,
-        hide
-    }));
-
-    const renderDescribeRating = useMemo(() => {
-        return (
-            <>
-                {dataRatingPoint.map((item?: ItemProps) => {
-                    return (
-                        <View key={item?.id}>
-                            {`${ratingPoint}` === item?.id &&
-                                <Text style={styles.txtDescribePoint}>
-                                    {item?.value}
-                                </Text>
-                            }
-                        </View>
-                    );
-                })}
-            </>
+        const onChangeText = useCallback(
+            (_text?: string) => {
+                setText(_text || '');
+                onChangeTextComment?.(_text || '');
+            },
+            [onChangeTextComment]
         );
-    }, [ratingPoint]);
 
-    return (
-        <Modal
-            isVisible={visible}
-            animationIn="slideInUp"
-            useNativeDriver={true}
-            onBackdropPress={hide}
-            avoidKeyboard={true}
-            hideModalContentWhileAnimating
-        >
-            <HideKeyboard>
-                <View style={styles.popup}>
-                    <Text style={styles.txtTitle}>{`${Languages.common.yourRate}`.toUpperCase()}</Text>
-                    <Rating
-                        ratingCount={5}
-                        imageSize={40}
-                        onFinishRating={ratingCompleted}
-                        style={styles.wrapStarRate}
-                        startingValue={ratingPoint || 0}
-                        minValue={0}
-                    />
-                    {renderDescribeRating}
-                    <View>
-                        <Text style={styles.txtContent}>{Languages.common.comment}</Text>
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={5}
-                            maxLength={300}
-                            onChangeText={onChangeText}
-                            value={text}
-                            style={styles.wrapComment}
+        const ratingCompleted = useCallback(
+            (rating?: any) => {
+                setRating(rating || 0);
+                ratingSwipeComplete?.(rating || 0);
+            },
+            [ratingSwipeComplete]
+        );
+
+        useImperativeHandle(ref, () => ({
+            show,
+            hide
+        }));
+
+        const renderDescribeRating = useMemo(() => {
+            return (
+                <>
+                    {dataRatingPoint.map((item?: ItemProps) => {
+                        return (
+                            <View key={item?.id}>
+                                {`${ratingPoint}` === item?.id && (
+                                    <Text style={styles.txtDescribePoint}>{item?.value}</Text>
+                                )}
+                            </View>
+                        );
+                    })}
+                </>
+            );
+        }, [ratingPoint]);
+
+        return (
+            <Modal
+                isVisible={visible}
+                animationIn="slideInUp"
+                useNativeDriver={true}
+                onBackdropPress={hide}
+                avoidKeyboard={true}
+                hideModalContentWhileAnimating
+            >
+                <HideKeyboard>
+                    <View style={styles.popup}>
+                        <Text style={styles.txtTitle}>
+                            {`${Languages.common.yourRate}`.toUpperCase()}
+                        </Text>
+                        <Rating
+                            ratingCount={5}
+                            imageSize={40}
+                            onFinishRating={ratingCompleted}
+                            style={styles.wrapStarRate}
+                            startingValue={ratingPoint || 0}
+                            minValue={0}
+                        />
+                        {renderDescribeRating}
+                        <View>
+                            <Text style={styles.txtContent}>{Languages.common.comment}</Text>
+                            <TextInput
+                                multiline={true}
+                                numberOfLines={5}
+                                maxLength={300}
+                                onChangeText={onChangeText}
+                                value={text}
+                                style={styles.wrapComment}
+                            />
+                        </View>
+                        <Button
+                            style={styles.row}
+                            label={Languages.common.send}
+                            buttonStyle={BUTTON_STYLES.GREEN}
+                            onPress={onConfirm}
                         />
                     </View>
-                    <Button style={styles.row}
-                        label={Languages.common.send}
-                        buttonStyle={BUTTON_STYLES.GREEN}
-                        onPress={onConfirm}
-                    />
-                </View>
-            </HideKeyboard>
-        </Modal>
-    );
-});
+                </HideKeyboard>
+            </Modal>
+        );
+    }
+);
 
 export default PopupRating;
 
@@ -147,7 +156,6 @@ const styles = StyleSheet.create({
         fontSize: Configs.FontSize.size16,
         color: COLORS.DARK_GRAY,
         paddingBottom: 10
-
     },
     txtContent: {
         ...Styles.typography.regular,
@@ -166,7 +174,7 @@ const styles = StyleSheet.create({
     },
     wrapComment: {
         width: SCREEN_WIDTH * 0.75,
-        minHeight: SCREEN_WIDTH * 0.3,
+        height: SCREEN_WIDTH * 0.3,
         paddingHorizontal: 16,
         borderColor: COLORS.GRAY_11,
         borderWidth: 1,
