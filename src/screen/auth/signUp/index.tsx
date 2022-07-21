@@ -21,6 +21,7 @@ import { MyStylesSign } from './styles';
 import OtpSignIn from '../otpSignIn';
 import Loading from '@/components/loading';
 import HideKeyboard from '@/components/HideKeyboard';
+import { MyTextInputKeyboardNavigation } from '@/components/elements/textfieldKeyboardNavigation';
 
 const SignUp = observer(() => {
     const { apiServices } = useAppStore();
@@ -129,9 +130,23 @@ const SignUp = observer(() => {
     };
 
     const renderInput = useCallback((
-        ref: any, value: string, isPhoneNumber: boolean, rightIcon: string, placeHolder: string, maxLength: number, isPassword?: boolean, keyboardType?: any) => {
-        return <MyTextInput
+        ref: any,
+        value: string,
+        isPhoneNumber: boolean,
+        rightIcon: string,
+        placeHolder: string,
+        maxLength: number,
+        isPassword?: boolean,
+        keyboardType?: any,
+        orderRef?: number,
+        inputAccessoryViewID?: string,
+        textContentType?: string
+    ) => {
+        return <MyTextInputKeyboardNavigation
             ref={ref}
+            refArr={[refName, refPhone, refEmail, refPass, refPassNew]}
+            orderRef={orderRef}
+            inputAccessoryViewID={inputAccessoryViewID}
             value={value}
             isPhoneNumber={isPhoneNumber}
             maxLength={maxLength}
@@ -141,6 +156,7 @@ const SignUp = observer(() => {
             onChangeText={onChangeText}
             keyboardType={keyboardType}
             isPassword={isPassword}
+            textContentType={textContentType}
         />;
     }, [onChangeText, styles.inputPass]);
 
@@ -158,11 +174,11 @@ const SignUp = observer(() => {
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                     >
-                        {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 30, false)}
-                        {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER')}
-                        {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL')}
-                        {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true)}
-                        {renderInput(refPassNew, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true)}
+                        {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 30, false, 'DEFAULT', 1, 'inputAccessoryViewID1', 'name')}
+                        {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER', 2, 'inputAccessoryViewID2', 'telephoneNumber')}
+                        {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL', 3, 'inputAccessoryViewID3', 'emailAddress')}
+                        {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true, 'DEFAULT', 4, 'inputAccessoryViewID4')}
+                        {renderInput(refPassNew, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true, 'DEFAULT', 5, 'inputAccessoryViewID5')}
                         <View style={styles.inputPass}>
                             <PickerBottomSheet
                                 ref={refChannel}

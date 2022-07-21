@@ -8,7 +8,6 @@ import UnCheckIcon from '@/assets/image/ic_unchecked_save_acc.svg';
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
 import ScreenName, { TabNamesArray } from '@/common/screenNames';
-import { MyTextInput } from '@/components/elements/textfield';
 import { TextFieldActions } from '@/components/elements/textfield/types';
 import { Touchable } from '@/components/elements/touchable';
 import Loading from '@/components/loading';
@@ -20,6 +19,7 @@ import { MyStylesLogin } from './styles';
 import { UserInfoModal } from '@/models/user-models';
 import HideKeyboard from '@/components/HideKeyboard';
 import FormValidate from '@/utils/FormValidate';
+import { MyTextInputKeyboardNavigation } from '@/components/elements/textfieldKeyboardNavigation';
 
 const Login = observer(() => {
     const {
@@ -88,10 +88,25 @@ const Login = observer(() => {
         return <UnCheckIcon />;
     }, [checked]);
 
-    const renderInput = useCallback((ref: any, value: any, isPhone: boolean, placeHolder: string, rightIcon?: string, keyboardType?: any, maxLength?: number, isPass?: boolean) => {
+    const renderInput = useCallback((
+        ref: any,
+        value: any,
+        isPhone: boolean,
+        placeHolder: string,
+        rightIcon?: string,
+        keyboardType?: any,
+        maxLength?: number,
+        isPass?: boolean,
+        orderRef?: number,
+        inputAccessoryViewID?: string,
+        textContentType?: string
+    ) => {
         return (
-            <MyTextInput
+            <MyTextInputKeyboardNavigation
                 ref={ref}
+                refArr={[refPhone, refPass]}
+                orderRef={orderRef}
+                inputAccessoryViewID={inputAccessoryViewID}
                 value={value}
                 isPhoneNumber={isPhone}
                 maxLength={maxLength}
@@ -101,6 +116,7 @@ const Login = observer(() => {
                 onChangeText={onChangeText}
                 keyboardType={keyboardType}
                 isPassword={isPass}
+                textContentType={textContentType}
             />
         );
     }, [onChangeText, styles.inputPhone]);
@@ -150,8 +166,8 @@ const Login = observer(() => {
                     <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
                     <IcLine width={'40%'} height={'20%'} />
                 </View>
-                {renderInput(refPhone, phone, true, Languages.auth.txtPhone, arrayIcon.login.phone, 'PHONE', 10)}
-                {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true)}
+                {renderInput(refPhone, phone, true, Languages.auth.txtPhone, arrayIcon.login.phone, 'NUMBER', 10, false, 1, 'inputAccessoryViewID1', 'telephoneNumber')}
+                {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true, 2, 'inputAccessoryViewID2')}
                 <View style={styles.rowInfo}>
                     <View style={styles.checkbox} >
                         <Touchable style={styles.checkboxBtn} onPress={onChangeChecked}>{checkbox}</Touchable>
