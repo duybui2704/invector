@@ -137,7 +137,7 @@ const Login = observer(() => {
                         SessionManager.setSavePassLogin('');
                     } else {
                         SessionManager.setSavePhoneLogin(phone);
-                        SessionManager.setSavePassLogin(pass);
+                        SessionManager.setSavePassLogin('');
                     }
                     fastAuthInfo.setEnableFastAuthentication(false);
                     const data = resInfoAcc?.data as UserInfoModal;

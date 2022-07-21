@@ -7,28 +7,28 @@ import React, {
     useRef,
     useState
 } from 'react';
-import { Animated, TextInput, View, Text, InputAccessoryView, Keyboard } from 'react-native';
+import { Animated, InputAccessoryView, Keyboard, Text, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { Configs, isIOS } from '../../../common/Configs';
-import { COLORS } from '../../../theme';
-import Validate from '@/utils/Validate';
-import { myTextFieldStyle } from './styles';
-import { Touchable } from '../touchable';
-import { TextFieldActions, TextFieldProps, TypeKeyBoard } from './types';
-import arrayIcon from '@/common/arrayIcon';
-import IcPhone from '@/assets/image/auth/ic_phone_auth.svg';
-import IcPass from '@/assets/image/auth/ic_pass_auth.svg';
 import IcEmailAuth from '@/assets/image/auth/ic_email_auth.svg';
-import IcName from '@/assets/image/auth/ic_name_auth.svg';
 import IcHidePass from '@/assets/image/auth/ic_hide_pass.svg';
+import IcKeyBoardDown from '@/assets/image/auth/ic_keyboard_arrow_down.svg';
+import IcKeyBoardUp from '@/assets/image/auth/ic_keyboard_arrow_up.svg';
+import IcName from '@/assets/image/auth/ic_name_auth.svg';
+import IcPass from '@/assets/image/auth/ic_pass_auth.svg';
+import IcPhone from '@/assets/image/auth/ic_phone_auth.svg';
 import IcShowPass from '@/assets/image/auth/ic_show_pass.svg';
 import IcSearch from '@/assets/image/ic_search.svg';
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
-import IcKeyBoardUp from '@/assets/image/auth/ic_keyboard_arrow_up.svg';
-import IcKeyBoardDown from '@/assets/image/auth/ic_keyboard_arrow_down.svg';
+import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
+import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
+import Validate from '@/utils/Validate';
+import { myTextFieldStyle } from './styles';
+import { TextFieldActions, TextFieldProps, TypeKeyBoard } from './types';
+import { Configs, isIOS } from '@/common/Configs';
+import { Touchable } from '../touchable';
+import { COLORS } from '@/theme';
 
 export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFieldProps>(
     (
@@ -291,7 +291,7 @@ export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFi
             styles.txtPlaceHolder, styles.viewDone, styles.viewIconKeyBoard,
             styles.viewKeyBoard, styles.viewPlaceHolder]);
 
-        const handleKey = useCallback(({ nativeEvent }) => {
+        const handleKey = useCallback(({ nativeEvent }:any) => {
             if (nativeEvent.key.toString().slice(0, 3) === '+84') {
                 nativeEvent.key = `0${nativeEvent.key.toString().slice(3, nativeEvent.key.length)}`;
                 setValue(nativeEvent.key);
@@ -338,7 +338,7 @@ export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFi
                     </View>
                 </Animated.View>
                 {errorMessage}
-                {renderHeaderKeyBroad}
+                {isIOS && renderHeaderKeyBroad}
             </>
         );
     }
