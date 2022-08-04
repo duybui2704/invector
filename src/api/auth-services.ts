@@ -75,7 +75,8 @@ export class AuthServices extends BaseService {
         password: string,
         re_password: string,
         email: string,
-        channels: string
+        channels: string,
+        referral_code: string
     ) =>
         this.api().post(
             API_CONFIG.REGISTER,
@@ -85,7 +86,8 @@ export class AuthServices extends BaseService {
                 password,
                 re_password,
                 email,
-                channels
+                channels,
+                referral_code
             })
         );
 

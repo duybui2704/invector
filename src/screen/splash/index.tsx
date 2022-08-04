@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native';
 import VersionCheck from 'react-native-version-check';
 import DeviceInfo from 'react-native-device-info';
+import RNExitApp from 'react-native-exit-app';
+import remoteConfig from '@react-native-firebase/remote-config';
 
 import { HeaderBar } from '@/components/header';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
@@ -15,11 +17,13 @@ import { isIOS } from '@/common/Configs';
 import PopupUpdateVersion from '@/components/PopupUpdateVersion';
 import { PopupActionTypes } from '@/models/typesPopup';
 import Utils from '@/utils/Utils';
+import PopupMaintain from '@/components/PopupMaintain';
 
 const Splash = observer(() => {
     const { apiServices, appManager } = useAppStore();
     const storeUrlRef = useRef<string>();
     const popupAlert = useRef<PopupActionTypes>(null);
+    const popupMaintainRef = useRef<PopupActionTypes>(null);
 
     const [isLoading, setLoading] = useState<boolean>(true);
 
@@ -29,14 +33,24 @@ const Splash = observer(() => {
         if (res.success) {
             const data = res.data as AppStatusModel;
             appManager.setAppInReview(isIOS ? data.apple : data.google);
-        }else{
+        } else {
             appManager.setAppInReview(isIOS);
         }
     }, [apiServices.common]);
 
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
+    const fetchRemoteConfig = useCallback(() => {
+        const isMaintenance = remoteConfig().getValue(isIOS ? 'ios_isMaintenance' : 'android_isMaintenance');
+
+        if (isMaintenance.asBoolean() === true) {
+            popupMaintainRef.current?.show();
+        }else{
+            fetchData();
+        }
+    }, [])
+
+    useEffect(() => {
+        fetchRemoteConfig();
+    }, []);
 
     useEffect(() => {
         if (!isLoading) {
@@ -96,6 +110,10 @@ const Splash = observer(() => {
         );
     }, [onSkip, onUpdate]);
 
+    const onQuit = useCallback(() => {
+        popupMaintainRef?.current?.hide();
+        RNExitApp.exitApp();
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -103,6 +121,11 @@ const Splash = observer(() => {
                 noHeader
                 barStyle />
             {popupVerifyRequest}
+            <PopupMaintain
+                onConfirm={onQuit}
+                onClose={onQuit}
+                ref={popupMaintainRef}
+            />
         </View>
     );
 });

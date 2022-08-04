@@ -171,6 +171,7 @@ const Languages = {
         txtSignUp: 'Đăng ký',
         txtName: 'Họ và tên',
         txtEmail: 'Email',
+        txtRefCode: 'Mã giới thiệu',
         txtConfirmPass: 'Xác nhận mật khẩu',
         knowChannel: 'Bạn biết chúng tôi qua kênh nào ?',
         txtTitleOtp: 'Xác nhận OTP',
@@ -520,6 +521,12 @@ const Languages = {
         description:
             'Đã có phiên bản cập nhật mới cho ứng dụng. Bạn vui lòng cập nhật để có trải nghiệm tốt hơn.\n\nXin cám ơn.',
         update: 'Cập nhật'
-    }
+    },
+    maintain: {
+        title: 'Thông báo nâng cấp hệ thống',
+        description:
+            'Hệ thống hiện đang trong quá trình nâng cấp, xin quý nhà đầu tư thử lại sau. Xin cảm ơn!',
+        update: 'Đồng ý'
+    },
 };
 export default Languages;

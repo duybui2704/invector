@@ -32,6 +32,7 @@ const SignUp = observer(() => {
     const [passNew, setPassNew] = useState<string>('');
     const [channel, setChannel] = useState<ItemProps>();
     const [dataChannel, setDataChannel] = useState<ItemProps[]>();
+    const [refCode, setRefCode] = useState<string>('');
     // const [data, setData] = useState<any>('');
     const [isNavigate, setNavigate] = useState<boolean>(false);
     const styles = MyStylesSign();
@@ -41,6 +42,7 @@ const SignUp = observer(() => {
     const refChannel = useRef<BottomSheetModal>(null);
     const refPass = useRef<TextFieldActions>(null);
     const refPassNew = useRef<TextFieldActions>(null);
+    const refRefCode = useRef<TextFieldActions>(null);
     const [checked, setCheck] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -64,6 +66,9 @@ const SignUp = observer(() => {
                 break;
             case Languages.auth.txtEmail:
                 setEmail(value);
+                break;
+            case Languages.auth.txtRefCode:
+                setRefCode(value);
                 break;
             default:
                 break;
@@ -117,7 +122,7 @@ const SignUp = observer(() => {
     const onSignIn = useCallback(async () => {
         if (onValidate()) {
             setLoading(true);
-            const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, channel?.value);
+            const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, channel?.value, refCode);
             setLoading(false);
             if (res.success) {
                 setNavigate(true);
@@ -179,6 +184,7 @@ const SignUp = observer(() => {
                         {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL', 3, 'inputAccessoryViewID3', 'emailAddress')}
                         {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true, 'DEFAULT', 4, 'inputAccessoryViewID4')}
                         {renderInput(refPassNew, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true, 'DEFAULT', 5, 'inputAccessoryViewID5')}
+                        {renderInput(refRefCode, refCode, true, arrayIcon.login.referral_code, Languages.auth.txtRefCode, 10, false, 'NUMBER', 6, 'inputAccessoryViewID6')}
                         <View style={styles.inputPass}>
                             <PickerBottomSheet
                                 ref={refChannel}

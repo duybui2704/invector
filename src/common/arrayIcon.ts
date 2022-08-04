@@ -6,7 +6,8 @@ const arrayIcon = {
         email: 'email',
         confirmPass: 'confirmPass',
         channel: 'channel',
-        search: 'search'
+        search: 'search',
+        referral_code: 'referral_code',
     }
 };
 export default arrayIcon;

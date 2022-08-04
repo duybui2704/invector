@@ -20,6 +20,7 @@ import IcPhone from '@/assets/image/auth/ic_phone_auth.svg';
 import IcShowPass from '@/assets/image/auth/ic_show_pass.svg';
 import IcSearch from '@/assets/image/ic_search.svg';
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
+import IcReferralCode from '@/assets/image/ic_referral_code.svg';
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
 import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
@@ -242,6 +243,8 @@ export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFi
                     return <IcSearch />;
                 case arrayIcon.login.channel:
                     return <ICUnderArrow />;
+                case arrayIcon.login.referral_code:
+                    return <IcReferralCode />;
                 default:
                     return null;
             }
