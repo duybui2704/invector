@@ -20,43 +20,26 @@ import Utils from '@/utils/Utils';
 import PopupMaintain from '@/components/PopupMaintain';
 
 const Splash = observer(() => {
-    const { apiServices, appManager } = useAppStore();
     const storeUrlRef = useRef<string>();
     const popupAlert = useRef<PopupActionTypes>(null);
     const popupMaintainRef = useRef<PopupActionTypes>(null);
 
-    const [isLoading, setLoading] = useState<boolean>(true);
+    const fetchRemoteConfig = useCallback(async () => {
+        await remoteConfig().fetch(5);
+        const activated = await remoteConfig().fetchAndActivate();
 
-    const fetchData = useCallback(async () => {
-        const res = await apiServices.common.getAppInReview();
-        setLoading(false);
-        if (res.success) {
-            const data = res.data as AppStatusModel;
-            appManager.setAppInReview(isIOS ? data.apple : data.google);
+        if (activated) {
+            const isMaintenance = remoteConfig().getValue(isIOS ? 'ios_isMaintenance' : 'android_isMaintenance');
+
+            if (isMaintenance.asBoolean() === true) {
+                popupMaintainRef.current?.show();
+            } else {
+                nextScreen();
+            }
         } else {
-            appManager.setAppInReview(isIOS);
-        }
-    }, [apiServices.common]);
-
-    const fetchRemoteConfig = useCallback(() => {
-        const isMaintenance = remoteConfig().getValue(isIOS ? 'ios_isMaintenance' : 'android_isMaintenance');
-
-        if (isMaintenance.asBoolean() === true) {
-            popupMaintainRef.current?.show();
-        }else{
-            fetchData();
-        }
-    }, [])
-
-    useEffect(() => {
-        fetchRemoteConfig();
-    }, []);
-
-    useEffect(() => {
-        if (!isLoading) {
             nextScreen();
         }
-    }, [isLoading]);
+    }, [])
 
     const nextScreen = useCallback(async () => {
         setTimeout(async () => {
@@ -79,10 +62,10 @@ const Splash = observer(() => {
                 storeUrlRef.current = res.storeUrl;
                 popupAlert.current?.show();
             } else {
-                fetchData();
+                fetchRemoteConfig();
             }
         });
-    }, [fetchData]);
+    }, [fetchRemoteConfig]);
 
     useEffect(() => {
         checkUpdateApp();

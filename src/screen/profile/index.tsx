@@ -10,6 +10,7 @@ import PasscodeAuth from '@el173/react-native-passcode-auth';
 import { useIsFocused } from '@react-navigation/native';
 
 import WomanIC from '@/assets/image/ic_large_woman.svg';
+import IcReferral from '@/assets/image/ic_referral.svg';
 import IcWallet from '@/assets/image/ic_wallet.svg';
 import WarnIC from '@/assets/image/ic_warn_vimo_red_round.svg';
 import ChangePwdIC from '@/assets/image/ic_change_pwd.svg';
@@ -52,6 +53,7 @@ import { LINKS } from '@/api/constants';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 import PopupRating from '@/components/PopupRating';
 import { MyStylesPinCodeProfile, MyStylesProfile } from './styles';
+import { PopupOtpDeleteAccount } from '@/components/popupOtpDeleteAccount';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -74,18 +76,21 @@ const Profile = observer(() => {
     });
     const [errorText, setErrorText] = useState<string>('');
     const popupLogout = useRef<PopupActionTypes>();
+    const popupDeleteAccount = useRef<PopupActionTypes>();
     const popupRating = useRef<PopupActionTypes>();
     const [text, setText] = useState<string>('');
     const [ratingPoint, setRating] = useState<number>(userManager.userInfo?.rate || 0);
     const [ratingPointPopup, setRatingPointPopup] = useState<number>(0);
     const isFocus = useIsFocused();
 
+    const popupOTP = useRef<any>();
+
     useEffect(() => {
         if (isFocus) {
             setRating(0);
         }
     }, [isFocus]);
-    
+
     const callPhone = useCallback(() => {
         Utils.callNumber(Languages.common.hotline);
     }, []);
@@ -105,6 +110,10 @@ const Profile = observer(() => {
         popupLogout.current?.show();
     }, []);
 
+    const onOpenPopupDeleteAccount = useCallback(() => {
+        popupDeleteAccount.current?.show();
+    }, []);
+
     const onAgreeLogout = useCallback(() => {
         SessionManager.logout();
         fastAuthInfoManager.setEnableFastAuthentication(false);
@@ -115,6 +124,13 @@ const Profile = observer(() => {
             [ScreenName.tabs], TabsName.homeTabs
         );
     }, [fastAuthInfoManager, userManager]);
+
+    const otpDeleteAccount = useCallback(async () => {
+        popupDeleteAccount.current?.hide();
+        setTimeout(() => {
+            popupOTP.current?.show?.();
+        }, 500);
+    }, []);
 
     const renderPopupLogout = useMemo(() => {
         return (
@@ -133,6 +149,23 @@ const Profile = observer(() => {
         );
     }, [onAgreeLogout, styles.containerAllBtnPopup, styles.containerCancelBtnPopup, styles.containerItemBtnPopup, styles.textCancel]);
 
+    const renderDeleteAccountPopup = useMemo(() => {
+        return (
+            <PopupNotifyNoAction
+                ref={popupDeleteAccount}
+                renderIcon={<WarnIC />}
+                containerAllBtn={styles.containerAllBtnPopup}
+                containerAgreeBtn={styles.containerItemBtnPopup}
+                containerCancelBtn={styles.containerCancelBtnPopup}
+                renderContent={Languages.maintain.deleteAccountConfirm}
+                renderTitle={Languages.maintain.deleteAccount}
+                textCancel={styles.textCancel}
+                hasButton
+                onConfirm={otpDeleteAccount}
+            />
+        );
+    },[]);
+    
     const openPopupRating = useCallback(() => {
         popupRating.current?.show();
     }, []);
@@ -188,12 +221,14 @@ const Profile = observer(() => {
         );
     }, [onAgreeRating]);
 
-
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
         const onNavigateScreen = () => {
             switch (title) {
                 case Languages.account.shareFriends:
                     Navigator.pushScreen(ScreenName.shareFriend);
+                    break;
+                case Languages.account.referral:
+                    Navigator.pushScreen(ScreenName.referralUsers);
                     break;
                 case Languages.account.changePwd:
                     Navigator.pushScreen(ScreenName.changePwd);
@@ -492,6 +527,7 @@ const Profile = observer(() => {
                 <View style={styles.containerFeature}>
                     {renderKeyValue(Languages.account.policy, <PolicyIC />)}
                     {renderKeyValue(Languages.account.shareFriends, <ShareIC />)}
+                    {renderKeyValue(Languages.account.referral, <IcReferral />)}
                     {renderKeyValue(Languages.account.web, <WebIC />)}
                     {renderKeyValue(Languages.account.facebook, <FacebookIC />)}
                     {renderKeyValue(Languages.account.useManual, <ManualIC />)}
@@ -505,12 +541,25 @@ const Profile = observer(() => {
                     onPress={onPopupLogout}
                     isLowerCase
                 />
+                <Button label={`${Languages.maintain.deleteAccount}`}
+                    style={styles.wrapBtn}
+                    buttonStyle={BUTTON_STYLES.GRAY_RED}
+                    onPress={onOpenPopupDeleteAccount}
+                    isLowerCase
+                />
             </ScrollView>
             {popupUpdatePassCode}
             {renderPopupError}
             {renderPinCode}
+            {renderDeleteAccountPopup}
             {renderPopupLogout}
             {renderPopupRating}
+
+            <PopupOtpDeleteAccount
+                ref={popupOTP}
+                title={Languages.maintain.completionOtpDelete}
+                onConfirm={onAgreeLogout}
+            />
         </View>
     );
 });

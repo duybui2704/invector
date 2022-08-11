@@ -95,6 +95,11 @@ export const HtmlStyles = {
         fontSize: Configs.FontSize.size14,
         marginTop: 15
     },
+    rn: {
+        ...Styles.typography.medium,
+        color: COLORS.RED_3,
+        fontSize: Configs.FontSize.size14,
+    },
     s: {
         ...Styles.typography.regular,
         fontSize: Configs.FontSize.size14

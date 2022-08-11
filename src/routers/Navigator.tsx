@@ -2,7 +2,7 @@ import { CommonActions, NavigationContainerRef, ParamListBase, StackActions } fr
 import { debounce } from 'lodash';
 import React from 'react';
 
-// import AnalyticsUtils from '@/utils/AnalyticsUtils';
+import AnalyticsUtils from '@/utils/AnalyticsUtils';
 
 export const navigationRef = React.createRef<NavigationContainerRef<ParamListBase>>();
 const DELAY_TIMER = 200;
@@ -14,6 +14,7 @@ const goBack = debounce(() => {
 
 const pushScreen = debounce((destination: string, data?: any) => {
     navigationRef.current?.dispatch(StackActions.push(destination, data));
+    AnalyticsUtils.trackScreen(destination);
 }, DELAY_TIMER, { leading: true, trailing: false });
 
 const replaceScreen = debounce((destination: string, data?: any) => {
@@ -41,6 +42,7 @@ const resetScreen = debounce((stacks: string[], params?: any) => {
 const navigateScreen = debounce((destination: string, data?: any) => {
     if (navigationRef.current?.isReady()) {
         navigationRef.current?.navigate(destination, data);
+        AnalyticsUtils.trackScreen(destination);
     }
 }, DELAY_TIMER, { leading: true, trailing: false });
 

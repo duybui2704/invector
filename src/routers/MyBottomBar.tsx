@@ -32,6 +32,7 @@ import { NotifyInvest } from '@/screen/home/notifyInvest';
 import PaymentWebview from '@/screen/investment/paymentWebview';
 import LinkWallet from '@/screen/profile/linkWallet/LinkWallet';
 import TransferScreen from '@/screen/investment/tranferBank';
+import ReferralUsers from '@/screen/profile/referral/ReferralUsers';
 
 const TabsData = [
     {
@@ -137,6 +138,7 @@ const AccountStack = () => {
             <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} />
             <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
             <Stack.Screen name={ScreenName.linkWallet} component={LinkWallet} />
+            <Stack.Screen name={ScreenName.referralUsers} component={ReferralUsers} />
         </Stack.Navigator>
     );
 };

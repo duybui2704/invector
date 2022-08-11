@@ -17,6 +17,7 @@ export const ScreenName = {
     accountIdentify: 'AccountIdentify',
     success: 'Success',
     shareFriend: 'ShareFriend',
+    referralUsers: 'ReferralUsers',
     detailInvestment: 'DetailInvestment',
     invest: 'Invest',
     changePwd: 'ChangePwd',

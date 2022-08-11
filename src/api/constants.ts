@@ -50,7 +50,9 @@ export enum API_CONFIG {
     ACTIVE_PHONE = 'auth/active_phone_social',
     LINK_GOOGLE = 'user/link_account_social',
     RATING_APP = 'user/rate_app',
-
+    BLOCK_ACCOUNT = '/user/block_account', // Block account
+    CONFIRM_BLOCK_ACCOUNT = '/user/confirm_block_account', // confirm block account
+    
     // history
     HISTORY = '/investor/history_transaction_investor',
 

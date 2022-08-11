@@ -69,7 +69,7 @@ const Auth = observer(({ route }: any) => {
     }, []);
 
     const screenRatio = useCallback(() => {
-        console.log(SCREEN_HEIGHT, SCREEN_WIDTH, ratio);
+        // console.log(SCREEN_HEIGHT, SCREEN_WIDTH, ratio);
         if (ratio <= 1.7) {
             setWid(SCREEN_WIDTH * 0.65);
         }

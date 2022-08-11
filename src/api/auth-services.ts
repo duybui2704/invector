@@ -1,4 +1,3 @@
-import { CancelToken } from '../common/@types/apisauce.d';
 import { BaseService } from './base-service';
 import { API_CONFIG } from './constants';
 
@@ -173,4 +172,8 @@ export class AuthServices extends BaseService {
                 password_new
             })
         );
+
+    deleteAccount = async () => this.api().post(API_CONFIG.BLOCK_ACCOUNT, this.buildFormData({}));
+
+    confirmDeleteAccount = async (otp: string, checksum?: string) => this.api().post(API_CONFIG.CONFIRM_BLOCK_ACCOUNT, this.buildFormData({ otp, checksum }));
 }

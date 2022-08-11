@@ -7,6 +7,7 @@ const FULL_DATE_FORMAT_MM_BEFORE = 'MM/DD/YYYY';
 const FULL_DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 const FULL_DATE_FORMAT_SS = 'DD/MM/YYYY HH:mm:ss';
 const DEFAULT_DATE_BACKEND = 'YYYY/MM/DD';
+const MMYY = 'MM/YYYY';
 
 function formatSimpleDate(date: string) { return Moment(date).utc(true).format(DEFAULT_DATE_FORMAT); }
 
@@ -29,6 +30,11 @@ function formatDateSecondPicker(date: number) { return Moment(date).utc(true).fo
 function formatMMDDYYYYPicker(date?: Date) {
     if (!date) return '';
     return Moment(date).utc(true).format(FULL_DATE_FORMAT_MM_BEFORE);
+}
+
+function formatMonthPicker(date?: Date) {
+    if (!date) return '';
+    return Moment(date).utc(true).format(MMYY);
 }
 
 function getCurrentDateTime() { return Moment(Moment().valueOf()).utc(true).format(FULL_DATE_FORMAT); }
@@ -89,5 +95,6 @@ export default {
     formatDateSecondPicker,
     formatMMDDYYYYPicker,
     getCurrentQuarter,
-    formatForServer
+    formatForServer,
+    formatMonthPicker
 };

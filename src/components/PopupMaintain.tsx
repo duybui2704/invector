@@ -13,6 +13,7 @@ import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import { PopupActions } from './popup/types';
 import { Touchable } from './elements/touchable';
 import Languages from '@/common/Languages';
+import { Configs } from '@/common/Configs';
 
 export interface PopupVerifyRequestProps {
     icon?: any;
@@ -58,7 +59,6 @@ const PopupMaintain = forwardRef<PopupActions, PopupProps>(
                 isVisible={visible}
                 animationIn="slideInUp"
                 useNativeDriver={true}
-                onBackdropPress={hide}
                 avoidKeyboard={true}
                 hideModalContentWhileAnimating
             >
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     },
     cancelButton: {
         width: (SCREEN_WIDTH - 90) / 2,
-        backgroundColor: COLORS.GRAY,
+        backgroundColor: COLORS.GREEN,
         paddingVertical: 15,
         alignItems: 'center',
         justifyContent: 'center',
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     },
     confirmButton: {
         width: (SCREEN_WIDTH - 110) / 2,
-        backgroundColor: COLORS.RED,
+        backgroundColor: COLORS.YELLOW_4,
         paddingVertical: 10,
         alignItems: 'center',
         justifyContent: 'center',

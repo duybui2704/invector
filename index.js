@@ -1,7 +1,6 @@
 /**
  * @format
  */
-
 import Bugsnag from '@bugsnag/react-native';
 import {AppRegistry} from 'react-native';
 

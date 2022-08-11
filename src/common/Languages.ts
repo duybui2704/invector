@@ -106,6 +106,7 @@ const Languages = {
         accountLink: 'Tài khoản liên kết',
         policy: 'Điều kiện và điều khoản',
         shareFriends: 'Mời bạn bè',
+        referral: 'Hoa hồng cho nhà đầu tư',
         web: 'TienNgay.vn trên website',
         facebook: 'TienNgay.vn trên Facebook',
         useManual: 'Hướng dẫn sử dụng',
@@ -374,6 +375,14 @@ const Languages = {
         introduceCode: 'Mã giới thiệu của bạn',
         qrCode: 'Qr code tải app'
     },
+    referralUsers: {
+        title: 'Hoa hồng cho nhà đầu tư',
+        des: '<a><rn>*</rn>Chính sách chỉ áp dụng khi người được bạn giới thiệu có đầu tư vào TienNgay. Chính sách có hiệu lực từ ngày <b>15/08/2022</b></a>',
+        tableDes: 'Chi tiết hoa hồng giới thiệu trong tháng %s',
+        colName: 'Họ và tên',
+        colMoney: 'Tổng đầu tư',
+        colCommission: 'Hoa hồng',
+    },
     detailInvest: {
         title: 'Chi tiết khoản đầu tư',
         information: 'Thông tin hợp đồng',
@@ -512,7 +521,7 @@ const Languages = {
         copy: 'Sao chép',
         alert: 'Nếu nội dung chuyển khoản thiếu hoặc không chính xác. Chúng tôi sẽ không thể nhận ra giao dịch của bạn.',
         or: 'Hoặc thực hiện scan mã Qr code sau:',
-        company: 'Cong ty co phan cong nghe tai chinh Univest',
+        company: 'Cong ty co phan cong nghe Tai Chinh Viet',
         bankName: 'Ngân hàng',
         bankAccount: 'Số tài khoản'
     },
@@ -525,8 +534,11 @@ const Languages = {
     maintain: {
         title: 'Thông báo nâng cấp hệ thống',
         description:
-            'Hệ thống hiện đang trong quá trình nâng cấp, xin quý nhà đầu tư thử lại sau. Xin cảm ơn!',
-        update: 'Đồng ý'
+            'Hệ thống hiện đang trong quá trình nâng cấp, xin quý nhà đầu tư vui lòng thử lại sau.\nXin cảm ơn!',
+        update: 'Đồng ý',
+        deleteAccount: 'Xoá tài khoản',
+        deleteAccountConfirm: 'Bạn có chắc chắn muốn xoá tài khoản không?\nSau khi xoá tài khoản, bạn không thể đăng nhập vào ứng dụng được nữa. Vui lòng liên hệ 1900 6907 để được hỗ trợ.',
+        completionOtpDelete: 'Hãy xác nhận mã OTP chúng tôi đã gửi cho bạn để hoàn thành việc xoá tài khoản.',
     },
 };
 export default Languages;

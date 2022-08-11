@@ -285,7 +285,7 @@ const Investment = observer(({ route }: { route: any }) => {
     }, []);
 
     const renderItem = useCallback(({ item }: any) => {
-        console.log('item',item);
+        // console.log('item',item);
         const navigateScreen = () => {
             navigateToDetail(item);
         };
