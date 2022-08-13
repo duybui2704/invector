@@ -67,7 +67,7 @@
     "react-native-lightbox-v2": "^0.9.0",
     "react-native-material-ripple": "^0.9.1",
     "react-native-modal": "^13.0.1",
-    "react-native-month-year-picker": "^1.8.1",
+    "react-native-month-year-picker": "./src/libs/react-native-month-year-picker",
     "react-native-otp-inputs": "^7.1.1",
     "react-native-parallax-scroll-view": "^0.21.3",
     "react-native-permissions": "^3.3.1",

@@ -8,7 +8,7 @@ import React, {
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { Rating } from 'react-native-ratings';
-
+import IcClose from '@/assets/image/invest/ic_close.svg';
 import { COLORS, Styles } from '@/theme';
 import Languages from '@/common/Languages';
 import { PopupActionTypes, PopupPropsTypes } from '@/models/typesPopup';
@@ -21,8 +21,8 @@ import { dataRatingPoint } from '@/mocks/data';
 import { ItemProps } from '@/models/common-model';
 
 interface PopupNoActionProps extends PopupPropsTypes {
-  onChangeTextComment?: (_text?: string) => void;
-  ratingSwipeComplete?: (_rating?: any) => void;
+    onChangeTextComment?: (_text?: string) => void;
+    ratingSwipeComplete?: (_rating?: any) => void;
 }
 
 const PopupRating = forwardRef<PopupActionTypes, PopupNoActionProps>(
@@ -95,12 +95,12 @@ const PopupRating = forwardRef<PopupActionTypes, PopupNoActionProps>(
                 isVisible={visible}
                 animationIn="slideInUp"
                 useNativeDriver={true}
-                onBackdropPress={hide}
                 avoidKeyboard={true}
                 hideModalContentWhileAnimating
             >
                 <HideKeyboard>
                     <View style={styles.popup}>
+                        <IcClose width={15} height={15} style={styles.wrapIcClose} onPress={hide} />
                         <Text style={styles.txtTitle}>
                             {`${Languages.common.yourRate}`.toUpperCase()}
                         </Text>
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 16,
-        paddingTop: 30
+        paddingTop: 15
     },
     txtTitle: {
         ...Styles.typography.medium,
@@ -188,5 +188,9 @@ const styles = StyleSheet.create({
         fontSize: Configs.FontSize.size11,
         color: COLORS.DARK_GRAY,
         paddingTop: 4
+    },
+    wrapIcClose:{
+        alignSelf:'flex-end',
+        marginRight: 10
     }
 });

@@ -32,7 +32,7 @@ const App = () => {
             // alert('onInstallConversionData = ' + JSON.stringify(res));
             if (isFirstLaunch && JSON.parse(isFirstLaunch) === true) {
                 AFLogEvent('af_first_open', res?.data);
-                alert(`2 = ${  JSON.stringify(res?.data)}`);
+                // alert(`2 = ${  JSON.stringify(res?.data)}`);
             }
         });
     
@@ -40,7 +40,7 @@ const App = () => {
             if (res?.deepLinkStatus !== 'NOT_FOUND') {
                 try {
                     const data = res?.data;
-                    alert(`3 = ${  JSON.stringify(res?.data)}`);
+                    // alert(`3 = ${  JSON.stringify(res?.data)}`);
 
                     if (data) {
                         let source = 'AppsFlyer';
