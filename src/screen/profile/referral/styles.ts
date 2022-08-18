@@ -28,6 +28,13 @@ export const MyStylesReferral = () => {
                 textAlign: 'center',
                 paddingLeft: 10
             },
+            textNoCommission: {
+                flex: 1,
+                ...Styles.typography.medium,
+                color: COLORS.GRAY_7,
+                textAlign: 'center',
+                paddingVertical: 50
+            },
             row: {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -52,15 +59,23 @@ export const MyStylesReferral = () => {
                 paddingVertical: 10,
                 paddingHorizontal: 5
             },
+            colContainerTotal: {
+                flexDirection: 'row',
+                paddingVertical: 10,
+                paddingHorizontal: 5,
+                marginBottom: 20,
+                backgroundColor: COLORS.GRAY_2
+            },
             colName: {
                 ...Styles.typography.medium,
                 color: COLORS.GRAY_7,
-                flex: 1.7
+                flex: 1.2,
+                textAlign: 'left'
             },
             colMoney: {
                 ...Styles.typography.medium,
                 color: COLORS.GRAY_7,
-                flex: 1,
+                flex: 1.2,
                 textAlign: 'right'
             },
             colCommission: {
@@ -69,20 +84,57 @@ export const MyStylesReferral = () => {
                 flex: 1,
                 textAlign: 'right'
             },
-            colNameC: {
-                ...Styles.typography.regular,
+            colNameTotal: {
+                ...Styles.typography.bold,
                 color: COLORS.GRAY_7,
-                flex: 1.7
+                flex: 1.2,
+                textAlign: 'left'
             },
-            colMoneyC: {
-                ...Styles.typography.regular,
+            colMoneyTotal: {
+                ...Styles.typography.bold,
+                color: COLORS.GRAY_7,
+                flex: 1.2,
+                textAlign: 'right'
+            },
+            colCommissionTotal: {
+                ...Styles.typography.bold,
                 color: COLORS.GRAY_7,
                 flex: 1,
                 textAlign: 'right'
             },
-            colCommissionC: {
+            colNameC: {
                 ...Styles.typography.regular,
                 color: COLORS.GRAY_7,
+                flex: 1.2,
+                textAlign: 'left'
+            },
+            colMoneyC: {
+                ...Styles.typography.regular,
+                color: COLORS.RED,
+                flex: 1.2,
+                textAlign: 'right'
+            },
+            colCommissionC: {
+                ...Styles.typography.regular,
+                color: COLORS.GREEN,
+                flex: 1,
+                textAlign: 'right'
+            },
+            colNameCTotal: {
+                ...Styles.typography.medium,
+                color: COLORS.RED,
+                flex: 1.2,
+                textAlign: 'left'
+            },
+            colMoneyCTotal: {
+                ...Styles.typography.medium,
+                color: COLORS.RED,
+                flex: 1.2,
+                textAlign: 'right'
+            },
+            colCommissionCTotal: {
+                ...Styles.typography.medium,
+                color: COLORS.GREEN,
                 flex: 1,
                 textAlign: 'right'
             },
@@ -95,6 +147,10 @@ export const MyStylesReferral = () => {
                 alignItems: 'center',
                 borderWidth: 1,
                 borderColor: COLORS.GRAY_11
+            },
+            note: {
+                marginHorizontal: 8,
+                marginBottom: 5
             },
         });
     }, []);

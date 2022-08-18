@@ -176,4 +176,7 @@ export class AuthServices extends BaseService {
     deleteAccount = async () => this.api().post(API_CONFIG.BLOCK_ACCOUNT, this.buildFormData({}));
 
     confirmDeleteAccount = async (otp: string, checksum?: string) => this.api().post(API_CONFIG.CONFIRM_BLOCK_ACCOUNT, this.buildFormData({ otp, checksum }));
+
+    getCommissionInfo = async (month: string, year: string) => this.api().post(API_CONFIG.COMMISSION_INVESTOR, 
+        this.buildFormData({ month, year }));
 }

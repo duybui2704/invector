@@ -384,11 +384,15 @@ const Languages = {
     },
     referralUsers: {
         title: 'Hoa hồng cho nhà đầu tư',
-        des: '<a><rn>*</rn>Chính sách chỉ áp dụng khi người được bạn giới thiệu có đầu tư vào TienNgay. Chính sách có hiệu lực từ ngày <b>15/08/2022</b></a>',
+        des: '<a><rn>*</rn>Số tiền hoa hồng được hiển thị trong tháng hiện tại là tạm tính và có thể thay đổi theo tổng số tiền đầu tư hàng tháng.\n<rn>*</rn>Chính sách chỉ áp dụng khi người được bạn giới thiệu có đầu tư vào TienNgay. Chính sách có hiệu lực từ ngày <b>15/08/2022</b>.</a>',
         tableDes: 'Chi tiết hoa hồng giới thiệu trong tháng %s',
+        colName0: 'Tổng đầu tư',
+        colMoney0: 'Tỷ lệ hoa hồng',
+        colCommission0: 'Tổng hoa hồng',
         colName: 'Họ và tên',
         colMoney: 'Tổng đầu tư',
-        colCommission: 'Hoa hồng'
+        colCommission: 'Hoa hồng',
+        noCommission: 'Bạn không có hoa hồng từ nhà đầu tư trong tháng %s'
     },
     detailInvest: {
         title: 'Chi tiết khoản đầu tư',
@@ -479,14 +483,14 @@ const Languages = {
         sendOTP: 'Gửi OTP',
         reSendOTP: 'Gửi lại mã OTP',
         verifyOTP: 'Xác nhận OTP',
-        noteVerifyOTP: '<p><r>Chú ý:</r> <s> Mã OTP đã được gửi về số điện thoại %phone, nhập mã OTP và xác nhận để liên kết tài khoản</s></p>',
+        noteVerifyOTP: '<p><r>Chú ý:</r> <s> Mã OTP đã được gửi qua cuộc gọi tới số điện thoại %phone, nhập mã OTP và xác nhận để liên kết tài khoản</s></p>',
         reSendCode: 'Gửi lại mã sau ',
         sendAgain: 'Gửi lại mã',
         sendAgainTime: 'sau',
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         popupOtpErrorTitle: 'Thông báo OTP',
         popupOtpErrorDescription: 'OTP không chính xác',
-        msgCallPhone: 'Mã xác thực đã được gửi đến số điện thoại %s1 qua cuộc gọi. Mã hết hiệu lực sau 01:00 phút.'
+        msgCallPhone: 'Mã xác thực đã được gửi đến số điện thoại %s1 qua cuộc gọi. Mã hết hiệu lực sau 03:00 phút.'
     },
     msgNotify: {
         successCancelLinkVimo: 'Bạn đã hủy liên kết với Vimo',
