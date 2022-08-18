@@ -36,7 +36,7 @@ const Invest = observer(({ route }: any) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const refModal = useRef<PopupActionTypes>(null);
     const refPopupPolicy = useRef<PopupActionTypes>(null);
-    const { apiServices } = useAppStore();
+    const { apiServices , userManager} = useAppStore();
     const [statusVimo, setStatusVimo] = useState<boolean>(false);
     const refInvestId = useRef<any>(null);
     const refScreen = useRef<any>(null);
@@ -233,7 +233,7 @@ const Invest = observer(({ route }: any) => {
                 idContract={dataInvestment?.id?.toString()}
                 getOTPcode={getOtpVimo}
                 ref={refModal}
-                title={Languages.otp.completionOtp}
+                title={Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(`${userManager.userInfo?.phone_number}`))}
             />
             <PopupConfirmPolicy
                 onConfirm={onConfirmPopup}

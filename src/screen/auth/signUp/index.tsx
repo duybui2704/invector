@@ -22,6 +22,8 @@ import OtpSignIn from '../otpSignIn';
 import Loading from '@/components/loading';
 import HideKeyboard from '@/components/HideKeyboard';
 import { MyTextInputKeyboardNavigation } from '@/components/elements/textfieldKeyboardNavigation';
+import ToastUtils from '@/utils/ToastUtils';
+import Utils from '@/utils/Utils';
 
 const SignUp = observer(() => {
     const { apiServices } = useAppStore();
@@ -125,10 +127,11 @@ const SignUp = observer(() => {
             const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, channel?.value, refCode);
             setLoading(false);
             if (res.success) {
+                ToastUtils.showSuccessToast(Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(phone)));
                 setNavigate(true);
             }
         }
-    }, [onValidate, apiServices.auth, phone, name, pass, passNew, email, channel?.value]);
+    }, [onValidate, apiServices.auth, phone, name, pass, passNew, email, channel?.value, refCode]);
 
     const onChangeChanel = (item: any) => {
         setChannel(item);

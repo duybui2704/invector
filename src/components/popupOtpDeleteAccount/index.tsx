@@ -20,7 +20,7 @@ interface PopupOTPProps extends PopupPropsTypes {
     resendOTP?: (phone: string) => any,
 }
 
-const TIME_OUT = 60
+const TIME_OUT = 60;
 
 export const PopupOtpDeleteAccount = forwardRef<
     PopupActionTypes,
@@ -70,6 +70,7 @@ export const PopupOtpDeleteAccount = forwardRef<
 
     const hide = useCallback(() => {
         setVisible(false);
+        setErrMsg('');
         _onCancel();
     }, [_onCancel]);
 
@@ -85,7 +86,7 @@ export const PopupOtpDeleteAccount = forwardRef<
             hide();
             onConfirm?.();
         }
-    }, [resendOTP, phone]);
+    }, [apiServices.auth, hide, onConfirm]);
 
     useEffect(() => {
         if (pin.toString().length === 4) {
@@ -96,7 +97,7 @@ export const PopupOtpDeleteAccount = forwardRef<
     const onChangeCode = useCallback((code: string) => {
         setPin(code);
         setErrMsg('');
-    }, [pin]);
+    }, []);
 
     const onResend = useCallback(async () => {
         const res = await apiServices.auth.deleteAccount();
@@ -105,7 +106,7 @@ export const PopupOtpDeleteAccount = forwardRef<
         }
         setStartCount(true);
         setTimer(TIME_OUT);
-    }, [resendOTP, phone]);
+    }, [apiServices.auth]);
 
     const renderResend = useMemo(() => {
         if (startCount) {
@@ -193,7 +194,7 @@ export const PopupOtpDeleteAccount = forwardRef<
                     </Touchable>
                     <LogoOtpInvest width={200} />
                     <Text style={styles.title}>{Languages.otp.title}</Text>
-                    <Text style={styles.txt}>{Languages.maintain.completionOtpDelete}</Text>
+                    <Text style={styles.txt}>{Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(`${userManager.userInfo?.phone_number}`))}</Text>
                     <>
                         <Animated.View style={containerStyle} >
                             <View style={styles.boxOtp}>

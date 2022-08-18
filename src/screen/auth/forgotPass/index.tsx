@@ -15,6 +15,8 @@ import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import FormValidate from '@/utils/FormValidate';
 import OtpSignIn from '../otpSignIn';
 import { MyStylesForgotPass } from './styles';
+import ToastUtils from '@/utils/ToastUtils';
+import Utils from '@/utils/Utils';
 
 const ForgotPass = observer(() => {
     const {
@@ -43,8 +45,12 @@ const ForgotPass = observer(() => {
         if (onValidate()) {
             setLoading(true);
             const resForgotOTP = await apiServices.auth.otpResetPwd(phone);
+            
             setLoading(false);
-            if (resForgotOTP.success) setNavigate(false);
+            if (resForgotOTP.success) {
+                ToastUtils.showSuccessToast(Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(phone)));
+                setNavigate(false);
+            }
         }
     };
 

@@ -73,6 +73,7 @@ export const PopupOTPLogin = forwardRef<
 
     const hide = useCallback(() => {
         setVisible(false);
+        setErrMsg('');
         _onCancel();
     }, [_onCancel]);
 
@@ -85,11 +86,11 @@ export const PopupOTPLogin = forwardRef<
 
     useEffect(() => {
         if (pin.toString().length === 6) {
-            onPressConfirm(pin);
+            onPressConfirm?.(pin);
         }
     }, [pin]);
 
-    const setErrorMsg = useCallback((err) => {
+    const setErrorMsg = useCallback((err: any) => {
         refPhone.current?.setErrorMsg(err);
     }, []);
 
@@ -108,16 +109,16 @@ export const PopupOTPLogin = forwardRef<
             setStartCount(true);
             setTimer(60);
         }
-    }, [getOTPcode, hide, onValidate, phone]);
+    }, [getOTPcode, onValidate, phone]);
 
     const onChangeText = useCallback((value: string) => {
         setPhone(value);
-    }, [phone]);
+    }, []);
 
     const onChangeCode = useCallback((code: string) => {
         setPin(code);
         setErrMsg('');
-    }, [pin]);
+    }, []);
 
     const onResend = useCallback(async () => {
         await getOTPcode?.(phone);
@@ -219,7 +220,7 @@ export const PopupOTPLogin = forwardRef<
                     </Touchable>
                     <LogoOtpInvest width={200} />
                     <Text style={styles.title}>{!common.successGetOTP ? Languages.otp.accuracyPhone : Languages.otp.title}</Text>
-                    <Text style={styles.txt}>{!common.successGetOTP ? Languages.otp.completionPhoneLogin : Languages.otp.completionOtpLogin}</Text>
+                    <Text style={styles.txt}>{!common.successGetOTP ? Languages.otp.completionPhoneLogin : Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(phone))}</Text>
                     {!common.successGetOTP ?
                         <>
                             <MyTextInput

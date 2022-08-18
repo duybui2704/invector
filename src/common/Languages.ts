@@ -117,8 +117,8 @@ const Languages = {
         accuracyNow: 'Xác thực ngay',
         logout: 'Đăng xuất',
         waitVerify: 'Tài khoản đang chờ xác thực',
-        logoutNotice: 'Bạn có chắc chắn muốn đăng xuất không?'
-
+        logoutNotice: 'Bạn có chắc chắn muốn đăng xuất không?',
+        face: 'Face'
     },
     report: {
         title: 'Báo cáo',
@@ -153,7 +153,8 @@ const Languages = {
         send: 'Gửi',
         ratedNote: 'Bạn không thể đánh giá lại vì đã đánh giá trước đó!',
         contract: 'Hợp đồng ',
-        skip: 'Bỏ qua'
+        skip: 'Bỏ qua',
+        fileDir: 'file://'
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng TienNgay.vn',
@@ -322,7 +323,13 @@ const Languages = {
         confirmKYC: 'Xác thực giấy tờ',
         noteTopIdentify: '<p><r>Chú ý:</r><s> Tài khoản của bạn đã được xác thực thành công, bạn không thể thực hiện xác thực lại.</s>',
         waitVerify: 'Chờ xác minh chứng từ',
-        waitVerifyContent: 'Chứng từ của bạn đang được xác minh, bạn có thể tiến hành đầu tư sau khi chứng từ đã được xác thực'
+        waitVerifyContent: 'Chứng từ của bạn đang được xác minh, bạn có thể tiến hành đầu tư sau khi chứng từ đã được xác thực',
+        capturePerson: 'Chụp ảnh chân dung',
+        noteCapturePerson:'Chụp cận mặt, rõ, thẳng góc, không bị che, không chụp quá xa. Không chụp chân dung từ ảnh,  màn hình thiết bị điện tử.',
+        confirmCapturePerson: 'Sử dụng chân dung của bạn để nhận dạng chứng từ ?',
+        captureCard: 'Chụp ảnh chứng từ',
+        noteCaptureCard:'Mặt trước rõ, đủ 4 góc. Không chụp giấy tờ tuỳ thân photo, chụp thông qua màn hình thiết bị điện tử.',
+        confirmCaptureCard: 'Sử dụng Chứng từ của bạn để nhận dạng chứng từ ?'
     },
     otp: {
         keyOtp: 'Xác nhận ',
@@ -381,7 +388,7 @@ const Languages = {
         tableDes: 'Chi tiết hoa hồng giới thiệu trong tháng %s',
         colName: 'Họ và tên',
         colMoney: 'Tổng đầu tư',
-        colCommission: 'Hoa hồng',
+        colCommission: 'Hoa hồng'
     },
     detailInvest: {
         title: 'Chi tiết khoản đầu tư',
@@ -478,7 +485,8 @@ const Languages = {
         sendAgainTime: 'sau',
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         popupOtpErrorTitle: 'Thông báo OTP',
-        popupOtpErrorDescription: 'OTP không chính xác'
+        popupOtpErrorDescription: 'OTP không chính xác',
+        msgCallPhone: 'Mã xác thực đã được gửi đến số điện thoại %s1 qua cuộc gọi. Mã hết hiệu lực sau 01:00 phút.'
     },
     msgNotify: {
         successCancelLinkVimo: 'Bạn đã hủy liên kết với Vimo',
@@ -538,7 +546,7 @@ const Languages = {
         update: 'Đồng ý',
         deleteAccount: 'Xoá tài khoản',
         deleteAccountConfirm: 'Bạn có chắc chắn muốn xoá tài khoản không?\nSau khi xoá tài khoản, bạn không thể đăng nhập vào ứng dụng được nữa. Vui lòng liên hệ 1900 6907 để được hỗ trợ.',
-        completionOtpDelete: 'Hãy xác nhận mã OTP chúng tôi đã gửi cho bạn để hoàn thành việc xoá tài khoản.',
-    },
+        completionOtpDelete: 'Hãy xác nhận mã OTP chúng tôi đã gửi cho bạn để hoàn thành việc xoá tài khoản.'
+    }
 };
 export default Languages;

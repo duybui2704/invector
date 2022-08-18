@@ -14,6 +14,8 @@ import Navigator from '@/routers/Navigator';
 import { MyStylesOtp } from '@/screen/auth/otpSignIn/styles';
 import ChangePass from '../changePass';
 import { COLORS } from '@/theme';
+import ToastUtils from '@/utils/ToastUtils';
+import Utils from '@/utils/Utils';
 
 const OtpSignIn = (props: any) => {
     let timer = 0;
@@ -96,6 +98,7 @@ const OtpSignIn = (props: any) => {
         if (!props?.isChangePass) {
             const resSendOTP = await apiServices.auth.otpResendToken(phone);
             if (resSendOTP.success) {
+                ToastUtils.showSuccessToast(Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(phone)));
                 setCheck(true);
                 setIsActive(true);
                 timer = getTime() + 60;
@@ -104,6 +107,7 @@ const OtpSignIn = (props: any) => {
         } else {
             const resSendOTP = await apiServices.auth.otpResetPwd(phone);
             if (resSendOTP.success) {
+                ToastUtils.showSuccessToast(Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(phone)));
                 setCheck(true);
                 setIsActive(true);
                 timer = getTime() + 60;

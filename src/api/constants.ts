@@ -24,6 +24,7 @@ export enum API_CONFIG {
 
     // BASE_URL = 'https://sandboxappndt.tienngay.vn/V2/',
     BASE_URL = 'https://appndt.tienngay.vn/V2/',
+    // BASE_URL = 'https://appndt.tienvui.vn/V2/',
 
     // common
     GET_BANNERS = '/banner/news', // banner app

@@ -9,6 +9,7 @@ import React, {
 import { SafeAreaView, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
 import DatePicker, { DatePickerProps } from 'react-native-date-picker';
 import { useIsFocused } from '@react-navigation/native';
+import MonthPicker from 'react-native-month-year-picker';
 
 import ICCalender from '@/assets/image/ic_calender.svg';
 import { Configs } from '@/common/Configs';
@@ -17,7 +18,6 @@ import { Touchable } from './elements/touchable';
 import DateUtils from '@/utils/DateUtils';
 import { COLORS, Styles } from '@/theme';
 import { useAppStore } from '@/hooks';
-import MonthPicker from 'react-native-month-year-picker';
 
 interface DatePickerTransactionProps extends DatePickerProps {
     title?: string;

@@ -56,6 +56,7 @@ export const PopupInvestOTP = forwardRef<
         setStartCount(true);
         setTimer(0);
         setPin('');
+        setErrMsg('');
     }, []);
 
     const show = useCallback(() => {

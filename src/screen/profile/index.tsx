@@ -541,12 +541,12 @@ const Profile = observer(() => {
                     onPress={onPopupLogout}
                     isLowerCase
                 />
-                <Button label={`${Languages.maintain.deleteAccount}`}
+                {isIOS && <Button label={`${Languages.maintain.deleteAccount}`}
                     style={styles.wrapBtn}
                     buttonStyle={BUTTON_STYLES.GRAY_RED}
                     onPress={onOpenPopupDeleteAccount}
                     isLowerCase
-                />
+                />}
             </ScrollView>
             {popupUpdatePassCode}
             {renderPopupError}
