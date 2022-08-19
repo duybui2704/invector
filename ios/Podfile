@@ -13,6 +13,11 @@ target 'investorV2' do
     :hermes_enabled => false
   )
 
+  pod 'Firebase', :modular_headers => true
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+
   permissions_path = '../node_modules/react-native-permissions/ios'
      pod 'Permission-Camera', :path => "#{permissions_path}/Camera/Permission-Camera.podspec"
      pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary/Permission-PhotoLibrary.podspec"

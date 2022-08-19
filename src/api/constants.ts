@@ -80,6 +80,8 @@ export enum API_CONFIG {
     LIST_CONTRACT_INVESTING = '/contract/contract_investor_disbursement',
     LIST_TIME_INVESTMENT = '/contract/loan_cycle',
     LIST_MONEY_INVESTMENT = '/contract/select_money_investor',
+    INVEST_BANK = 'contract/investment_bank_ngan_luong',  // xem thong tin banking
+    CHECK_BILL = 'contract/check_bill',  // check_bill
 
     // link account with payment method
     REQUEST_SEND_VIMO_LINK = 'vimo_link/send_link_vimo',    // gui lien ket vimo

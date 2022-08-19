@@ -79,13 +79,16 @@ export interface HistoryModel{
     so_tien: string,
     trang_thai: string
 }
+
 export interface BankInformationModel {
-    account: string;
+    key: number,
+    url: string,
     bin: string;
+    account: string;
+    bank_code: string;
     description: string;
     money: string;
     name_account: string;
     name_bank: string;
+    id: string;
 }
-
-

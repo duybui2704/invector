@@ -5,5 +5,6 @@ export enum BUTTON_STYLES {
     BLUE ='BLUE',
     WHITE='WHITE',
     BLUE_1='BLUE_1',
-    GRAY_RED = 'GRAY_RED'
+    GRAY_RED = 'GRAY_RED',
+    LIGHT_GREEN = 'LIGHT_GREEN'
 }

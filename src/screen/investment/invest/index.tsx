@@ -20,7 +20,7 @@ import Loading from '@/components/loading';
 import PopupConfirmPolicy from '@/components/PopupConfirmPolicy';
 import { PopupInvestOTP } from '@/components/popupOTP';
 import { useAppStore } from '@/hooks';
-import { CheckVimoWalletModel, InvestorInfoModel, PackageInvest } from '@/models/invest';
+import { BankInformationModel, CheckVimoWalletModel, InvestorInfoModel, PackageInvest } from '@/models/invest';
 import { PopupActionTypes } from '@/models/typesPopup';
 import Navigator from '@/routers/Navigator';
 import { MyStylesInvest } from '@/screen/investment/invest/styles';
@@ -36,7 +36,7 @@ const Invest = observer(({ route }: any) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const refModal = useRef<PopupActionTypes>(null);
     const refPopupPolicy = useRef<PopupActionTypes>(null);
-    const { apiServices , userManager} = useAppStore();
+    const { apiServices, userManager } = useAppStore();
     const [statusVimo, setStatusVimo] = useState<boolean>(false);
     const refInvestId = useRef<any>(null);
     const refScreen = useRef<any>(null);
@@ -100,13 +100,19 @@ const Invest = observer(({ route }: any) => {
     }, []);
 
     const onInvest = useCallback(async () => {
-        if(methodPayment===ENUM_METHOD_PAYMENT.BANK)
-        {
-            Navigator.navigateScreen(ScreenName.transferScreen);
+        if (methodPayment === ENUM_METHOD_PAYMENT.BANK) {
+            setIsLoading(true);
+            const resPayment = await apiServices.invest.getInvestBankInfo(dataInvestment?.id?.toString() || '', Platform.OS);
+            setIsLoading(false);
+
+            const bankInfo = resPayment?.data?.bill as BankInformationModel;
+            if (resPayment.success && bankInfo.id) {
+                Navigator.pushScreen(ScreenName.transferScreen, bankInfo);
+            }
             return;
         }
-        const res = await apiServices.invest.getInfoInvest();
         setIsLoading(true);
+        const res = await apiServices.invest.getInfoInvest();
         if (res?.success) {
             const data = res.data as InvestorInfoModel;
             if (data?.tra_lai && !data?.tra_lai?.type_interest_receiving_account) {
@@ -168,7 +174,8 @@ const Invest = observer(({ route }: any) => {
         } as ViewStyle;
 
         return (
-            <Touchable onPress={onPress} style={[styles.wrapItemMethod, borderColor]}>
+            <Touchable onPress={onPress} style={[styles.wrapItemMethod, borderColor]}
+                radius={20}>
                 {icon}
                 <View style={styles.wrapLabel}>
                     <Text style={styles.txtMethod}>{label}</Text>
@@ -203,9 +210,10 @@ const Invest = observer(({ route }: any) => {
                 <Text style={styles.labelMoney}>{Languages.detailInvest.money}</Text>
                 <Text style={styles.money}>{Utils.formatMoney(dataInvestment?.so_tien_dau_tu)}</Text>
                 <Text style={styles.headerText}>{Languages.detailInvest.method}</Text>
-                {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, statusVimo)}
                 {renderMethod(<IcNganLuong />, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
                 {renderMethod(<IcBank />, Languages.detailInvest.bank, ENUM_METHOD_PAYMENT.BANK)}
+                {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, statusVimo)}
+                
                 <View style={styles.viewBottom}>
                     <Touchable onPress={checkBox}>
                         {!isCheckBox ? <IcCheckBoxOff width={25} height={25} /> : <IcCheckBoxOn width={25} height={25} />}

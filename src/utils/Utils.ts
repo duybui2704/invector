@@ -4,6 +4,7 @@ import { Linking, Platform, Share } from 'react-native';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 
 import Validate from './Validate';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const MIN_INPUT = 10e5;
 const MAX_INPUT = 10e8;
@@ -240,6 +241,11 @@ function updateSuggestions(text: string) {
     return suggest;
 }
 
+function copyClipboard(text: string) {
+    if (!text) return;
+    Clipboard.setString(text);
+}
+
 export default {
     formatTextToNumber,
     capitalizeFirstLetter,
@@ -258,5 +264,6 @@ export default {
     getFcmToken,
     convertSecondToMinutes,
     formatForEachWordCase,
-    updateSuggestions
+    updateSuggestions,
+    copyClipboard
 };

@@ -55,6 +55,9 @@ export const useStyleButton = () => {
                 },
                 grayRedBtn:{
                     backgroundColor: COLORS.GRAY_13
+                },
+                lightGreen:{
+                    backgroundColor: COLORS.LIGHT_GREEN
                 }
             }),
         []

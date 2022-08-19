@@ -11,6 +11,7 @@ export type PopupActions = {
     hide?: (content?: string) => any;
     setContent?: (message: string) => void;
     setErrorMsg?: (msg?: string) => void;
+    showAlert?: (title?: string, content?: string) => any;
 };
 
 

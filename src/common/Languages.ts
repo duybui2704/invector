@@ -154,6 +154,7 @@ const Languages = {
         ratedNote: 'Bạn không thể đánh giá lại vì đã đánh giá trước đó!',
         contract: 'Hợp đồng ',
         skip: 'Bỏ qua',
+        or: 'Hoặc',
         fileDir: 'file://'
     },
     introduce: {
@@ -234,7 +235,10 @@ const Languages = {
         errNotNumberATM: 'Số thẻ ATM phải là kí tự số',
         uploading: 'Đang tải ảnh lên',
         uploadingError: 'Tải ảnh thất bại',
-        emptyRatingPoint: 'Bạn cần phải đánh số sao để đánh giá'
+        emptyRatingPoint: 'Bạn cần phải đánh số sao để đánh giá',
+        qrCodeDownloaded: 'Đã tải ảnh Qr-Code thành công',
+        copied: 'Đã sao chép',
+        topupSuccess: 'TienNgay đã nhận được khoản tiền của bạn.',
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
@@ -533,9 +537,19 @@ const Languages = {
         copy: 'Sao chép',
         alert: 'Nếu nội dung chuyển khoản thiếu hoặc không chính xác. Chúng tôi sẽ không thể nhận ra giao dịch của bạn.',
         or: 'Hoặc thực hiện scan mã Qr code sau:',
-        company: 'Cong ty co phan cong nghe Tai Chinh Viet',
+        company: 'Cong ty co phan cong nghe tai chinh TienNgay',
         bankName: 'Ngân hàng',
-        bankAccount: 'Số tài khoản'
+        bankAccount: 'Số tài khoản',
+        downloadQrCode: 'Tải ảnh QR-Code',
+        pending: 'Giao dịch đang chờ xử lý',
+        pendingContent: 'Giao dịch của bạn sẽ được xử lý trong vòng 10 phút kể từ khi chuyển khoản',
+        transferred: 'Tôi đã chuyển khoản',
+        transferLater: 'Tôi sẽ chuyển khoản sau',
+        transferredTitle: 'Cảm ơn bạn đã nạp tiền',
+        transferredContent: 'TienNgay sẽ gửi thông báo tới bạn sau vài phút ngay khi tài khoản của bạn nhận được tiền',
+        transferLaterTitle: 'Lệnh nạp tiền đang chờ',
+        transferLaterContent: 'Lệnh nạp tiền vẫn đang chờ bạn chuyển khoản. Bạn có thể xem lại lệnh nạp tiền của mình trong lịch sử giao dịch và nạp tiền bất cứ lúc nào.',
+        goHome: 'Trở về trang chủ'
     },
     update: {
         title: 'Cập nhật phiên bản mới',

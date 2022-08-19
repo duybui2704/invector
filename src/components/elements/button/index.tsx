@@ -50,6 +50,9 @@ export const Button = ({
             case BUTTON_STYLES.GRAY_RED:
                 containerStyle = styles.grayRedBtn;
                 break;
+            case BUTTON_STYLES.LIGHT_GREEN:
+                containerStyle = styles.lightGreen;
+                break;
             case BUTTON_STYLES.GRAY:
             default:
                 containerStyle = styles.grayButton;
@@ -87,6 +90,9 @@ export const Button = ({
                 break;
             case BUTTON_STYLES.GRAY_RED:
                 color = COLORS.RED_2;
+                break;
+            case BUTTON_STYLES.LIGHT_GREEN:
+                color = COLORS.GREEN;
                 break;
             case BUTTON_STYLES.GRAY:
             default:

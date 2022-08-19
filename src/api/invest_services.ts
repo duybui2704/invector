@@ -52,4 +52,11 @@ export class InvestServices extends BaseService {
     getListTimeInvestment = async () => this.api().post(API_CONFIG.LIST_TIME_INVESTMENT, this.buildFormData({}));
 
     getListMoneyInvestment = async () => this.api().post(API_CONFIG.LIST_MONEY_INVESTMENT, this.buildFormData({}));
+
+    getInvestBankInfo = async (id: string, platform: string) => this.api().post(API_CONFIG.INVEST_BANK, this.buildFormData({
+        contract_id: id,
+        client_code: platform
+    }));
+
+    checkBill = async (bill_id: string) => this.api().post(API_CONFIG.CHECK_BILL, this.buildFormData({bill_id}));
 }
