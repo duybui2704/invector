@@ -194,7 +194,7 @@ const Languages = {
         txtChange: 'Thay đổi mật khẩu của bạn và đăng nhập lại',
         change: 'Thay đổi',
         succuss: 'Đăng ký thành công',
-        notifySuccess: 'Chúc mừng bạn đã đăng ký thành công TienNgay.vn Đầu tư & Tích luỹ. Tiến hành đầu tư ngay và nhận lãi khủng hàng tháng.',
+        notifySuccess: 'Chúc mừng bạn đã đăng ký thành công Đầu tư Tiện ngay. Tiến hành đầu tư ngay và nhận lãi khủng hàng tháng.',
         continue: 'Tiếp tục',
         successChangePass: 'Đổi mật khẩu thành công !',
         done: 'Xong'
@@ -257,8 +257,8 @@ const Languages = {
         passcodeConfirm:
             'Quý khách có muốn sử dụng mã pin làm phương thức xác thực chính',
         description: 'Đăng nhập bằng vân tay của bạn',
-        useFaceID: 'Sử dụng Face ID để đăng nhập vào Đầu tư và tích luỹ',
-        useTouchID: 'Sử dụng Touch ID để đăng nhập vào  Đầu tư và tích luỹ',
+        useFaceID: 'Sử dụng Face ID để đăng nhập vào Đầu tư Tiện Ngay',
+        useTouchID: 'Sử dụng Touch ID để đăng nhập vào  Đầu tư Tiện Ngay',
 
         goToSetting: 'Cài đặt',
         desSetPasscode: 'Vui lòng thêm mã PIN để cài đặt xác thực nhanh',
@@ -382,7 +382,7 @@ const Languages = {
     },
     shareFriend: {
         introduce: 'Giới thiệu',
-        introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà lên tới 40 triệu đồng tới từ</c> <g>TienNgay.vn</g><c> Đầu tư & Tích luỹ</c></t>',
+        introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà lên tới 40 triệu đồng tới từ</c> <g>TienNgay.vn</g><c> Đầu tư Tiện ngay</c></t>',
         introduceCode: 'Mã giới thiệu của bạn',
         qrCode: 'Qr code tải app'
     },
@@ -517,7 +517,7 @@ const Languages = {
     },
     loginWithBiometry: {
         hello: '<e>Xin chào,</e>',
-        description: '<n><i>Chào mừng bạn quay trở lại với</i><g1> TienNgay.vn Đầu tư & Tích luỹ </g1><i> hãy đăng nhập nào</i></n>',
+        description: '<n><i>Chào mừng bạn quay trở lại với</i><g1> Đầu tư Tiện ngay </g1><i> hãy đăng nhập nào</i></n>',
         loginWithOther: 'Đăng nhập với tài khoản khác'
     },
     biometry: {

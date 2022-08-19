@@ -29,6 +29,7 @@ import Navigator from '@/routers/Navigator';
 import { COLORS, HtmlStyles } from '@/theme';
 import StorageUtils from '@/utils/StorageUtils';
 import { MyStylesLogin } from './styles';
+import HideKeyboard from '@/components/HideKeyboard';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -142,7 +143,7 @@ const LoginWithBiometry = observer(() => {
 
 
     const onLoginPhone = useCallback(async () => {
-        const res = await apiServices.auth.loginPhone(SessionManager?.userInfo?.phone_number||'', pass);
+        const res = await apiServices.auth.loginPhone(SessionManager?.userInfo?.phone_number || '', pass);
 
         if (res.success) {
             setLoading(false);
@@ -150,7 +151,7 @@ const LoginWithBiometry = observer(() => {
             SessionManager.setAccessToken(resData?.token);
             const resInfoAcc = await apiServices.auth.getUserInfo();
             if (resInfoAcc.success) {
-                
+
                 fastAuthInfo.setEnableFastAuthentication(false);
                 const data = resInfoAcc?.data as UserInfoModal;
                 setUserData(data);
@@ -247,47 +248,49 @@ const LoginWithBiometry = observer(() => {
     }, [animationConfigs, checkPin, onLoginSuccessWithPIn, styles.wrapPin]);
 
     return (
-        <View style={styles.content}>
-            <View style={styles.wrapLoginTxt}>
-                <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
-                <IcLine />
-            </View>
-            {!userManager.userInfo?.avatar_user ?
-                <AvatarIC style={styles.circleWrap} />
-                :
-                <FastImage
-                    style={styles.circleWrap}
-                    source={{
-                        uri: userManager.userInfo?.avatar_user
-                    }}
-                    resizeMode={FastImage.resizeMode.cover}
-                />
-            }
-            <HTMLView
-                value={`<p>${Languages.loginWithBiometry.hello} <g>${userManager.userInfo?.full_name || ''}</g>` + '</p>'}
-                stylesheet={HtmlStyles || undefined} />
-            <HTMLView
-                value={Languages.loginWithBiometry.description}
-                stylesheet={HtmlStyles || undefined} />
-            {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true)}
-            <View style={styles.rowInfo}>
-                <Touchable onPress={onLoginOther} style={styles.checkbox}>
-                    <ArrowIc />
-                    <Text style={styles.txtSave}>{Languages.loginWithBiometry.loginWithOther}</Text>
-                </Touchable>
-                <View style={styles.wrapBt}>
-                    <Touchable onPress={onLoginPhone}
-                        style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
-                        <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                            {Languages.auth.txtLogin}
-                        </Text>
-                    </Touchable>
-                    {renderSupportedBio}
+        <HideKeyboard>
+            <View style={styles.content}>
+                <View style={styles.wrapLoginTxt}>
+                    <Text style={styles.txtTitle}>{Languages.auth.txtLogin}</Text>
+                    <IcLine />
                 </View>
+                {!userManager.userInfo?.avatar_user ?
+                    <AvatarIC style={styles.circleWrap} />
+                    :
+                    <FastImage
+                        style={styles.circleWrap}
+                        source={{
+                            uri: userManager.userInfo?.avatar_user
+                        }}
+                        resizeMode={FastImage.resizeMode.cover}
+                    />
+                }
+                <HTMLView
+                    value={`<p>${Languages.loginWithBiometry.hello} <g>${userManager.userInfo?.full_name || ''}</g>` + '</p>'}
+                    stylesheet={HtmlStyles || undefined} />
+                <HTMLView
+                    value={Languages.loginWithBiometry.description}
+                    stylesheet={HtmlStyles || undefined} />
+                {renderInput(refPass, pass, false, Languages.auth.txtPass, arrayIcon.login.pass, 'DEFAULT', 50, true)}
+                <View style={styles.rowInfo}>
+                    <Touchable onPress={onLoginOther} style={styles.checkbox}>
+                        <ArrowIc />
+                        <Text style={styles.txtSave}>{Languages.loginWithBiometry.loginWithOther}</Text>
+                    </Touchable>
+                    <View style={styles.wrapBt}>
+                        <Touchable onPress={onLoginPhone}
+                            style={checked ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                            <Text style={checked ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                                {Languages.auth.txtLogin}
+                            </Text>
+                        </Touchable>
+                        {renderSupportedBio}
+                    </View>
+                </View>
+                {renderPinCode}
+                {isLoading && <Loading isOverview />}
             </View>
-            {renderPinCode}
-            {isLoading && <Loading isOverview />}
-        </View>
+        </HideKeyboard>
     );
 });
 

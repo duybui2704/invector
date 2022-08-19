@@ -57,7 +57,7 @@ export const MyStylesNotifyInvest = () => {
                 borderWidth: 1,
                 borderColor: COLORS.GRAY_11,
                 marginBottom: 8,
-                opacity: 0.5
+                opacity: 0.7
             },
             rowTop: {
                 flexDirection: 'row',
