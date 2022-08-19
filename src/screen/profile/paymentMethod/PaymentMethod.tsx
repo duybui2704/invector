@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import BankIC from '@/assets/image/ic_bank.svg';
@@ -16,12 +16,31 @@ import { useAppStore } from '@/hooks';
 import { TYPE_INTEREST_RECEIVE_ACC } from '@/common/constants';
 import ToastUtils from '@/utils/ToastUtils';
 import Loading from '@/components/loading';
+import { UserInfoModal } from '@/models/user-models';
 
 const PaymentMethod = observer(({ route }: any) => {
-    console.log('route aaaa:', route.params);
     const { apiServices, userManager } = useAppStore();
     const styles = MyStylesPaymentMethod();
     const [isLoading, setLoading] = useState<boolean>(false);
+    const [isSelectingBank, setSelectingBank] = useState<boolean>(false);
+    const [isSelectingVimo, setSelectingVimo] = useState<boolean>(false);
+
+    useEffect(() => {
+        setSelectingBank(userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.BANK)
+        setSelectingVimo(userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.VIMO)
+    }, [userManager.userInfo?.tra_lai?.type_interest_receiving_account])
+
+    const fetchUserInfo = useCallback(async () => {
+        const resUser = await apiServices.auth.getUserInfo();
+        setLoading(false);
+        if (resUser.success) {
+            const user = resUser.data as UserInfoModal;
+            userManager.updateUserInfo({
+                ...userManager.userInfo,
+                ...user
+            });
+        }
+    }, [])
 
     const renderStateLink = useCallback((status?: boolean) => {
         return (
@@ -52,11 +71,13 @@ const PaymentMethod = observer(({ route }: any) => {
     const onChangeMethodVimo = useCallback(async () => {
         setLoading(true);
         const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest(TYPE_INTEREST_RECEIVE_ACC.VIMO);
+
         if (res.success) {
-            setLoading(false);
+            fetchUserInfo();
             ToastUtils.showSuccessToast(Languages.msgNotify.successChangeMethod);
+        } else {
+            setLoading(false);
         }
-        setLoading(false);
     }, [apiServices.paymentMethod]);
 
     const renderItemMethod = useCallback((leftIcon?: any, title?: string, activeMethod?: boolean, disabled?: boolean) => {
@@ -93,7 +114,6 @@ const PaymentMethod = observer(({ route }: any) => {
             route.params.goback();
         }
         if (route?.params?.screen) {
-            console.log('aaaa');
             Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.invest);
             return;
         }
@@ -105,16 +125,8 @@ const PaymentMethod = observer(({ route }: any) => {
             <HeaderBar isLight={false} title={Languages.account.payMethod} hasBack onBackPressed={onGoBack} />
             <View style={styles.wrapAllContent}>
                 <Text style={styles.txtMethodChoose}>{Languages.paymentMethod.methodChoose}</Text>
-                {renderItemMethod(<VimoIC />,
-                    Languages.paymentMethod.vimo,
-                    userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.VIMO,
-                    userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.VIMO
-                )}
-                {renderItemMethod(<BankIC />,
-                    Languages.paymentMethod.bank,
-                    userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.BANK,
-                    false
-                )}
+                {renderItemMethod(<VimoIC />, Languages.paymentMethod.vimo, isSelectingVimo, isSelectingVimo)}
+                {renderItemMethod(<BankIC />, Languages.paymentMethod.bank, isSelectingBank, false)}
             </View>
             {isLoading && <Loading isOverview />}
         </View >

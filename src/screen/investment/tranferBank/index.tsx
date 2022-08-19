@@ -25,10 +25,10 @@ const vietQR = new VietQR({
 const info = {
     name_account: 'DINH TRUONG GIANG',
     bin: '970432',
-    account:'318989788',
-    description:'Chuyển tiền bún đậu',
-    money:'1000000',
-    name_bank:'VP Bank'
+    account: '318989788',
+    description: 'Chuyển tiền bún đậu',
+    money: '1000000',
+    name_bank: 'VP Bank'
 };
 
 const TransferScreen = observer(({ route }: any) => {
@@ -91,9 +91,9 @@ const TransferScreen = observer(({ route }: any) => {
         );
     }, []);
 
-    const onGoBack = useCallback(()=>{
+    const onGoBack = useCallback(() => {
         Navigator.goBack();
-    },[]);
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -126,7 +126,7 @@ const TransferScreen = observer(({ route }: any) => {
                     </View>
                     <Text style={styles.label}>{Languages.transferScreen.or}</Text>
                     <View style={styles.wrapQr}>
-                        {!!link&&<MyImageView
+                        {!!link && <MyImageView
                             style={styles.qr}
                             imageUrl={link}
                             resizeMode={'stretch'}

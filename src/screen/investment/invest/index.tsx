@@ -205,7 +205,7 @@ const Invest = observer(({ route }: any) => {
                 <Text style={styles.headerText}>{Languages.detailInvest.method}</Text>
                 {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, statusVimo)}
                 {renderMethod(<IcNganLuong />, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
-                {/* {renderMethod(<IcBank />, Languages.detailInvest.bank, ENUM_METHOD_PAYMENT.BANK)} */}
+                {renderMethod(<IcBank />, Languages.detailInvest.bank, ENUM_METHOD_PAYMENT.BANK)}
                 <View style={styles.viewBottom}>
                     <Touchable onPress={checkBox}>
                         {!isCheckBox ? <IcCheckBoxOff width={25} height={25} /> : <IcCheckBoxOn width={25} height={25} />}

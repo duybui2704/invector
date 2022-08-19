@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ScrollView, Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import MonthPicker from 'react-native-month-year-picker';
 
