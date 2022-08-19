@@ -32,7 +32,8 @@ export const ScreenName = {
     paymentWebview:'PaymentWebview',
     linkWallet: 'LinkWallet',
     transferScreen:'TransferScreen',
-    packageInvestStack:'PackageInvestStack'
+    packageInvestStack:'PackageInvestStack',
+    faceDetect:'FaceDetect'
 };
 
 export default ScreenName;

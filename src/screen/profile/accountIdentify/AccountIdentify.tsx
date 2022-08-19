@@ -1,14 +1,16 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import HTMLView from 'react-native-htmlview';
+import Dash from 'react-native-dash';
+import FastImage from 'react-native-fast-image';
 
 import AfterIC from '@/assets/image/ic_identify_after.svg';
 import BeforeIC from '@/assets/image/ic_identify_before.svg';
 import AvatarIC from '@/assets/image/ic_KYC_avatar.svg';
 import WarnIC from '@/assets/image/ic_warn_round_yellow.svg';
-import { noteAvatar, noteKYC, STATE_VERIFY_ACC } from '@/common/constants';
+import { ENUM_TYPE_CAMERA, ENUM_TYPE_CARD_CAMERA, noteAvatar, noteKYC, STATE_VERIFY_ACC } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
@@ -16,29 +18,31 @@ import { TextFieldActions } from '@/components/elements/textfield/types';
 import { MyTextInput } from '@/components/elements/textfield/index';
 import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
-import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
-import { typePhoto } from '@/mocks/data';
 import { PopupActionTypes } from '@/models/typesPopup';
-import { HtmlStyles } from '@/theme';
+import { COLORS, HtmlStyles } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
 import ImageUtils from '@/utils/ImageUtils';
 import { MyStylesAccountIdentify } from './styles';
 import SessionManager from '@/manager/SessionManager';
 import { useAppStore } from '@/hooks';
 import ToastUtils from '@/utils/ToastUtils';
-import { UpLoadImage } from '@/models/common-model';
 import { UserInfoModal } from '@/models/user-models';
 import Loading from '@/components/loading';
 import Navigator from '@/routers/Navigator';
+import ScreenName from '@/common/screenNames';
 
-const AccountIdentify = observer(() => {
+const AccountIdentify = observer(({ route }: any) => {
     const { apiServices, userManager } = useAppStore();
+    const avatarDir = route?.params?.avatarDir;
+    const frontDir = route?.params?.frontDir;
+    const backDir = route?.params?.backDir;
+
     const styles = MyStylesAccountIdentify();
     const [identityAcc, setIdentity] = useState<string>(SessionManager.userInfo?.identity || '');
-    const [avatar, setAvatar] = useState<UpLoadImage>();
-    const [frontIdentify, setFrontIdentify] = useState<UpLoadImage>();
-    const [afterIdentify, setBehindIdentify] = useState<UpLoadImage>();
+    const [avatar, setAvatar] = useState<any>(userManager.userInfo?.avatar);
+    const [frontIdentify, setFrontIdentify] = useState<any>(userManager.userInfo?.front_facing_card);
+    const [afterIdentify, setBehindIdentify] = useState<any>(userManager.userInfo?.card_back);
     const [isLoading, setLoading] = useState<boolean>(false);
 
     const identifyRef = useRef<TextFieldActions>();
@@ -52,9 +56,18 @@ const AccountIdentify = observer(() => {
         setIdentity(value || '');
     }, []);
 
+
+    useEffect(() => {
+        setAvatar(userManager.userInfo?.avatar || `${Languages.common.fileDir}${userManager.userInfo?.avatarFile?.path}`);
+        setFrontIdentify(userManager.userInfo?.front_facing_card);
+        setBehindIdentify(userManager.userInfo?.card_back);
+    }, [afterIdentify, avatar, avatarDir, backDir, frontDir, frontIdentify, userManager.userInfo?.avatar, userManager.userInfo?.avatarFile, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
+
     const uploadImage = useCallback(async (file: any) => {
         const res = await apiServices?.image.uploadImage(
-            file,
+            {
+                path: file
+            },
             Languages.errorMsg.uploading
         );
         if (res.success) {
@@ -89,8 +102,8 @@ const AccountIdentify = observer(() => {
                         ...data,
                         identity: identityAcc,
                         avatar: avatar?.images?.[0]?.path,
-                        front_facing_card: frontIdentify?.images?.[0]?.path,
-                        card_back: afterIdentify?.images?.[0]?.path
+                        front_facing_card: frontIdentify,
+                        card_back: afterIdentify
                     });
                 }
             }
@@ -98,7 +111,7 @@ const AccountIdentify = observer(() => {
         else {
             ToastUtils.showErrorToast(Languages.errorMsg.uploadingError);
         }
-    }, [afterIdentify?.images, apiServices.auth, avatar?.images, frontIdentify?.images, identityAcc, userManager]);
+    }, [afterIdentify, apiServices.auth, avatar?.images, frontIdentify, identityAcc, userManager]);
 
     const getDataUpload = useCallback(
         async (response: any) => {
@@ -117,14 +130,21 @@ const AccountIdentify = observer(() => {
             }
         }, [uploadIdentification]);
 
+    console.log('frontIdentify=', frontIdentify);
+
+
     const uploadKYC = useCallback(() => {
         Promise.all([
-            uploadImage(frontIdentify?.images?.[0]),
-            uploadImage(afterIdentify?.images?.[0]),
-            uploadImage(avatar?.images?.[0])
-        ]).then((value) => { getDataUpload(value); });
+            uploadImage(frontIdentify),
+            uploadImage(afterIdentify),
+            uploadImage(avatar)
+        ]).then((value) => {
+            getDataUpload(value);
 
-    }, [afterIdentify?.images, avatar?.images, frontIdentify?.images, getDataUpload, uploadImage]);
+            console.log('value =', value);
+        });
+
+    }, [afterIdentify, avatar, frontIdentify, getDataUpload, uploadImage]);
 
     const renderInput = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, length?: number) => {
         return (
@@ -178,43 +198,71 @@ const AccountIdentify = observer(() => {
         }
     }, [afterIdentify, avatar, frontIdentify, onValidate, uploadKYC]);
 
-    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, imageSource?: string, disable?: boolean) => {
-        return <PhotoPickerBottomSheet
-            ref={ref}
-            label={label}
-            data={typePhoto}
-            image={image}
-            icon={icon}
-            onPressItem={onPressItem}
-            containerStyle={styles.pickerContainer}
-            hasDash
-            imageSource={imageSource}
-            disable={disable}
-        />;
-    }, [styles.pickerContainer]);
+    const renderOpenCamera = useCallback((ref: any,
+        onPress: any,
+        label: string,
+        image: any,
+        icon: any,
+        imageSource?: any,
+        disable?: boolean,
+        hasDash?: boolean
+    ) => {
+        return (
+            <>
+                <TouchableOpacity
+                    onPress={onPress}
+                    disabled={disable || false}
+                    ref={ref}
+                    style={styles.wrapItemPhoto}
+                >
+                    <Text style={styles.identifyTextStyle}>{label}</Text>
+                    {image || imageSource ? (
+                        <FastImage style={styles.image}
+                            source={{ uri: image?.path ? `${Languages.common.fileDir}${image?.path}` : imageSource || `${image}` }}
+                            resizeMode={FastImage.resizeMode.cover}
+                        />
+                    ) : (
+                        icon
+                    )}
+                </TouchableOpacity>
+                {!hasDash && <Dash
+                    dashThickness={1}
+                    dashLength={10}
+                    dashGap={5}
+                    dashColor={COLORS.GRAY_13}
+                />}
+            </>
+        );
+    }, [styles.identifyTextStyle, styles.image, styles.wrapItemPhoto]);
 
-    const onPressItemFrontPhoto = useCallback((item: any) => {
-        if (item?.text === 'Camera') {
-            ImageUtils.openCamera(setFrontIdentify);
-        } else {
-            ImageUtils.openLibrary(setFrontIdentify, 1);
-        }
+    const onPressItemFrontPhotos = useCallback(() => {
+        const navigateScreen = () => {
+            Navigator.pushScreen(ScreenName.faceDetect, {
+                typeCamera: ENUM_TYPE_CAMERA.CARD,
+                typeCard: ENUM_TYPE_CARD_CAMERA.FRONT
+            });
+        };
+        ImageUtils.openCardDetect(navigateScreen);
     }, []);
 
-    const onPressItemBehindPhoto = useCallback((item: any) => {
-        if (item?.text === 'Camera') {
-            ImageUtils.openCamera(setBehindIdentify);
-        } else {
-            ImageUtils.openLibrary(setBehindIdentify, 1);
-        }
+    const onPressItemBehindPhoto = useCallback(() => {
+        const navigateScreen = () => {
+            Navigator.pushScreen(ScreenName.faceDetect,
+                {
+                    typeCamera: ENUM_TYPE_CAMERA.CARD,
+                    typeCard: ENUM_TYPE_CARD_CAMERA.BACK
+                });
+        };
+        ImageUtils.openCardDetect(navigateScreen);
     }, []);
 
-    const onPressItemAvatar = useCallback((item: any) => {
-        if (item?.text === 'Camera') {
-            ImageUtils.openCamera(setAvatar);
-        } else {
-            ImageUtils.openLibrary(setAvatar, 1);
-        }
+    const onPressItemAvatar = useCallback(() => {
+        const navigateScreen = () => {
+            Navigator.pushScreen(ScreenName.faceDetect, {
+                typeCamera: ENUM_TYPE_CAMERA.FACE
+            });
+        };
+        ImageUtils.openCardDetect(navigateScreen);
     }, []);
 
 
@@ -225,37 +273,42 @@ const AccountIdentify = observer(() => {
                     <Text style={styles.titlePhoto}>{Languages.accountIdentify.imageIdentify}</Text>
                     <Text style={styles.txtNotePhoto}>{noteKYC[0]}</Text>
                     <Text style={styles.txtNotePhoto}>{noteKYC[1]}</Text>
-                    {renderPhotoPicker(frontIdentifyRef,
+                    {renderOpenCamera(
+                        frontIdentifyRef,
+                        onPressItemFrontPhotos,
                         Languages.accountIdentify.frontKYC,
                         frontIdentify,
                         <BeforeIC />,
-                        onPressItemFrontPhoto,
-                        SessionManager.userInfo?.front_facing_card,
-                        SessionManager.userInfo?.front_facing_card ? !!SessionManager.userInfo?.front_facing_card : !!frontIdentify?.images?.[0]?.path
+                        userManager.userInfo?.front_facing_card,
+                        userManager.userInfo?.front_facing_card ? !!SessionManager.userInfo?.front_facing_card : !!frontIdentify
                     )}
-                    {renderPhotoPicker(afterIdentifyRef,
+                    {renderOpenCamera(
+                        afterIdentifyRef,
+                        onPressItemBehindPhoto,
                         Languages.accountIdentify.behindKYC,
                         afterIdentify,
                         <AfterIC />,
-                        onPressItemBehindPhoto,
-                        SessionManager.userInfo?.card_back,
-                        SessionManager.userInfo?.card_back ? !!SessionManager.userInfo?.card_back : !!afterIdentify?.images?.[0]?.path
+                        userManager.userInfo?.card_back,
+                        userManager.userInfo?.card_back ? !!userManager.userInfo?.card_back : !!afterIdentify
                     )}
                     <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[1]}</Text>
-                    {renderPhotoPicker(avatarRef,
-                        Languages.accountIdentify.avatar,
-                        avatar,
-                        <AvatarIC />,
+                    {renderOpenCamera(
+                        avatarRef,
                         onPressItemAvatar,
-                        SessionManager.userInfo?.avatar,
-                        SessionManager.userInfo?.avatar ? !!SessionManager.userInfo?.avatar : !!avatar?.images?.[0]?.path
+                        Languages.accountIdentify.avatarPhoto,
+                        avatarDir,
+                        <AvatarIC />,
+                        userManager.userInfo?.avatar,
+                        userManager.userInfo?.avatar ? !!userManager.userInfo?.avatar : !!userManager.userInfo?.avatarFile,
+                        true
                     )}
                 </View>
+
             </HideKeyboard>
         );
-    }, [afterIdentify, avatar, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhoto, renderPhotoPicker, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto]);
+    }, [afterIdentify, avatarDir, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhotos, renderOpenCamera, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto, userManager.userInfo?.avatar, userManager.userInfo?.avatarFile, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
 
     const renderTop = useMemo(() => {
         return (

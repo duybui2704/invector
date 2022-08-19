@@ -29,6 +29,16 @@ function openCamera(onSelected: any) {
     });
 };
 
+function openCardDetect (onSelected: any){
+    CheckPermission.hasCameraCaptureAndSave(async () => {
+        onSelected();      
+    }, (permission: any) => {
+        if (permission.camera !== 'authorized') {
+            displayPermissionAlert(1, permission.camera, () => openCamera(onSelected));
+        }
+    });
+}
+
 function openGarelly(callback: any, max: number) {
     const defaultOptionsLimited = {
         multiple: max > 1,
@@ -173,5 +183,6 @@ export default {
     openCamera,
     openLibrary,
     displayPermissionAlert,
-    openGarelly
+    openGarelly,
+    openCardDetect
 };

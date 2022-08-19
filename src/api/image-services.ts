@@ -11,10 +11,10 @@ export class ImageServices extends BaseService {
 
         const form = new FormData();
         form.append('file', {
-            ...file,
+            // ...file,
             uri: isIOS ? `${'file://'}${file?.path}` || file : file?.path || file,
-            name: `${Math.random()}.jpg`,
-            type: 'image/jpeg',
+            name: 'tienngay.jpg',
+            type: 'image/*',
             path: isIOS ? `${'file:/'}${file?.path}` : file?.path
         } as any);
 

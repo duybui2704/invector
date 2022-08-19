@@ -192,3 +192,14 @@ export enum ENUM_INVESTED_TYPE {
     INVESTING = '1',
     INVESTED = '2'
 }
+
+export enum ENUM_TYPE_CAMERA {
+    FACE= 'face', 
+    CARD= 'card', 
+}
+
+export enum ENUM_TYPE_CARD_CAMERA{
+    FRONT= 'front', 
+    BACK= 'back', 
+}
+

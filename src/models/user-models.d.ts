@@ -40,6 +40,7 @@ export interface UserInfoModal {
     job?: string;
     infoLinkVimo?: InfoLinkVimoModal;
     rate?:number;
+    avatarFile?:any;
 }
 interface OtpModal {
     otp1: any;

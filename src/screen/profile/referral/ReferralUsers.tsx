@@ -1,65 +1,28 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
+import MonthPicker from 'react-native-month-year-picker';
 
 import Languages from '@/common/Languages';
 import HeaderBar from '@/components/header';
 import { COLORS, HtmlStyles } from '@/theme';
 import { MyStylesReferral } from './styles';
-import MonthPicker from 'react-native-month-year-picker';
+import Utils from '@/utils/Utils';
 import { Touchable } from '@/components/elements/touchable';
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
 import DateUtils from '@/utils/DateUtils';
-import { useAppStore } from '@/hooks';
-import { CommissionModel, Detail } from '@/models/comission-model';
-import Loading from '@/components/loading';
 
 const ReferralUsers = observer(() => {
     const styles = MyStylesReferral();
-    const { apiServices } = useAppStore();
 
     const [date, setDate] = useState(new Date());
-    const [visibleFilter, setVisibleFilter] = useState<boolean>(false)
+    const [visibleFilter, setVisibleFilter] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(Languages.referralUsers.tableDes);
-    const [filterDate, setFilterDate] = useState<string>();
-    const [commission, setCommission] = useState<CommissionModel>();
-    const [isLoading, setLoading] = useState<boolean>(true);
-
-    const fetchData = useCallback(async () => {
-        const my = filterDate?.split('/')
-        if (my?.length === 2) {
-            setLoading(true)
-            const res = await apiServices.auth.getCommissionInfo(my[0], my[1])
-            setLoading(false);
-            if (res.success && res.data) {
-                setCommission(res.data as CommissionModel)
-            }
-        }
-    }, [filterDate]);
 
     useEffect(() => {
-        fetchData();
-        onValueChange(null, new Date())
-    }, [])
-
-    useEffect(() => {
-        fetchData();
-    }, [filterDate])
-
-    const renderColIndexTotal = useCallback(() => {
-        return <View style={[styles.colContainer, { backgroundColor: COLORS.LIGHT_GREEN }]}>
-            <Text style={styles.colNameTotal}>
-                {Languages.referralUsers.colMoney0}
-            </Text>
-            <Text style={styles.colMoneyTotal}>
-                {Languages.referralUsers.colName0}
-            </Text>
-            <Text style={styles.colCommissionTotal}>
-                {Languages.referralUsers.colCommission0}
-            </Text>
-        </View>;
-    }, [])
+        onValueChange(null, new Date());
+    }, []);
 
     const renderColIndex = useCallback(() => {
         return <View style={[styles.colContainer, { backgroundColor: COLORS.LIGHT_GREEN }]}>
@@ -73,49 +36,33 @@ const ReferralUsers = observer(() => {
                 {Languages.referralUsers.colCommission}
             </Text>
         </View>;
-    }, [])
+    }, []);
 
-    const renderTotalRow = useCallback(() => {
-        return <View style={styles.colContainerTotal}>
-            <Text style={styles.colNameCTotal}>
-                {`${commission?.total.commission}%`}
-            </Text>
-            <Text style={styles.colMoneyCTotal}>
-                {commission?.total.total_money}
-            </Text>
-            <Text style={styles.colCommissionCTotal}>
-                {commission?.total.money_commission}
-            </Text>
-        </View>;
-    }, [commission?.total])
-
-    const renderRow = useCallback((item: Detail, index: number) => {
-        return <View style={[styles.colContainer, { backgroundColor: index % 2 === 0 ? COLORS.GRAY_2 : COLORS.GRAY_15 }]}
-            key={index}>
+    const renderRow = useCallback((index: number) => {
+        return <View style={[styles.colContainer, { backgroundColor: index % 2 === 0 ? COLORS.GRAY_2 : COLORS.GRAY_15 }]}>
             <Text style={styles.colNameC}>
-                {item.name}
+                {'Nguyễn Văn A'}
             </Text>
             <Text style={styles.colMoneyC}>
-                {item.total_money}
+                {Utils.formatMoney('10000000')}
             </Text>
             <Text style={styles.colCommissionC}>
-                {item.money_commission}
+                {Utils.formatMoney('1000000')}
             </Text>
         </View>;
-    }, [])
+    }, []);
 
-    const onPopupFilter = useCallback(() => {
-        setVisibleFilter(true)
-    }, [])
+    const onPopupFilter = useCallback((index: number) => {
+        setVisibleFilter(true);
+    }, []);
 
     const onValueChange = useCallback((event, newDate) => {
         const selectedDate = newDate || date;
-        const monthYear = DateUtils.formatMonthPicker(newDate)
-        setFilterDate(monthYear)
-        setTitle(Languages.referralUsers.tableDes.replace('%s', monthYear))
+        const monthYear = DateUtils.formatMonthPicker(newDate);
+        setTitle(Languages.referralUsers.tableDes.replace('%s', monthYear));
 
         setDate(selectedDate);
-        setVisibleFilter(false)
+        setVisibleFilter(false);
     }, [date]);
 
     return (
@@ -134,26 +81,15 @@ const ReferralUsers = observer(() => {
                     </Touchable>
                 </View>
 
-                <ScrollView>
-                    {(commission?.detail.length || 0) > 0 ? <>
-                        {renderColIndexTotal()}
-                        {renderTotalRow()}
-                        {renderColIndex()}
-                        {commission?.detail.map((item, index) => {
-                            return renderRow(item, index)
-                        })}
-                    </> : <Text style={styles.textNoCommission}>
-                        {!isLoading && filterDate && Languages.referralUsers.noCommission.replace('%s', filterDate)}
-                    </Text>}
-                </ScrollView>
+                {renderColIndex()}
+                {renderRow(1)}
+                {renderRow(2)}
             </View>
 
-            <View style={styles.note}>
-                <HTMLView
-                    value={Languages.referralUsers.des}
-                    stylesheet={HtmlStyles || undefined}
-                />
-            </View>
+            <HTMLView
+                value={Languages.referralUsers.des}
+                stylesheet={HtmlStyles || undefined}
+            />
 
             {visibleFilter && <MonthPicker
                 locale="vi"
@@ -164,7 +100,6 @@ const ReferralUsers = observer(() => {
                 cancelButton={Languages.common.cancel}
                 onChange={onValueChange}
             />}
-            {isLoading && <Loading isOverview />}
         </View >
     );
 });
