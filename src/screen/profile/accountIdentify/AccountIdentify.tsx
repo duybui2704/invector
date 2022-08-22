@@ -32,23 +32,20 @@ import Loading from '@/components/loading';
 import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
 
-const AccountIdentify = observer(({ route }: any) => {
+const AccountIdentify = observer(() => {
     const { apiServices, userManager } = useAppStore();
-    const avatarDir = route?.params?.avatarDir;
-    const frontDir = route?.params?.frontDir;
-    const backDir = route?.params?.backDir;
 
     const styles = MyStylesAccountIdentify();
     const [identityAcc, setIdentity] = useState<string>(SessionManager.userInfo?.identity || '');
-    const [avatar, setAvatar] = useState<any>(userManager.userInfo?.avatar);
+    const [avatarImg, setAvatar] = useState<any>(userManager.userInfo?.avatar);
     const [frontIdentify, setFrontIdentify] = useState<any>(userManager.userInfo?.front_facing_card);
-    const [afterIdentify, setBehindIdentify] = useState<any>(userManager.userInfo?.card_back);
+    const [behindIdentify, setBehindIdentify] = useState<any>(userManager.userInfo?.card_back);
     const [isLoading, setLoading] = useState<boolean>(false);
 
     const identifyRef = useRef<TextFieldActions>();
     const avatarRef = useRef<BottomSheetModal>();
     const frontIdentifyRef = useRef<BottomSheetModal>();
-    const afterIdentifyRef = useRef<BottomSheetModal>();
+    const behindIdentifyRef = useRef<BottomSheetModal>();
 
     const popupConfirmRef = useRef<PopupActionTypes>();
 
@@ -58,15 +55,16 @@ const AccountIdentify = observer(({ route }: any) => {
 
 
     useEffect(() => {
-        setAvatar(userManager.userInfo?.avatar || `${Languages.common.fileDir}${userManager.userInfo?.avatarFile?.path}`);
+        setAvatar(userManager.userInfo?.avatar);
         setFrontIdentify(userManager.userInfo?.front_facing_card);
         setBehindIdentify(userManager.userInfo?.card_back);
-    }, [afterIdentify, avatar, avatarDir, backDir, frontDir, frontIdentify, userManager.userInfo?.avatar, userManager.userInfo?.avatarFile, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
+    }, [frontIdentify, userManager.userInfo?.avatar, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
 
     const uploadImage = useCallback(async (file: any) => {
         const res = await apiServices?.image.uploadImage(
             {
-                path: file
+                path: file,
+                uri: file
             },
             Languages.errorMsg.uploading
         );
@@ -101,9 +99,9 @@ const AccountIdentify = observer(({ route }: any) => {
                         ...userManager.userInfo,
                         ...data,
                         identity: identityAcc,
-                        avatar: avatar?.images?.[0]?.path,
+                        avatar: avatarImg,
                         front_facing_card: frontIdentify,
-                        card_back: afterIdentify
+                        card_back: behindIdentify
                     });
                 }
             }
@@ -111,7 +109,7 @@ const AccountIdentify = observer(({ route }: any) => {
         else {
             ToastUtils.showErrorToast(Languages.errorMsg.uploadingError);
         }
-    }, [afterIdentify, apiServices.auth, avatar?.images, frontIdentify, identityAcc, userManager]);
+    }, [apiServices.auth, avatarImg, behindIdentify, frontIdentify, identityAcc, userManager]);
 
     const getDataUpload = useCallback(
         async (response: any) => {
@@ -130,21 +128,16 @@ const AccountIdentify = observer(({ route }: any) => {
             }
         }, [uploadIdentification]);
 
-    console.log('frontIdentify=', frontIdentify);
-
-
     const uploadKYC = useCallback(() => {
         Promise.all([
             uploadImage(frontIdentify),
-            uploadImage(afterIdentify),
-            uploadImage(avatar)
+            uploadImage(behindIdentify),
+            uploadImage(avatarImg)
         ]).then((value) => {
             getDataUpload(value);
-
-            console.log('value =', value);
         });
 
-    }, [afterIdentify, avatar, frontIdentify, getDataUpload, uploadImage]);
+    }, [avatarImg, behindIdentify, frontIdentify, getDataUpload, uploadImage]);
 
     const renderInput = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, length?: number) => {
         return (
@@ -190,13 +183,13 @@ const AccountIdentify = observer(({ route }: any) => {
     }, [onBackDrop]);
 
     const onVerify = useCallback(async () => {
-        if (onValidate() && avatar && frontIdentify && afterIdentify) {
+        if (onValidate() && avatarImg && frontIdentify && behindIdentify) {
             uploadKYC();
         }
         else {
             ToastUtils.showMsgToast(Languages.errorMsg.errEmptyIdentity);
         }
-    }, [afterIdentify, avatar, frontIdentify, onValidate, uploadKYC]);
+    }, [avatarImg, behindIdentify, frontIdentify, onValidate, uploadKYC]);
 
     const renderOpenCamera = useCallback((ref: any,
         onPress: any,
@@ -218,7 +211,7 @@ const AccountIdentify = observer(({ route }: any) => {
                     <Text style={styles.identifyTextStyle}>{label}</Text>
                     {image || imageSource ? (
                         <FastImage style={styles.image}
-                            source={{ uri: image?.path ? `${Languages.common.fileDir}${image?.path}` : imageSource || `${image}` }}
+                            source={{ uri: image ? `${Languages.common.fileDir}${image}` : imageSource || `${image}` }}
                             resizeMode={FastImage.resizeMode.cover}
                         />
                     ) : (
@@ -283,13 +276,13 @@ const AccountIdentify = observer(({ route }: any) => {
                         userManager.userInfo?.front_facing_card ? !!SessionManager.userInfo?.front_facing_card : !!frontIdentify
                     )}
                     {renderOpenCamera(
-                        afterIdentifyRef,
+                        behindIdentifyRef,
                         onPressItemBehindPhoto,
                         Languages.accountIdentify.behindKYC,
-                        afterIdentify,
+                        behindIdentify,
                         <AfterIC />,
                         userManager.userInfo?.card_back,
-                        userManager.userInfo?.card_back ? !!userManager.userInfo?.card_back : !!afterIdentify
+                        userManager.userInfo?.card_back ? !!userManager.userInfo?.card_back : !!behindIdentify
                     )}
                     <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
                     <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
@@ -298,17 +291,17 @@ const AccountIdentify = observer(({ route }: any) => {
                         avatarRef,
                         onPressItemAvatar,
                         Languages.accountIdentify.avatarPhoto,
-                        avatarDir,
+                        avatarImg,
                         <AvatarIC />,
                         userManager.userInfo?.avatar,
-                        userManager.userInfo?.avatar ? !!userManager.userInfo?.avatar : !!userManager.userInfo?.avatarFile,
+                        userManager.userInfo?.avatar ? !!userManager.userInfo?.avatar : !!userManager.userInfo?.avatar,
                         true
                     )}
                 </View>
 
             </HideKeyboard>
         );
-    }, [afterIdentify, avatarDir, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhotos, renderOpenCamera, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto, userManager.userInfo?.avatar, userManager.userInfo?.avatarFile, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
+    }, [avatarImg, behindIdentify, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhotos, renderOpenCamera, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto, userManager.userInfo?.avatar, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
 
     const renderTop = useMemo(() => {
         return (

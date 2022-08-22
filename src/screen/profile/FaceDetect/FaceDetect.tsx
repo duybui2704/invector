@@ -21,6 +21,7 @@ import { Face, scanFaces } from 'vision-camera-face-detector';
 import FastImage from 'react-native-fast-image';
 import { useIsFocused } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
+import ImageResizer from 'react-native-image-resizer';
 
 import { COLORS, Styles } from '@/theme';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
@@ -131,46 +132,119 @@ const FaceDetect = observer(({ route }: any) => {
         cancelFaceImg();
     }, [cancelFaceImg]);
 
+    const handleSetImageSize = useCallback((_path: string)=>{
+        if(typeCard === ENUM_TYPE_CARD_CAMERA.FRONT){
+            setFrontCard(_path);
+        }else  setBackCard(_path);
+    },[typeCard]);
+
+    const onResizeImage = useCallback(async(
+        path: string,
+        maxWidth: number, 
+        maxHeight: number, 
+        compressFormat: any,
+        quality: number,
+        rotation?: any, 
+        outputPath?: any,
+        option?:any 
+      
+       
+    )=>{
+        ImageResizer.createResizedImage(path,
+            maxWidth, 
+            maxHeight, 
+            compressFormat, 
+            quality,
+            rotation, 
+            outputPath,
+            option)
+            .then(response => {
+                console.log('res = ', response);
+                handleSetImageSize(response?.uri);         
+            })
+            .catch(err => {
+            });
+    },[handleSetImageSize]);
+
     const confirmFaceImg = useCallback(() => {
         if( typeCamera === ENUM_TYPE_CAMERA.FACE){
+            const newFilePath = `${RNFS.DownloadDirectoryPath  }/avatarImg.jpg`;
+            RNFS.moveFile(`${avatarImg?.path}`, newFilePath)
+                .then(() => {
+                    console.log('IMAGE MOVED', `${avatarImg?.path}`, '-- to --', newFilePath);
+                });
             userManager.updateUserInfo({
                 ...userManager.userInfo,
-                avatarFile: avatarImg
+                avatar: `${Languages.common.fileDir}${newFilePath }`
             });
-            Navigator.navigateScreen(ScreenName.accountIdentify, {
-                avatarDir: avatarImg
-            });
+            Navigator.navigateScreen(ScreenName.accountIdentify);
            
         }else if(typeCard === ENUM_TYPE_CARD_CAMERA.FRONT){
-          
-            Navigator.navigateScreen(ScreenName.accountIdentify, {
-                frontDir: frontCard
-            });
-            const newFilePath = `${RNFS.DownloadDirectoryPath  }/front.jpg`;
-            RNFS.moveFile(`${frontCard}`, newFilePath)
-                .then(() => {
-                    console.log('IMAGE MOVED', `${frontCard}`, '-- to --', newFilePath);
+           
+            if(frontCard){
+                ImageResizer.createResizedImage(
+                    `${frontCard}`,
+                    200, 
+                    200,
+                    'JPEG',
+                    70
+                ).then(async(res)=>{
+                    setFrontCard(res?.uri);
+                    console.log('front of Card = ', frontCard);
+                    console.log('res of Card = ', res);
+                    // const newFrontFilePath = `${RNFS.DownloadDirectoryPath  }/front.jpg`;
+
+                    // RNFS.moveFile(`${frontCard}`, newFrontFilePath)
+                    //     .then(async() => {
+                    //         console.log('IMAGE MOVED', `${frontCard}`, '-- to --', newFrontFilePath);
+                           
+                    userManager.updateUserInfo({
+                        ...userManager.userInfo,
+                        front_facing_card: `${res?.uri}`
+                    });
+                           
+                    Navigator.navigateScreen(ScreenName.accountIdentify);
+                    // });    
+                     
+
                 });
-            userManager.updateUserInfo({
-                ...userManager.userInfo,
-                front_facing_card: `${Languages.common.fileDir}${newFilePath }`
-            });
-        }else {
-         
-            Navigator.navigateScreen(ScreenName.accountIdentify, {
-                backDir: backCard
-            });
-            const newFilePath = `${RNFS.DownloadDirectoryPath  }/back.jpg`;
-            RNFS.moveFile(`${backCard}`, newFilePath)
-                .then(() => {
-                    console.log('IMAGE MOVED', `${backCard}`, '-- to --', newFilePath);
+            }
+
+           
+           
+           
+
+           
+
+        }else if(backCard){
+            ImageResizer.createResizedImage(
+                `${backCard}`,
+                200, 
+                200,
+                'JPEG',
+                70
+            ).then(async(res)=>{
+                setBackCard(res?.uri);
+                console.log('back of Card = ', backCard);
+                console.log('res of Card = ', res);
+                // const newFrontFilePath = `${RNFS.DownloadDirectoryPath  }/front.jpg`;
+    
+                // RNFS.moveFile(`${frontCard}`, newFrontFilePath)
+                //     .then(async() => {
+                //         console.log('IMAGE MOVED', `${frontCard}`, '-- to --', newFrontFilePath);
+                               
+                userManager.updateUserInfo({
+                    ...userManager.userInfo,
+                    card_back: `${res?.uri}`
                 });
-            userManager.updateUserInfo({
-                ...userManager.userInfo,
-                card_back: `${Languages.common.fileDir}${newFilePath }`
+                               
+                Navigator.navigateScreen(ScreenName.accountIdentify);
+                // });    
+                         
+    
             });
         }
-    }, [avatarImg, backCard, frontCard, typeCamera, typeCard, userManager]);
+    }, [avatarImg?.path, backCard, frontCard, typeCamera, typeCard, userManager]);
 
     const renderButon = useCallback((icon: any, btnStyle: any, _onPress: any, hasBorder?: boolean, _btnStyleContainer?: any) => {
         const opacityItem = {
@@ -204,7 +278,7 @@ const FaceDetect = observer(({ route }: any) => {
                     </View>
                     <ScanRetangle ref={_ref}
                         setPositionScan={_setScan} 
-                        setCroppedImg={_setValue} 
+                        // setCroppedImg={_setValue} 
                         setOriginImg={_setValue}
                         imgCapture={_value}
                     />

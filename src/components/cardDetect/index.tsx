@@ -111,8 +111,6 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
         const [isShow, setShow] = useState<boolean>(false);
         const [isHasFlash, setHasFlash] = useState<boolean>(true);
         const [position, setPosition] = useState<DetectedRectangleModel>();
-        // const [croppedImg, setCroppedImg] = useState<string>();
-        // const [originImg, setOriginImg] = useState<string>();
 
         const greenColor = {
             borderColor: position?.detectedRectangle || imgCapture ? COLORS.GREEN : COLORS.RED
@@ -128,10 +126,10 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
 
         const onPictureProcessed = useCallback(
             ({ croppedImage, initialImage }: any) => {
-                setCroppedImg(croppedImage);
-                setOriginImg(initialImage);
+                // setCroppedImg?.(croppedImage);
+                setOriginImg?.(initialImage);
             },
-            [setCroppedImg, setOriginImg]
+            [setOriginImg]
         );
 
 
