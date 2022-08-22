@@ -63,6 +63,15 @@ function genderValidate(gender: string) {
     }
     return errMsg;
 }
+
+function referralValidate(gender: string) {
+    let errMsg = '';
+    if (Validate.isStringEmpty(gender)) {
+        errMsg = Languages.errorMsg.referralRequired;
+    }
+    return errMsg;
+}
+
 function emailValidate(email: string) {
     let errMsg = '';
     if (Validate.isStringEmpty(email)) {
@@ -207,5 +216,6 @@ export default {
     birthdayValidate,
     inputValidate,
     removeAscent,
-    inputEmpty
+    inputEmpty,
+    referralValidate,
 };

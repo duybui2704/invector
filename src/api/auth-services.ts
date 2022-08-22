@@ -74,7 +74,7 @@ export class AuthServices extends BaseService {
         password: string,
         re_password: string,
         email: string,
-        channels: string,
+        channels: string | number,
         referral_code: string
     ) =>
         this.api().post(

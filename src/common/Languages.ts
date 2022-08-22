@@ -215,6 +215,8 @@ const Languages = {
         phoneRegex: 'Số điện thoại không đúng định dạng',
         phoneCount: 'Số điện thoại chỉ được 10 số',
         genderRequired: 'Giới tính không được để trống',
+        referralRequired: 'Mã giới thiệu không được để trống',
+        channelRequired: 'Nguồn giới thiệu không được để trống',
         addressNull: 'Địa chỉ không được để trống',
         addressRegex: 'Địa chỉ không được chứa kí tự đặc biệt',
         jobNull: 'Nghề nghiệp không được để trống',

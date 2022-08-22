@@ -42,6 +42,15 @@ export const MyStylesSign = () => {
                 height: Configs.FontSize.size40,
                 marginTop: 10
             },
+            inputChannel: {
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                width: '100%',
+                height: Configs.FontSize.size40,
+                marginTop: 10
+            },
             containerOverViewPicker: {
                 borderRadius: 20,
                 borderWidth: 1 ,
@@ -154,7 +163,15 @@ export const MyStylesSign = () => {
                 ...Styles.typography.regular,
                 fontSize: Configs.FontSize.size16,
                 color: COLORS.WHITE
-            }
+            },
+            errorMessage: {
+                fontSize: Configs.FontSize.size12,
+                fontFamily: Configs.FontFamily.medium,
+                alignSelf:'flex-start',
+                color: COLORS.RED,
+                marginHorizontal: 10,
+                paddingBottom: 10
+            },
         });
     }, []);
 };

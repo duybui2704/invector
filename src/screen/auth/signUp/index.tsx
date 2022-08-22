@@ -24,6 +24,9 @@ import HideKeyboard from '@/components/HideKeyboard';
 import { MyTextInputKeyboardNavigation } from '@/components/elements/textfieldKeyboardNavigation';
 import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
+import { COLORS } from '@/theme';
+
+const FRIEND_INVITE_ID = 7;
 
 const SignUp = observer(() => {
     const { apiServices } = useAppStore();
@@ -35,6 +38,7 @@ const SignUp = observer(() => {
     const [channel, setChannel] = useState<ItemProps>();
     const [dataChannel, setDataChannel] = useState<ItemProps[]>();
     const [refCode, setRefCode] = useState<string>('');
+    const [errChannel, setErrChannel] = useState<string>('');
     // const [data, setData] = useState<any>('');
     const [isNavigate, setNavigate] = useState<boolean>(false);
     const styles = MyStylesSign();
@@ -47,6 +51,8 @@ const SignUp = observer(() => {
     const refRefCode = useRef<TextFieldActions>(null);
     const [checked, setCheck] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(false);
+    const [isShowReferral, setShowReferral] = useState<boolean>(false);
+    const scrollRef = useRef<ScrollView>(null);
 
     useEffect(() => {
         fetchData();
@@ -109,22 +115,31 @@ const SignUp = observer(() => {
         const errMsgPwd = FormValidate.passValidate(pass);
         const errMsgPwdNew = FormValidate.passConFirmValidate(pass, passNew);
         const errMsgPwdEmail = FormValidate.emailValidate(email);
+        const _errChannel = FormValidate.inputEmpty(channel?.id, Languages.errorMsg.channelRequired);
+        let errRefCode = '';
+        if(parseInt(channel?.id || '0') === FRIEND_INVITE_ID){
+            errRefCode = FormValidate.referralValidate(refCode)
+        }
+
+        setErrChannel(_errChannel)
 
         refName.current?.setErrorMsg(errMsgName);
         refPhone.current?.setErrorMsg(errMsgPhone);
         refEmail.current?.setErrorMsg(errMsgPwdEmail);
         refPass.current?.setErrorMsg(errMsgPwd);
         refPassNew.current?.setErrorMsg(errMsgPwdNew);
-        if (`${errMsgName}${errMsgPhone}${errMsgPwdEmail}${errMsgPwd}${errMsgPwdNew}`.length === 0) {
+        refRefCode.current?.setErrorMsg(errRefCode);
+
+        if (`${errMsgName}${errMsgPhone}${errMsgPwdEmail}${errMsgPwd}${errMsgPwdNew}${_errChannel}${errRefCode}`.length === 0) {
             return true;
         }
         return false;
-    }, [email, name, pass, passNew, phone]);
+    }, [channel, refCode, email, name, pass, passNew, phone]);
 
-    const onSignIn = useCallback(async () => {
+    const onSignUp = useCallback(async () => {
         if (onValidate()) {
             setLoading(true);
-            const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, channel?.value, refCode);
+            const res = await apiServices.auth.registerAuth(phone, name, pass, passNew, email, channel?.id || '', refCode);
             setLoading(false);
             if (res.success) {
                 ToastUtils.showSuccessToast(Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(phone)));
@@ -135,6 +150,16 @@ const SignUp = observer(() => {
 
     const onChangeChanel = (item: any) => {
         setChannel(item);
+        setErrChannel('')
+
+        if (item?.id === FRIEND_INVITE_ID) {
+            setShowReferral(true);
+            setTimeout(() => {
+                scrollRef.current?.scrollToEnd();
+            }, 300);
+        } else {
+            setShowReferral(false);
+        }
     };
 
     const renderInput = useCallback((
@@ -168,6 +193,41 @@ const SignUp = observer(() => {
         />;
     }, [onChangeText, styles.inputPass]);
 
+    const renderReferral = useCallback((
+        ref: any,
+        value: string,
+        isPhoneNumber: boolean,
+        rightIcon: string,
+        placeHolder: string,
+        maxLength: number,
+        isPassword?: boolean,
+        keyboardType?: any,
+        orderRef?: number,
+        inputAccessoryViewID?: string,
+        textContentType?: string
+    ) => {
+        return isShowReferral && <MyTextInputKeyboardNavigation
+            ref={ref}
+            refArr={[refName, refPhone, refEmail, refPass, refPassNew]}
+            orderRef={orderRef}
+            inputAccessoryViewID={inputAccessoryViewID}
+            value={value}
+            isPhoneNumber={isPhoneNumber}
+            maxLength={maxLength}
+            rightIcon={rightIcon}
+            placeHolder={placeHolder}
+            containerInput={styles.inputPass}
+            onChangeText={onChangeText}
+            keyboardType={keyboardType}
+            isPassword={isPassword}
+            textContentType={textContentType}
+        />;
+    }, [isShowReferral, onChangeText, styles.inputPass]);
+
+    const getChannelContainer = useMemo(()=>{
+        return [styles.containerOverViewPicker, {borderColor: errChannel ? COLORS.RED : COLORS.GRAY_11}]
+    }, [errChannel]);
+
     const renderView = () => {
 
         return (
@@ -178,6 +238,7 @@ const SignUp = observer(() => {
                         <IcLine width={'50%'} height={'10%'} />
                     </View>
                     <ScrollView
+                        ref={scrollRef}
                         style={styles.scrollView}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
@@ -187,11 +248,10 @@ const SignUp = observer(() => {
                         {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL', 3, 'inputAccessoryViewID3', 'emailAddress')}
                         {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true, 'DEFAULT', 4, 'inputAccessoryViewID4')}
                         {renderInput(refPassNew, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true, 'DEFAULT', 5, 'inputAccessoryViewID5')}
-                        {renderInput(refRefCode, refCode, true, arrayIcon.login.referral_code, Languages.auth.txtRefCode, 10, false, 'NUMBER', 6, 'inputAccessoryViewID6')}
-                        <View style={styles.inputPass}>
+                        <View style={styles.inputChannel}>
                             <PickerBottomSheet
                                 ref={refChannel}
-                                containerStyle={styles.containerOverViewPicker}
+                                containerStyle={getChannelContainer}
                                 rightIcon={<ICUnderArrow />}
                                 placeholder={Languages.auth.knowChannel}
                                 onPressItem={onChangeChanel}
@@ -202,6 +262,9 @@ const SignUp = observer(() => {
                                 placeholderStyle={styles.containerPlaceholderPicker}
                             />
                         </View>
+                        {errChannel ? <Text
+                                style={styles.errorMessage}>{errChannel}</Text> : null}
+                        {renderReferral(refRefCode, refCode, true, arrayIcon.login.referral_code, Languages.auth.txtRefCode, 10, false, 'NUMBER', 6, 'inputAccessoryViewID6')}
                     </ScrollView>
                     <View style={styles.rowInfo}>
                         {/* <View style={styles.row}>
@@ -210,7 +273,7 @@ const SignUp = observer(() => {
                             </Touchable>
                             <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                         </View> */}
-                        <Touchable onPress={onSignIn}
+                        <Touchable onPress={onSignUp}
                             style={styles.tobLogin}>
                             <Text style={styles.txtSubmit}>
                                 {Languages.auth.txtSignUp}
