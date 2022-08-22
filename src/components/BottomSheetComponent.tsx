@@ -72,7 +72,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
 
         const snapPoints = useMemo(() => {
             const num = data?.length as number;
-            const contentHeight = num * ITEM_HEIGHT + PADDING_BOTTOM + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
+            const contentHeight = num * ITEM_HEIGHT + (num > MIN_SIZE_HAS_INPUT ? HEADER_HEIGHT : 0);
             let ratio = contentHeight * 100 / SCREEN_HEIGHT;
             ratio = Math.max(ratio, 25);
             ratio = Math.min(ratio, 70);

@@ -131,7 +131,7 @@ const OtpSignIn = (props: any) => {
                     <Text style={styles.txtTitle}>{Languages.auth.txtTitleOtp}</Text>
                     <IcLine width={'35%'} height={'40%'} />
                 </View>
-                <Text style={styles.confirmOtp}>{Languages.otp.confirmOtp}</Text>
+                <Text style={styles.confirmOtp}>{Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(phone))}</Text>
                 <View style={styles.boxOtp}>
                     <OtpInputs
                         handleChange={onChangeCode}
@@ -144,7 +144,6 @@ const OtpSignIn = (props: any) => {
                     onPress={onPressOtp} disabled={isDisTouchable}>
                     <Text style={isDisTouchable ? styles.disTxtConfirm : styles.txtConfirm}>{Languages.auth.conFirm}</Text>
                 </Touchable>
-
 
                 <Touchable style={styles.sentOtp} disabled={check} onPress={sendOTP}>
                     {check ?

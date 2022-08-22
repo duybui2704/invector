@@ -275,7 +275,7 @@ export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFi
                             </TouchableOpacity>
                         </View>
                         <View style={styles.viewPlaceHolder}>
-                            <Text style={styles.txtPlaceHolder}>{placeHolder}</Text>
+                            <Text style={styles.txtPlaceHolder}>{(!isPassword && value) || placeHolder}</Text>
                         </View>
                         <View style={styles.viewDone}>
                             <TouchableOpacity
@@ -292,7 +292,7 @@ export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFi
             placeHolder, refArr?.length, styles.containerKeyBoard,
             styles.tobIcon, styles.tobKeyBoard, styles.txtDone,
             styles.txtPlaceHolder, styles.viewDone, styles.viewIconKeyBoard,
-            styles.viewKeyBoard, styles.viewPlaceHolder]);
+            styles.viewKeyBoard, styles.viewPlaceHolder, value]);
 
         const handleKey = useCallback(({ nativeEvent }:any) => {
             if (nativeEvent.key.toString().slice(0, 3) === '+84') {

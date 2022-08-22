@@ -117,8 +117,13 @@ const SignUp = observer(() => {
         const errMsgPwdEmail = FormValidate.emailValidate(email);
         const _errChannel = FormValidate.inputEmpty(channel?.id, Languages.errorMsg.channelRequired);
         let errRefCode = '';
-        if(parseInt(channel?.id || '0') === FRIEND_INVITE_ID){
+        if (parseInt(channel?.id || '0') === FRIEND_INVITE_ID) {
             errRefCode = FormValidate.referralValidate(refCode)
+        }
+        if(`${_errChannel}${errRefCode}`.length > 0){
+            setTimeout(() => {
+                scrollRef.current?.scrollToEnd();
+            }, 300);
         }
 
         setErrChannel(_errChannel)
@@ -173,11 +178,12 @@ const SignUp = observer(() => {
         keyboardType?: any,
         orderRef?: number,
         inputAccessoryViewID?: string,
-        textContentType?: string
+        textContentType?: string,
+        capitalize?: any
     ) => {
         return <MyTextInputKeyboardNavigation
             ref={ref}
-            refArr={[refName, refPhone, refEmail, refPass, refPassNew]}
+            refArr={[refName, refPhone, refEmail, refPass, refPassNew, refCode]}
             orderRef={orderRef}
             inputAccessoryViewID={inputAccessoryViewID}
             value={value}
@@ -190,6 +196,7 @@ const SignUp = observer(() => {
             keyboardType={keyboardType}
             isPassword={isPassword}
             textContentType={textContentType}
+            autoCapitalized={capitalize}
         />;
     }, [onChangeText, styles.inputPass]);
 
@@ -208,7 +215,7 @@ const SignUp = observer(() => {
     ) => {
         return isShowReferral && <MyTextInputKeyboardNavigation
             ref={ref}
-            refArr={[refName, refPhone, refEmail, refPass, refPassNew]}
+            refArr={[refName, refPhone, refEmail, refPass, refPassNew, refCode]}
             orderRef={orderRef}
             inputAccessoryViewID={inputAccessoryViewID}
             value={value}
@@ -224,65 +231,63 @@ const SignUp = observer(() => {
         />;
     }, [isShowReferral, onChangeText, styles.inputPass]);
 
-    const getChannelContainer = useMemo(()=>{
-        return [styles.containerOverViewPicker, {borderColor: errChannel ? COLORS.RED : COLORS.GRAY_11}]
+    const getChannelContainer = useMemo(() => {
+        return [styles.containerOverViewPicker, { borderColor: errChannel ? COLORS.RED : COLORS.GRAY_11 }]
     }, [errChannel]);
 
     const renderView = () => {
 
         return (
-            <HideKeyboard>
-                <View style={styles.content}>
-                    <View style={styles.wrapLoginTxt}>
-                        <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
-                        <IcLine width={'50%'} height={'10%'} />
+            <View style={styles.content}>
+                <View style={styles.wrapLoginTxt}>
+                    <Text style={styles.txtTitle}>{Languages.auth.txtSignUp}</Text>
+                    <IcLine width={'50%'} height={'10%'} />
+                </View>
+                <ScrollView
+                    ref={scrollRef}
+                    style={styles.scrollView}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 30, false, 'DEFAULT', 1, 'inputAccessoryViewID1', 'name', 'words')}
+                    {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER', 2, 'inputAccessoryViewID2', 'telephoneNumber')}
+                    {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL', 3, 'inputAccessoryViewID3', 'emailAddress')}
+                    {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true, 'DEFAULT', 4, 'inputAccessoryViewID4')}
+                    {renderInput(refPassNew, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true, 'DEFAULT', 5, 'inputAccessoryViewID5')}
+                    <View style={styles.inputChannel}>
+                        <PickerBottomSheet
+                            ref={refChannel}
+                            containerStyle={getChannelContainer}
+                            rightIcon={<ICUnderArrow />}
+                            placeholder={Languages.auth.knowChannel}
+                            onPressItem={onChangeChanel}
+                            value={channel?.value}
+                            data={dataChannel}
+                            valueText={styles.valuePicker}
+                            btnContainer={styles.containerPicker}
+                            placeholderStyle={styles.containerPlaceholderPicker}
+                        />
                     </View>
-                    <ScrollView
-                        ref={scrollRef}
-                        style={styles.scrollView}
-                        showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false}
-                    >
-                        {renderInput(refName, name, false, arrayIcon.login.name, Languages.auth.txtName, 30, false, 'DEFAULT', 1, 'inputAccessoryViewID1', 'name')}
-                        {renderInput(refPhone, phone, true, arrayIcon.login.phone, Languages.auth.txtPhone, 10, false, 'NUMBER', 2, 'inputAccessoryViewID2', 'telephoneNumber')}
-                        {renderInput(refEmail, email, false, arrayIcon.login.email, Languages.auth.txtEmail, 50, false, 'EMAIL', 3, 'inputAccessoryViewID3', 'emailAddress')}
-                        {renderInput(refPass, pass, false, arrayIcon.login.pass, Languages.auth.txtPass, 50, true, 'DEFAULT', 4, 'inputAccessoryViewID4')}
-                        {renderInput(refPassNew, passNew, false, arrayIcon.login.confirmPass, Languages.auth.txtConfirmPass, 50, true, 'DEFAULT', 5, 'inputAccessoryViewID5')}
-                        <View style={styles.inputChannel}>
-                            <PickerBottomSheet
-                                ref={refChannel}
-                                containerStyle={getChannelContainer}
-                                rightIcon={<ICUnderArrow />}
-                                placeholder={Languages.auth.knowChannel}
-                                onPressItem={onChangeChanel}
-                                value={channel?.value}
-                                data={dataChannel}
-                                valueText={styles.valuePicker}
-                                btnContainer={styles.containerPicker}
-                                placeholderStyle={styles.containerPlaceholderPicker}
-                            />
-                        </View>
-                        {errChannel ? <Text
-                                style={styles.errorMessage}>{errChannel}</Text> : null}
-                        {renderReferral(refRefCode, refCode, true, arrayIcon.login.referral_code, Languages.auth.txtRefCode, 10, false, 'NUMBER', 6, 'inputAccessoryViewID6')}
-                    </ScrollView>
-                    <View style={styles.rowInfo}>
-                        {/* <View style={styles.row}>
+                    {errChannel ? <Text
+                        style={styles.errorMessage}>{errChannel}</Text> : null}
+                    {renderReferral(refRefCode, refCode, true, arrayIcon.login.referral_code, Languages.auth.txtRefCode, 10, false, 'NUMBER', 6, 'inputAccessoryViewID6')}
+                </ScrollView>
+                <View style={styles.rowInfo}>
+                    {/* <View style={styles.row}>
                             <Touchable style={styles.checkbox} onPress={onChangeChecked}>
                                 {checkbox}
                             </Touchable>
                             <Text style={styles.txtSave}>{Languages.auth.saveAcc}</Text>
                         </View> */}
-                        <Touchable onPress={onSignUp}
-                            style={styles.tobLogin}>
-                            <Text style={styles.txtSubmit}>
-                                {Languages.auth.txtSignUp}
-                            </Text>
-                        </Touchable>
-                    </View>
-                    {isLoading && <Loading isOverview />}
+                    <Touchable onPress={onSignUp}
+                        style={styles.tobLogin}>
+                        <Text style={styles.txtSubmit}>
+                            {Languages.auth.txtSignUp}
+                        </Text>
+                    </Touchable>
                 </View>
-            </HideKeyboard>
+                {isLoading && <Loading isOverview />}
+            </View>
         );
     };
 

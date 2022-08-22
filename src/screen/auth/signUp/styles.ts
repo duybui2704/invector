@@ -20,9 +20,10 @@ export const MyStylesSign = () => {
                 height: SCREEN_HEIGHT
             },
             scrollView: {
-                backgroundColor: COLORS.WHITE,
+                // backgroundColor: COLORS.WHITE,
                 marginTop: SCREEN_HEIGHT * 0.01,
-                width: '95%'
+                width: '100%',
+                paddingRight: '5%'
             },
             wrapLoginTxt: {
                 flexDirection: 'row',
