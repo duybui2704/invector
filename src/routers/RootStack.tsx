@@ -68,29 +68,23 @@ const RootStack = observer(() => {
     }, [forceLogout]);
 
 
-    const AuthStack = useCallback(() => {
-        return (
-            <Stack.Navigator screenOptions={screenOptions}>
-                <Stack.Screen name={ScreenName.auth} component={Auth} />
-                <Stack.Screen name={ScreenName.success} component={SuccessSignUp} />
-            </Stack.Navigator>
-        );
-    }, []);
+    const AuthStack = useCallback(() => (
+        <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen name={ScreenName.auth} component={Auth} />
+            <Stack.Screen name={ScreenName.success} component={SuccessSignUp} />
+        </Stack.Navigator>
+    ), []);
 
-    const AppStack = useCallback(() => {
-        return (
-            <Stack.Navigator screenOptions={screenOptions}>
-                <Stack.Screen name={ScreenName.splash} component={Splash} />
-                <Stack.Screen name={ScreenName.onBoard} component={Broadening} />
-                <Stack.Screen name={ScreenName.authStack} component={AuthStack} />
-                <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
-            </Stack.Navigator>
-        );
-    }, [AuthStack]);
+    const AppStack = useCallback(() => (
+        <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen name={ScreenName.splash} component={Splash} />
+            <Stack.Screen name={ScreenName.onBoard} component={Broadening} />
+            <Stack.Screen name={ScreenName.authStack} component={AuthStack} />
+            <Stack.Screen name={ScreenName.tabs} component={MyBottomTabs} />
+        </Stack.Navigator>
+    ), [AuthStack]);
 
-    const renderRootStack = useMemo(() => {
-        return <AppStack />;
-    }, [AppStack]);
+    const renderRootStack = useMemo(() => <AppStack />, [AppStack]);
     return renderRootStack;
 });
 export default RootStack;

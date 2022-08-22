@@ -1,6 +1,7 @@
 import { Alert, Linking, Platform } from 'react-native';
 import ImagePicker, { Options } from 'react-native-image-crop-picker';
 import { openSettings } from 'react-native-permissions';
+import ImageResizer from 'react-native-image-resizer';
 
 import CheckPermission from './CheckPermission';
 import Languages from '@/common/Languages';
@@ -29,12 +30,12 @@ function openCamera(onSelected: any) {
     });
 };
 
-function openCardDetect (onSelected: any){
+function openDetectScreen (onSucess: any){
     CheckPermission.hasCameraCaptureAndSave(async () => {
-        onSelected();      
+        onSucess();      
     }, (permission: any) => {
         if (permission.camera !== 'authorized') {
-            displayPermissionAlert(1, permission.camera, () => openCamera(onSelected));
+            displayPermissionAlert(1, permission.camera, onSucess());
         }
     });
 }
@@ -179,10 +180,37 @@ function displayPermissionAlert(type: number, permission: string, callback: any)
     );
 };
 
+function onResizeImage  (
+    path: string,
+    handleSetImageSize?: any,
+    rotation?: any,
+    outputPath?: any,
+    option?: any
+) {
+    ImageResizer.createResizedImage(
+        path,
+        200,
+        200,
+        'JPEG',
+        100,
+        rotation,
+        outputPath,
+        option)
+        .then((response?: any) => {
+            console.log('Image resize = ', response);
+            if(response){
+                handleSetImageSize(response);
+            }
+        })
+        .catch(err => {
+        });
+};
+
 export default {
     openCamera,
     openLibrary,
     displayPermissionAlert,
     openGarelly,
-    openCardDetect
+    openDetectScreen,
+    onResizeImage
 };

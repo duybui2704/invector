@@ -87,5 +87,6 @@ const codePushOptions = {
     checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME
 };
 
-export default CodePush(codePushOptions)(App);
+// export default CodePush(codePushOptions)(App);
+export default App;
 

@@ -9,6 +9,7 @@ export enum COLORS {
     RED_3 = '#EC1E24',
     RED_4 = '#770202',
     RED_5 = 'rgba(249, 187, 189, 0.7)',
+    RED_6 = '#C70404',
     DARK_RED = '#C2292E',
     BLUE = '#135EAC',
     BLUE_1 = '#FAFBFA',

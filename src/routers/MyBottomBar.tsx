@@ -33,7 +33,7 @@ import PaymentWebview from '@/screen/investment/paymentWebview';
 import LinkWallet from '@/screen/profile/linkWallet/LinkWallet';
 import TransferScreen from '@/screen/investment/tranferBank';
 import ReferralUsers from '@/screen/profile/referral/ReferralUsers';
-import FaceDetect from '@/screen/profile/FaceDetect/FaceDetect';
+import AccountDetect from '@/screen/profile/AccountDetect/FaceDetect';
 
 const TabsData = [
     {
@@ -73,77 +73,65 @@ const screenOptions = { headerShown: false };
 const Tab = AnimatedTabBarNavigator();
 const Stack = createNativeStackNavigator();
 
-const HomeStack = () => {
-    return (
-        <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.home} component={Home} />
-            <Stack.Screen name={ScreenName.notifyInvest} component={NotifyInvest} />
-            <Stack.Screen name={ScreenName.packageInvestStack} component={PackageInvestStack} />
-            <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
-        </Stack.Navigator>
-    );
-};
+const HomeStack = () => (
+    <Stack.Navigator screenOptions={screenOptions}>
+        <Stack.Screen name={ScreenName.home} component={Home} />
+        <Stack.Screen name={ScreenName.notifyInvest} component={NotifyInvest} />
+        <Stack.Screen name={ScreenName.packageInvestStack} component={PackageInvestStack} />
+        <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
+    </Stack.Navigator>
+);
 
-const InvestStack = () => {
-    return (
-        <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.investment} component={Investment} />
-            <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
-            <Stack.Screen name={ScreenName.invest} component={Invest} />
-            <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
-            <Stack.Screen name={ScreenName.transferScreen} component={TransferScreen} />
-        </Stack.Navigator>
-    );
-};
+const InvestStack = () => (
+    <Stack.Navigator screenOptions={screenOptions}>
+        <Stack.Screen name={ScreenName.investment} component={Investment} />
+        <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
+        <Stack.Screen name={ScreenName.invest} component={Invest} />
+        <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
+        <Stack.Screen name={ScreenName.transferScreen} component={TransferScreen} />
+    </Stack.Navigator>
+);
 
-const PackageInvestStack= ()=>{
-    return(
-        <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
-            <Stack.Screen name={ScreenName.invest} component={Invest} />
-            <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
-            <Stack.Screen name={ScreenName.transferScreen} component={TransferScreen} />
-        </Stack.Navigator>
-    );
-};
+const PackageInvestStack= ()=>(
+    <Stack.Navigator screenOptions={screenOptions}>
+        <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
+        <Stack.Screen name={ScreenName.invest} component={Invest} />
+        <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
+        <Stack.Screen name={ScreenName.transferScreen} component={TransferScreen} />
+    </Stack.Navigator>
+);
 
-const ReportStack = () => {
-    return (
-        <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.report} component={Report} />
-        </Stack.Navigator>
-    );
-};
+const ReportStack = () => (
+    <Stack.Navigator screenOptions={screenOptions}>
+        <Stack.Screen name={ScreenName.report} component={Report} />
+    </Stack.Navigator>
+);
 
-const PaymentStack = () => {
-    return (
-        <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.transaction} component={Transaction} />
-        </Stack.Navigator>
-    );
-};
+const PaymentStack = () => (
+    <Stack.Navigator screenOptions={screenOptions}>
+        <Stack.Screen name={ScreenName.transaction} component={Transaction} />
+    </Stack.Navigator>
+);
 
-const AccountStack = () => {
-    return (
-        <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name={ScreenName.account} component={Profile} />
-            <Stack.Screen name={ScreenName.accountInfo} component={AccountInfo} />
-            <Stack.Screen name={ScreenName.editAccountInfo} component={EditAccountInfo} />
-            <Stack.Screen name={ScreenName.accountIdentify} component={AccountIdentify} />
-            <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} />
-            <Stack.Screen name={ScreenName.changePwd} component={ChangePwd} />
-            <Stack.Screen name={ScreenName.accountLink} component={AccountLink} />
-            <Stack.Screen name={ScreenName.paymentMethod} component={PaymentMethod} />
-            <Stack.Screen name={ScreenName.accountBank} component={AccountBank} />
-            <Stack.Screen name={ScreenName.confirmPhone} component={ConfirmPhone} />
-            <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} />
-            <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
-            <Stack.Screen name={ScreenName.linkWallet} component={LinkWallet} />
-            <Stack.Screen name={ScreenName.referralUsers} component={ReferralUsers} />
-            <Stack.Screen name={ScreenName.faceDetect} component={FaceDetect} />
-        </Stack.Navigator>
-    );
-};
+const AccountStack = () => (
+    <Stack.Navigator screenOptions={screenOptions}>
+        <Stack.Screen name={ScreenName.account} component={Profile} />
+        <Stack.Screen name={ScreenName.accountInfo} component={AccountInfo} />
+        <Stack.Screen name={ScreenName.editAccountInfo} component={EditAccountInfo} />
+        <Stack.Screen name={ScreenName.accountIdentify} component={AccountIdentify} />
+        <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} />
+        <Stack.Screen name={ScreenName.changePwd} component={ChangePwd} />
+        <Stack.Screen name={ScreenName.accountLink} component={AccountLink} />
+        <Stack.Screen name={ScreenName.paymentMethod} component={PaymentMethod} />
+        <Stack.Screen name={ScreenName.accountBank} component={AccountBank} />
+        <Stack.Screen name={ScreenName.confirmPhone} component={ConfirmPhone} />
+        <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} />
+        <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
+        <Stack.Screen name={ScreenName.linkWallet} component={LinkWallet} />
+        <Stack.Screen name={ScreenName.referralUsers} component={ReferralUsers} />
+        <Stack.Screen name={ScreenName.accountDetect} component={AccountDetect} />
+    </Stack.Navigator>
+);
 
 const TabBar = ({ props }: any) => {
     const { focused, size, tabName } = props;
@@ -196,13 +184,10 @@ const MyBottomTabs = observer(() => {
         return false;
     }, []);
 
-    const getOptions = useCallback((props: any) => {
-        return {
-            tabBarIcon: (data: any) => <TabBar props={{ ...data, tabName: props.route.name }} />,
-            tabBarVisible: getTabBarVisibility(props?.route)
-        };
-
-    }, [getTabBarVisibility]);
+    const getOptions = useCallback((props: any) => ({
+        tabBarIcon: (data: any) => <TabBar props={{ ...data, tabName: props.route.name }} />,
+        tabBarVisible: getTabBarVisibility(props?.route)
+    }), [getTabBarVisibility]);
 
     return (
         <Tab.Navigator

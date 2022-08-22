@@ -1,6 +1,8 @@
 import { Platform } from 'react-native';
 import { Face } from 'vision-camera-face-detector';
 
+import { DetectedRectangleModel } from '../components/cardDetect/index';
+
 const authenFace = (objects: Face[]) => {
     switch (Platform.OS) {
         case 'ios':
@@ -46,7 +48,7 @@ const authenFace = (objects: Face[]) => {
                 objects[0].bounds.height <= 345 &&
                 objects[0].bounds.x >= 90 &&
                 objects[0].bounds.x <= 140 &&
-                objects[0].bounds.boundingCenterX >= 240&&
+                objects[0].bounds.boundingCenterX >= 240 &&
                 objects[0].bounds.boundingCenterX <= 270 &&
                 objects[0].bounds.boundingCenterY >= 330 &&
                 objects[0].bounds.boundingCenterY <= 390 &&
@@ -62,6 +64,42 @@ const authenFace = (objects: Face[]) => {
     }
 };
 
+const authenCard = (objects: DetectedRectangleModel) => {
+    switch (Platform.OS) {
+        case 'ios':
+            if (
+                objects?.detectedRectangle?.bottomLeft?.x > 1240 &&
+                objects?.detectedRectangle?.bottomLeft?.x <= 1400 &&
+                objects?.detectedRectangle?.bottomLeft?.y > 1240 &&
+                objects?.detectedRectangle?.bottomLeft?.y <= 1400 &&
+                objects?.detectedRectangle?.topLeft?.x > 30 &&
+                objects?.detectedRectangle?.topLeft?.x <= 150 &&
+                objects?.detectedRectangle?.topLeft?.y >= 1240 &&
+                objects?.detectedRectangle?.topLeft?.y <= 1400
+            ) {
+                return true;
+            }
+            return false;
+        case 'android':
+            if (
+                objects?.detectedRectangle?.bottomLeft?.x > 1240 &&
+                objects?.detectedRectangle?.bottomLeft?.x <= 1400 &&
+                objects?.detectedRectangle?.bottomLeft?.y > 1240 &&
+                objects?.detectedRectangle?.bottomLeft?.y <= 1400 &&
+                objects?.detectedRectangle?.topLeft?.x > 30 &&
+                objects?.detectedRectangle?.topLeft?.x <= 150 &&
+                objects?.detectedRectangle?.topLeft?.y >= 1240 &&
+                objects?.detectedRectangle?.topLeft?.y <= 1400
+            ) {
+                return true;
+            }
+            return false;
+        default:
+            return false;
+    }
+};
+
 export default {
-    authenFace
+    authenFace,
+    authenCard
 };

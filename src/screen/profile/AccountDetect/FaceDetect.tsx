@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect,useRef, useState , useMemo } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import {
     NativeModules,
     SafeAreaView,
@@ -19,9 +19,6 @@ import {
 } from 'react-native-vision-camera';
 import { Face, scanFaces } from 'vision-camera-face-detector';
 import FastImage from 'react-native-fast-image';
-import { useIsFocused } from '@react-navigation/native';
-import RNFS from 'react-native-fs';
-import ImageResizer from 'react-native-image-resizer';
 
 import { COLORS, Styles } from '@/theme';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
@@ -29,7 +26,7 @@ import FaceDetectUtils from '@/utils/FaceDetectUtils';
 import Loading from '@/components/loading';
 import Languages from '@/common/Languages';
 import { ENUM_TYPE_CAMERA, ENUM_TYPE_CARD_CAMERA } from '@/common/constants';
-import ScanRetangle, { DetectedRectangleModel, ScanRetangleActionsTypes } from '@/components/cardDetect';
+import ScanRetangle, { DetectedRectangleModel } from '@/components/cardDetect';
 import { Configs } from '@/common/Configs';
 import CaptureIc from '@/assets/image/ic_capture_camera.svg';
 import RollIc from '@/assets/image/ic_roll_camera.svg';
@@ -41,16 +38,17 @@ import TickedButonIc from '@/assets/image/ic_checked_camera.svg';
 import Navigator from '@/routers/Navigator';
 import ScreenName from '@/common/screenNames';
 import { useAppStore } from '@/hooks';
+import ImageUtils from '@/utils/ImageUtils';
 
 const CameraManager = NativeModules.RNRectangleScannerManager || {};
 
-const FaceDetect = observer(({ route }: any) => {
-    const {userManager}= useAppStore();
+const AccountDetect = observer(({ route }: any) => {
+    const { userManager } = useAppStore();
     const typeCamera = route?.params?.typeCamera;
     const typeCard = route?.params?.typeCard;
 
-    const devices = useCameraDevices(); 
-    const deviceFront = devices?.front;   
+    const devices = useCameraDevices();
+    const deviceFront = devices?.front;
 
     const [isBack, setIsBack] = useState<boolean>(false);
     const [faces, setFaces] = useState<Face[]>([]);
@@ -59,11 +57,8 @@ const FaceDetect = observer(({ route }: any) => {
     const [frontCard, setFrontCard] = useState<string>();
     const [backCard, setBackCard] = useState<string>();
 
-    const [scanCard, setScanCard] = useState<DetectedRectangleModel>();
-
-    const isFocused = useIsFocused();
-
-    const cardRef = useRef<ScanRetangleActionsTypes>(null);
+    const [scanCard, setScanCard] = useState<DetectedRectangleModel>({});
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     const camera = useRef<Camera>(null);
 
@@ -73,7 +68,6 @@ const FaceDetect = observer(({ route }: any) => {
         })();
     }, []);
 
-
     const frameProcessor = useFrameProcessor((frame) => {
         'worklet';
 
@@ -81,28 +75,33 @@ const FaceDetect = observer(({ route }: any) => {
         runOnJS(setFaces)(scannedFaces);
     }, []);
 
-
     const showBackCamera = useCallback(() => {
         setIsBack((last) => !last);
     }, []);
 
     const takePhotoCard = useCallback(() => {
-        if (scanCard?.detectedRectangle){
+        setLoading(true);
+        if ( FaceDetectUtils.authenCard(scanCard)) {
             CameraManager.capture();
         }
-    }, [scanCard?.detectedRectangle]);
+        setLoading(false);
+    }, [scanCard]);
 
     const takePhoto = useCallback(async () => {
         try {
+            setLoading(true);
             const photo = await camera?.current
                 ?.takePhoto({
                     flash: 'off'
                 })
-                .then((res) => {
-                    console.log('res = ', res);
-                    setAvatar(res); 
+                .then(async (res) => {
+                    if (res) {
+                        console.log('res = ', res);
+                        setAvatar(res);
+                        setLoading(false);
+                    }
                 });
-
+            setLoading(false);
         } catch (e) {
             if (e instanceof CameraCaptureError) {
                 switch (e.code) {
@@ -118,11 +117,11 @@ const FaceDetect = observer(({ route }: any) => {
     }, []);
 
     const cancelFaceImg = useCallback(() => {
-        if(typeCard===ENUM_TYPE_CARD_CAMERA.FRONT){
+        if (typeCard === ENUM_TYPE_CARD_CAMERA.FRONT) {
             setFrontCard('');
-        }else if(typeCard===ENUM_TYPE_CARD_CAMERA.BACK){
+        } else if (typeCard === ENUM_TYPE_CARD_CAMERA.BACK) {
             setBackCard('');
-        }else{
+        } else {
             setAvatar(null);
         }
     }, [typeCard]);
@@ -132,161 +131,93 @@ const FaceDetect = observer(({ route }: any) => {
         cancelFaceImg();
     }, [cancelFaceImg]);
 
-    const handleSetImageSize = useCallback((_path: string)=>{
-        if(typeCard === ENUM_TYPE_CARD_CAMERA.FRONT){
-            setFrontCard(_path);
-        }else  setBackCard(_path);
-    },[typeCard]);
-
-    const onResizeImage = useCallback(async(
-        path: string,
-        maxWidth: number, 
-        maxHeight: number, 
-        compressFormat: any,
-        quality: number,
-        rotation?: any, 
-        outputPath?: any,
-        option?:any 
-      
-       
-    )=>{
-        ImageResizer.createResizedImage(path,
-            maxWidth, 
-            maxHeight, 
-            compressFormat, 
-            quality,
-            rotation, 
-            outputPath,
-            option)
-            .then(response => {
-                console.log('res = ', response);
-                handleSetImageSize(response?.uri);         
-            })
-            .catch(err => {
-            });
-    },[handleSetImageSize]);
-
-    const confirmFaceImg = useCallback(() => {
-        if( typeCamera === ENUM_TYPE_CAMERA.FACE){
-            const newFilePath = `${RNFS.DownloadDirectoryPath  }/avatarImg.jpg`;
-            RNFS.moveFile(`${avatarImg?.path}`, newFilePath)
-                .then(() => {
-                    console.log('IMAGE MOVED', `${avatarImg?.path}`, '-- to --', newFilePath);
-                });
+    const handleSetCardImageSize = useCallback((response: any) => {
+        if (typeCard === ENUM_TYPE_CARD_CAMERA.FRONT) {
+            setFrontCard(response?.uri);
             userManager.updateUserInfo({
                 ...userManager.userInfo,
-                avatar: `${Languages.common.fileDir}${newFilePath }`
+                front_facing_card: `${response?.uri}`
             });
-            Navigator.navigateScreen(ScreenName.accountIdentify);
-           
-        }else if(typeCard === ENUM_TYPE_CARD_CAMERA.FRONT){
-           
-            if(frontCard){
-                ImageResizer.createResizedImage(
-                    `${frontCard}`,
-                    200, 
-                    200,
-                    'JPEG',
-                    70
-                ).then(async(res)=>{
-                    setFrontCard(res?.uri);
-                    console.log('front of Card = ', frontCard);
-                    console.log('res of Card = ', res);
-                    // const newFrontFilePath = `${RNFS.DownloadDirectoryPath  }/front.jpg`;
-
-                    // RNFS.moveFile(`${frontCard}`, newFrontFilePath)
-                    //     .then(async() => {
-                    //         console.log('IMAGE MOVED', `${frontCard}`, '-- to --', newFrontFilePath);
-                           
-                    userManager.updateUserInfo({
-                        ...userManager.userInfo,
-                        front_facing_card: `${res?.uri}`
-                    });
-                           
-                    Navigator.navigateScreen(ScreenName.accountIdentify);
-                    // });    
-                     
-
-                });
-            }
-
-           
-           
-           
-
-           
-
-        }else if(backCard){
-            ImageResizer.createResizedImage(
-                `${backCard}`,
-                200, 
-                200,
-                'JPEG',
-                70
-            ).then(async(res)=>{
-                setBackCard(res?.uri);
-                console.log('back of Card = ', backCard);
-                console.log('res of Card = ', res);
-                // const newFrontFilePath = `${RNFS.DownloadDirectoryPath  }/front.jpg`;
-    
-                // RNFS.moveFile(`${frontCard}`, newFrontFilePath)
-                //     .then(async() => {
-                //         console.log('IMAGE MOVED', `${frontCard}`, '-- to --', newFrontFilePath);
-                               
-                userManager.updateUserInfo({
-                    ...userManager.userInfo,
-                    card_back: `${res?.uri}`
-                });
-                               
-                Navigator.navigateScreen(ScreenName.accountIdentify);
-                // });    
-                         
-    
+        } else {
+            setBackCard(response?.uri);
+            userManager.updateUserInfo({
+                ...userManager.userInfo,
+                card_back: `${response?.uri}`
             });
         }
-    }, [avatarImg?.path, backCard, frontCard, typeCamera, typeCard, userManager]);
+        Navigator.navigateScreen(ScreenName.accountIdentify, { isSaveCache: true });
 
-    const renderButon = useCallback((icon: any, btnStyle: any, _onPress: any, hasBorder?: boolean, _btnStyleContainer?: any) => {
+    }, [typeCard, userManager]);
+
+    const confirmFaceImg = useCallback(async () => {
+        setLoading(true);
+        if (typeCamera === ENUM_TYPE_CAMERA.FACE) {
+            userManager.updateUserInfo({
+                ...userManager.userInfo,
+                avatar: `${Languages.common.fileDir}${avatarImg?.path}`
+            });
+            Navigator.navigateScreen(ScreenName.accountIdentify, { isSaveCache: true });
+
+        } else if (typeCard === ENUM_TYPE_CARD_CAMERA.FRONT) {
+
+            if (frontCard) {
+                ImageUtils.onResizeImage(
+                    `${frontCard}`,
+                    handleSetCardImageSize
+                );
+            } setLoading(false);
+
+        } else {
+            if (backCard) {
+                ImageUtils.onResizeImage(
+                    `${backCard}`,
+                    handleSetCardImageSize
+                );
+            } setLoading(false);
+        }
+        setLoading(false);
+
+    }, [avatarImg?.path, backCard, frontCard, handleSetCardImageSize, typeCamera, typeCard, userManager]);
+
+    const renderButon = useCallback((icon: any, btnStyle: any, _onPress: any, hasBorderRadio?: boolean, isOpacity?: boolean, _btnStyleContainer?: any) => {
         const opacityItem = {
-            opacity: FaceDetectUtils.authenFace(faces) ? 1 : 0.3
+            opacity: FaceDetectUtils.authenFace(faces) || FaceDetectUtils.authenCard(scanCard) ? 1 : 0.7
         } as ViewStyle;
 
         return (
             <TouchableOpacity
                 style={[
-                    hasBorder ? styles.btnStyleContainer : undefined,
-                    _btnStyleContainer,
-                    hasBorder ? opacityItem : null]}
+                    isOpacity ? opacityItem : undefined,
+                    hasBorderRadio ? styles.btnStyleContainer : styles.btnNOBOrder,
+                    _btnStyleContainer
+                ]}
                 onPress={_onPress}
             >
-                <View style={btnStyle}>
+                <View style={[btnStyle, isOpacity ? opacityItem : undefined]}>
                     {icon}
                 </View>
 
             </TouchableOpacity>
         );
-    }, [faces]);
+    }, [faces, scanCard]);
 
-    const renderCardCamera = useCallback(
-        ( _ref: any,_setScan: any , _setValue?: any, _value?: string ) => {
-            return (
-                <>
-                    <View style={styles.wrapIconCheckCard}>
-                        {scanCard?.detectedRectangle || frontCard?
-                            <TickedButonIc /> :
-                            <CancelButonIc />}
-                    </View>
-                    <ScanRetangle ref={_ref}
-                        setPositionScan={_setScan} 
-                        // setCroppedImg={_setValue} 
-                        setOriginImg={_setValue}
-                        imgCapture={_value}
-                    />
-                </>
-                
-            );
-        },
-        [frontCard, scanCard]
+    const renderCardsScan = useCallback(
+        (_ref: any, _setScan: any, _setValue?: any, _value?: string) => (
+            <>
+                <View style={styles.wrapIconCheckCard}>
+                    { FaceDetectUtils.authenCard(scanCard)  || frontCard || backCard ?
+                        <TickedButonIc /> :
+                        <CancelButonIc />}
+                </View>
+                <ScanRetangle ref={_ref}
+                    setPositionScan={_setScan}
+                    setOriginImg={_setValue}
+                    imgCapture={_value}
+                />
+            </>
+
+        ),
+        [backCard, frontCard, scanCard]
     );
 
     const renderCam = useCallback(
@@ -299,7 +230,7 @@ const FaceDetect = observer(({ route }: any) => {
         ) => {
 
             const borderColor = {
-                borderColor: hasColorStroke || avatarImg?.path ? COLORS.GREEN : COLORS.RED
+                borderColor: hasColorStroke || avatarImg?.path ? COLORS.GREEN_2 : COLORS.RED_6
             } as ViewStyle;
 
             return (
@@ -326,19 +257,19 @@ const FaceDetect = observer(({ route }: any) => {
                                 frameProcessorFps={5}
                             ></Camera>
                         }
-                    </View>                 
-                  
+                    </View>
+
                 </>
             );
         },
         [avatarImg?.path, faces, isBack]
     );
 
-    const renderDetectCam = useMemo(()=>{
-        if(deviceFront == null){
+    const renderDetectCam = useMemo(() => {
+        if (deviceFront == null) {
             return <View style={styles.container}><Loading isOverview /></View>;
-        }return <>
-            { renderCam(
+        } return <>
+            {renderCam(
                 camera,
                 devices?.back,
                 devices?.front,
@@ -346,8 +277,8 @@ const FaceDetect = observer(({ route }: any) => {
                 FaceDetectUtils.authenFace(faces)
             )}
         </>;
-    },[deviceFront, devices?.back, devices?.front, faces, frameProcessor, renderCam]);
-  
+    }, [deviceFront, devices?.back, devices?.front, faces, frameProcessor, renderCam]);
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar
@@ -371,8 +302,9 @@ const FaceDetect = observer(({ route }: any) => {
                             typeCamera === ENUM_TYPE_CAMERA.FACE ?
                                 renderDetectCam
                                 :
-                                renderCardCamera(camera,
-                                    setScanCard, 
+                                renderCardsScan(
+                                    camera,
+                                    setScanCard,
                                     typeCard === ENUM_TYPE_CARD_CAMERA.FRONT ? setFrontCard : setBackCard,
                                     typeCard === ENUM_TYPE_CARD_CAMERA.FRONT ? frontCard : backCard)
                         }
@@ -389,42 +321,52 @@ const FaceDetect = observer(({ route }: any) => {
                             }
                         </Text>
 
-                        {avatarImg?.path || frontCard || backCard?
-                         
+                        {avatarImg?.path || frontCard || backCard ?
+
                             <View style={styles.wrapViewBtnTakePhoto}>
-                                {renderButon(<TickedIc />, 
-                                    styles.wrapBtnApproveImg, 
+                                {renderButon(
+                                    <TickedIc />,
+                                    styles.wrapBtnApproveImg,
                                     confirmFaceImg,
-                                    true, 
+                                    true,
+                                    false,
                                     styles.borderConfirmImg
                                 )}
-                                {renderButon(<CancelIc />, 
-                                    styles.wrapBtnCancelImg, 
-                                    cancelFaceImg, 
+                                {renderButon(
+                                    <CancelIc />,
+                                    styles.wrapBtnCancelImg,
+                                    cancelFaceImg,
                                     true,
+                                    false,
                                     styles.borderCancelImg
                                 )}
-                            </View>:
+                            </View> :
                             <View style={styles.wrapViewBtnTakePhoto}>
-                                {renderButon(<BackIc />, 
+                                {renderButon(
+                                    <BackIc />,
                                     styles.wrapBtnChangeTypeCamera,
                                     onNavigateBack
                                 )}
-                                {renderButon(<CaptureIc />, 
+                                {renderButon(
+                                    <CaptureIc />,
                                     styles.wrapBtnTakeCamera,
                                     typeCamera === ENUM_TYPE_CAMERA.FACE ?
                                         (FaceDetectUtils.authenFace(faces) ? takePhoto : undefined) :
-                                        takePhotoCard, 
+                                        (FaceDetectUtils.authenCard(scanCard) ? takePhotoCard : undefined),
+                                    true,
                                     true
                                 )}
-                                {typeCamera===ENUM_TYPE_CAMERA.FACE && renderButon(<RollIc />, 
-                                    styles.wrapBtnChangeTypeCamera, 
-                                    showBackCamera
-                                )}
+                                {typeCamera === ENUM_TYPE_CAMERA.FACE &&
+                                    renderButon(
+                                        <RollIc />,
+                                        styles.wrapBtnChangeTypeCamera,
+                                        showBackCamera
+                                    )}
                             </View>
                         }
-                    </View> 
+                    </View>
                 </View>
+                {isLoading && <Loading isOverview />}
             </View>
         </SafeAreaView>
     );
@@ -463,28 +405,28 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH * 0.9,
         height: SCREEN_WIDTH * 0.9,
         alignSelf: 'center',
-        transform:[{
-            scaleY: 1/1.15
+        transform: [{
+            scaleY: 1 / 1.15
         }]
     },
     cameraContainer: {
         alignItems: 'center',
-        justifyContent: 'center',      
+        justifyContent: 'center',
         borderWidth: 8,
         borderRadius: SCREEN_WIDTH * 0.8,
         overflow: 'hidden',
         width: SCREEN_WIDTH * 0.8,
         height: SCREEN_WIDTH * 0.8,
         alignSelf: 'center',
-        transform:[{
+        transform: [{
             scaleY: 1.15
         }]
     },
     wrapImage: {
         width: SCREEN_WIDTH * 0.9,
         height: SCREEN_WIDTH * 0.9,
-        transform:[{
-            scaleY: 1/1.15
+        transform: [{
+            scaleY: 1 / 1.15
         }]
     },
     txtTitle: {
@@ -508,20 +450,20 @@ const styles = StyleSheet.create({
         height: SCREEN_WIDTH * 0.165,
         borderRadius: SCREEN_WIDTH * 0.165,
         borderWidth: 3.5,
-        borderColor: COLORS.RED,
+        borderColor: COLORS.RED_6,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: COLORS.RED
+        backgroundColor: COLORS.RED_6
     },
     wrapBtnApproveImg: {
         width: SCREEN_WIDTH * 0.165,
         height: SCREEN_WIDTH * 0.165,
         borderRadius: SCREEN_WIDTH * 0.165,
         borderWidth: 3.5,
-        borderColor: COLORS.GREEN,
+        borderColor: COLORS.GREEN_2,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: COLORS.GREEN
+        backgroundColor: COLORS.GREEN_2
     },
     btnStyleContainer: {
         alignItems: 'center',
@@ -532,11 +474,14 @@ const styles = StyleSheet.create({
         borderWidth: 3.5,
         borderColor: COLORS.WHITE
     },
+    btnNOBOrder: {
+        borderColor: COLORS.WHITE
+    },
     borderConfirmImg: {
-        borderColor: COLORS.GREEN
+        borderColor: COLORS.GREEN_2
     },
     borderCancelImg: {
-        borderColor: COLORS.RED
+        borderColor: COLORS.RED_6
     },
     wrapIconCheck: {
         position: 'absolute',
@@ -552,4 +497,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default FaceDetect;
+export default AccountDetect;

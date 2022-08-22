@@ -5,20 +5,18 @@ import React, {
     useState
 } from 'react';
 import {
-    Image,
     NativeModules,
     StyleSheet,
-    Text,
-    TouchableOpacity,
     View,
     ViewProps,
     ViewStyle
 } from 'react-native';
-import Scanner from 'react-native-rectangle-scanner';
 import FastImage from 'react-native-fast-image';
+import Scanner from 'react-native-rectangle-scanner';
 
 import { COLORS } from '@/theme';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
+import FaceDetectUtils from '@/utils/FaceDetectUtils';
 
 export interface ScanRetangleActionsTypes {
     onHide: () => void;
@@ -96,7 +94,7 @@ const CameraManager = NativeModules.RNRectangleScannerManager || {};
 
 const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
     (
-        {   
+        {
             imgCapture,
             filterId,
             capturedQuality,
@@ -110,10 +108,10 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
     ) => {
         const [isShow, setShow] = useState<boolean>(false);
         const [isHasFlash, setHasFlash] = useState<boolean>(true);
-        const [position, setPosition] = useState<DetectedRectangleModel>();
+        const [position, setPosition] = useState<DetectedRectangleModel>({});
 
         const greenColor = {
-            borderColor: position?.detectedRectangle || imgCapture ? COLORS.GREEN : COLORS.RED
+            borderColor: FaceDetectUtils.authenCard(position) || imgCapture ? COLORS.GREEN_2 : COLORS.RED_6
         } as ViewStyle;
 
         const onShow = useCallback(() => {
@@ -152,9 +150,12 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
             onCapture
         }));
 
-        return (  
-       
-           
+        console.log('scanCard =', position);
+
+
+        return (
+
+
             <View style={[styles.container, scaneContainer, greenColor]}>
                 {imgCapture ?
                     <FastImage
@@ -170,8 +171,7 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
                         style={styles.wrapSelfCamera}
                         onRectangleDetected={onRectangleDetected}
                     />}
-               
-            </View>               
+            </View>
         );
     }
 );
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         borderWidth: 6,
         overflow: 'hidden',
-        borderColor: COLORS.RED,
+        borderColor: COLORS.RED_6,
         width: SCREEN_WIDTH * 0.95,
         height: SCREEN_WIDTH * 0.75,
         alignSelf: 'center'
@@ -190,45 +190,8 @@ const styles = StyleSheet.create({
     wrapSelfCamera: {
         width: SCREEN_WIDTH * 0.95,
         height: SCREEN_WIDTH * 0.75
-    },
-    wrapOptionScan: {
-        flexDirection: 'row'
-    },
-    wrapCancel: {
-        width: 60,
-        height: 60,
-        borderColor: COLORS.PINK,
-        borderWidth: 5,
-        backgroundColor: COLORS.YELLOW,
-        borderRadius: 40,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    wrapCapture: {
-        width: 90,
-        height: 90,
-        borderColor: COLORS.PINK,
-        borderWidth: 5,
-        backgroundColor: COLORS.RED,
-        borderRadius: 90,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    wrapSetFlash: {
-        width: 60,
-        height: 60,
-        borderColor: COLORS.PINK,
-        borderWidth: 5,
-        backgroundColor: COLORS.YELLOW,
-        borderRadius: 40,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    wrapOpenScanBtn: { backgroundColor: COLORS.GRAY },
-    txtOpenScanBtn: { paddingVertical: 10 },
-    imgContainer: {
-        width: 300,
-        height: 300
     }
+
+
 });
 export default ScanRetangle;
