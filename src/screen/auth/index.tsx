@@ -161,16 +161,16 @@ const Auth = observer(({ route }: any) => {
             }
         }, [apiServices?.auth, common, fastAuthInfo, userManager]);
 
-    const getOTPLogin = useCallback(async (phone: string) => {
+    const getOTPLogin = useCallback(async (phone: string, channel: ItemProps, refCode: string) => {
         setLoading(true);
-        const resUpdate = await apiServices?.auth?.updatePhone(dataGoogle?.id || '', phone, dataGoogle?.checksum || '');
+        const resUpdate = await apiServices?.auth?.updatePhone(dataGoogle?.id || '', phone, dataGoogle?.checksum || '', channel?.id || '', refCode);
         setLoading(false);
         if (resUpdate.success) {
             const dataUpdate = resUpdate?.data as LoginWithThirdPartyModel;
             setData(dataUpdate);
             common.setSuccessGetOTP(true);
         } else {
-            refModal.current?.setErrorMsg(resUpdate.message);
+            refModal.current?.setErrorMsg?.(resUpdate.message);
         }
     }, [apiServices?.auth, common, dataGoogle]);
 
@@ -193,7 +193,7 @@ const Auth = observer(({ route }: any) => {
                 }
             }
         } else {
-            refModal.current?.setErrorOTP(resActive.message);
+            refModal.current?.setErrorOTP?.(resActive.message);
         }
     }, [apiServices?.auth, common, data?.checksum, data?.id, fastAuthInfo, userManager]);
 

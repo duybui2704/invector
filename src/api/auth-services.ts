@@ -32,13 +32,15 @@ export class AuthServices extends BaseService {
             })
         );
 
-    updatePhone = async (id: string, phone_number: string, checksum: string) =>
+    updatePhone = async (id: string, phone_number: string, checksum: string, channels: string | number, referral_code: string) =>
         this.api(true).post(
             API_CONFIG.UPDATE_PHONE,
             this.buildFormData({
                 id,
                 phone_number,
-                checksum
+                checksum,
+                channels,
+                referral_code
             })
         );
 
@@ -53,7 +55,7 @@ export class AuthServices extends BaseService {
         );
 
     updateUserInf = async (
-        avatar?: string,  // anh guiw len  khi ko camera hoac thu vien
+        avatar?: string,  // anh gui len  khi ko camera hoac thu vien
         full_name?: string,
         gender?: string,
         address?: string

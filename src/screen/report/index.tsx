@@ -62,7 +62,7 @@ const Report = observer(() => {
         }
         if (resYear.success) {
             const dataYear = Utils.formatObjectToKeyLabel(resYear.data);
-            setYearList(dataYear);
+            setYearList(dataYear.sort((a, b) => parseInt(b.value) - parseInt(a.value)));
         }
 
     }, [apiServices.report]);
@@ -77,7 +77,6 @@ const Report = observer(() => {
             setReportList(dataMonths);
             const dataTotal = res?.total as TotalOfQuarterModal;
             setTotal(dataTotal);
-            console.log('report:', reportList);
 
             const temp = dataMonths.map((item) => {
                 return {

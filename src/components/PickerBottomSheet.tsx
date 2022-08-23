@@ -114,8 +114,6 @@ export default PickerBottomSheet;
 
 const styles = StyleSheet.create({
     container: {
-        position:'absolute',
-        zIndex: 10000000,
         alignItems: 'center',
         justifyContent: 'space-between'
     },

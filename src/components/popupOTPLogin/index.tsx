@@ -21,9 +21,9 @@ import Validate from '@/utils/Validate';
 import { TextFieldActions } from '../elements/textfield/types';
 import { MyTextInputKeyboardNavigation } from '../elements/textfieldKeyboardNavigation';
 import { Touchable } from '../elements/touchable';
-
+import Loading from '../loading';
 interface PopupOTPProps extends PopupPropsTypes {
-    getOTPcode?: (phone: string) => any,
+    getOTPcode?: (phone: string, channel: ItemProps, refCode: string) => any,
     onPressConfirm?: (otp: string) => any,
     onChannelPress?: () => any,
 }
@@ -34,7 +34,6 @@ export const PopupOTPLogin = forwardRef<
 >(({ getOTPcode, onPressConfirm, onChannelPress }: PopupOTPProps, ref) => {
     const { common } = useAppStore();
     const [visible, setVisible] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
     const refPhone = useRef<TextFieldActions>();
     const [startCount, setStartCount] = useState<boolean>(true);
     const [timer, setTimer] = useState<number>(0);
@@ -52,11 +51,9 @@ export const PopupOTPLogin = forwardRef<
     const [errChannel, setErrChannel] = useState<string>('');
     const [isShowReferral, setShowReferral] = useState<boolean>(false);
     const [channel, setChannel] = useState<ItemProps>();
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!common.successGetOTP) {
-            return;
-        }
         intervalRef.current = setInterval(() => {
             setTimer((t) => t - 1);
         }, 1000);
@@ -71,7 +68,6 @@ export const PopupOTPLogin = forwardRef<
     }, [timer, common.successGetOTP]);
 
     const _onCancel = useCallback(() => {
-        setLoading(false);
         setStartCount(true);
         setTimer(0);
         setPin('');
@@ -82,6 +78,9 @@ export const PopupOTPLogin = forwardRef<
         setPin('');
         setVisible(true);
         setTimer(60);
+        setTimeout(() => {
+            refPhone.current?.focus();
+        }, 300);
     }, []);
 
     const wakeUp = useCallback(() => {
@@ -98,6 +97,7 @@ export const PopupOTPLogin = forwardRef<
             setShowReferral(true);
         } else {
             setShowReferral(false);
+            setRefCode('')
         }
     }, []);
 
@@ -119,33 +119,66 @@ export const PopupOTPLogin = forwardRef<
 
     useEffect(() => {
         if (pin.toString().length === 6) {
+            setLoading(true);
             onPressConfirm?.(pin);
         }
     }, [pin]);
 
-    const setErrorMsg = useCallback((err: any) => {
-        refPhone.current?.setErrorMsg(err);
+    const setErrorMsg = useCallback((err: string) => {
+        setLoading(false)
+        if (err) {
+            if (err.toLowerCase().includes('mã')) { // FIXME: hardcode
+                refRefCode.current?.setErrorMsg(err);
+            } else {
+                refPhone.current?.setErrorMsg(err);
+            }
+        } else {
+            refPhone.current?.setErrorMsg('');
+            refRefCode.current?.setErrorMsg('');
+        }
+
     }, []);
 
     const onValidate = useCallback(() => {
         const errMsgPhone = FormValidate.passConFirmPhone(phone);
         refPhone.current?.setErrorMsg(errMsgPhone);
-        if (`${errMsgPhone}`.length === 0) {
+
+        const _errChannel = FormValidate.inputEmpty(channel?.id, Languages.errorMsg.channelRequired);
+        let errRefCode = '';
+        if (parseInt(channel?.id || '0') === FRIEND_INVITE_ID) {
+            errRefCode = FormValidate.referralValidate(refCode)
+        }
+        refRefCode.current?.setErrorMsg(errRefCode);
+
+        setErrChannel(_errChannel)
+
+        if (`${errMsgPhone}${_errChannel}${errRefCode}`.length === 0) {
             return true;
         }
         return false;
-    }, [phone]);
+    }, [phone, channel, refCode]);
 
     const onConfirm = useCallback(async () => {
         if (onValidate()) {
-            await getOTPcode?.(phone);
+            setLoading(true)
+            await getOTPcode?.(phone, channel, refCode);
+            setLoading(false)
             setStartCount(true);
             setTimer(60);
         }
-    }, [getOTPcode, onValidate, phone]);
+    }, [getOTPcode, onValidate, phone, channel, refCode]);
 
-    const onChangeText = useCallback((value: string) => {
-        setPhone(value);
+    const onChangeText = useCallback((value: string, tag?: string) => {
+        switch (tag) {
+            case Languages.auth.txtPhone:
+                setPhone(value);
+                break;
+            case Languages.auth.txtRefCode:
+                setRefCode(value);
+                break;
+            default:
+                break;
+        }
     }, []);
 
     const onChangeCode = useCallback((code: string) => {
@@ -154,18 +187,21 @@ export const PopupOTPLogin = forwardRef<
     }, []);
 
     const onResend = useCallback(async () => {
-        await getOTPcode?.(phone);
+        setLoading(true)
+        await getOTPcode?.(phone, channel, refCode);
+        setLoading(false)
         setStartCount(true);
         setTimer(60);
-    }, [getOTPcode, phone]);
+    }, [getOTPcode, phone, channel, refCode]);
 
     const renderBtConfirm = useMemo(() => {
         return (
             <Touchable onPress={onConfirm} style={styles.btConfirm}>
-                <Text style={[styles.txtBt, { color: COLORS.WHITE }]}>{Languages.confirmPhone.sendOTP}</Text>
+                {isLoading && <Loading isWhite/>}
+                <Text style={[styles.txtBt, { color: COLORS.WHITE }]}>{Languages.confirmPhone.update}</Text>
             </Touchable>
         );
-    }, [onConfirm]);
+    }, [onConfirm, isLoading]);
 
     const renderResend = useMemo(() => {
         if (startCount) {
@@ -283,7 +319,9 @@ export const PopupOTPLogin = forwardRef<
                                 style={styles.errorMessage}>{errChannel}</Text> : null}
                             {isShowReferral && <MyTextInputKeyboardNavigation
                                 ref={refRefCode}
-                                value={phone}
+                                refArr={[refCode]}
+                                orderRef={1}
+                                value={refCode}
                                 isPhoneNumber={true}
                                 maxLength={10}
                                 rightIcon={arrayIcon.login.referral_code}
@@ -410,10 +448,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     btConfirm: {
-        paddingVertical: 10,
+        flexDirection: 'row',
         backgroundColor: COLORS.GREEN,
         borderRadius: 30,
         width: SCREEN_WIDTH * 0.7,
+        height: 45,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 10,
@@ -435,7 +474,8 @@ const styles = StyleSheet.create({
     },
     txtBt: {
         ...Styles.typography.medium,
-        color: COLORS.RED_2
+        color: COLORS.RED_2,
+        paddingHorizontal: 10
     },
     ic_close: {
         position: 'absolute',
@@ -450,8 +490,8 @@ const styles = StyleSheet.create({
         fontSize: Configs.FontSize.size12,
         fontFamily: Configs.FontFamily.medium,
         color: COLORS.RED,
-        marginHorizontal: 10,
-        paddingTop: 10
+        marginHorizontal: 15,
+        alignSelf: 'flex-start'
     },
     inputChannel: {
         borderRadius: 20,

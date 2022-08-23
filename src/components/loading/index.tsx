@@ -7,7 +7,7 @@ import {
 import { COLORS } from '@/theme';
 import MyStyleLoading from './styles';
 
-const Loading = ({ isOverview }: { isOverview?: boolean }) => {
+const Loading = ({ isOverview, isWhite }: { isOverview?: boolean, isWhite?: boolean }) => {
 
     const styles = MyStyleLoading();
     return (
@@ -20,7 +20,7 @@ const Loading = ({ isOverview }: { isOverview?: boolean }) => {
                         style={styles.activityIndicator} />
                 </View> :
                 <View style={styles.inline} >
-                    <ActivityIndicator size="small" color={COLORS.GREEN} />
+                    <ActivityIndicator size="small" color={isWhite ? COLORS.WHITE : COLORS.GREEN} />
                 </View>}
         </>
     );
