@@ -1,30 +1,29 @@
-import { observer } from 'mobx-react';
-import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
-import { View, Text, ScrollView } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { observer } from 'mobx-react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { ScrollView, Text, View } from 'react-native';
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import CheckIcon from '@/assets/image/ic_isChecked_save_acc.svg';
 import UnCheckIcon from '@/assets/image/ic_unchecked_save_acc.svg';
-import Languages from '@/common/Languages';
-import arrayIcon from '@/common/arrayIcon';
-import FormValidate from '@/utils/FormValidate';
 import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
+import arrayIcon from '@/common/arrayIcon';
+import { FRIEND_INVITE_ID } from '@/common/Configs';
+import Languages from '@/common/Languages';
 import { ItemProps } from '@/components/bottomSheet';
-import { useAppStore } from '@/hooks';
-import { ChannelModal } from '@/models/ChannelModal';
 import { TextFieldActions } from '@/components/elements/textfield/types';
-import { Touchable } from '@/components/elements/touchable';
-import PickerBottomSheet from '@/components/PickerBottomSheet';
-import { MyStylesSign } from './styles';
-import OtpSignIn from '../otpSignIn';
-import Loading from '@/components/loading';
-import HideKeyboard from '@/components/HideKeyboard';
 import { MyTextInputKeyboardNavigation } from '@/components/elements/textfieldKeyboardNavigation';
+import { Touchable } from '@/components/elements/touchable';
+import HideKeyboard from '@/components/HideKeyboard';
+import Loading from '@/components/loading';
+import PickerBottomSheet from '@/components/PickerBottomSheet';
+import { useAppStore } from '@/hooks';
+import { COLORS } from '@/theme';
+import FormValidate from '@/utils/FormValidate';
 import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
-import { COLORS } from '@/theme';
-import { FRIEND_INVITE_ID } from '@/common/Configs';
+import OtpSignIn from '../otpSignIn';
+import { MyStylesSign } from './styles';
 
 const SignUp = observer(({ dataChannel }: { dataChannel?: ItemProps[] }) => {
     const { apiServices } = useAppStore();

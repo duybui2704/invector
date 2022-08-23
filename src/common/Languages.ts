@@ -490,14 +490,14 @@ const Languages = {
         update: 'Cập nhật thông tin',
         reSendOTP: 'Gửi lại mã OTP',
         verifyOTP: 'Xác nhận OTP',
-        noteVerifyOTP: '<p><r>Chú ý:</r> <s> Mã OTP đã được gửi qua cuộc gọi tới số điện thoại %phone, nhập mã OTP và xác nhận để liên kết tài khoản</s></p>',
+        noteVerifyOTP: '<p><r>Chú ý:</r> <s> Mã OTP đã được gửi thông qua cuộc gọi tới số điện thoại %phone, nhập mã OTP và xác nhận để liên kết tài khoản</s></p>',
         reSendCode: 'Gửi lại mã sau ',
         sendAgain: 'Gửi lại mã',
         sendAgainTime: 'sau',
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         popupOtpErrorTitle: 'Thông báo OTP',
         popupOtpErrorDescription: 'OTP không chính xác',
-        msgCallPhone: 'Mã xác thực đã được gửi đến số điện thoại %s1 qua cuộc gọi. Mã hết hiệu lực sau 03:00 phút.'
+        msgCallPhone: 'Mã xác thực đã được gửi đến số điện thoại %s1 thông qua cuộc gọi. Mã hết hiệu lực sau 03:00 phút.'
     },
     msgNotify: {
         successCancelLinkVimo: 'Bạn đã hủy liên kết với Vimo',
