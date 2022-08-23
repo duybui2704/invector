@@ -25,7 +25,6 @@ const authenFace = (objects: Face[]) => {
                 objects[0].bounds.boundingCenterY <= 1200 &&
                 objects[0].leftEyeOpenProbability > 0 &&
                 objects[0].rightEyeOpenProbability > 0
-
             ) {
                 return true;
             }

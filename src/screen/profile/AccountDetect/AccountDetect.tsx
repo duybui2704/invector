@@ -28,7 +28,7 @@ import TickedIc from '@/assets/image/ic_white_tick_camera.svg';
 import { ENUM_TYPE_CAMERA, ENUM_TYPE_CARD_CAMERA } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
-import ScanRetangle, { DetectedRectangleModel } from '@/components/cardDetect';
+import ScanRetangle, { DetectedRectangleModel, ScanRetangleActionsTypes } from '@/components/cardDetect';
 import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
 import Navigator from '@/routers/Navigator';
@@ -59,6 +59,7 @@ const AccountDetect = observer(({ route }: any) => {
     const [isLoading, setLoading] = useState<boolean>(false);
 
     const camera = useRef<Camera>(null);
+    const scanCardRef = useRef<ScanRetangleActionsTypes>(null);
 
     useEffect(() => {
         (async () => {
@@ -80,16 +81,10 @@ const AccountDetect = observer(({ route }: any) => {
     }, []);
 
     const takePhotoCard = useCallback(async () => {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 4000);
         if (FaceDetectUtils.authenCard(scanCard)) {
             CameraManager.capture();
+            scanCardRef?.current?.onCapture();
         }
-        // if (!scanCard) {
-        //     setLoading(false);
-        // }
     }, [scanCard]);
 
     const takePhotoFace = useCallback(async () => {
@@ -305,7 +300,7 @@ const AccountDetect = observer(({ route }: any) => {
                                 renderDetectCam
                                 :
                                 renderCardsScan(
-                                    camera,
+                                    scanCardRef,
                                     setScanCard,
                                     typeCard === ENUM_TYPE_CARD_CAMERA.FRONT ? setFrontCard : setBackCard,
                                     typeCard === ENUM_TYPE_CARD_CAMERA.FRONT ? frontCard : backCard)
@@ -373,130 +368,5 @@ const AccountDetect = observer(({ route }: any) => {
         </SafeAreaView>
     );
 });
-
-// const styles = StyleSheet.create({
-//     container: {
-//         backgroundColor: COLORS.GRAY_17,
-//         flex: 1,
-//         justifyContent: 'center',
-//         alignItems: 'center'
-//     },
-//     bodyContainer: {
-//         flex: 8
-//     },
-//     wrapViewBtnTakePhoto: {
-//         flexDirection: 'row',
-//         paddingVertical: '10%',
-//         width: '80%',
-//         justifyContent: 'space-around',
-//         alignSelf: 'center',
-//         alignItems: 'center'
-//     },
-//     wrapBtnChangeTypeCamera: {
-//         alignSelf: 'center'
-//     },
-//     wrapBtnTakeCamera: {
-//         backgroundColor: COLORS.WHITE,
-//         width: SCREEN_WIDTH * 0.165,
-//         height: SCREEN_WIDTH * 0.165,
-//         borderRadius: SCREEN_WIDTH * 0.165,
-//         alignItems: 'center',
-//         justifyContent: 'center'
-//     },
-//     wrapSelfCamera: {
-//         width: SCREEN_WIDTH * 0.9,
-//         height: SCREEN_WIDTH * 0.9,
-//         alignSelf: 'center',
-//         transform: [{
-//             scaleY: 1 / 1.15
-//         }]
-//     },
-//     cameraContainer: {
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         borderWidth: 8,
-//         borderRadius: SCREEN_WIDTH * 0.8,
-//         overflow: 'hidden',
-//         width: SCREEN_WIDTH * 0.8,
-//         height: SCREEN_WIDTH * 0.8,
-//         alignSelf: 'center',
-//         transform: [{
-//             scaleY: 1.15
-//         }]
-//     },
-//     wrapImage: {
-//         width: SCREEN_WIDTH * 0.9,
-//         height: SCREEN_WIDTH * 0.9,
-//         transform: [{
-//             scaleY: 1 / 1.15
-//         }]
-//     },
-//     txtTitle: {
-//         ...Styles.typography.regular,
-//         fontSize: Configs.FontSize.size20,
-//         color: COLORS.WHITE
-//     },
-//     wrapTitle: {
-//         flex: 1,
-//         paddingTop: '20%'
-//     },
-//     noteCaptureText: {
-//         ...Styles.typography.regular,
-//         paddingHorizontal: '12%',
-//         textAlign: 'center',
-//         color: COLORS.WHITE,
-//         paddingTop: '26%'
-//     },
-//     wrapBtnCancelImg: {
-//         width: SCREEN_WIDTH * 0.165,
-//         height: SCREEN_WIDTH * 0.165,
-//         borderRadius: SCREEN_WIDTH * 0.165,
-//         borderWidth: 3.5,
-//         borderColor: COLORS.RED_6,
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         backgroundColor: COLORS.RED_6
-//     },
-//     wrapBtnApproveImg: {
-//         width: SCREEN_WIDTH * 0.165,
-//         height: SCREEN_WIDTH * 0.165,
-//         borderRadius: SCREEN_WIDTH * 0.165,
-//         borderWidth: 3.5,
-//         borderColor: COLORS.GREEN_2,
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         backgroundColor: COLORS.GREEN_2
-//     },
-//     btnStyleContainer: {
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         width: SCREEN_WIDTH * 0.2,
-//         height: SCREEN_WIDTH * 0.2,
-//         borderRadius: SCREEN_WIDTH * 0.2,
-//         borderWidth: 3.5,
-//         borderColor: COLORS.WHITE
-//     },
-//     btnNOBOrder: {
-//         borderColor: COLORS.WHITE
-//     },
-//     borderConfirmImg: {
-//         borderColor: COLORS.GREEN_2
-//     },
-//     borderCancelImg: {
-//         borderColor: COLORS.RED_6
-//     },
-//     wrapIconCheck: {
-//         position: 'absolute',
-//         left: '15%',
-//         zIndex: 1000
-//     },
-//     wrapIconCheckCard: {
-//         position: 'absolute',
-//         left: '1%',
-//         top: -10,
-//         zIndex: 1000
-//     }
-
-// });
 
 export default AccountDetect;
