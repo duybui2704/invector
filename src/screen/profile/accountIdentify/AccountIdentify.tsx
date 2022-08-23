@@ -279,7 +279,7 @@ const AccountIdentify = observer(({ route }: any) => {
                     Languages.accountIdentify.frontKYC,
                     frontIdentify,
                     <BeforeIC />,
-                    !!userManager.userInfo?.front_facing_card
+                    false // !!userManager.userInfo?.front_facing_card
                 )}
                 {renderOpenCamera(
                     behindIdentifyRef,
@@ -287,7 +287,7 @@ const AccountIdentify = observer(({ route }: any) => {
                     Languages.accountIdentify.behindKYC,
                     behindIdentify,
                     <AfterIC />,
-                    !!userManager.userInfo?.card_back
+                    false // !!userManager.userInfo?.card_back
                 )}
                 <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
                 <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
@@ -298,13 +298,13 @@ const AccountIdentify = observer(({ route }: any) => {
                     Languages.accountIdentify.avatarPhoto,
                     avatarImg,
                     <AvatarIC />,
-                    !!userManager.userInfo?.avatar,
+                    false,// !!userManager.userInfo?.avatar,
                     true
                 )}
             </View>
 
         </HideKeyboard>
-    ), [avatarImg, behindIdentify, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhotos, renderOpenCamera, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto, userManager.userInfo?.avatar, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
+    ), [avatarImg, behindIdentify, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhotos, renderOpenCamera, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto]);
 
     const renderTop = useMemo(() => (
         <HTMLView

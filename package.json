@@ -85,7 +85,7 @@
         "react-native-screens": "^3.16.0",
         "react-native-simple-crypto": "^0.2.15",
         "react-native-snap-carousel": "^3.9.1",
-        "react-native-svg": "^13.0.0",
+        "react-native-svg": "^12.4.4",
         "react-native-switch": "^1.5.1",
         "react-native-touch-id": "./src/libs/react-native-touch-id",
         "react-native-vector-icons": "^9.2.0",

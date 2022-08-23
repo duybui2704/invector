@@ -1,15 +1,14 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     NativeModules,
     SafeAreaView,
-    StatusBar,
-    StyleSheet,
-    Text,
+    StatusBar, Text,
     TouchableOpacity,
     View,
     ViewStyle
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { runOnJS } from 'react-native-reanimated';
 import {
     Camera,
@@ -18,27 +17,25 @@ import {
     useFrameProcessor
 } from 'react-native-vision-camera';
 import { Face, scanFaces } from 'vision-camera-face-detector';
-import FastImage from 'react-native-fast-image';
 
-import { COLORS, Styles } from '@/theme';
-import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
-import FaceDetectUtils from '@/utils/FaceDetectUtils';
-import Loading from '@/components/loading';
-import Languages from '@/common/Languages';
-import { ENUM_TYPE_CAMERA, ENUM_TYPE_CARD_CAMERA } from '@/common/constants';
-import ScanRetangle, { DetectedRectangleModel } from '@/components/cardDetect';
-import { Configs } from '@/common/Configs';
-import CaptureIc from '@/assets/image/ic_capture_camera.svg';
-import RollIc from '@/assets/image/ic_roll_camera.svg';
 import BackIc from '@/assets/image/ic_back_camera.svg';
+import CancelButonIc from '@/assets/image/ic_cancel_buton_camera.svg';
+import CaptureIc from '@/assets/image/ic_capture_camera.svg';
+import TickedButonIc from '@/assets/image/ic_checked_camera.svg';
+import RollIc from '@/assets/image/ic_roll_camera.svg';
 import CancelIc from '@/assets/image/ic_white_cancel_camera.svg';
 import TickedIc from '@/assets/image/ic_white_tick_camera.svg';
-import CancelButonIc from '@/assets/image/ic_cancel_buton_camera.svg';
-import TickedButonIc from '@/assets/image/ic_checked_camera.svg';
-import Navigator from '@/routers/Navigator';
+import { ENUM_TYPE_CAMERA, ENUM_TYPE_CARD_CAMERA } from '@/common/constants';
+import Languages from '@/common/Languages';
 import ScreenName from '@/common/screenNames';
+import ScanRetangle, { DetectedRectangleModel } from '@/components/cardDetect';
+import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
+import Navigator from '@/routers/Navigator';
+import { COLORS } from '@/theme';
+import FaceDetectUtils from '@/utils/FaceDetectUtils';
 import ImageUtils from '@/utils/ImageUtils';
+import { MyStylesAccountDetect } from './styles';
 
 const CameraManager = NativeModules.RNRectangleScannerManager || {};
 
@@ -49,6 +46,7 @@ const AccountDetect = observer(({ route }: any) => {
 
     const devices = useCameraDevices();
     const deviceFront = devices?.front;
+    const styles = MyStylesAccountDetect();
 
     const [isBack, setIsBack] = useState<boolean>(false);
     const [faces, setFaces] = useState<Face[]>([]);
@@ -72,6 +70,8 @@ const AccountDetect = observer(({ route }: any) => {
         'worklet';
 
         const scannedFaces = scanFaces(frame);
+        console.log('scanface =', JSON.stringify(scannedFaces));
+        
         runOnJS(setFaces)(scannedFaces);
     }, []);
 
@@ -81,14 +81,16 @@ const AccountDetect = observer(({ route }: any) => {
 
     const takePhotoCard = useCallback(async () => {
         setLoading(true);
-        // setTimeout(() => {
-        //     setLoading(false);
-        // }, 4000);
+        setTimeout(() => {
+            setLoading(false);
+        }, 4000);
         if (FaceDetectUtils.authenCard(scanCard)) {
             CameraManager.capture();
         }
-        setLoading(!!frontCard);
-    }, [frontCard, scanCard]);
+        // if (!scanCard) {
+        //     setLoading(false);
+        // }
+    }, [scanCard]);
 
     const takePhotoFace = useCallback(async () => {
         try {
@@ -199,7 +201,7 @@ const AccountDetect = observer(({ route }: any) => {
 
             </TouchableOpacity>
         );
-    }, [faces, scanCard]);
+    }, [faces, scanCard, styles.btnNOBOrder, styles.btnStyleContainer]);
 
     const renderCardsScan = useCallback(
         (_ref: any, _setScan: any, _setValue?: any, _value?: string) => (
@@ -217,7 +219,7 @@ const AccountDetect = observer(({ route }: any) => {
             </>
 
         ),
-        [backCard, frontCard, scanCard]
+        [backCard, frontCard, scanCard, styles.wrapIconCheckCard]
     );
 
     const renderCam = useCallback(
@@ -262,7 +264,7 @@ const AccountDetect = observer(({ route }: any) => {
                 </>
             );
         },
-        [avatarImg?.path, faces, isBack]
+        [avatarImg?.path, faces, isBack, styles.cameraContainer, styles.wrapIconCheck, styles.wrapImage, styles.wrapSelfCamera]
     );
 
     const renderDetectCam = useMemo(() => {
@@ -277,7 +279,7 @@ const AccountDetect = observer(({ route }: any) => {
                 FaceDetectUtils.authenFace(faces)
             )}
         </>;
-    }, [deviceFront, devices?.back, devices?.front, faces, frameProcessor, renderCam]);
+    }, [deviceFront, devices?.back, devices?.front, faces, frameProcessor, renderCam, styles.container]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -372,129 +374,129 @@ const AccountDetect = observer(({ route }: any) => {
     );
 });
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: COLORS.GRAY_17,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    bodyContainer: {
-        flex: 8
-    },
-    wrapViewBtnTakePhoto: {
-        flexDirection: 'row',
-        paddingVertical: '10%',
-        width: '80%',
-        justifyContent: 'space-around',
-        alignSelf: 'center',
-        alignItems: 'center'
-    },
-    wrapBtnChangeTypeCamera: {
-        alignSelf: 'center'
-    },
-    wrapBtnTakeCamera: {
-        backgroundColor: COLORS.WHITE,
-        width: SCREEN_WIDTH * 0.165,
-        height: SCREEN_WIDTH * 0.165,
-        borderRadius: SCREEN_WIDTH * 0.165,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    wrapSelfCamera: {
-        width: SCREEN_WIDTH * 0.9,
-        height: SCREEN_WIDTH * 0.9,
-        alignSelf: 'center',
-        transform: [{
-            scaleY: 1 / 1.15
-        }]
-    },
-    cameraContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 8,
-        borderRadius: SCREEN_WIDTH * 0.8,
-        overflow: 'hidden',
-        width: SCREEN_WIDTH * 0.8,
-        height: SCREEN_WIDTH * 0.8,
-        alignSelf: 'center',
-        transform: [{
-            scaleY: 1.15
-        }]
-    },
-    wrapImage: {
-        width: SCREEN_WIDTH * 0.9,
-        height: SCREEN_WIDTH * 0.9,
-        transform: [{
-            scaleY: 1 / 1.15
-        }]
-    },
-    txtTitle: {
-        ...Styles.typography.regular,
-        fontSize: Configs.FontSize.size20,
-        color: COLORS.WHITE
-    },
-    wrapTitle: {
-        flex: 1,
-        paddingTop: '20%'
-    },
-    noteCaptureText: {
-        ...Styles.typography.regular,
-        paddingHorizontal: '12%',
-        textAlign: 'center',
-        color: COLORS.WHITE,
-        paddingTop: '26%'
-    },
-    wrapBtnCancelImg: {
-        width: SCREEN_WIDTH * 0.165,
-        height: SCREEN_WIDTH * 0.165,
-        borderRadius: SCREEN_WIDTH * 0.165,
-        borderWidth: 3.5,
-        borderColor: COLORS.RED_6,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: COLORS.RED_6
-    },
-    wrapBtnApproveImg: {
-        width: SCREEN_WIDTH * 0.165,
-        height: SCREEN_WIDTH * 0.165,
-        borderRadius: SCREEN_WIDTH * 0.165,
-        borderWidth: 3.5,
-        borderColor: COLORS.GREEN_2,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: COLORS.GREEN_2
-    },
-    btnStyleContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: SCREEN_WIDTH * 0.2,
-        height: SCREEN_WIDTH * 0.2,
-        borderRadius: SCREEN_WIDTH * 0.2,
-        borderWidth: 3.5,
-        borderColor: COLORS.WHITE
-    },
-    btnNOBOrder: {
-        borderColor: COLORS.WHITE
-    },
-    borderConfirmImg: {
-        borderColor: COLORS.GREEN_2
-    },
-    borderCancelImg: {
-        borderColor: COLORS.RED_6
-    },
-    wrapIconCheck: {
-        position: 'absolute',
-        left: '15%',
-        zIndex: 1000
-    },
-    wrapIconCheckCard: {
-        position: 'absolute',
-        left: '1%',
-        top: -10,
-        zIndex: 1000
-    }
+// const styles = StyleSheet.create({
+//     container: {
+//         backgroundColor: COLORS.GRAY_17,
+//         flex: 1,
+//         justifyContent: 'center',
+//         alignItems: 'center'
+//     },
+//     bodyContainer: {
+//         flex: 8
+//     },
+//     wrapViewBtnTakePhoto: {
+//         flexDirection: 'row',
+//         paddingVertical: '10%',
+//         width: '80%',
+//         justifyContent: 'space-around',
+//         alignSelf: 'center',
+//         alignItems: 'center'
+//     },
+//     wrapBtnChangeTypeCamera: {
+//         alignSelf: 'center'
+//     },
+//     wrapBtnTakeCamera: {
+//         backgroundColor: COLORS.WHITE,
+//         width: SCREEN_WIDTH * 0.165,
+//         height: SCREEN_WIDTH * 0.165,
+//         borderRadius: SCREEN_WIDTH * 0.165,
+//         alignItems: 'center',
+//         justifyContent: 'center'
+//     },
+//     wrapSelfCamera: {
+//         width: SCREEN_WIDTH * 0.9,
+//         height: SCREEN_WIDTH * 0.9,
+//         alignSelf: 'center',
+//         transform: [{
+//             scaleY: 1 / 1.15
+//         }]
+//     },
+//     cameraContainer: {
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         borderWidth: 8,
+//         borderRadius: SCREEN_WIDTH * 0.8,
+//         overflow: 'hidden',
+//         width: SCREEN_WIDTH * 0.8,
+//         height: SCREEN_WIDTH * 0.8,
+//         alignSelf: 'center',
+//         transform: [{
+//             scaleY: 1.15
+//         }]
+//     },
+//     wrapImage: {
+//         width: SCREEN_WIDTH * 0.9,
+//         height: SCREEN_WIDTH * 0.9,
+//         transform: [{
+//             scaleY: 1 / 1.15
+//         }]
+//     },
+//     txtTitle: {
+//         ...Styles.typography.regular,
+//         fontSize: Configs.FontSize.size20,
+//         color: COLORS.WHITE
+//     },
+//     wrapTitle: {
+//         flex: 1,
+//         paddingTop: '20%'
+//     },
+//     noteCaptureText: {
+//         ...Styles.typography.regular,
+//         paddingHorizontal: '12%',
+//         textAlign: 'center',
+//         color: COLORS.WHITE,
+//         paddingTop: '26%'
+//     },
+//     wrapBtnCancelImg: {
+//         width: SCREEN_WIDTH * 0.165,
+//         height: SCREEN_WIDTH * 0.165,
+//         borderRadius: SCREEN_WIDTH * 0.165,
+//         borderWidth: 3.5,
+//         borderColor: COLORS.RED_6,
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         backgroundColor: COLORS.RED_6
+//     },
+//     wrapBtnApproveImg: {
+//         width: SCREEN_WIDTH * 0.165,
+//         height: SCREEN_WIDTH * 0.165,
+//         borderRadius: SCREEN_WIDTH * 0.165,
+//         borderWidth: 3.5,
+//         borderColor: COLORS.GREEN_2,
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         backgroundColor: COLORS.GREEN_2
+//     },
+//     btnStyleContainer: {
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         width: SCREEN_WIDTH * 0.2,
+//         height: SCREEN_WIDTH * 0.2,
+//         borderRadius: SCREEN_WIDTH * 0.2,
+//         borderWidth: 3.5,
+//         borderColor: COLORS.WHITE
+//     },
+//     btnNOBOrder: {
+//         borderColor: COLORS.WHITE
+//     },
+//     borderConfirmImg: {
+//         borderColor: COLORS.GREEN_2
+//     },
+//     borderCancelImg: {
+//         borderColor: COLORS.RED_6
+//     },
+//     wrapIconCheck: {
+//         position: 'absolute',
+//         left: '15%',
+//         zIndex: 1000
+//     },
+//     wrapIconCheckCard: {
+//         position: 'absolute',
+//         left: '1%',
+//         top: -10,
+//         zIndex: 1000
+//     }
 
-});
+// });
 
 export default AccountDetect;

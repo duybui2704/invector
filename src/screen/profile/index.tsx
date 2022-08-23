@@ -102,9 +102,7 @@ const Profile = observer(() => {
         return Utils.openURL(GET_LINK_INVESTOR.LINK_ANDROID);
     }, []);
 
-    const onNavigateAccInfo = useCallback(() => {
-        return Navigator.pushScreen(ScreenName.accountInfo);
-    }, []);
+    const onNavigateAccInfo = useCallback(() => Navigator.pushScreen(ScreenName.accountInfo), []);
 
     const onPopupLogout = useCallback(() => {
         popupLogout.current?.show();
@@ -132,39 +130,35 @@ const Profile = observer(() => {
         }, 500);
     }, []);
 
-    const renderPopupLogout = useMemo(() => {
-        return (
-            <PopupNotifyNoAction
-                ref={popupLogout}
-                renderIcon={<WarnIC />}
-                containerAllBtn={styles.containerAllBtnPopup}
-                containerAgreeBtn={styles.containerItemBtnPopup}
-                containerCancelBtn={styles.containerCancelBtnPopup}
-                renderContent={Languages.account.logoutNotice}
-                renderTitle={Languages.account.logout}
-                textCancel={styles.textCancel}
-                hasButton
-                onConfirm={onAgreeLogout}
-            />
-        );
-    }, [onAgreeLogout, styles.containerAllBtnPopup, styles.containerCancelBtnPopup, styles.containerItemBtnPopup, styles.textCancel]);
+    const renderPopupLogout = useMemo(() => (
+        <PopupNotifyNoAction
+            ref={popupLogout}
+            renderIcon={<WarnIC />}
+            containerAllBtn={styles.containerAllBtnPopup}
+            containerAgreeBtn={styles.containerItemBtnPopup}
+            containerCancelBtn={styles.containerCancelBtnPopup}
+            renderContent={Languages.account.logoutNotice}
+            renderTitle={Languages.account.logout}
+            textCancel={styles.textCancel}
+            hasButton
+            onConfirm={onAgreeLogout}
+        />
+    ), [onAgreeLogout, styles.containerAllBtnPopup, styles.containerCancelBtnPopup, styles.containerItemBtnPopup, styles.textCancel]);
 
-    const renderDeleteAccountPopup = useMemo(() => {
-        return (
-            <PopupNotifyNoAction
-                ref={popupDeleteAccount}
-                renderIcon={<WarnIC />}
-                containerAllBtn={styles.containerAllBtnPopup}
-                containerAgreeBtn={styles.containerItemBtnPopup}
-                containerCancelBtn={styles.containerCancelBtnPopup}
-                renderContent={Languages.maintain.deleteAccountConfirm}
-                renderTitle={Languages.maintain.deleteAccount}
-                textCancel={styles.textCancel}
-                hasButton
-                onConfirm={otpDeleteAccount}
-            />
-        );
-    },[]);
+    const renderDeleteAccountPopup = useMemo(() => (
+        <PopupNotifyNoAction
+            ref={popupDeleteAccount}
+            renderIcon={<WarnIC />}
+            containerAllBtn={styles.containerAllBtnPopup}
+            containerAgreeBtn={styles.containerItemBtnPopup}
+            containerCancelBtn={styles.containerCancelBtnPopup}
+            renderContent={Languages.maintain.deleteAccountConfirm}
+            renderTitle={Languages.maintain.deleteAccount}
+            textCancel={styles.textCancel}
+            hasButton
+            onConfirm={otpDeleteAccount}
+        />
+    ),[]);
     
     const openPopupRating = useCallback(() => {
         popupRating.current?.show();
@@ -359,23 +353,18 @@ const Profile = observer(() => {
         [supportedBiometry]
     );
 
-    const popupUpdatePassCode = useMemo(() => {
-        return (
-            <PopupConfirmBiometry
-                ref={popupConfirm}
-                type={supportedBiometry}
-                onConfirm={onConfirm}
-            />
-        );
-    }, [onConfirm, supportedBiometry]);
+    const popupUpdatePassCode = useMemo(() => (
+        <PopupConfirmBiometry
+            ref={popupConfirm}
+            type={supportedBiometry}
+            onConfirm={onConfirm}
+        />
+    ), [onConfirm, supportedBiometry]);
 
-    const renderPopupError = useMemo(() => {
-
-        return <PopupErrorBiometry
-            typeSupportBiometry={supportedBiometry}
-            ref={popupError}
-        />;
-    }, [supportedBiometry]);
+    const renderPopupError = useMemo(() => <PopupErrorBiometry
+        typeSupportBiometry={supportedBiometry}
+        ref={popupError}
+    />, [supportedBiometry]);
 
     const renderAuthnFinger = useMemo(() => {
         if (supportedBiometry === ENUM_BIOMETRIC_TYPE.TOUCH_ID) {
@@ -433,62 +422,58 @@ const Profile = observer(() => {
         }
     }, [styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy, styles.txtWaitAccuracy, styles.waitAccuracyWrap, userManager.userInfo?.tinh_trang?.status]);
 
-    const renderPinCode = useMemo(() => {
-        return (
-            <BottomSheetModal
-                ref={bottomSheetModalRef}
-                index={1}
-                snapPoints={['20%', '82%']}
-                keyboardBehavior={'interactive'}
-                backdropComponent={CustomBackdropBottomSheet}
-                animationConfigs={animationConfigs}
-                style={{ backgroundColor: COLORS.TRANSPARENT }}
-            >
-                <View style={styles.wrapPin}>
-                    <PinCode
-                        mode={PinCodeT.Modes.Set}
-                        visible={true}
-                        options={{
-                            pinLength: 4,
-                            maxAttempt: 4,
-                            lockDuration: 10000,
-                            disableLock: false
-                        }}
-                        mainStyle={customStyles.main}
-                        textOptions={customTexts}
-                        titleStyle={customStyles.title}
-                        buttonsStyle={customStyles.buttons}
-                        subTitleStyle={customStyles.subTitle}
-                        buttonTextStyle={customStyles.buttonText}
-                        pinContainerStyle={customStyles.pinContainer}
-                        onSetSuccess={onSetPinCodeSuccess}
-                    />
-                </View>
-            </BottomSheetModal>
-        );
-    }, [animationConfigs, customStyles.buttonText, customStyles.buttons, customStyles.main, customStyles.pinContainer, customStyles.subTitle, customStyles.title, onSetPinCodeSuccess, styles.wrapPin]);
+    const renderPinCode = useMemo(() => (
+        <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={1}
+            snapPoints={['20%', '82%']}
+            keyboardBehavior={'interactive'}
+            backdropComponent={CustomBackdropBottomSheet}
+            animationConfigs={animationConfigs}
+            style={{ backgroundColor: COLORS.TRANSPARENT }}
+        >
+            <View style={styles.wrapPin}>
+                <PinCode
+                    mode={PinCodeT.Modes.Set}
+                    visible={true}
+                    options={{
+                        pinLength: 4,
+                        maxAttempt: 4,
+                        lockDuration: 10000,
+                        disableLock: false
+                    }}
+                    mainStyle={customStyles.main}
+                    textOptions={customTexts}
+                    titleStyle={customStyles.title}
+                    buttonsStyle={customStyles.buttons}
+                    subTitleStyle={customStyles.subTitle}
+                    buttonTextStyle={customStyles.buttonText}
+                    pinContainerStyle={customStyles.pinContainer}
+                    onSetSuccess={onSetPinCodeSuccess}
+                />
+            </View>
+        </BottomSheetModal>
+    ), [animationConfigs, customStyles.buttonText, customStyles.buttons, customStyles.main, customStyles.pinContainer, customStyles.subTitle, customStyles.title, onSetPinCodeSuccess, styles.wrapPin]);
 
-    const renderViewRating = useMemo(() => {
-        return (
-            <Touchable style={styles.feedBack}
-                onPress={userManager.userInfo?.rate!! > 3 ? onToastRating : openPopupRating}
-                disabled={userManager.userInfo?.rate!! > 3}
-            >
-                <View style={styles.starLeft}>
-                    <Text style={styles.textTitleFeed}>{Languages.common.yourRate}</Text>
-                    <Text style={styles.textTitleDescriptionFeed}>{Languages.common.descriptionRating}</Text>
-                    <AirbnbRating
-                        count={5}
-                        defaultRating={userManager.userInfo?.rate}
-                        size={20}
-                        showRating={false}
-                        isDisabled={false}
-                    />
-                </View>
-                <WomanIC />
-            </Touchable>
-        );
-    }, [onToastRating, openPopupRating, styles.feedBack, styles.starLeft, styles.textTitleDescriptionFeed, styles.textTitleFeed, userManager.userInfo?.rate]);
+    const renderViewRating = useMemo(() => (
+        <Touchable style={styles.feedBack}
+            onPress={userManager.userInfo?.rate!! > 3 ? onToastRating : openPopupRating}
+            disabled={userManager.userInfo?.rate!! > 3}
+        >
+            <View style={styles.starLeft}>
+                <Text style={styles.textTitleFeed}>{Languages.common.yourRate}</Text>
+                <Text style={styles.textTitleDescriptionFeed}>{Languages.common.descriptionRating}</Text>
+                <AirbnbRating
+                    count={5}
+                    defaultRating={userManager.userInfo?.rate}
+                    size={20}
+                    showRating={false}
+                    isDisabled={false}
+                />
+            </View>
+            <WomanIC />
+        </Touchable>
+    ), [onToastRating, openPopupRating, styles.feedBack, styles.starLeft, styles.textTitleDescriptionFeed, styles.textTitleFeed, userManager.userInfo?.rate]);
 
     return (
         <View style={styles.container}>

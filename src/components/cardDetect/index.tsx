@@ -126,16 +126,14 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
 
         const onPictureProcessed = useCallback(
             ({ croppedImage, initialImage }: any) => {
-                // setLoading(true);
                 // setCroppedImg?.(croppedImage);
-                setOriginImg?.(initialImage);
-                // if(initialImage){
-                //     setLoading(false);
-                // }
+                if(initialImage){
+                    setOriginImg?.(initialImage);
+                    setLoading(false);
+                }
             },
             [setOriginImg]
         );
-
 
         const onRectangleDetected = useCallback(
             (res?: any) => {
@@ -146,6 +144,7 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
         );
 
         const onCapture = useCallback(() => {
+            setLoading(true);
             CameraManager.capture();
             // onTakePhoto?.();
         }, []);
@@ -157,7 +156,6 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
         }));
 
         console.log('scanCard =', position);
-
 
         return (
 
@@ -176,6 +174,11 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
                         capturedQuality={capturedQuality || 1}
                         style={styles.wrapSelfCamera}
                         onRectangleDetected={onRectangleDetected}
+                        // onDeviceSetup={
+                        //     {
+                        
+                        //     }
+                        // }
                     />}
                 {isLoading && <Loading isOverview></Loading>}
             </View>
