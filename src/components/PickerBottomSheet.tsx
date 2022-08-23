@@ -24,6 +24,7 @@ type PickerProps = {
     label?: string;
     placeholder?: string;
     onPressItem?: (item: any) => void;
+    onOpenPicker?: () => void;
     value?: string;
     data?: ItemProps[];
     labelContainer?: ViewStyle;
@@ -53,7 +54,8 @@ const PickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
             disable,
             containerStyle,
             valueText,
-            rightIcon
+            rightIcon,
+            onOpenPicker
         }: PickerProps,
         ref: any
     ) => {
@@ -64,6 +66,7 @@ const PickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
         const bottomSheetRef = useRef<BottomSheetAction>(null);
 
         const openPicker = useCallback(() => {
+            onOpenPicker?.();
             bottomSheetRef.current?.show();
         }, []);
         const closePicker = useCallback(() => {
@@ -111,6 +114,8 @@ export default PickerBottomSheet;
 
 const styles = StyleSheet.create({
     container: {
+        position:'absolute',
+        zIndex: 10000000,
         alignItems: 'center',
         justifyContent: 'space-between'
     },

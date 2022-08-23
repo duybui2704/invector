@@ -226,7 +226,7 @@ export const myStylesAuth = () => {
                 justifyContent: 'space-between'
             },
             icon: {
-                paddingLeft: 10
+                padding: 5
             },
             func: {
                 height: SCREEN_HEIGHT * 0.5,

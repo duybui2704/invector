@@ -14,7 +14,6 @@ import { ItemProps } from '@/components/bottomSheet';
 import { useAppStore } from '@/hooks';
 import { ChannelModal } from '@/models/ChannelModal';
 import { TextFieldActions } from '@/components/elements/textfield/types';
-import { MyTextInput } from '@/components/elements/textfield';
 import { Touchable } from '@/components/elements/touchable';
 import PickerBottomSheet from '@/components/PickerBottomSheet';
 import { MyStylesSign } from './styles';
@@ -25,10 +24,9 @@ import { MyTextInputKeyboardNavigation } from '@/components/elements/textfieldKe
 import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
 import { COLORS } from '@/theme';
+import { FRIEND_INVITE_ID } from '@/common/Configs';
 
-const FRIEND_INVITE_ID = 7;
-
-const SignUp = observer(() => {
+const SignUp = observer(({ dataChannel }: { dataChannel?: ItemProps[] }) => {
     const { apiServices } = useAppStore();
     const [phone, setPhone] = useState<string>('');
     const [pass, setPass] = useState<string>('');
@@ -36,7 +34,6 @@ const SignUp = observer(() => {
     const [email, setEmail] = useState<string>('');
     const [passNew, setPassNew] = useState<string>('');
     const [channel, setChannel] = useState<ItemProps>();
-    const [dataChannel, setDataChannel] = useState<ItemProps[]>();
     const [refCode, setRefCode] = useState<string>('');
     const [errChannel, setErrChannel] = useState<string>('');
     // const [data, setData] = useState<any>('');
@@ -53,10 +50,6 @@ const SignUp = observer(() => {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [isShowReferral, setShowReferral] = useState<boolean>(false);
     const scrollRef = useRef<ScrollView>(null);
-
-    useEffect(() => {
-        fetchData();
-    }, [apiServices.auth]);
 
     const onChangeText = useCallback((value: string, tag?: string) => {
         switch (tag) {
@@ -83,21 +76,6 @@ const SignUp = observer(() => {
         }
     }, []);
 
-    const fetchData = async () => {
-        const res = await apiServices.auth.getChanelSource();
-        if (res.success) {
-            const data = res.data as ChannelModal[];
-            const temp = [] as ItemProps[];
-            data?.forEach((item: any) => {
-                temp.push({
-                    value: item?.name,
-                    id: item.type
-                });
-            });
-            setDataChannel(temp);
-        }
-    };
-
     const onChangeChecked = useCallback(() => {
         setCheck(last => !last);
     }, []);
@@ -120,7 +98,7 @@ const SignUp = observer(() => {
         if (parseInt(channel?.id || '0') === FRIEND_INVITE_ID) {
             errRefCode = FormValidate.referralValidate(refCode)
         }
-        if(`${_errChannel}${errRefCode}`.length > 0){
+        if (`${_errChannel}${errRefCode}`.length > 0) {
             setTimeout(() => {
                 scrollRef.current?.scrollToEnd();
             }, 300);

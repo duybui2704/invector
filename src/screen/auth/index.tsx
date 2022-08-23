@@ -1,36 +1,36 @@
 import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { ImageBackground, Platform, StatusBar, Text, View } from 'react-native';
+import { ImageBackground, StatusBar, Text, View } from 'react-native';
 
-import LogoAuth from '@/assets/image/auth/logo_auth.svg';
 import IcCloseAuth from '@/assets/image/auth/ic_close_auth.svg';
-import IcApple from '@/assets/image/auth/ic_apple.svg';
-import IcFaceAuth from '@/assets/image/ic_login_fb.svg';
+import LogoAuth from '@/assets/image/auth/logo_auth.svg';
 import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';
 import Images from '@/assets/Images';
+import { ENUM_PROVIDER } from '@/common/constants';
 import Languages from '@/common/Languages';
+import ScreenName, { TabNamesArray } from '@/common/screenNames';
+import BottomSheetBasic from '@/components/BottomSheetBasic';
 import { Touchable } from '@/components/elements/touchable';
+import { PopupOTPLogin } from '@/components/popupOTPLogin';
 import { useAppStore } from '@/hooks';
+import SessionManager from '@/manager/SessionManager';
+import { LoginWithThirdPartyModel } from '@/models/auth';
+import { ChannelModal } from '@/models/ChannelModal';
+import { ItemProps } from '@/models/common-model';
+import { PopupActionTypes } from '@/models/typesPopup';
+import { UserInfoModal } from '@/models/user-models';
+import Navigator from '@/routers/Navigator';
 import Login from '@/screen/auth/login';
 import SvgComponent from '@/screen/auth/SvgText';
 import { COLORS } from '@/theme';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import { loginWithApple, loginWithFacebook, loginWithGoogle } from '@/utils/SociaAuth';
+import ToastUtils from '@/utils/ToastUtils';
 import ForgotPass from './forgotPass';
 import LoginWithBiometry from './loginWithBiometrty';
 import SignUp from './signUp';
 import { myStylesAuth } from './styles';
-import Navigator from '@/routers/Navigator';
-import ScreenName, { TabNamesArray, TabsName } from '@/common/screenNames';
-import ToastUtils from '@/utils/ToastUtils';
-import SessionManager from '@/manager/SessionManager';
-import { LoginWithThirdPartyModel } from '@/models/auth';
-import { UserInfoModal } from '@/models/user-models';
-import { ENUM_PROVIDER } from '@/common/constants';
-import { PopupInvestOTP, PopupOTPLogin } from '@/components/popupOTPLogin';
-import { PopupActionTypes } from '@/models/typesPopup';
-
 
 const Auth = observer(({ route }: any) => {
     const styles = myStylesAuth();
@@ -42,12 +42,35 @@ const Auth = observer(({ route }: any) => {
     const isFocused = useIsFocused();
     const [isLoading, setLoading] = useState<boolean>(false);
     const refModal = useRef<PopupActionTypes>(null);
+    const refBottomSheetMoney = useRef<any>(null);
+
     const {
         fastAuthInfoManager: fastAuthInfo,
         common,
         apiServices,
         userManager
     } = useAppStore();
+
+    const [dataChannel, setDataChannel] = useState<ItemProps[]>();
+
+    const fetchData = async () => {
+        const res = await apiServices.auth.getChanelSource();
+        if (res.success) {
+            const data = res.data as ChannelModal[];
+            const temp = [] as ItemProps[];
+            data?.forEach((item: any) => {
+                temp.push({
+                    value: item?.name,
+                    id: item.type
+                });
+            });
+            setDataChannel(temp);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [apiServices.auth]);
 
     useLayoutEffect(() => {
         if (common.successChangePass) {
@@ -189,13 +212,28 @@ const Auth = observer(({ route }: any) => {
                 if (fastAuthInfo?.isEnableFastAuth && !fastAuthInfo.isFocusLogin) return <LoginWithBiometry />;
                 return <Login />;
             case Languages.auth.txtSignUp:
-                return <SignUp />;
+                return <SignUp
+                        dataChannel={dataChannel} />;
             case Languages.auth.forgotPwd:
                 return <ForgotPass />;
             default:
                 return null;
         }
-    }, [isNavigate, fastAuthInfo?.isEnableFastAuth, fastAuthInfo.isFocusLogin]);
+    }, [isNavigate, fastAuthInfo?.isEnableFastAuth, fastAuthInfo.isFocusLogin, dataChannel]);
+
+    const onPressChannelForSocialSignUp = useCallback((item?: any) => {
+        refModal.current?.hide();
+        refBottomSheetMoney.current?.show();
+    }, []);
+
+    const onChangeChannelForSocialSignUp = useCallback((item?: any) => {
+        if(item){
+            refModal.current?.updateChannel?.(item);
+        }else{
+            refModal.current?.wakeUp?.();
+        }
+    }, []);
+
     return (
         <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
             <StatusBar
@@ -225,13 +263,13 @@ const Auth = observer(({ route }: any) => {
                     {/* <Touchable style={styles.icon} onPress={onLoginFacebook}>
                         <IcFaceAuth />
                     </Touchable> */}
-                    <Touchable style={styles.icon} onPress={onLoginGoogle}>
+                    <Touchable style={styles.icon} onPress={onLoginGoogle} radius={30}>
                         <IcGoogleAuth />
                     </Touchable>
                     {/* {Platform.OS === 'ios' && <Touchable style={styles.icon} onPress={onLoginApple}>
                         <IcApple />
                     </Touchable>} */}
-                   
+
                 </View>
             </View>
             <PopupOTPLogin
@@ -239,6 +277,15 @@ const Auth = observer(({ route }: any) => {
                 ref={refModal}
                 title={Languages.otp.completionOtpLogin}
                 onPressConfirm={activePhoneLogin}
+                onChannelPress={onPressChannelForSocialSignUp}
+            />
+
+            <BottomSheetBasic
+                ref={refBottomSheetMoney}
+                data={dataChannel}
+                title={Languages.auth.knowChannel}
+                onPressItem={onChangeChannelForSocialSignUp}
+                onClose={onChangeChannelForSocialSignUp}
             />
         </ImageBackground>
     );

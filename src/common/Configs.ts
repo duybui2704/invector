@@ -114,4 +114,5 @@ export const PRICE_THOUSAND_SUFFIX = '.000';
 export const PRICE_THOUSAND_SUFFIX_WO_DOT = '000';
 
 export const PAGE_SIZE = 15;
+export const FRIEND_INVITE_ID = 7;
 

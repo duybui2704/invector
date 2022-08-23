@@ -1,34 +1,37 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import OtpInputs from 'react-native-otp-inputs';
 
+import ICUnderArrow from '@/assets/image/ic_under_arrow.svg';
 import IcClose from '@/assets/image/invest/ic_close.svg';
 import LogoOtpInvest from '@/assets/image/invest/logo_otp_invest.svg';
-import { Configs } from '@/common/Configs';
+import arrayIcon from '@/common/arrayIcon';
+import { Configs, FRIEND_INVITE_ID } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { useAppStore } from '@/hooks';
+import { ItemProps } from '@/models/common-model';
 import { PopupActionTypes, PopupPropsTypes } from '@/models/typesPopup';
 import { COLORS } from '@/theme/colors';
 import { Styles } from '@/theme/styles';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
-import { Touchable } from '../elements/touchable';
-import Utils from '@/utils/Utils';
-import { MyTextInput } from '../elements/textfield';
-import arrayIcon from '@/common/arrayIcon';
 import FormValidate from '@/utils/FormValidate';
-import { TextFieldActions } from '../elements/textfield/types';
+import Utils from '@/utils/Utils';
 import Validate from '@/utils/Validate';
+import { TextFieldActions } from '../elements/textfield/types';
+import { MyTextInputKeyboardNavigation } from '../elements/textfieldKeyboardNavigation';
+import { Touchable } from '../elements/touchable';
 
 interface PopupOTPProps extends PopupPropsTypes {
     getOTPcode?: (phone: string) => any,
-    onPressConfirm?: (otp: string) => any
+    onPressConfirm?: (otp: string) => any,
+    onChannelPress?: () => any,
 }
 
 export const PopupOTPLogin = forwardRef<
     PopupActionTypes,
     PopupOTPProps
->(({ getOTPcode, onPressConfirm }: PopupOTPProps, ref) => {
+>(({ getOTPcode, onPressConfirm, onChannelPress }: PopupOTPProps, ref) => {
     const { common } = useAppStore();
     const [visible, setVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -38,12 +41,22 @@ export const PopupOTPLogin = forwardRef<
     const [pin, setPin] = useState<string>('');
     const [errMsg, setErrMsg] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
+
     const [animation] = useState(new Animated.Value(0));
     const [isFocusing, setFocus] = useState<boolean>(false);
     const refOTP = useRef<any>();
     const intervalRef = useRef<any>();
 
+    const refRefCode = useRef<TextFieldActions>(null);
+    const [refCode, setRefCode] = useState<string>('');
+    const [errChannel, setErrChannel] = useState<string>('');
+    const [isShowReferral, setShowReferral] = useState<boolean>(false);
+    const [channel, setChannel] = useState<ItemProps>();
+
     useEffect(() => {
+        if (!common.successGetOTP) {
+            return;
+        }
         intervalRef.current = setInterval(() => {
             setTimer((t) => t - 1);
         }, 1000);
@@ -55,7 +68,7 @@ export const PopupOTPLogin = forwardRef<
             clearInterval(intervalRef.current);
             setStartCount(true);
         };
-    }, [timer]);
+    }, [timer, common.successGetOTP]);
 
     const _onCancel = useCallback(() => {
         setLoading(false);
@@ -71,6 +84,24 @@ export const PopupOTPLogin = forwardRef<
         setTimer(60);
     }, []);
 
+    const wakeUp = useCallback(() => {
+        setVisible(true);
+    }, []);
+
+    const updateChannel = useCallback((_channel: any) => {
+        setChannel(_channel);
+        setVisible(true);
+        setTimer(60);
+        setErrChannel('')
+
+        if (_channel?.id === FRIEND_INVITE_ID) {
+            setShowReferral(true);
+        } else {
+            setShowReferral(false);
+        }
+    }, []);
+
+
     const hide = useCallback(() => {
         setVisible(false);
         setErrMsg('');
@@ -81,7 +112,9 @@ export const PopupOTPLogin = forwardRef<
         show,
         hide,
         setErrorMsg,
-        setErrorOTP
+        setErrorOTP,
+        updateChannel,
+        wakeUp
     }));
 
     useEffect(() => {
@@ -205,6 +238,10 @@ export const PopupOTPLogin = forwardRef<
         startShake();
     }, [startShake]);
 
+    const getChannelContainer = useMemo(() => {
+        return [styles.containerOverViewPicker, { borderColor: errChannel ? COLORS.RED : COLORS.GRAY_11 }]
+    }, [errChannel]);
+
     return (
         <Modal
             isVisible={visible}
@@ -223,7 +260,7 @@ export const PopupOTPLogin = forwardRef<
                     <Text style={styles.txt}>{!common.successGetOTP ? Languages.otp.completionPhoneLogin : Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(phone))}</Text>
                     {!common.successGetOTP ?
                         <>
-                            <MyTextInput
+                            <MyTextInputKeyboardNavigation
                                 ref={refPhone}
                                 value={phone}
                                 isPhoneNumber={true}
@@ -233,7 +270,29 @@ export const PopupOTPLogin = forwardRef<
                                 containerInput={styles.inputPhone}
                                 onChangeText={onChangeText}
                                 keyboardType={'NUMBER'}
+                                textContentType={'telephoneNumber'}
                             />
+                            <TouchableOpacity
+                                onPress={onChannelPress}
+                                style={getChannelContainer}
+                            >
+                                <Text style={styles.valuePicker}>{channel?.value || Languages.auth.knowChannel}</Text>
+                                {<ICUnderArrow />}
+                            </TouchableOpacity>
+                            {errChannel ? <Text
+                                style={styles.errorMessage}>{errChannel}</Text> : null}
+                            {isShowReferral && <MyTextInputKeyboardNavigation
+                                ref={refRefCode}
+                                value={phone}
+                                isPhoneNumber={true}
+                                maxLength={10}
+                                rightIcon={arrayIcon.login.referral_code}
+                                placeHolder={Languages.auth.txtRefCode}
+                                containerInput={styles.inputPhone}
+                                onChangeText={onChangeText}
+                                keyboardType={'NUMBER'}
+                                textContentType={'telephoneNumber'}
+                            />}
                             {renderBtConfirm}
                         </>
                         :
@@ -393,5 +452,39 @@ const styles = StyleSheet.create({
         color: COLORS.RED,
         marginHorizontal: 10,
         paddingTop: 10
-    }
+    },
+    inputChannel: {
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        width: '95%',
+        height: Configs.FontSize.size40,
+        marginTop: 10
+    },
+    containerOverViewPicker: {
+        borderRadius: 20,
+        borderWidth: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '95%',
+        height: Configs.FontSize.size40,
+        borderColor: COLORS.GRAY_11,
+        paddingHorizontal: 15,
+        marginTop: 10
+    },
+    valuePicker: {
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_12
+    },
+    containerPicker: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        paddingHorizontal: 15
+    },
+    containerPlaceholderPicker: {
+    },
 });

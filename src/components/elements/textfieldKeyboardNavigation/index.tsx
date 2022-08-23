@@ -191,7 +191,7 @@ export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFi
         }, [animation]);
 
         const errorMessage = useMemo(() => {
-            const paddingText = { marginTop: - SCREEN_HEIGHT * 0.01 };
+            const paddingText = { marginTop: - SCREEN_HEIGHT * 0.01, alignItems:'flex-start', width:'100%' };
             if (!Validate.isStringEmpty(errMsg)) {
                 return <View style={paddingText}>
                     <Text
