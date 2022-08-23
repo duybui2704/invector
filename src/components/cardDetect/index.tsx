@@ -17,6 +17,7 @@ import Scanner from 'react-native-rectangle-scanner';
 import { COLORS } from '@/theme';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import FaceDetectUtils from '@/utils/FaceDetectUtils';
+import Loading from '../loading';
 
 export interface ScanRetangleActionsTypes {
     onHide: () => void;
@@ -109,6 +110,7 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
         const [isShow, setShow] = useState<boolean>(false);
         const [isHasFlash, setHasFlash] = useState<boolean>(true);
         const [position, setPosition] = useState<DetectedRectangleModel>({});
+        const [isLoading, setLoading] = useState<boolean>(false);
 
         const greenColor = {
             borderColor: FaceDetectUtils.authenCard(position) || imgCapture ? COLORS.GREEN_2 : COLORS.RED_6
@@ -124,8 +126,12 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
 
         const onPictureProcessed = useCallback(
             ({ croppedImage, initialImage }: any) => {
+                // setLoading(true);
                 // setCroppedImg?.(croppedImage);
                 setOriginImg?.(initialImage);
+                // if(initialImage){
+                //     setLoading(false);
+                // }
             },
             [setOriginImg]
         );
@@ -171,6 +177,7 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
                         style={styles.wrapSelfCamera}
                         onRectangleDetected={onRectangleDetected}
                     />}
+                {isLoading && <Loading isOverview></Loading>}
             </View>
         );
     }

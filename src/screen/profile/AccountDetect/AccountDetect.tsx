@@ -79,15 +79,18 @@ const AccountDetect = observer(({ route }: any) => {
         setIsBack((last) => !last);
     }, []);
 
-    const takePhotoCard = useCallback(() => {
+    const takePhotoCard = useCallback(async () => {
         setLoading(true);
-        if ( FaceDetectUtils.authenCard(scanCard)) {
+        // setTimeout(() => {
+        //     setLoading(false);
+        // }, 4000);
+        if (FaceDetectUtils.authenCard(scanCard)) {
             CameraManager.capture();
         }
-        setLoading(false);
-    }, [scanCard]);
+        setLoading(!!frontCard);
+    }, [frontCard, scanCard]);
 
-    const takePhoto = useCallback(async () => {
+    const takePhotoFace = useCallback(async () => {
         try {
             setLoading(true);
             const photo = await camera?.current
@@ -116,7 +119,7 @@ const AccountDetect = observer(({ route }: any) => {
         }
     }, []);
 
-    const cancelFaceImg = useCallback(() => {
+    const cancelScanImg = useCallback(() => {
         if (typeCard === ENUM_TYPE_CARD_CAMERA.FRONT) {
             setFrontCard('');
         } else if (typeCard === ENUM_TYPE_CARD_CAMERA.BACK) {
@@ -128,10 +131,10 @@ const AccountDetect = observer(({ route }: any) => {
 
     const onNavigateBack = useCallback(() => {
         Navigator.goBack();
-        cancelFaceImg();
-    }, [cancelFaceImg]);
+        cancelScanImg();
+    }, [cancelScanImg]);
 
-    const handleSetCardImageSize = useCallback((response: any) => {
+    const handleSetCardImageSize = useCallback(async (response: any) => {
         if (typeCard === ENUM_TYPE_CARD_CAMERA.FRONT) {
             setFrontCard(response?.uri);
             userManager.updateUserInfo({
@@ -147,9 +150,10 @@ const AccountDetect = observer(({ route }: any) => {
         }
         Navigator.navigateScreen(ScreenName.accountIdentify, { isSaveCache: true });
 
+
     }, [typeCard, userManager]);
 
-    const confirmFaceImg = useCallback(async () => {
+    const confirmScanImg = useCallback(async () => {
         setLoading(true);
         if (typeCamera === ENUM_TYPE_CAMERA.FACE) {
             userManager.updateUserInfo({
@@ -157,23 +161,19 @@ const AccountDetect = observer(({ route }: any) => {
                 avatar: `${Languages.common.fileDir}${avatarImg?.path}`
             });
             Navigator.navigateScreen(ScreenName.accountIdentify, { isSaveCache: true });
-
         } else if (typeCard === ENUM_TYPE_CARD_CAMERA.FRONT) {
 
-            if (frontCard) {
-                ImageUtils.onResizeImage(
-                    `${frontCard}`,
-                    handleSetCardImageSize
-                );
-            } setLoading(false);
+            ImageUtils.onResizeImage(
+                `${frontCard}`,
+                handleSetCardImageSize
+            );
+
 
         } else {
-            if (backCard) {
-                ImageUtils.onResizeImage(
-                    `${backCard}`,
-                    handleSetCardImageSize
-                );
-            } setLoading(false);
+            ImageUtils.onResizeImage(
+                `${backCard}`,
+                handleSetCardImageSize
+            );
         }
         setLoading(false);
 
@@ -205,7 +205,7 @@ const AccountDetect = observer(({ route }: any) => {
         (_ref: any, _setScan: any, _setValue?: any, _value?: string) => (
             <>
                 <View style={styles.wrapIconCheckCard}>
-                    { FaceDetectUtils.authenCard(scanCard)  || frontCard || backCard ?
+                    {FaceDetectUtils.authenCard(scanCard) || frontCard || backCard ?
                         <TickedButonIc /> :
                         <CancelButonIc />}
                 </View>
@@ -327,7 +327,7 @@ const AccountDetect = observer(({ route }: any) => {
                                 {renderButon(
                                     <TickedIc />,
                                     styles.wrapBtnApproveImg,
-                                    confirmFaceImg,
+                                    confirmScanImg,
                                     true,
                                     false,
                                     styles.borderConfirmImg
@@ -335,7 +335,7 @@ const AccountDetect = observer(({ route }: any) => {
                                 {renderButon(
                                     <CancelIc />,
                                     styles.wrapBtnCancelImg,
-                                    cancelFaceImg,
+                                    cancelScanImg,
                                     true,
                                     false,
                                     styles.borderCancelImg
@@ -351,7 +351,7 @@ const AccountDetect = observer(({ route }: any) => {
                                     <CaptureIc />,
                                     styles.wrapBtnTakeCamera,
                                     typeCamera === ENUM_TYPE_CAMERA.FACE ?
-                                        (FaceDetectUtils.authenFace(faces) ? takePhoto : undefined) :
+                                        (FaceDetectUtils.authenFace(faces) ? takePhotoFace : undefined) :
                                         (FaceDetectUtils.authenCard(scanCard) ? takePhotoCard : undefined),
                                     true,
                                     true

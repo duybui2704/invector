@@ -55,19 +55,24 @@ const AccountIdentify = observer(({ route }: any) => {
     }, []);
 
     useEffect(() => {
-        if (!isSaveCache && SessionManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
-            userManager.updateUserInfo({
-                ...userManager.userInfo,
-                avatar: '',
-                front_facing_card: '',
-                card_back: ''
-            });
-        }
         setAvatar(userManager.userInfo?.avatar || '');
         setFrontIdentify(userManager.userInfo?.front_facing_card || '');
         setBehindIdentify(userManager.userInfo?.card_back || '');
+    }, [userManager.userInfo?.avatar, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
 
-    }, [frontIdentify, isSaveCache, userManager, userManager.userInfo?.avatar, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
+    useEffect(() => {
+        if (SessionManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
+            if (!isSaveCache) {
+                userManager.updateUserInfo({
+                    ...userManager.userInfo,
+                    avatar: '',
+                    front_facing_card: '',
+                    card_back: ''
+                });
+            }
+        }
+
+    }, [isSaveCache, userManager]);
 
     const uploadImage = useCallback(async (file: any) => {
         const res = await apiServices?.image.uploadImage(
@@ -88,7 +93,7 @@ const AccountIdentify = observer(({ route }: any) => {
         return '';
     }, [apiServices?.image]);
 
-    const uploadIdentification = useCallback(async (imgFront: any,imgBehind: any,  imgAvatar: any ) => {
+    const uploadIdentification = useCallback(async (imgFront: any, imgBehind: any, imgAvatar: any) => {
 
         if (imgAvatar && imgFront && imgBehind) {
             setLoading(true);
@@ -142,6 +147,7 @@ const AccountIdentify = observer(({ route }: any) => {
             uploadImage(frontIdentify),
             uploadImage(behindIdentify),
             uploadImage(avatarImg)
+
         ]).then((value) => {
             getDataUpload(value);
         });
@@ -273,7 +279,7 @@ const AccountIdentify = observer(({ route }: any) => {
                     Languages.accountIdentify.frontKYC,
                     frontIdentify,
                     <BeforeIC />,
-                    SessionManager?.userInfo?.tinh_trang?.status !== STATE_VERIFY_ACC.NO_VERIFIED
+                    !!userManager.userInfo?.front_facing_card
                 )}
                 {renderOpenCamera(
                     behindIdentifyRef,
@@ -281,7 +287,7 @@ const AccountIdentify = observer(({ route }: any) => {
                     Languages.accountIdentify.behindKYC,
                     behindIdentify,
                     <AfterIC />,
-                    SessionManager?.userInfo?.tinh_trang?.status !== STATE_VERIFY_ACC.NO_VERIFIED
+                    !!userManager.userInfo?.card_back
                 )}
                 <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
                 <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
@@ -292,13 +298,13 @@ const AccountIdentify = observer(({ route }: any) => {
                     Languages.accountIdentify.avatarPhoto,
                     avatarImg,
                     <AvatarIC />,
-                    SessionManager?.userInfo?.tinh_trang?.status !== STATE_VERIFY_ACC.NO_VERIFIED,
+                    !!userManager.userInfo?.avatar,
                     true
                 )}
             </View>
 
         </HideKeyboard>
-    ), [avatarImg, behindIdentify, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhotos, renderOpenCamera, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto]);
+    ), [avatarImg, behindIdentify, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhotos, renderOpenCamera, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto, userManager.userInfo?.avatar, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
 
     const renderTop = useMemo(() => (
         <HTMLView

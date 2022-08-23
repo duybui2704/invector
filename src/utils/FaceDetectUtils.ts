@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import { Face } from 'vision-camera-face-detector';
+import RNFS from 'react-native-fs';
 
 import { DetectedRectangleModel } from '../components/cardDetect/index';
 
@@ -68,28 +69,20 @@ const authenCard = (objects: DetectedRectangleModel) => {
     switch (Platform.OS) {
         case 'ios':
             if (
-                objects?.detectedRectangle?.bottomLeft?.x > 1240 &&
+                objects?.detectedRectangle?.bottomLeft?.x > 500 &&
                 objects?.detectedRectangle?.bottomLeft?.x <= 1400 &&
-                objects?.detectedRectangle?.bottomLeft?.y > 1240 &&
-                objects?.detectedRectangle?.bottomLeft?.y <= 1400 &&
-                objects?.detectedRectangle?.topLeft?.x > 30 &&
-                objects?.detectedRectangle?.topLeft?.x <= 150 &&
-                objects?.detectedRectangle?.topLeft?.y >= 1240 &&
-                objects?.detectedRectangle?.topLeft?.y <= 1400
+                objects?.detectedRectangle?.bottomLeft?.y > 1100 &&
+                objects?.detectedRectangle?.bottomLeft?.y <= 1800 
             ) {
                 return true;
             }
             return false;
         case 'android':
             if (
-                objects?.detectedRectangle?.bottomLeft?.x > 1240 &&
+                objects?.detectedRectangle?.bottomLeft?.x > 500 &&
                 objects?.detectedRectangle?.bottomLeft?.x <= 1400 &&
-                objects?.detectedRectangle?.bottomLeft?.y > 1240 &&
-                objects?.detectedRectangle?.bottomLeft?.y <= 1400 &&
-                objects?.detectedRectangle?.topLeft?.x > 30 &&
-                objects?.detectedRectangle?.topLeft?.x <= 150 &&
-                objects?.detectedRectangle?.topLeft?.y >= 1240 &&
-                objects?.detectedRectangle?.topLeft?.y <= 1400
+                objects?.detectedRectangle?.bottomLeft?.y > 1100 &&
+                objects?.detectedRectangle?.bottomLeft?.y <= 1800 
             ) {
                 return true;
             }
@@ -99,7 +92,33 @@ const authenCard = (objects: DetectedRectangleModel) => {
     }
 };
 
+function replaceFiles(oldFilePath: string, newFilePath: string, onAction?: any){
+    RNFS.exists(newFilePath).then(async(res)=>{
+        console.log('filesExist =', res);
+        if(res){
+            await RNFS.unlink(newFilePath).then(async()=>{
+                console.log('IMAGE  DELETED!!!');
+                await RNFS.moveFile(oldFilePath, newFilePath)
+                    .then(() => {
+                        console.log('BACK IMAGE MOVED', oldFilePath, '-- to --', newFilePath);
+                        return onAction();
+                    });  
+            })
+                .catch((e)=>{
+                    console.log(e);
+                });
+        }else {
+            await  RNFS.moveFile(oldFilePath, newFilePath)
+                .then(() => {
+                    console.log('BACK IMAGE MOVED', oldFilePath, '-- to --', newFilePath);
+                    return onAction();
+                }); 
+        }
+    });
+}
+
 export default {
     authenFace,
-    authenCard
+    authenCard,
+    replaceFiles
 };

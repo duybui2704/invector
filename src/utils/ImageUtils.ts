@@ -7,6 +7,7 @@ import CheckPermission from './CheckPermission';
 import Languages from '@/common/Languages';
 import { MAX_IMAGE_SIZE } from '@/common/Configs';
 import { ErrorCodes } from '@/common/constants';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from './DimensionUtils';
 
 const COMPRESS_IMAGE_QUALITY = 1;
 const COMPRESS_CAMERA_QUALITY = 0.9; // to fix rotate in android
@@ -189,8 +190,8 @@ function onResizeImage  (
 ) {
     ImageResizer.createResizedImage(
         path,
-        200,
-        200,
+        SCREEN_WIDTH,
+        SCREEN_HEIGHT,
         'JPEG',
         100,
         rotation,
