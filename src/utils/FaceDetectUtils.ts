@@ -31,20 +31,20 @@ const authenFace = (objects: Face[]) => {
         case 'android':
             if (
                 objects?.length === 1 &&
-                objects[0].yawAngle > -6 &&
-                objects[0].yawAngle <= 6 &&
-                objects[0].pitchAngle > -6 &&
-                objects[0].pitchAngle <= 6 &&
-                objects[0].rollAngle > -6 &&
-                objects[0].rollAngle <= 6 &&
-                objects[0].bounds.width >= 280 &&
-                objects[0].bounds.width <= 345 &&
-                objects[0].bounds.height >= 280 &&
-                objects[0].bounds.height <= 345 &&
-                objects[0].bounds.boundingCenterX >= 240 &&
-                objects[0].bounds.boundingCenterX <= 270 &&
-                objects[0].bounds.boundingCenterY >= 330 &&
-                objects[0].bounds.boundingCenterY <= 390 &&
+                objects[0].yawAngle > -10 &&
+                objects[0].yawAngle <= 10 &&
+                objects[0].pitchAngle > -10 &&
+                objects[0].pitchAngle <= 10 &&
+                objects[0].rollAngle > -10 &&
+                objects[0].rollAngle <= 10 &&
+                objects[0].bounds.width >= 260 &&
+                objects[0].bounds.width <= 385 &&
+                objects[0].bounds.height >= 260 &&
+                objects[0].bounds.height <= 385 &&
+                objects[0].bounds.boundingCenterX >= 200 &&
+                objects[0].bounds.boundingCenterX <= 400 &&
+                objects[0].bounds.boundingCenterY >= 200 &&
+                objects[0].bounds.boundingCenterY <= 600 &&
                 objects[0].leftEyeOpenProbability > 0 &&
                 objects[0].rightEyeOpenProbability > 0
             ) {

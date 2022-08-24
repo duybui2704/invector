@@ -240,7 +240,7 @@ const Languages = {
         emptyRatingPoint: 'Bạn cần phải đánh số sao để đánh giá',
         qrCodeDownloaded: 'Đã tải ảnh Qr-Code thành công',
         copied: 'Đã sao chép',
-        topupSuccess: 'TienNgay đã nhận được khoản tiền của bạn.',
+        topupSuccess: 'TienNgay đã nhận được khoản tiền của bạn.'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
@@ -386,7 +386,7 @@ const Languages = {
         introduce: 'Giới thiệu',
         introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà lên tới 40 triệu đồng tới từ</c> <g>TienNgay.vn</g><c> Đầu tư Tiện ngay</c></t>',
         introduceCode: 'Mã giới thiệu của bạn',
-        qrCode: 'Qr code tải app'
+        qrCode: 'QR code tải app'
     },
     referralUsers: {
         title: 'Hoa hồng cho nhà đầu tư',

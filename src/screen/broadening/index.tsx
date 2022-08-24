@@ -84,26 +84,22 @@ export default function Broadening() {
         [swipe.x, transitionNext]
     );
 
-    const keyExtractor = useCallback((item: any, index: number) => {
-        return `${index}${item.id}`;
-    }, []);
+    const keyExtractor = useCallback((item: any, index: number) => `${index}${item.id}`, []);
 
-    const renderItemFlatList = useCallback(({ item, index }) => {
-        return (
+    const renderItemFlatList = useCallback(({ item, index}: any) => (
 
-            <Card
-                key={item.title}
-                name={item.title}
-                source={item.images}
-                icons={item.icon}
-                isFirst={index > 0}
-                swipe={swipe}
-                tiltSign={tiltSign}
-                txt={item.txt}
-                handleChoice={() => { handleChoice(item.title, -1.8); }}
-            />
-        );
-    }, []);
+        <Card
+            key={item.title}
+            name={item.title}
+            source={item.images}
+            icons={item.icon}
+            isFirst={index > 0}
+            swipe={swipe}
+            tiltSign={tiltSign}
+            txt={item.txt}
+            handleChoice={() => { handleChoice(item.title, -1.8); }}
+        />
+    ), [handleChoice, swipe, tiltSign]);
 
     return (
         <Animated.View style={styles.main}>

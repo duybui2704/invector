@@ -190,13 +190,11 @@ const Investment = observer(({ route }: { route: any }) => {
         if (res.success) {
             const data = res.data as [];
             const temp = Object.entries(data);
-            setDataTime(temp.map((item) => {
-                return {
-                    id: item[0],
-                    value: item[1]
+            setDataTime(temp.map((item) => ({
+                id: item[0],
+                value: item[1]
 
-                };
-            }));
+            })));
         }
     }, [apiServices.invest]);
 
@@ -205,13 +203,11 @@ const Investment = observer(({ route }: { route: any }) => {
         if (res.success) {
             const data = res.data as [];
             const temp = Object.entries(data);
-            setDataMoney(temp.map((item) => {
-                return {
-                    id: item[0],
-                    value: item[1]
+            setDataMoney(temp.map((item) => ({
+                id: item[0],
+                value: item[1]
 
-                };
-            }));
+            })));
         }
     }, [apiServices.invest]);
 
@@ -280,9 +276,7 @@ const Investment = observer(({ route }: { route: any }) => {
         },
         [btnInvest, fetchAllDataInvest, fetchDataInvested]
     );
-    const keyExtractor = useCallback((item: any, index: number) => {
-        return `${index}${item.id}`;
-    }, []);
+    const keyExtractor = useCallback((item: any, index: number) => `${index}${item.id}`, []);
 
     const renderItem = useCallback(({ item }: any) => {
         // console.log('item',item);
@@ -433,39 +427,35 @@ const Investment = observer(({ route }: { route: any }) => {
         </Touchable>;
     }, [onPressSuggestItem]);
 
-    const renderSearchBar = useMemo(() => {
-        return (
-            <>
-                <View style={styles.wrapSearch}>
-                    <MyTextInput
-                        onChangeText={handleInputOnChange}
-                        rightIcon={arrayIcon.login.search}
-                        containerInput={styles.input}
-                        placeHolder={Languages.invest.enter}
-                        keyboardType={'NUMBER'}
-                        ref={inputRef}
-                    />
-                    <Touchable
-                        style={styles.iconFilter}
-                        onPress={onPopupInvest}
-                    >
-                        <IcBtnFilter />
-                    </Touchable>
+    const renderSearchBar = useMemo(() => (
+        <>
+            <View style={styles.wrapSearch}>
+                <MyTextInput
+                    onChangeText={handleInputOnChange}
+                    rightIcon={arrayIcon.login.search}
+                    containerInput={styles.input}
+                    placeHolder={Languages.invest.enter}
+                    keyboardType={'NUMBER'}
+                    ref={inputRef}
+                />
+                <Touchable
+                    style={styles.iconFilter}
+                    onPress={onPopupInvest}
+                >
+                    <IcBtnFilter />
+                </Touchable>
 
-                </View>
-                {showSuggestion && <View style={styles.suggestion}>
-                    <FlatList
-                        renderItem={renderSuggestionItem}
-                        data={dataSuggestion}
-                    />
-                </View>}
-            </>
-        );
-    }, [dataSuggestion, handleInputOnChange, onPopupInvest, renderSuggestionItem, showSuggestion]);
+            </View>
+            {showSuggestion && <View style={styles.suggestion}>
+                <FlatList
+                    renderItem={renderSuggestionItem}
+                    data={dataSuggestion}
+                />
+            </View>}
+        </>
+    ), [dataSuggestion, handleInputOnChange, onPopupInvest, renderSuggestionItem, showSuggestion]);
 
-    const renderLoading = useMemo(() => {
-        return <View >{canLoadMoreUI && <Loading />}</View>;
-    }, [canLoadMoreUI]);
+    const renderLoading = useMemo(() => <View >{canLoadMoreUI && <Loading />}</View>, [canLoadMoreUI]);
 
     const renderEmptyData = useMemo(() => {
         if (listStore?.length === 0 && isLoading === false) {

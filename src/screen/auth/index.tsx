@@ -213,7 +213,7 @@ const Auth = observer(({ route }: any) => {
                 return <Login />;
             case Languages.auth.txtSignUp:
                 return <SignUp
-                        dataChannel={dataChannel} />;
+                    dataChannel={dataChannel} />;
             case Languages.auth.forgotPwd:
                 return <ForgotPass />;
             default:

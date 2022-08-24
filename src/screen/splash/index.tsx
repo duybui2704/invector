@@ -1,28 +1,37 @@
+import remoteConfig from '@react-native-firebase/remote-config';
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import VersionCheck from 'react-native-version-check';
 import DeviceInfo from 'react-native-device-info';
 import RNExitApp from 'react-native-exit-app';
-import remoteConfig from '@react-native-firebase/remote-config';
+import VersionCheck from 'react-native-version-check';
 
-import { HeaderBar } from '@/components/header';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
-import Navigator from '@/routers/Navigator';
-import ScreenNames, { ScreenName, TabsName } from '@/common/screenNames';
-import SessionManager from '@/manager/SessionManager';
-import { useAppStore } from '@/hooks';
-import { AppStatusModel } from '@/models/app-status';
 import { isIOS } from '@/common/Configs';
-import PopupUpdateVersion from '@/components/PopupUpdateVersion';
-import { PopupActionTypes } from '@/models/typesPopup';
-import Utils from '@/utils/Utils';
+import ScreenNames, { ScreenName } from '@/common/screenNames';
+import { HeaderBar } from '@/components/header';
 import PopupMaintain from '@/components/PopupMaintain';
+import PopupUpdateVersion from '@/components/PopupUpdateVersion';
+import SessionManager from '@/manager/SessionManager';
+import { PopupActionTypes } from '@/models/typesPopup';
+import Navigator from '@/routers/Navigator';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
+import Utils from '@/utils/Utils';
 
 const Splash = observer(() => {
     const storeUrlRef = useRef<string>();
     const popupAlert = useRef<PopupActionTypes>(null);
     const popupMaintainRef = useRef<PopupActionTypes>(null);
+
+
+    const nextScreen = useCallback(async () => {
+        setTimeout(async () => {
+            if (SessionManager.isSkipOnboarding) {
+                Navigator.replaceScreen(ScreenName.tabs);
+            } else {
+                Navigator.replaceScreen(ScreenNames.onBoard);
+            }
+        }, 1e3);
+    }, []);
 
     const fetchRemoteConfig = useCallback(async () => {
         await remoteConfig().fetch(5);
@@ -39,17 +48,7 @@ const Splash = observer(() => {
         } else {
             nextScreen();
         }
-    }, [])
-
-    const nextScreen = useCallback(async () => {
-        setTimeout(async () => {
-            if (SessionManager.isSkipOnboarding) {
-                Navigator.replaceScreen(ScreenName.tabs);
-            } else {
-                Navigator.replaceScreen(ScreenNames.onBoard);
-            }
-        }, 1e3);
-    }, []);
+    }, [nextScreen]);
 
     const checkUpdateApp = useCallback(async () => {
         VersionCheck.needUpdate({
@@ -71,27 +70,26 @@ const Splash = observer(() => {
         checkUpdateApp();
     }, []);
 
+
+    const onSkip = useCallback(() => {
+        nextScreen();
+    }, [nextScreen]);
+
     const onUpdate = useCallback(() => {
         if (storeUrlRef.current) {
             Utils.openURL(storeUrlRef.current);
         } else {
             onSkip();
         }
-    }, []);
+    }, [onSkip]);
 
-    const onSkip = useCallback(() => {
-        nextScreen();
-    }, []);
-
-    const popupVerifyRequest = useMemo(() => {
-        return (
-            <PopupUpdateVersion
-                onConfirm={onUpdate}
-                onClose={onSkip}
-                ref={popupAlert}
-            />
-        );
-    }, [onSkip, onUpdate]);
+    const popupVerifyRequest = useMemo(() => (
+        <PopupUpdateVersion
+            onConfirm={onUpdate}
+            onClose={onSkip}
+            ref={popupAlert}
+        />
+    ), [onSkip, onUpdate]);
 
     const onQuit = useCallback(() => {
         popupMaintainRef?.current?.hide();
