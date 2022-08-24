@@ -63,7 +63,7 @@ const AccountDetect = observer(({ route }: any) => {
 
     useEffect(() => {
         (async () => {
-            const status = await Camera.requestCameraPermission();
+            await Camera.requestCameraPermission();
         })();
     }, []);
 
@@ -72,7 +72,7 @@ const AccountDetect = observer(({ route }: any) => {
 
         const scannedFaces = scanFaces(frame);
         console.log('scanface =', JSON.stringify(scannedFaces));
-        
+
         runOnJS(setFaces)(scannedFaces);
     }, []);
 
@@ -87,21 +87,20 @@ const AccountDetect = observer(({ route }: any) => {
         }
     }, [scanCard]);
 
-    const takePhotoFace = useCallback(async () => {
+    const takePhotoFace = useCallback(() => {
         try {
             setLoading(true);
-            const photo = await camera?.current
+            camera?.current
                 ?.takePhoto({
                     flash: 'off'
                 })
                 .then(async (res) => {
+                    setLoading(false);
                     if (res) {
                         console.log('res = ', res);
                         setAvatar(res);
-                        setLoading(false);
                     }
                 });
-            setLoading(false);
         } catch (e) {
             if (e instanceof CameraCaptureError) {
                 switch (e.code) {
@@ -294,7 +293,7 @@ const AccountDetect = observer(({ route }: any) => {
                     </Text>
                 </View>
                 <View style={styles.bodyContainer}>
-                    <View >
+                    <View style={styles.scanContainer}>
                         {
                             typeCamera === ENUM_TYPE_CAMERA.FACE ?
                                 renderDetectCam
@@ -305,7 +304,8 @@ const AccountDetect = observer(({ route }: any) => {
                                     typeCard === ENUM_TYPE_CARD_CAMERA.FRONT ? setFrontCard : setBackCard,
                                     typeCard === ENUM_TYPE_CARD_CAMERA.FRONT ? frontCard : backCard)
                         }
-
+                    </View>
+                    <View style={styles.actionContainer}>
                         <Text style={styles.noteCaptureText}>
 
                             {!avatarImg?.path ?
@@ -363,10 +363,12 @@ const AccountDetect = observer(({ route }: any) => {
                         }
                     </View>
                 </View>
+
                 {isLoading && <Loading isOverview />}
             </View>
         </SafeAreaView>
     );
 });
+
 
 export default AccountDetect;

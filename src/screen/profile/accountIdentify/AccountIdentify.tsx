@@ -207,13 +207,12 @@ const AccountIdentify = observer(({ route }: any) => {
         label: string,
         image: any,
         icon: any,
-        disable?: boolean,
         hasDash?: boolean
     ) => (
         <>
             <TouchableOpacity
                 onPress={onPress}
-                disabled={disable || false}
+                disabled={SessionManager?.userInfo?.tinh_trang?.status !== STATE_VERIFY_ACC.NO_VERIFIED}
                 ref={ref}
                 style={styles.wrapItemPhoto}
             >
@@ -278,16 +277,14 @@ const AccountIdentify = observer(({ route }: any) => {
                     onPressItemFrontPhotos,
                     Languages.accountIdentify.frontKYC,
                     frontIdentify,
-                    <BeforeIC />,
-                    false // !!userManager.userInfo?.front_facing_card
+                    <BeforeIC />
                 )}
                 {renderOpenCamera(
                     behindIdentifyRef,
                     onPressItemBehindPhoto,
                     Languages.accountIdentify.behindKYC,
                     behindIdentify,
-                    <AfterIC />,
-                    false // !!userManager.userInfo?.card_back
+                    <AfterIC />
                 )}
                 <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
                 <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
@@ -298,7 +295,6 @@ const AccountIdentify = observer(({ route }: any) => {
                     Languages.accountIdentify.avatarPhoto,
                     avatarImg,
                     <AvatarIC />,
-                    false,// !!userManager.userInfo?.avatar,
                     true
                 )}
             </View>

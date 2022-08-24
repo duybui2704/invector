@@ -13,15 +13,15 @@ export const MyStylesAccountDetect = () => useMemo(() => StyleSheet.create({
         alignItems: 'center'
     },
     bodyContainer: {
-        flex: 8
+        flex: 8,
+        alignItems: 'center'
     },
     wrapViewBtnTakePhoto: {
         flexDirection: 'row',
         paddingVertical: '10%',
-        width: '80%',
+        flex:1,
         justifyContent: 'space-around',
-        alignSelf: 'center',
-        alignItems: 'center'
+        alignItems:'center'
     },
     wrapBtnChangeTypeCamera: {
         alignSelf: 'center'
@@ -68,15 +68,15 @@ export const MyStylesAccountDetect = () => useMemo(() => StyleSheet.create({
         color: COLORS.WHITE
     },
     wrapTitle: {
-        flex: 1,
-        paddingTop: '20%'
+        flex: 1.5,
+        justifyContent: 'center'
     },
     noteCaptureText: {
         ...Styles.typography.regular,
         paddingHorizontal: '12%',
         textAlign: 'center',
-        color: COLORS.WHITE,
-        paddingTop: '26%'
+        color: COLORS.WHITE
+        // paddingTop: '26%'
     },
     wrapBtnCancelImg: {
         width: SCREEN_WIDTH * 0.165,
@@ -126,7 +126,14 @@ export const MyStylesAccountDetect = () => useMemo(() => StyleSheet.create({
         left: '1%',
         top: -10,
         zIndex: 1000
-    }
+    },
+    scanContainer:{
+        flex: 4
+    },
+    actionContainer:{
+        flex: 2.5, 
+        width: '100%'}
+
 
            
 }), []);

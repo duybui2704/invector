@@ -1,6 +1,5 @@
 import { Platform } from 'react-native';
 import { Face } from 'vision-camera-face-detector';
-import RNFS from 'react-native-fs';
 
 import { DetectedRectangleModel } from '../components/cardDetect/index';
 
@@ -84,33 +83,7 @@ const authenCard = (objects: DetectedRectangleModel) => {
     }
 };
 
-function replaceFiles(oldFilePath: string, newFilePath: string, onAction?: any) {
-    RNFS.exists(newFilePath).then(async (res) => {
-        console.log('filesExist =', res);
-        if (res) {
-            await RNFS.unlink(newFilePath).then(async () => {
-                console.log('IMAGE  DELETED!!!');
-                await RNFS.moveFile(oldFilePath, newFilePath)
-                    .then(() => {
-                        console.log('BACK IMAGE MOVED', oldFilePath, '-- to --', newFilePath);
-                        return onAction();
-                    });
-            })
-                .catch((e) => {
-                    console.log(e);
-                });
-        } else {
-            await RNFS.moveFile(oldFilePath, newFilePath)
-                .then(() => {
-                    console.log('BACK IMAGE MOVED', oldFilePath, '-- to --', newFilePath);
-                    return onAction();
-                });
-        }
-    });
-}
-
 export default {
     authenFace,
-    authenCard,
-    replaceFiles
+    authenCard
 };
