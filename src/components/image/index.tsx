@@ -45,7 +45,7 @@ export const MyImageView = React.memo(({ imageUrl, style, resizeMode }: MyImageV
 
     const renderImage = useMemo(() => {
         return (
-            <>
+            url ? <>
                 <Lightbox
                     renderContent={renderContent}
                     springConfig={{ tension: 15, friction: 7 }} swipeToDismiss={false}
@@ -68,7 +68,7 @@ export const MyImageView = React.memo(({ imageUrl, style, resizeMode }: MyImageV
                         color={COLORS.BLUE}
                     />
                 </View>
-            </>
+            </> : <></>
         );
     }, [url, renderContent, style, resizeMode, _onLoadStart, _onLoadFailed, onLoadEnd, indicatorSize, isLoading]);
 
