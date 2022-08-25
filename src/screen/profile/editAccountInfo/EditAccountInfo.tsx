@@ -57,7 +57,7 @@ const EditAccountInfo = observer(() => {
     const nameRef = useRef<TextFieldActions>();
     const phoneRef = useRef<TextFieldActions>();
     const emailRef = useRef<TextFieldActions>();
-    const genderRef = useRef<PopupActionTypes>();
+    const genderRef = useRef<PopupActionTypes>(null);
     const addressRef = useRef<TextFieldActions>();
 
     const onChangeText = useCallback((value?: any, tag?: any) => {
@@ -82,24 +82,22 @@ const EditAccountInfo = observer(() => {
         }
     }, []);
 
-    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, maxLength?: number) => {
-        return (
-            <View style={styles.wrapInput}>
-                <Text style={styles.labelStyle}>{label}</Text>
-                <MyTextInput
-                    ref={ref}
-                    isPhoneNumber={false}
-                    placeHolder={label}
-                    keyboardType={keyboardType}
-                    value={value}
-                    maxLength={maxLength}
-                    onChangeText={onChangeText}
-                    containerInput={styles.inputStyle}
-                    disabled={disabled}
-                />
-            </View>
-        );
-    }, [onChangeText, styles.inputStyle, styles.labelStyle, styles.wrapInput]);
+    const renderKeyFeature = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, maxLength?: number) => (
+        <View style={styles.wrapInput}>
+            <Text style={styles.labelStyle}>{label}</Text>
+            <MyTextInput
+                ref={ref}
+                isPhoneNumber={false}
+                placeHolder={label}
+                keyboardType={keyboardType}
+                value={value}
+                maxLength={maxLength}
+                onChangeText={onChangeText}
+                containerInput={styles.inputStyle}
+                disabled={disabled}
+            />
+        </View>
+    ), [onChangeText, styles.inputStyle, styles.labelStyle, styles.wrapInput]);
 
     const onPressItemFrontPhoto = useCallback((item: ItemProps) => {
         if (item?.text === 'Camera') {
@@ -109,20 +107,18 @@ const EditAccountInfo = observer(() => {
         }
     }, []);
 
-    const renderPhotoPicker = useCallback((ref: any, image: any, icon: any, imageSource?: string) => {
-        return <PhotoPickerBottomSheet
-            ref={ref}
-            data={typePhoto}
-            image={image}
-            icon={icon}
-            title={Languages.accountInfo.chooseAvatarUser}
-            onPressItem={onPressItemFrontPhoto}
-            containerStyle={icon ? styles.circleWrap : styles.noCircleWrap}
-            containerImage={styles.noCircleWrap}
-            hasDash
-            imageSource={imageSource}
-        />;
-    }, [onPressItemFrontPhoto, styles.circleWrap, styles.noCircleWrap]);
+    const renderPhotoPicker = useCallback((ref: any, image: any, icon: any, imageSource?: string) => <PhotoPickerBottomSheet
+        ref={ref}
+        data={typePhoto}
+        image={image}
+        icon={icon}
+        title={Languages.accountInfo.chooseAvatarUser}
+        onPressItem={onPressItemFrontPhoto}
+        containerStyle={icon ? styles.circleWrap : styles.noCircleWrap}
+        containerImage={styles.noCircleWrap}
+        hasDash
+        imageSource={imageSource}
+    />, [onPressItemFrontPhoto, styles.circleWrap, styles.noCircleWrap]);
 
     const onGenderChoose = useCallback((item?: any) => {
         setGender(item?.value || '');
@@ -138,27 +134,25 @@ const EditAccountInfo = observer(() => {
         } return false;
     }, [name]);
 
-    const renderGender = useCallback((disable?: boolean) => {
-        return (
-            <View style={styles.wrapBirthday}>
-                <Text style={styles.labelBirthdayStyle}>{Languages.accountInfo.gender}</Text>
-                <PickerBankValuation
-                    ref={genderRef}
-                    data={typeGender}
-                    value={genderUser}
-                    placeholder={Languages.accountInfo.gender}
-                    onPressItem={onGenderChoose}
-                    btnContainer={disable ? styles.rowItemFilterDisable : styles.rowItemFilter}
-                    containerStyle={styles.containerItemFilter}
-                    hasDash
-                    wrapErrText={styles.textErrorGender}
-                    styleText={disable ? styles.valuePickerDisable : styles.valuePicker}
-                    stylePlaceholder={styles.placeHolderPicker}
-                    disable={disable}
-                />
-            </View>
-        );
-    }, [genderUser, onGenderChoose, styles.containerItemFilter, styles.labelBirthdayStyle, styles.placeHolderPicker, styles.rowItemFilter, styles.rowItemFilterDisable, styles.textErrorGender, styles.valuePicker, styles.valuePickerDisable, styles.wrapBirthday]);
+    const renderGender = useCallback((disable?: boolean) => (
+        <View style={styles.wrapBirthday}>
+            <Text style={styles.labelBirthdayStyle}>{Languages.accountInfo.gender}</Text>
+            <PickerBankValuation
+                ref={genderRef}
+                data={typeGender}
+                value={genderUser}
+                placeholder={Languages.accountInfo.gender}
+                onPressItem={onGenderChoose}
+                btnContainer={disable ? styles.rowItemFilterDisable : styles.rowItemFilter}
+                containerStyle={styles.containerItemFilter}
+                hasDash
+                wrapErrText={styles.textErrorGender}
+                styleText={disable ? styles.valuePickerDisable : styles.valuePicker}
+                stylePlaceholder={styles.placeHolderPicker}
+                disable={disable}
+            />
+        </View>
+    ), [genderUser, onGenderChoose, styles.containerItemFilter, styles.labelBirthdayStyle, styles.placeHolderPicker, styles.rowItemFilter, styles.rowItemFilterDisable, styles.textErrorGender, styles.valuePicker, styles.valuePickerDisable, styles.wrapBirthday]);
 
     const updateUserInformation = useCallback(async (avatar: any) => {
         setLoading(true);
@@ -205,25 +199,23 @@ const EditAccountInfo = observer(() => {
         }
     }, [avatarAcc, onValidate, updateUserInformation, uploadImages, userManager.userInfo?.avatar_user]);
 
-    const renderInfoAcc = useMemo(() => {
-        return (
-            <View style={styles.wrapContent}>
-                {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', false, 30)}
-                {renderGender(false)}
-                {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', !!userManager.userInfo?.phone_number, 10)}
-                {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL', !!userManager.userInfo?.email, 50)}
-                {renderKeyFeature(addressRef, Languages.accountInfo.address, Utils.formatForEachWordCase(addressUser), 'DEFAULT', false, 100)}
-                <View style={styles.wrapEdit}>
-                    <Button
-                        style={styles.accuracyWrap}
-                        onPress={onSaveInfo}
-                        label={Languages.accountInfo.save}
-                        buttonStyle={BUTTON_STYLES.GREEN_1}
-                        isLowerCase />
-                </View>
+    const renderInfoAcc = useMemo(() => (
+        <View style={styles.wrapContent}>
+            {renderKeyFeature(nameRef, Languages.accountInfo.fullName, Utils.formatForEachWordCase(name), 'DEFAULT', false, 30)}
+            {renderGender(false)}
+            {renderKeyFeature(phoneRef, Languages.accountInfo.phoneNumber, phone, 'PHONE', !!userManager.userInfo?.phone_number, 10)}
+            {renderKeyFeature(emailRef, Languages.accountInfo.email, emailUser, 'EMAIL', !!userManager.userInfo?.email, 50)}
+            {renderKeyFeature(addressRef, Languages.accountInfo.address, Utils.formatForEachWordCase(addressUser), 'DEFAULT', false, 100)}
+            <View style={styles.wrapEdit}>
+                <Button
+                    style={styles.accuracyWrap}
+                    onPress={onSaveInfo}
+                    label={Languages.accountInfo.save}
+                    buttonStyle={BUTTON_STYLES.GREEN_1}
+                    isLowerCase />
             </View>
-        );
-    }, [addressUser, emailUser, name, onSaveInfo, phone, renderGender, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.email, userManager.userInfo?.phone_number]);
+        </View>
+    ), [addressUser, emailUser, name, onSaveInfo, phone, renderGender, renderKeyFeature, styles.accuracyWrap, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.email, userManager.userInfo?.phone_number]);
 
     return (
         <View style={styles.container}>

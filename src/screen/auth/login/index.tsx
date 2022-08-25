@@ -100,26 +100,24 @@ const Login = observer(() => {
         orderRef?: number,
         inputAccessoryViewID?: string,
         textContentType?: string
-    ) => {
-        return (
-            <MyTextInputKeyboardNavigation
-                ref={ref}
-                refArr={[refPhone, refPass]}
-                orderRef={orderRef}
-                inputAccessoryViewID={inputAccessoryViewID}
-                value={value}
-                isPhoneNumber={isPhone}
-                maxLength={maxLength}
-                rightIcon={rightIcon}
-                placeHolder={placeHolder}
-                containerInput={styles.inputPhone}
-                onChangeText={onChangeText}
-                keyboardType={keyboardType}
-                isPassword={isPass}
-                textContentType={textContentType}
-            />
-        );
-    }, [onChangeText, styles.inputPhone]);
+    ) => (
+        <MyTextInputKeyboardNavigation
+            ref={ref}
+            refArr={[refPhone, refPass]}
+            orderRef={orderRef}
+            inputAccessoryViewID={inputAccessoryViewID}
+            value={value}
+            isPhoneNumber={isPhone}
+            maxLength={maxLength}
+            rightIcon={rightIcon}
+            placeHolder={placeHolder}
+            containerInput={styles.inputPhone}
+            onChangeText={onChangeText}
+            keyboardType={keyboardType}
+            isPassword={isPass}
+            textContentType={textContentType}
+        />
+    ), [onChangeText, styles.inputPhone]);
 
     const onLoginPhone = useCallback(async () => {
         if (onValidate()) {

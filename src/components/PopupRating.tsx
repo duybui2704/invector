@@ -8,6 +8,7 @@ import React, {
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { Rating } from 'react-native-ratings';
+
 import IcClose from '@/assets/image/invest/ic_close.svg';
 import { COLORS, Styles } from '@/theme';
 import Languages from '@/common/Languages';
@@ -28,7 +29,6 @@ interface PopupNoActionProps extends PopupPropsTypes {
 const PopupRating = forwardRef<PopupActionTypes, PopupNoActionProps>(
     (
         {
-            onClose,
             onConfirm,
             onChangeTextComment,
             ratingSwipeComplete
@@ -47,11 +47,6 @@ const PopupRating = forwardRef<PopupActionTypes, PopupNoActionProps>(
             setText('');
             setRating('' || 0);
         }, []);
-
-        const _onClose = useCallback(() => {
-            hide();
-            onClose?.();
-        }, [hide, onClose]);
 
         const onChangeText = useCallback(
             (_text?: string) => {
@@ -74,21 +69,17 @@ const PopupRating = forwardRef<PopupActionTypes, PopupNoActionProps>(
             hide
         }));
 
-        const renderDescribeRating = useMemo(() => {
-            return (
-                <>
-                    {dataRatingPoint.map((item?: ItemProps) => {
-                        return (
-                            <View key={item?.id}>
-                                {`${ratingPoint}` === item?.id && (
-                                    <Text style={styles.txtDescribePoint}>{item?.value}</Text>
-                                )}
-                            </View>
-                        );
-                    })}
-                </>
-            );
-        }, [ratingPoint]);
+        const renderDescribeRating = useMemo(() => (
+            <>
+                {dataRatingPoint.map((item?: ItemProps) => (
+                    <View key={item?.id}>
+                        {`${ratingPoint}` === item?.id && (
+                            <Text style={styles.txtDescribePoint}>{item?.value}</Text>
+                        )}
+                    </View>
+                ))}
+            </>
+        ), [ratingPoint]);
 
         return (
             <Modal

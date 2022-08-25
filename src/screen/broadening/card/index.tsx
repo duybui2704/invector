@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
-import { Animated, Image, ImageBackground, Platform, StatusBar, Text, View } from 'react-native';
+import React from 'react';
+import { Animated, ImageBackground, Text, View } from 'react-native';
 import Svg, { Circle, G } from 'react-native-svg';
 
-import { SCREEN_WIDTH, SCREEN_HEIGHT, ACTION_OFFSET } from '@/utils/DimensionUtils';
-import { MyStylesCard } from './styles';
-import { COLORS } from '@/theme';
-import { Touchable } from '@/components/elements/touchable';
-import Languages from '@/common/Languages';
-import { Configs, isIOS } from '@/common/Configs';
-import Images from '@/assets/Images';
 import LogoBroadening from '@/assets/image/broadening/logo_broadening.svg';
+import Images from '@/assets/Images';
+import { isIOS } from '@/common/Configs';
+import Languages from '@/common/Languages';
+import { Touchable } from '@/components/elements/touchable';
+import { COLORS } from '@/theme';
+import { ACTION_OFFSET, SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
+import { MyStylesCard } from './styles';
 
 type ItemProps = {
     name: string

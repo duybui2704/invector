@@ -203,7 +203,8 @@ function onResizeImage  (
                 handleSetImageSize(response);
             }
         })
-        .catch(err => {
+        .catch((err) => {
+            console.log(err);
         });
 };
 

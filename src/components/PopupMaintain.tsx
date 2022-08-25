@@ -31,7 +31,7 @@ export type PopupProps = {
     icon?: any
 };
 const PopupMaintain = forwardRef<PopupActions, PopupProps>(
-    ({ onClose, icon, content, onConfirm, title, showBtn = true }: PopupProps, ref) => {
+    ({  onConfirm, showBtn = true }: PopupProps, ref) => {
         const [visible, setVisible] = useState<boolean>(false);
         const show = useCallback(() => {
             setVisible(true);
@@ -45,11 +45,6 @@ const PopupMaintain = forwardRef<PopupActions, PopupProps>(
             show,
             hide
         }));
-
-        const _onClose = useCallback(() => {
-            hide();
-            onClose?.();
-        }, [hide, onClose]);
 
         const _onConfirm = useCallback(() => {
             onConfirm?.();
@@ -105,13 +100,13 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     txtContent: {
-        ...Styles.typography.regular,
+        ...Styles.typography.regular
     },
     wrapButton: {
         flexDirection: 'row',
         width: SCREEN_WIDTH,
         marginTop: 30,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     cancelButton: {
         width: (SCREEN_WIDTH - 90) / 2,

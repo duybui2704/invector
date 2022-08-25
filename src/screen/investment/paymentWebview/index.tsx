@@ -1,18 +1,17 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import WebView from 'react-native-webview';
 
+import { PAYMENT_URL } from '@/api/constants';
+import IcSuccess from '@/assets/image/ic_successful.svg';
+import { PADDING_BOTTOM } from '@/common/Configs';
 import Languages from '@/common/Languages';
+import { TabsName } from '@/common/screenNames';
 import HeaderBar from '@/components/header';
 import Loading from '@/components/loading';
 import MyWebViewProgress from '@/components/MyWebViewProgress';
-import { PADDING_BOTTOM } from '@/common/Configs';
-import PopupPaymentStatus from '@/components/PopupPaymentStatus';
-import IcSuccess from '@/assets/image/ic_successful.svg';
-import { PAYMENT_URL } from '@/api/constants';
+import PopupPaymentStatus, { PopupPaymentStatusActions } from '@/components/PopupPaymentStatus';
 import Navigator from '@/routers/Navigator';
-import { TabsName } from '@/common/screenNames';
-import { PopupActionTypes } from '@/models/typesPopup';
 
 const PaymentWebview = ({ route }: any) => {
 
@@ -20,7 +19,7 @@ const PaymentWebview = ({ route }: any) => {
     const webViewRef = useRef<WebView>(null);
 
     const [url] = useState<string>(route?.params?.url);
-    const popupRef = useRef<PopupActionTypes>(null);
+    const popupRef = useRef<PopupPaymentStatusActions>(null);
 
     const onLoadProgress = useCallback((e: any) => {
         webProgressRef.current?.setProgress(e?.nativeEvent?.progress);
@@ -35,7 +34,6 @@ const PaymentWebview = ({ route }: any) => {
         } else if (baseUrl.indexOf(PAYMENT_URL.NL_FAILED) === 0) {
             Navigator.goBack();
         }
-
     };
 
     const onNavigateHistory = useCallback(() => {
@@ -46,20 +44,16 @@ const PaymentWebview = ({ route }: any) => {
         }, 500);
     }, []);
 
-    const renderLoading = () => {
-        return <Loading isOverview />;
-    };
+    const renderLoading = () => <Loading isOverview />;
 
-    const renderPopup = useMemo(() => {
-        return <PopupPaymentStatus
-            showBtn={false}
-            icon={<IcSuccess />}
-            title={Languages.invest.notify}
-            content={Languages.invest.payFinished}
-            ref={popupRef}
-            onClose={onNavigateHistory}
-        />;
-    }, [onNavigateHistory]);
+    const renderPopup = useMemo(() => <PopupPaymentStatus
+        showBtn={false}
+        icon={<IcSuccess />}
+        title={Languages.invest.notify}
+        content={Languages.invest.payFinished}
+        ref={popupRef}
+        onClose={onNavigateHistory}
+    />, [onNavigateHistory]);
 
     return (
         <View style={styles.mainContainer}>

@@ -48,33 +48,29 @@ const PopupInvestFirst = forwardRef<PopupActions, PopupInvestFirstProps>(
         const onPress = useCallback(() => {
             onConfirm?.();
             hide();
-        }, []);
+        }, [hide, onConfirm]);
 
         const onClose = useCallback(() => {
             hide();
-        }, []);
+        }, [hide]);
 
-        const renderBtnSubmit = useMemo(() => {
-            return (
-                <TouchableOpacity
-                    onPress={onPress}
-                    style={styles.confirm_button_wrapper}>
-                    <Text style={styles.button}>{Languages.home.investNowFloral}</Text>
-                </TouchableOpacity>
-            );
-        }, [onConfirm]);
+        const renderBtnSubmit = useMemo(() => (
+            <TouchableOpacity
+                onPress={onPress}
+                style={styles.confirm_button_wrapper}>
+                <Text style={styles.button}>{Languages.home.investNowFloral}</Text>
+            </TouchableOpacity>
+        ), [onPress]);
 
-        const renderInfo = useMemo(() => {
-            return (
-                <FastImage
-                    style={{
-                        width: IMG_WIDTH,
-                        height: IMG_HEIGHT
-                    }}
-                    source={{ uri: image }}
-                />
-            );
-        }, [image]);
+        const renderInfo = useMemo(() => (
+            <FastImage
+                style={{
+                    width: IMG_WIDTH,
+                    height: IMG_HEIGHT
+                }}
+                source={{ uri: image }}
+            />
+        ), [image]);
 
         return (
             <Modal

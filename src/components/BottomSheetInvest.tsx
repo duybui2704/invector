@@ -11,7 +11,7 @@ import React, {
     useMemo,
     useRef
 } from 'react';
-import { Text, View,StyleSheet } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import Dash from 'react-native-dash';
 
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
@@ -33,16 +33,13 @@ export type BottomSheetAction = {
     hide?: (content?: string) => any,
 };
 
-const CustomBackdrop = (props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props} pressBehavior="close" />;
-};
+const CustomBackdrop = (props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} pressBehavior="close" />;
 
 const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProps>(
     (
         {
             data,
             onPressItem,
-            onClose,
             onOpen,
             title
         }: BottomSheetProps,
@@ -64,13 +61,8 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
             bottomSheetRef.current?.dismiss();
         }, []);
 
-        // const close = useCallback(() => {
-        //     bottomSheetRef?.current?.onClose();
-        //     // onClose?.();
-        // }, [onClose]);
-
         const show = useCallback(() => {
-            
+
             onOpen?.();
             bottomSheetRef?.current?.present();
         }, [onOpen]);
@@ -106,9 +98,7 @@ const BottomSheetComponentInvest = forwardRef<BottomSheetAction, BottomSheetProp
             [hide, onPressItem, title]
         );
 
-        const keyExtractor = useCallback((index: any) => {
-            return `${index.id}`;
-        }, []);
+        const keyExtractor = useCallback((index: any) => `${index.id}`, []);
         const handleSheetChanges = useCallback(() => { }, []);
 
         return (
@@ -139,10 +129,10 @@ const ITEM_HEIGHT = Configs.FontSize.size40;
 const HEADER_HEIGHT = Configs.FontSize.size40 + 30;
 const MIN_SIZE_HAS_INPUT = 10;
 const styles = StyleSheet.create({
-    container:{
-        flex:1
+    container: {
+        flex: 1
     },
-   
+
     valueContainer: {
         paddingTop: 10
     },
@@ -168,6 +158,6 @@ const styles = StyleSheet.create({
     },
     dash: {
     }
-   
+
 }
 );

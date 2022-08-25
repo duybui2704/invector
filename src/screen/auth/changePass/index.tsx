@@ -78,52 +78,50 @@ const ChangePass = observer((props: any) => {
         }
     };
 
-    const renderChangePass = () => {
-        return (
-            <View style={styles.content}>
-                <View style={styles.viewTitle}>
-                    <Text style={styles.txtTitle}>{Languages.auth.titleChangePass}</Text>
-                    <IcLine width={'35%'} />
-                </View>
-                <View style={styles.viewTxt}>
-                    <Text style={styles.txt}>{Languages.auth.txtChange}</Text>
-                </View>
-                <MyTextInput
-                    ref={refPassNew}
-                    value={newPass}
-                    isPhoneNumber={true}
-                    maxLength={50}
-                    rightIcon={arrayIcon.login.pass}
-                    placeHolder={Languages.auth.txtNewPass}
-                    containerInput={styles.inputPass}
-                    onChangeText={onChangeText}
-                    keyboardType={'DEFAULT'}
-                    isPassword
-                />
-                <MyTextInput
-                    ref={refConfirmPass}
-                    value={confirmPass}
-                    isPhoneNumber={true}
-                    maxLength={50}
-                    rightIcon={arrayIcon.login.pass}
-                    placeHolder={Languages.auth.txtConfirmNewPass}
-                    containerInput={styles.inputPass}
-                    onChangeText={onChangeText}
-                    keyboardType={'DEFAULT'}
-                    isPassword
-                />
-                <View style={styles.rowInfo}>
-                    <Touchable onPress={onChange} disabled={disTob}
-                        style={!disTob ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
-                        <Text style={!disTob ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
-                            {Languages.auth.change}
-                        </Text>
-                    </Touchable>
-                </View>
-                {isLoading && <Loading isOverview />}
+    const renderChangePass = () => (
+        <View style={styles.content}>
+            <View style={styles.viewTitle}>
+                <Text style={styles.txtTitle}>{Languages.auth.titleChangePass}</Text>
+                <IcLine width={'35%'} />
             </View>
-        );
-    };
+            <View style={styles.viewTxt}>
+                <Text style={styles.txt}>{Languages.auth.txtChange}</Text>
+            </View>
+            <MyTextInput
+                ref={refPassNew}
+                value={newPass}
+                isPhoneNumber={true}
+                maxLength={50}
+                rightIcon={arrayIcon.login.pass}
+                placeHolder={Languages.auth.txtNewPass}
+                containerInput={styles.inputPass}
+                onChangeText={onChangeText}
+                keyboardType={'DEFAULT'}
+                isPassword
+            />
+            <MyTextInput
+                ref={refConfirmPass}
+                value={confirmPass}
+                isPhoneNumber={true}
+                maxLength={50}
+                rightIcon={arrayIcon.login.pass}
+                placeHolder={Languages.auth.txtConfirmNewPass}
+                containerInput={styles.inputPass}
+                onChangeText={onChangeText}
+                keyboardType={'DEFAULT'}
+                isPassword
+            />
+            <View style={styles.rowInfo}>
+                <Touchable onPress={onChange} disabled={disTob}
+                    style={!disTob ? styles.tobLogin : [styles.tobLogin, { backgroundColor: COLORS.GRAY_13 }]}>
+                    <Text style={!disTob ? styles.txtSubmit : [styles.txtSubmit, { color: COLORS.GRAY_12 }]}>
+                        {Languages.auth.change}
+                    </Text>
+                </Touchable>
+            </View>
+            {isLoading && <Loading isOverview />}
+        </View>
+    );
 
     return (
         <>

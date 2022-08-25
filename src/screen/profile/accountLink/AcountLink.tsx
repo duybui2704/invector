@@ -24,31 +24,27 @@ const AccountLink = observer(() => {
         console.log('userManager.userInfo?.id_google:', userManager.userInfo?.id_google);
     }, [userManager.userInfo?.id_google]);
 
-    const renderStateLink = useCallback((status?: boolean) => {
-        return (
-            <>
-                {status ?
-                    <Text style={styles.stateItemLink}>{Languages.linkSocialAcc.linked}</Text> :
-                    <Text style={[styles.stateItemLink, styles.redText]}>{Languages.linkSocialAcc.notLinked}</Text>
-                }
-            </>
-        );
-    }, [styles.redText, styles.stateItemLink]);
+    const renderStateLink = useCallback((status?: boolean) => (
+        <>
+            {status ?
+                <Text style={styles.stateItemLink}>{Languages.linkSocialAcc.linked}</Text> :
+                <Text style={[styles.stateItemLink, styles.redText]}>{Languages.linkSocialAcc.notLinked}</Text>
+            }
+        </>
+    ), [styles.redText, styles.stateItemLink]);
 
-    const renderRightIcon = useCallback((status?: boolean) => {
-        return (
-            <>
-                {status ?
-                    <View style={[styles.wrapRightIcon, styles.greenBorder]}>
-                        <LinkIC />
-                    </View> :
-                    <View style={styles.wrapRightIcon}>
-                        <NotLinkIC />
-                    </View>
-                }
-            </>
-        );
-    }, [styles.greenBorder, styles.wrapRightIcon]);
+    const renderRightIcon = useCallback((status?: boolean) => (
+        <>
+            {status ?
+                <View style={[styles.wrapRightIcon, styles.greenBorder]}>
+                    <LinkIC />
+                </View> :
+                <View style={styles.wrapRightIcon}>
+                    <NotLinkIC />
+                </View>
+            }
+        </>
+    ), [styles.greenBorder, styles.wrapRightIcon]);
 
     const getInfo = useCallback(async () => {
         setLoading(true);

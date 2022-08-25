@@ -25,7 +25,7 @@ export interface PopupAlertProps extends PopupProps {
     icon?: any
 };
 const PopupAlert = forwardRef<PopupActions, PopupAlertProps>(
-    ({ onClose, onConfirm, showBtn = true, isTransfer = false }: PopupAlertProps, ref) => {
+    ({ onClose, onConfirm, showBtn = true, isTransfer = false }: PopupAlertProps, ref: any) => {
         const [visible, setVisible] = useState<boolean>(false);
         const [title, setTitle] = useState<string>('');
         const [content, setContent] = useState<string>('');

@@ -5,14 +5,12 @@ import { observer } from 'mobx-react';
 import { COLORS, Styles } from '@/theme';
 import { Configs } from '@/common/Configs';
 
-const NoData = observer(({ img, description }: { img?: any, description?: string }) => {
-    return (
-        <View style={styles.container}>
-            {img}
-            <Text style={styles.description}>{description}</Text>
-        </View>
-    );
-});
+const NoData = observer(({ img, description }: { img?: any, description?: string }) => (
+    <View style={styles.container}>
+        {img}
+        <Text style={styles.description}>{description}</Text>
+    </View>
+));
 
 export default NoData;
 

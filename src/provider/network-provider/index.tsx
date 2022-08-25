@@ -27,11 +27,9 @@ export const NetworkProvider = observer(({ children }: any) => {
         };
     }, [networkInfo, storeLocal]);
 
-    const renderPopupNoInternet = useMemo(() => {
-        return <PopupNoInternet
-            ref={popupRef}
-        />;
-    }, [popupRef]);
+    const renderPopupNoInternet = useMemo(() => <PopupNoInternet
+        ref={popupRef}
+    />, [popupRef]);
     return (<>
         <NetworkContext.Provider value={storeLocal}>
             {children}

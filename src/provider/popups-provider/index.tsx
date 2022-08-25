@@ -1,7 +1,7 @@
 import { configure } from 'mobx';
 import { Observer, useLocalObservable } from 'mobx-react-lite';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 import Toast from 'react-native-easy-toast';
 
 import Validate from '@/utils/Validate';
@@ -10,17 +10,16 @@ import { Events } from '@/common/constants';
 import { TOAST_POSITION } from '../../common/Configs';
 import { COLORS } from '../../theme';
 import { PopupContext } from './context';
-import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 configure({
     enforceActions: 'never'
 });
 
 export const PopupsProvider = ({ children }: any) => {
-    const toastRef = useRef(null);
+    const toastRef = useRef<any>(null);
     const [toastType, setToastType] = useState('MSG');
 
-    const showToast = useCallback((obj) => {
+    const showToast = useCallback((obj: any) => {
         const { type, msg } = obj;
         if (toastRef?.current && !Validate.isStringEmpty(msg)) {
             setToastType(type);
@@ -44,7 +43,7 @@ export const PopupsProvider = ({ children }: any) => {
         data: {}
     }));
 
-    const handleShowDialog = useCallback((data) => {
+    const handleShowDialog = useCallback((data: any) => {
         store.isVisible = true;
         store.data = data;
     }, [store]);
@@ -86,17 +85,15 @@ export const PopupsProvider = ({ children }: any) => {
                 break;
             default: break;
         }
-        return [styles.toast, { backgroundColor: color, top: 0, padding: 5, justifyContent: 'center' }];
+        return [styles.toast, { backgroundColor: color, top: 0, padding: 5, justifyContent: 'center' }] as ViewStyle;
     }, [toastType]);
 
-    const renderToast = useMemo(() => {
-        return <Toast
-            ref={toastRef}
-            position={'top'}
-            style={toastBackground}
-            positionValue={TOAST_POSITION}
-        />;
-    }, [toastBackground]);
+    const renderToast = useMemo(() => <Toast
+        ref={toastRef}
+        position={'top'}
+        style={toastBackground}
+        positionValue={TOAST_POSITION}
+    />, [toastBackground]);
 
     return (<>
         <PopupContext.Provider value={contextValue}>

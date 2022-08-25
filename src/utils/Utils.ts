@@ -2,9 +2,9 @@ import messaging from '@react-native-firebase/messaging';
 import PushNotification, { Importance } from 'react-native-push-notification';
 import { Linking, Platform, Share } from 'react-native';
 import AndroidOpenSettings from 'react-native-android-open-settings';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import Validate from './Validate';
-import Clipboard from '@react-native-clipboard/clipboard';
 
 const MIN_INPUT = 10e5;
 const MAX_INPUT = 10e8;

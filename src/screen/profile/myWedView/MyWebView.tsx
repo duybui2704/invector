@@ -7,10 +7,10 @@ import { PADDING_BOTTOM } from '@/common/Configs';
 import HeaderBar from '@/components/header';
 
 const MyWebView = ({ route }: any) => {
-    const webProgressRef = useRef(null);
+    const webProgressRef = useRef<any>(null);
     const webViewRef = useRef<WebView>(null);
 
-    const onLoadProgress = useCallback((e) => {
+    const onLoadProgress = useCallback((e: any) => {
         webProgressRef.current?.setProgress(e?.nativeEvent?.progress);
     }, []);
 

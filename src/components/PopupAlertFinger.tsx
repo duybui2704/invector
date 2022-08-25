@@ -11,11 +11,9 @@ import Modal from 'react-native-modal';
 import { COLORS, Styles } from '@/theme';
 import { PopupPropsTypes as PopupPropTypes } from '@/models/typesPopup';
 import { PopupActions } from './popupInvest/types';
-import Languages from '@/common/Languages';
 import { ENUM_BIOMETRIC_TYPE } from '@/common/constants';
 import { Configs } from '@/common/Configs';
 
-// import { PopupActions, PopupProps } from './types';
 interface PopupAlertFingerProps extends PopupPropTypes {
     type?: string;
     btnText?: string;

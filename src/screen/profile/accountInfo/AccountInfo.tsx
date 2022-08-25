@@ -33,25 +33,19 @@ const AccountInfo = observer(() => {
         }
     }, [userManager.userInfo?.gender]);
 
-    const onNavigateKYC = useCallback(() => {
-        return Navigator.pushScreen(ScreenName.accountIdentify);
-    }, []);
+    const onNavigateKYC = useCallback(() => Navigator.pushScreen(ScreenName.accountIdentify), []);
 
-    const onNavigateEdit = useCallback(() => {
-        return Navigator.pushScreen(ScreenName.editAccountInfo);
-    }, []);
+    const onNavigateEdit = useCallback(() => Navigator.pushScreen(ScreenName.editAccountInfo), []);
 
-    const renderTopAcc = useCallback((image?: any, content?: string, titleAccuracyState?: string, accuracyStateWrap?: ViewStyle, accuracyStateText?: TextStyle) => {
-        return (
-            <>
-                {image}
-                {content !== '' && <Text style={styles.txtContentKYC}>{content}</Text>}
-                <Touchable style={accuracyStateWrap} onPress={onNavigateKYC}>
-                    <Text style={accuracyStateText}>{titleAccuracyState}</Text>
-                </Touchable>
-            </>
-        );
-    }, [onNavigateKYC, styles.txtContentKYC]);
+    const renderTopAcc = useCallback((image?: any, content?: string, titleAccuracyState?: string, accuracyStateWrap?: ViewStyle, accuracyStateText?: TextStyle) => (
+        <>
+            {image}
+            {content !== '' && <Text style={styles.txtContentKYC}>{content}</Text>}
+            <Touchable style={accuracyStateWrap} onPress={onNavigateKYC}>
+                <Text style={accuracyStateText}>{titleAccuracyState}</Text>
+            </Touchable>
+        </>
+    ), [onNavigateKYC, styles.txtContentKYC]);
 
     const renderAccuracy = useMemo(() => {
         switch (userManager.userInfo?.tinh_trang?.status) {
@@ -66,41 +60,37 @@ const AccountInfo = observer(() => {
         }
     }, [renderTopAcc, styles.accuracyWrap, styles.notAccuracyWrap, styles.txtAccuracy, styles.txtNotAccuracy, styles.txtWaitAccuracy, styles.waitAccuracyWrap, userManager.userInfo?.tinh_trang?.status]);
 
-    const renderKeyFeature = useCallback((title: string, content?: string, isTicked?: boolean, numberOfLine?: number) => {
-        return (
-            <KeyValueReport title={title}
-                content={content || undefined}
-                styleTouchable={styles.wrapAllItemInfo}
-                containerContent={content && isTicked ? styles.wrapCheckedInfo : styles.wrapUnCheckedInfo}
-                styleTitle={styles.styleTextInfo}
-                styleColor={content && isTicked ? styles.styleValueCheckedInfo : styles.styleValueUnCheckedInfo}
-                noIndicator
-                rightIcon={content && isTicked ? <TickedIcon /> : null}
-                hasDashBottom
-                numberOfLine={numberOfLine}
-            />
-        );
-    }, [styles.styleTextInfo, styles.styleValueCheckedInfo, styles.styleValueUnCheckedInfo, styles.wrapAllItemInfo, styles.wrapCheckedInfo, styles.wrapUnCheckedInfo]);
+    const renderKeyFeature = useCallback((title: string, content?: string, isTicked?: boolean, numberOfLine?: number) => (
+        <KeyValueReport title={title}
+            content={content || undefined}
+            styleTouchable={styles.wrapAllItemInfo}
+            containerContent={content && isTicked ? styles.wrapCheckedInfo : styles.wrapUnCheckedInfo}
+            styleTitle={styles.styleTextInfo}
+            styleColor={content && isTicked ? styles.styleValueCheckedInfo : styles.styleValueUnCheckedInfo}
+            noIndicator
+            rightIcon={content && isTicked ? <TickedIcon /> : null}
+            hasDashBottom
+            numberOfLine={numberOfLine}
+        />
+    ), [styles.styleTextInfo, styles.styleValueCheckedInfo, styles.styleValueUnCheckedInfo, styles.wrapAllItemInfo, styles.wrapCheckedInfo, styles.wrapUnCheckedInfo]);
 
-    const renderInfoAcc = useMemo(() => {
-        return (
-            <View style={styles.wrapContent}>
-                {renderKeyFeature(Languages.accountInfo.phoneNumber, userManager.userInfo?.phone_number, true)}
-                {renderKeyFeature(Languages.accountInfo.email, userManager.userInfo?.email, true)}
-                {renderKeyFeature(Languages.accountInfo.fullName, userManager.userInfo?.full_name, false, 2)}
-                {renderKeyFeature(
-                    Languages.accountInfo.gender,
-                    genderUser
-                )}
-                {renderKeyFeature(Languages.accountInfo.address, userManager.userInfo?.address, false, 2)}
-                <View style={styles.wrapEdit}>
-                    <Touchable style={styles.accuracyWrap} onPress={onNavigateEdit}>
-                        <Text style={styles.txtAccuracy}>{Languages.accountInfo.edit}</Text>
-                    </Touchable>
-                </View>
+    const renderInfoAcc = useMemo(() => (
+        <View style={styles.wrapContent}>
+            {renderKeyFeature(Languages.accountInfo.phoneNumber, userManager.userInfo?.phone_number, true)}
+            {renderKeyFeature(Languages.accountInfo.email, userManager.userInfo?.email, true)}
+            {renderKeyFeature(Languages.accountInfo.fullName, userManager.userInfo?.full_name, false, 2)}
+            {renderKeyFeature(
+                Languages.accountInfo.gender,
+                genderUser
+            )}
+            {renderKeyFeature(Languages.accountInfo.address, userManager.userInfo?.address, false, 2)}
+            <View style={styles.wrapEdit}>
+                <Touchable style={styles.accuracyWrap} onPress={onNavigateEdit}>
+                    <Text style={styles.txtAccuracy}>{Languages.accountInfo.edit}</Text>
+                </Touchable>
             </View>
-        );
-    }, [genderUser, onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.address, userManager.userInfo?.email, userManager.userInfo?.full_name, userManager.userInfo?.phone_number]);
+        </View>
+    ), [genderUser, onNavigateEdit, renderKeyFeature, styles.accuracyWrap, styles.txtAccuracy, styles.wrapContent, styles.wrapEdit, userManager.userInfo?.address, userManager.userInfo?.email, userManager.userInfo?.full_name, userManager.userInfo?.phone_number]);
 
     return (
         <View style={styles.container}>

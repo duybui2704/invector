@@ -29,28 +29,25 @@ const KeyValue = (
             containerContent?: ViewStyle,
             disable?: boolean
         }
-) => {
-
-    return (
-        <View style={[styles.container, styleContainer]}>
-            <Touchable style={[styles.row, styleTouchable]} onPress={onPress} disabled={disable}>
-                {leftIcon || null}
-                <View style={[styles.rowCenter, containerContent]}>
-                    <Text style={[styles.leftText, styleTitle]}>{title}</Text>
-                    {rightIcon || null}
-                </View>
-            </Touchable>
-            {hasDashBottom && <Dash
-                dashThickness={1}
-                dashLength={10}
-                dashGap={4}
-                dashColor={COLORS.GRAY_13}
-                style={styles.dash}
-            />
-            }
-        </View>
-    );
-};
+) => (
+    <View style={[styles.container, styleContainer]}>
+        <Touchable style={[styles.row, styleTouchable]} onPress={onPress} disabled={disable}>
+            {leftIcon || null}
+            <View style={[styles.rowCenter, containerContent]}>
+                <Text style={[styles.leftText, styleTitle]}>{title}</Text>
+                {rightIcon || null}
+            </View>
+        </Touchable>
+        {hasDashBottom && <Dash
+            dashThickness={1}
+            dashLength={10}
+            dashGap={4}
+            dashColor={COLORS.GRAY_13}
+            style={styles.dash}
+        />
+        }
+    </View>
+);
 
 export default KeyValue;
 
@@ -59,7 +56,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.WHITE,
         paddingHorizontal: 16,
         borderRadius: 16,
-        flex:1
+        flex: 1
     },
     row: {
         flexDirection: 'row',
@@ -77,7 +74,7 @@ const styles = StyleSheet.create({
         ...Styles.typography.regular,
         color: COLORS.GRAY_12
     },
-    dash:{
+    dash: {
         paddingVertical: 1
     }
 });

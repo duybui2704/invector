@@ -33,7 +33,6 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
     ({
         onConfirm,
         title,
-        openDatePicker,
         money,
         openTimeInvestment,
         onCancel,
@@ -86,7 +85,7 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             _onClose();
         }, [_onClose, onCancel]);
 
-        const renderItem = useCallback((value: any, palaceholder: string,visible?:boolean) => {
+        const renderItem = useCallback((value: any, palaceholder: string,_visible?:boolean) => {
             const onPress = () => {
                 if (palaceholder === Languages.invest.fromDate) {
                     setVisibleFromDatePicker(true);
@@ -104,7 +103,7 @@ const PopupFilterInvested = forwardRef<PopupActions, PopupFilterProps>(
             return (
                 <Touchable style={styles.inputPhone} onPress={onPress}>
                     <Text style={[styles.txtPalaceholder, styleTxt]}>{value || palaceholder}</Text>
-                    {!visible&&<ICCalender />}
+                    {!_visible&&<ICCalender />}
                 </Touchable>
             );
         }, [hide, openTimeInvestment]);

@@ -28,13 +28,11 @@ const ShareFriend = observer(() => {
         return GET_LINK_INVESTOR.LINK_ANDROID;
     }, []);
 
-    const renderContent = useCallback(() => {
-        return <QRCode
-            value={onLinkQR}
-            size={SCREEN_WIDTH}
-            quietZone={Configs.FontSize.size12}
-        />;
-    }, [onLinkQR]);
+    const renderContent = useCallback(() => <QRCode
+        value={onLinkQR}
+        size={SCREEN_WIDTH}
+        quietZone={Configs.FontSize.size12}
+    />, [onLinkQR]);
 
     const share = useCallback(() => {
         Utils.share(code);

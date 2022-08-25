@@ -1,11 +1,9 @@
 import Languages from '@/common/Languages';
 import Validate from './Validate';
 
-const validateEmoji = (username: string) => {
-    return /!(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/.test(
-        username
-    );
-};
+const validateEmoji = (username: string) => /!(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/.test(
+    username
+);
 const validateSpecialCharacters = (username: string) => {
     const reg = /^[a-zA-Z- ]+$/;
     return reg.test(removeAscent(username));
@@ -18,11 +16,9 @@ const validatePhone = (username: string) => {
     const reg = /((09|03|07|08|05)+([0-9]{8})\b)/g;
     return reg.test(username);
 };
-const validateEmail = (email: string) => {
-    return email.match(
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/
-    );
-};
+const validateEmail = (email: string) => email.match(
+    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/
+);
 
 const validateBirthday = (birthday: string) => {
     const regexVar = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
@@ -217,5 +213,5 @@ export default {
     inputValidate,
     removeAscent,
     inputEmpty,
-    referralValidate,
+    referralValidate
 };

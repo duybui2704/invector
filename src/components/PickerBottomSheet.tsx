@@ -68,7 +68,7 @@ const PickerBottomSheet = forwardRef<BottomSheetModal, PickerProps>(
         const openPicker = useCallback(() => {
             onOpenPicker?.();
             bottomSheetRef.current?.show();
-        }, []);
+        }, [onOpenPicker]);
         const closePicker = useCallback(() => {
             bottomSheetRef.current?.hide();
         }, []);

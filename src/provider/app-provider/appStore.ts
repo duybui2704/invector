@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 
 import { ApiServices } from '../../api/index';
 import { AppManager } from '@/manager/AppManager';

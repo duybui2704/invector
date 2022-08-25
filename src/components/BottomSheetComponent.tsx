@@ -1,4 +1,5 @@
 import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList, BottomSheetModal, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { useIsFocused } from '@react-navigation/native';
 import { debounce } from 'lodash';
 import React, {
     forwardRef,
@@ -10,10 +11,9 @@ import React, {
 } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Dash from 'react-native-dash';
-import { useIsFocused } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 
-import { Configs, PADDING_BOTTOM } from '@/common/Configs';
+import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { ItemProps } from '@/models/common-model';
 import { COLORS, Styles } from '@/theme';
@@ -166,37 +166,31 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             setFocus(false);
         }, []);
 
-        const keyExtractor = useCallback((item: any, index: any) => {
-            return `${item.id}${index}`;
-        }, []);
+        const keyExtractor = useCallback((item: any, index: any) => `${item.id}${index}`, []);
 
-        const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => {
-            return (
-                <BottomSheetBackdrop
-                    {...props}
-                    disappearsOnIndex={-1}
-                    appearsOnIndex={1}
-                />
-            );
-        }, []);
+        const renderBackdrop = useCallback((props: BottomSheetBackdropProps) => (
+            <BottomSheetBackdrop
+                {...props}
+                disappearsOnIndex={-1}
+                appearsOnIndex={1}
+            />
+        ), []);
 
         const handleSheetChanges = useCallback((index: number) => {
             setTimeout(() => bottomSheetRef.current?.snapToIndex(index), 0);
         }, []);
 
-        const renderHeader = useCallback(() => {
-            return (
-                <>
-                    <Text style={styles.txtTitle}>{title}</Text>
-                    <Dash
-                        dashThickness={1}
-                        dashLength={10}
-                        dashGap={5}
-                        dashColor={COLORS.GRAY_13}
-                    />
-                </>
-            );
-        }, [title]);
+        const renderHeader = useCallback(() => (
+            <>
+                <Text style={styles.txtTitle}>{title}</Text>
+                <Dash
+                    dashThickness={1}
+                    dashLength={10}
+                    dashGap={5}
+                    dashColor={COLORS.GRAY_13}
+                />
+            </>
+        ), [title]);
 
 
         return (

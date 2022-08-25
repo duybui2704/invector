@@ -191,19 +191,17 @@ export class BaseService {
 
         formData.append('type', 3);
 
-        // console.log('formData = ', formData);
+        console.log('formData = ', JSON.stringify(formData));
         return formData;
     };
 
-    appendFileToFormData = (uri: string, name: string) => {
-        return {
-            file: {
-                name,
-                uri,
-                type: '*/*'
-            }
-        };
-    };
+    appendFileToFormData = (uri: string, name: string) => ({
+        file: {
+            name,
+            uri,
+            type: '*/*'
+        }
+    });
 
     getEncryptRSA = async (Data: string) =>
         this.api().post(API_CONFIG.ENCRYPT, { Data });

@@ -173,45 +173,35 @@ const Transaction = observer(() => {
         },
         [selectedFilter, fetchHistory]
     );
-    const renderFilter = useMemo(() => {
-        return (
-            <View style={styles.topBarContainer}>
-                {TransactionTypes.map(
-                    renderFilterTemplate
-                )}
-            </View>
-        );
-    }, [renderFilterTemplate]);
+    const renderFilter = useMemo(() => (
+        <View style={styles.topBarContainer}>
+            {TransactionTypes.map(
+                renderFilterTemplate
+            )}
+        </View>
+    ), [renderFilterTemplate]);
 
-    const keyExtractor = useCallback((item: TransactionModel, index?: number) => {
-        return `${index}`;
-    }, []);
+    const keyExtractor = useCallback((item: TransactionModel, index?: number) => `${index}`, []);
 
-    const renderItem = useCallback(({ item }: { item: TransactionModel }) => {
-        return (<Touchable disabled={true}>
-            <KeyValueTransaction
-                title={item?.so_tien}
-                content={item?.hinh_thuc}
-                dateTime={item?.created_at}
-                styleColor={item?.color}
-                contract={item?.ma_hop_dong}
-            />
-        </Touchable>);
-    }, []);
+    const renderItem = useCallback(({ item }: { item: TransactionModel }) => (<Touchable disabled={true}>
+        <KeyValueTransaction
+            title={item?.so_tien}
+            content={item?.hinh_thuc}
+            dateTime={item?.created_at}
+            styleColor={item?.color}
+            contract={item?.ma_hop_dong}
+        />
+    </Touchable>), []);
 
-    const renderEmptyData = useMemo(() => {
-        return (
-            <View style={styles.wrapNoData}>
-                <NoData description={Languages.transaction.noDataTransaction} img={<IMGNoDataTransaction />} />
-            </View>
-        );
-    }, []);
+    const renderEmptyData = useMemo(() => (
+        <View style={styles.wrapNoData}>
+            <NoData description={Languages.transaction.noDataTransaction} img={<IMGNoDataTransaction />} />
+        </View>
+    ), []);
 
-    const renderFooter = useMemo(() => {
-        return <>
-            {isLoadMore && <Loading />}
-        </>;
-    }, [isLoadMore]);
+    const renderFooter = useMemo(() => <>
+        {isLoadMore && <Loading />}
+    </>, [isLoadMore]);
 
     const onEndReached = useCallback(() => {
         if (!condition.current.isLoading && condition.current.canLoadMore) {
@@ -228,21 +218,19 @@ const Transaction = observer(() => {
         onRefresh(condition.current.startDate, condition.current.endDate, condition.current.option, true);
     }, [onRefresh]);
 
-    const renderTransaction = useMemo(() => {
-        return (
-            <FlatList
-                data={dataHistory}
-                keyExtractor={keyExtractor}
-                renderItem={renderItem}
-                refreshing={isFreshing}
-                onRefresh={onFreshing}
-                onEndReached={onEndReached}
-                style={styles.wrapFlatList}
-                ListEmptyComponent={renderEmptyData}
-                ListFooterComponent={renderFooter}
-            />
-        );
-    }, [dataHistory, keyExtractor, renderItem, isFreshing, onFreshing, onEndReached, renderEmptyData, renderFooter]);
+    const renderTransaction = useMemo(() => (
+        <FlatList
+            data={dataHistory}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+            refreshing={isFreshing}
+            onRefresh={onFreshing}
+            onEndReached={onEndReached}
+            style={styles.wrapFlatList}
+            ListEmptyComponent={renderEmptyData}
+            ListFooterComponent={renderFooter}
+        />
+    ), [dataHistory, keyExtractor, renderItem, isFreshing, onFreshing, onEndReached, renderEmptyData, renderFooter]);
 
     const onChange = (date: Date, tag?: string) => {
         switch (tag) {

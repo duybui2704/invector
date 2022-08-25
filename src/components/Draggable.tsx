@@ -1,20 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
-    View,
-    PanResponder,
     Animated,
-    Dimensions,
-    TouchableOpacity,
-    StyleSheet,
-    GestureResponderEvent,
-    PanResponderGestureState,
-    Platform,
-    Image
+    Dimensions, GestureResponderEvent, PanResponder, PanResponderGestureState,
+    Platform, StyleSheet, TouchableOpacity, View
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import FastImage from 'react-native-fast-image';
 
-import IcDraggable from '@/assets/image/home/ic_draggable.svg';
 import IcClose from '@/assets/image/home/ic_close.svg';
 import { COLORS } from '@/theme';
 
@@ -59,7 +51,6 @@ interface IProps {
 export default function Draggable(props: IProps) {
     const {
         image,
-        renderText,
         isCircle,
         renderSize,
         renderColor,
@@ -109,9 +100,7 @@ export default function Draggable(props: IProps) {
     }, [x, y]);
 
     const shouldStartDrag = React.useCallback(
-        gs => {
-            return !disabled && (Math.abs(gs.dx) > 2 || Math.abs(gs.dy) > 2);
-        },
+        gs => !disabled && (Math.abs(gs.dx) > 2 || Math.abs(gs.dy) > 2),
         [disabled]
     );
 
@@ -171,21 +160,19 @@ export default function Draggable(props: IProps) {
         [maxX, maxY, minX, minY, onDrag]
     );
 
-    const panResponder = React.useMemo(() => {
-        return PanResponder.create({
-            onMoveShouldSetPanResponder: (_, gestureState) =>
-                shouldStartDrag(gestureState),
-            onMoveShouldSetPanResponderCapture: (_, gestureState) =>
-                shouldStartDrag(gestureState),
-            onPanResponderGrant,
-            onPanResponderMove: Animated.event([], {
-                // Typed incorrectly https://reactnative.dev/docs/panresponder
-                listener: handleOnDrag,
-                useNativeDriver: false
-            }),
-            onPanResponderRelease
-        });
-    }, [
+    const panResponder = React.useMemo(() => PanResponder.create({
+        onMoveShouldSetPanResponder: (_, gestureState) =>
+            shouldStartDrag(gestureState),
+        onMoveShouldSetPanResponderCapture: (_, gestureState) =>
+            shouldStartDrag(gestureState),
+        onPanResponderGrant,
+        onPanResponderMove: Animated.event([], {
+            // Typed incorrectly https://reactnative.dev/docs/panresponder
+            listener: handleOnDrag,
+            useNativeDriver: false
+        }),
+        onPanResponderRelease
+    }), [
         handleOnDrag,
         onPanResponderGrant,
         onPanResponderRelease,

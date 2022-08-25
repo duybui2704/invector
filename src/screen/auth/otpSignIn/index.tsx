@@ -50,9 +50,7 @@ const OtpSignIn = (props: any) => {
         }, 1000);
     };
 
-    const getTime = () => {
-        return Math.floor(Date.now() / 1000);
-    };
+    const getTime = () => Math.floor(Date.now() / 1000);
 
     const onChangeCode = useCallback((code: string) => {
         setToken(code);
@@ -137,7 +135,8 @@ const OtpSignIn = (props: any) => {
                         handleChange={onChangeCode}
                         numberOfInputs={6}
                         style={styles.wrapOTP}
-                        inputStyles={styles.viewOtp}
+                        inputStyles={styles.viewOtp} 
+                        autofillFromClipboard={false}
                     />
                 </View>
                 <Touchable style={isDisTouchable ? [styles.tobConfirm, { backgroundColor: COLORS.GRAY_13 }] : styles.tobConfirm}

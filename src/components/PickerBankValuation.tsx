@@ -53,11 +53,9 @@ const PickerBankValuation = forwardRef<PopupActionTypes, PickerProps>(({
     pickerStyle,
     rightIcon,
     disable,
-    hideInput,
     containerStyle,
     hasUnderline,
     styleText,
-    isIcon,
     stylePlaceholder,
     btnContainer,
     hasDash,
@@ -117,7 +115,7 @@ const PickerBankValuation = forwardRef<PopupActionTypes, PickerProps>(({
             </View>;
         }
         return null;
-    }, [errMsg]);
+    }, [errMsg, wrapErrText]);
 
     const setErrorMsg = useCallback((msg: string) => {
         if (Validate.isStringEmpty(msg)) {

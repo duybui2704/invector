@@ -75,9 +75,9 @@ const Profile = observer(() => {
         duration: 800
     });
     const [errorText, setErrorText] = useState<string>('');
-    const popupLogout = useRef<PopupActionTypes>();
-    const popupDeleteAccount = useRef<PopupActionTypes>();
-    const popupRating = useRef<PopupActionTypes>();
+    const popupLogout = useRef<PopupActionTypes>(null);
+    const popupDeleteAccount = useRef<PopupActionTypes>(null);
+    const popupRating = useRef<PopupActionTypes>(null);
     const [text, setText] = useState<string>('');
     const [ratingPoint, setRating] = useState<number>(userManager.userInfo?.rate || 0);
     const [ratingPointPopup, setRatingPointPopup] = useState<number>(0);
@@ -158,7 +158,7 @@ const Profile = observer(() => {
             hasButton
             onConfirm={otpDeleteAccount}
         />
-    ),[]);
+    ),[otpDeleteAccount, styles.containerAllBtnPopup, styles.containerCancelBtnPopup, styles.containerItemBtnPopup, styles.textCancel]);
     
     const openPopupRating = useCallback(() => {
         popupRating.current?.show();

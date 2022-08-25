@@ -15,8 +15,6 @@ import { Touchable } from './elements/touchable';
 import Languages from '@/common/Languages';
 import { LINKS } from '@/api/constants';
 
-
-
 const PopupConfirmPolicy = forwardRef<
     PopupActionTypes,
     PopupPropsTypes

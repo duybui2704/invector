@@ -49,16 +49,14 @@ const LinkWallet = observer(() => {
         setLoading(false);
     }, [apiServices.paymentMethod, userManager]);
 
-    const renderStateLink = useCallback((status?: boolean) => {
-        return (
-            <>
-                {status ?
-                    <Text style={styles.stateItemLink}>{Languages.linkSocialAcc.linked}</Text> :
-                    <Text style={[styles.stateItemLink, styles.redText]}>{Languages.linkSocialAcc.notLinked}</Text>
-                }
-            </>
-        );
-    }, [styles.redText, styles.stateItemLink]);
+    const renderStateLink = useCallback((status?: boolean) => (
+        <>
+            {status ?
+                <Text style={styles.stateItemLink}>{Languages.linkSocialAcc.linked}</Text> :
+                <Text style={[styles.stateItemLink, styles.redText]}>{Languages.linkSocialAcc.notLinked}</Text>
+            }
+        </>
+    ), [styles.redText, styles.stateItemLink]);
 
     const onPopupVimoAgree = useCallback(async () => {
         setLoading(true);
@@ -74,22 +72,20 @@ const LinkWallet = observer(() => {
         setLoading(false);
     }, [apiServices.paymentMethod, fetchInfoVimoLink]);
 
-    const popupVimo = useCallback((ref?: any, icon?: any) => {
-        return (
-            <PopupNotifyNoAction
-                ref={ref}
-                renderIcon={icon}
-                renderTitle={Languages.paymentMethod.cancelLinkVimo}
-                renderContent={Languages.paymentMethod.contentCancelLinkVimo}
-                containerAllBtn={styles.containerAllBtnPopup}
-                containerAgreeBtn={styles.containerItemBtnPopup}
-                containerCancelBtn={styles.containerCancelBtnPopup}
-                textCancel={styles.textCancel}
-                hasButton
-                onConfirm={onPopupVimoAgree}
-            />
-        );
-    }, [onPopupVimoAgree, styles.containerAllBtnPopup, styles.containerCancelBtnPopup, styles.containerItemBtnPopup, styles.textCancel]);
+    const popupVimo = useCallback((ref?: any, icon?: any) => (
+        <PopupNotifyNoAction
+            ref={ref}
+            renderIcon={icon}
+            renderTitle={Languages.paymentMethod.cancelLinkVimo}
+            renderContent={Languages.paymentMethod.contentCancelLinkVimo}
+            containerAllBtn={styles.containerAllBtnPopup}
+            containerAgreeBtn={styles.containerItemBtnPopup}
+            containerCancelBtn={styles.containerCancelBtnPopup}
+            textCancel={styles.textCancel}
+            hasButton
+            onConfirm={onPopupVimoAgree}
+        />
+    ), [onPopupVimoAgree, styles.containerAllBtnPopup, styles.containerCancelBtnPopup, styles.containerItemBtnPopup, styles.textCancel]);
 
 
     const onVimo = useCallback(() => {

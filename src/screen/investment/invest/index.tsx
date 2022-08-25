@@ -20,7 +20,7 @@ import Loading from '@/components/loading';
 import PopupConfirmPolicy from '@/components/PopupConfirmPolicy';
 import { PopupInvestOTP } from '@/components/popupOTP';
 import { useAppStore } from '@/hooks';
-import { BankInformationModel, CheckVimoWalletModel, InvestorInfoModel, PackageInvest } from '@/models/invest';
+import { BankInformationModel, InvestorInfoModel, PackageInvest } from '@/models/invest';
 import { PopupActionTypes } from '@/models/typesPopup';
 import Navigator from '@/routers/Navigator';
 import { MyStylesInvest } from '@/screen/investment/invest/styles';
@@ -146,7 +146,7 @@ const Invest = observer(({ route }: any) => {
             }
         }
         setIsLoading(false);
-    }, [apiServices.invest, dataInvestment?.id, getOtpVimo, methodPayment]);
+    }, [apiServices.invest, dataInvestment?.id, getOtpVimo, goback, methodPayment]);
 
     const openPolicy = useCallback(() => {
         refPopupPolicy.current?.show();
@@ -157,11 +157,9 @@ const Invest = observer(({ route }: any) => {
         refPopupPolicy.current?.hide();
     }, []);
 
-    const renderInfoItem = useCallback((label: string, value: string, colorText?: string) => {
-        return (
-            <ItemInfoContract label={label} value={value} colorText={colorText} />
-        );
-    }, []);
+    const renderInfoItem = useCallback((label: string, value: string, colorText?: string) => (
+        <ItemInfoContract label={label} value={value} colorText={colorText} />
+    ), []);
 
     const renderMethod = useCallback((icon: any, label: string, method: string, linked?: boolean) => {
         const onPress = () => {

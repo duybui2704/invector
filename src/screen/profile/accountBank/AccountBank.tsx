@@ -69,12 +69,8 @@ const AccountBank = observer(() => {
         const res = await apiServices.paymentMethod.getBank();
         if (res.success) {
             const data = res.data as DataBanksModal[];
-            const temp = data?.map((item) => {
-                return { id: item?.bank_code, value: item?.name, text: item?.short_name, icon: item?.icon };
-            }) as ItemProps[];
-            const firstName = temp?.filter((item) => {
-                return item?.id === nameBank;
-            }) as ItemProps[];
+            const temp = data?.map((item) => ({ id: item?.bank_code, value: item?.name, text: item?.short_name, icon: item?.icon })) as ItemProps[];
+            const firstName = temp?.filter((item) => item?.id === nameBank) as ItemProps[];
             setNameBank(`${firstName?.[0]?.value || ''}${firstName?.[0]?.value ? ' - ' : ''}${firstName?.[0]?.text || ''}`);
             setDataBanks(temp);
         }

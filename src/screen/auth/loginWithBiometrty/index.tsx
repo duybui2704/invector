@@ -124,22 +124,20 @@ const LoginWithBiometry = observer(() => {
         }
     };
 
-    const renderInput = useCallback((ref: any, value: string, isPhone: boolean, placeHolder: string, rightIcon?: string, keyboardType?: any, maxLength?: number, isPass?: boolean) => {
-        return (
-            <MyTextInput
-                ref={ref}
-                value={value}
-                isPhoneNumber={isPhone}
-                maxLength={maxLength}
-                rightIcon={rightIcon}
-                placeHolder={placeHolder}
-                containerInput={styles.inputPhone}
-                onChangeText={onChangeText}
-                keyboardType={keyboardType}
-                isPassword={isPass}
-            />
-        );
-    }, [styles.inputPhone]);
+    const renderInput = useCallback((ref: any, value: string, isPhone: boolean, placeHolder: string, rightIcon?: string, keyboardType?: any, maxLength?: number, isPass?: boolean) => (
+        <MyTextInput
+            ref={ref}
+            value={value}
+            isPhoneNumber={isPhone}
+            maxLength={maxLength}
+            rightIcon={rightIcon}
+            placeHolder={placeHolder}
+            containerInput={styles.inputPhone}
+            onChangeText={onChangeText}
+            keyboardType={keyboardType}
+            isPassword={isPass}
+        />
+    ), [styles.inputPhone]);
 
 
     const onLoginPhone = useCallback(async () => {
@@ -199,9 +197,7 @@ const LoginWithBiometry = observer(() => {
         return false;
     }, []);
 
-    const CustomBackdrop = (props: BottomSheetBackdropProps) => {
-        return <BottomSheetBackdrop {...props} pressBehavior="close" />;
-    };
+    const CustomBackdrop = (props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} pressBehavior="close" />;
 
     const animationConfigs = useBottomSheetTimingConfigs({
         duration: 800
@@ -212,40 +208,38 @@ const LoginWithBiometry = observer(() => {
         onLoginSuccess();
     }, [onLoginSuccess]);
 
-    const renderPinCode = useMemo(() => {
-        return (
-            <BottomSheetModal
-                ref={bottomSheetModalRef}
-                index={1}
-                snapPoints={['20%', '82%']}
-                keyboardBehavior={'interactive'}
-                backdropComponent={CustomBackdrop}
-                animationConfigs={animationConfigs}
-            >
-                <View style={styles.wrapPin}>
-                    <PinCode
-                        mode={PinCodeT.Modes.Enter}
-                        visible={true}
-                        options={{
-                            pinLength: 4,
-                            maxAttempt: 4,
-                            lockDuration: 10000,
-                            disableLock: false
-                        }}
-                        mainStyle={customStyles.main}
-                        textOptions={customTexts}
-                        titleStyle={customStyles.title}
-                        buttonsStyle={customStyles.buttons}
-                        subTitleStyle={customStyles.subTitle}
-                        buttonTextStyle={customStyles.buttonText}
-                        pinContainerStyle={customStyles.pinContainer}
-                        checkPin={checkPin}
-                        onEnterSuccess={onLoginSuccessWithPIn}
-                    />
-                </View>
-            </BottomSheetModal>
-        );
-    }, [animationConfigs, checkPin, onLoginSuccessWithPIn, styles.wrapPin]);
+    const renderPinCode = useMemo(() => (
+        <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={1}
+            snapPoints={['20%', '82%']}
+            keyboardBehavior={'interactive'}
+            backdropComponent={CustomBackdrop}
+            animationConfigs={animationConfigs}
+        >
+            <View style={styles.wrapPin}>
+                <PinCode
+                    mode={PinCodeT.Modes.Enter}
+                    visible={true}
+                    options={{
+                        pinLength: 4,
+                        maxAttempt: 4,
+                        lockDuration: 10000,
+                        disableLock: false
+                    }}
+                    mainStyle={customStyles.main}
+                    textOptions={customTexts}
+                    titleStyle={customStyles.title}
+                    buttonsStyle={customStyles.buttons}
+                    subTitleStyle={customStyles.subTitle}
+                    buttonTextStyle={customStyles.buttonText}
+                    pinContainerStyle={customStyles.pinContainer}
+                    checkPin={checkPin}
+                    onEnterSuccess={onLoginSuccessWithPIn}
+                />
+            </View>
+        </BottomSheetModal>
+    ), [animationConfigs, checkPin, onLoginSuccessWithPIn, styles.wrapPin]);
 
     return (
         <HideKeyboard>

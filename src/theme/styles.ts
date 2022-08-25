@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Configs, PADDING_BOTTOM } from '@/common/Configs';
+import { Configs } from '@/common/Configs';
 import { COLORS } from './colors';
 
 
@@ -98,7 +98,7 @@ export const HtmlStyles = {
     rn: {
         ...Styles.typography.medium,
         color: COLORS.RED_3,
-        fontSize: Configs.FontSize.size14,
+        fontSize: Configs.FontSize.size14
     },
     s: {
         ...Styles.typography.regular,

@@ -10,11 +10,11 @@ import Modal from 'react-native-modal';
 import ImgLogo from '@/assets/image/img_logo.svg';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
+import { Touchable } from '@/components/elements/touchable';
+import { PopupPropsTypes } from '@/models/typesPopup';
 import { COLORS, Styles } from '@/theme';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
-import { Touchable } from '@/components/elements/touchable';
 import { PopupActions } from './popup/types';
-import { PopupPropsTypes } from '@/models/typesPopup';
 
 export interface PopupVerifyRequestProps extends PopupPropsTypes {
     icon?: any;
@@ -22,7 +22,7 @@ export interface PopupVerifyRequestProps extends PopupPropsTypes {
 }
 
 const PopupUpdateVersion = forwardRef<PopupActions, PopupVerifyRequestProps>(
-    ({ onClose, icon, content, onConfirm, title, showBtn = true }: PopupVerifyRequestProps, ref) => {
+    ({ onClose, onConfirm,  showBtn = true }: PopupVerifyRequestProps, ref) => {
         const [visible, setVisible] = useState<boolean>(false);
         const show = useCallback(() => {
             setVisible(true);

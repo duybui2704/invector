@@ -79,11 +79,9 @@ export const DetailInvestment = observer(({ route }: any) => {
         }
     }, [apiServices.invest, id]);
 
-    const renderInfoItem = useCallback((label: string, value: string, colorText?: string, visible?: boolean) => {
-        return (
-            <ItemInfoContract label={label} value={value} colorText={colorText} />
-        );
-    }, []);
+    const renderInfoItem = useCallback((label: string, value: string, colorText?: string) => (
+        <ItemInfoContract label={label} value={value} colorText={colorText} />
+    ), []);
 
     const renderItem = useCallback((item?: HistoryModel) => {
         const txtDue = {
@@ -111,7 +109,7 @@ export const DetailInvestment = observer(({ route }: any) => {
         if (data) {
             Navigator.pushScreen(ScreenName.invest, { id: data?.id, screen: route?.params?.screen });
         }
-    }, [data]);
+    }, [data, route?.params?.screen]);
 
     const renderBottom = useMemo(() => {
         switch (status) {

@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import { StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
 import DatePicker, { DatePickerProps } from 'react-native-date-picker';
-import { useIsFocused } from '@react-navigation/native';
 
 import ICCalender from '@/assets/image/ic_calender.svg';
 import { Configs } from '@/common/Configs';
@@ -55,12 +54,11 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
         const [visible, setVisible] = useState<boolean>(false);
         const [dateValue,setDateValue] = useState<Date | string| undefined| number | any >();
         const { common } = useAppStore();
-        const isFocused = useIsFocused();
 
         useEffect(() => {
             if (common.isFocused || common.refresh) {
                 date = new Date();
-                onConfirmDatePicker('', title);
+                onConfirmDatePicker?.('', title);
                 setDateValue(null);
             }
         }, [common.isFocused, common.refresh]);
@@ -68,7 +66,7 @@ const DatePickerTransaction = forwardRef<DatePickerTransactionActions, DatePicke
         const show = useCallback(() => {
             common.setRefresh(false);
             setVisible(true);
-        }, []);
+        }, [common]);
 
         const hide = useCallback(() => {
             setVisible(false);

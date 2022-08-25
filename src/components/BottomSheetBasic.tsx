@@ -33,9 +33,7 @@ export type BottomSheetAction = {
     hide?: (content?: string) => any,
 };
 
-const CustomBackdrop = (props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props} pressBehavior="close" />;
-};
+const CustomBackdrop = (props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} pressBehavior="close" />;
 
 const BottomSheetBasic = forwardRef<BottomSheetAction, BottomSheetProps>(
     (
@@ -100,9 +98,7 @@ const BottomSheetBasic = forwardRef<BottomSheetAction, BottomSheetProps>(
             [hide, onPressItem, title]
         );
 
-        const keyExtractor = useCallback((index: any) => {
-            return `${index.id}`;
-        }, []);
+        const keyExtractor = useCallback((index: any) => `${index.id}`, []);
         const handleSheetChanges = useCallback(() => { }, []);
 
         return (

@@ -24,35 +24,32 @@ const KeyValueReport = (
             defaultValue?: string | number | undefined,
             numberOfLine?: number
         }
-) => {
+) => (
+    <View style={[styles.container, styleContainer]}>
+        {!noIndicator && <Dash
+            dashThickness={1}
+            dashLength={10}
+            dashGap={5}
+            dashColor={COLORS.GRAY_13} />
+        }
 
-    return (
-        <View style={[styles.container, styleContainer]}>
-            {!noIndicator && <Dash
-                dashThickness={1}
-                dashLength={10}
-                dashGap={5}
-                dashColor={COLORS.GRAY_13} />
-            }
-
-            <View style={[styles.row, styleTouchable]}>
-                {leftIcon || null}
-                <View style={[styles.rowCenter, containerContent]}>
-                    <Text style={[styles.leftText, styleTitle]}>{title}</Text>
-                    <Text numberOfLines={numberOfLine || 1} style={[styles.contentText, styleColor]}>{content || defaultValue}</Text>
-                </View>
-                {rightIcon || null}
+        <View style={[styles.row, styleTouchable]}>
+            {leftIcon || null}
+            <View style={[styles.rowCenter, containerContent]}>
+                <Text style={[styles.leftText, styleTitle]}>{title}</Text>
+                <Text numberOfLines={numberOfLine || 1} style={[styles.contentText, styleColor]}>{content || defaultValue}</Text>
             </View>
-            {hasDashBottom && <Dash
-                dashThickness={1}
-                dashLength={10}
-                dashGap={5}
-                dashColor={COLORS.GRAY_13}
-            />
-            }
+            {rightIcon || null}
         </View>
-    );
-};
+        {hasDashBottom && <Dash
+            dashThickness={1}
+            dashLength={10}
+            dashGap={5}
+            dashColor={COLORS.GRAY_13}
+        />
+        }
+    </View>
+);
 
 export default KeyValueReport;
 

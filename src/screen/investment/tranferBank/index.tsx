@@ -18,7 +18,7 @@ import ToastUtils from '@/utils/ToastUtils';
 import DateUtils from '@/utils/DateUtils';
 import { useAppStore } from '@/hooks';
 import Languages from '@/common/Languages';
-import ScreenName, { TabsName } from '@/common/screenNames';
+import { TabsName } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
 import { Button } from '@/components/elements/button';
@@ -40,7 +40,7 @@ const TransferScreen = observer(({ route }: any) => {
     const data = route?.params as BankInformationModel;
 
     const refPopup = useRef<PopupActions>(null);
-    const ref = useRef();
+    const ref = useRef<any>(null);
     const [timer, setTimer] = useState<any>(RESEND_TIME);
 
     const mounted = useRef(false);
@@ -147,7 +147,7 @@ const TransferScreen = observer(({ route }: any) => {
     }, []);
 
     const onCapture = useCallback(() => {
-        ref?.current?.capture?.().then(uri => {
+        ref?.current?.capture?.().then((uri: string) => {
             if (uri) {
                 CameraRoll.save(uri, 'photo');
                 ToastUtils.showMsgToast(Languages.errorMsg.qrCodeDownloaded);

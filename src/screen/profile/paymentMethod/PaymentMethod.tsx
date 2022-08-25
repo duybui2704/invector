@@ -26,9 +26,9 @@ const PaymentMethod = observer(({ route }: any) => {
     const [isSelectingVimo, setSelectingVimo] = useState<boolean>(false);
 
     useEffect(() => {
-        setSelectingBank(userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.BANK)
-        setSelectingVimo(userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.VIMO)
-    }, [userManager.userInfo?.tra_lai?.type_interest_receiving_account])
+        setSelectingBank(userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.BANK);
+        setSelectingVimo(userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.VIMO);
+    }, [userManager.userInfo?.tra_lai?.type_interest_receiving_account]);
 
     const fetchUserInfo = useCallback(async () => {
         const resUser = await apiServices.auth.getUserInfo();
@@ -40,29 +40,25 @@ const PaymentMethod = observer(({ route }: any) => {
                 ...user
             });
         }
-    }, [])
+    }, [apiServices.auth, userManager]);
 
-    const renderStateLink = useCallback((status?: boolean) => {
-        return (
-            <>
-                {status ?
-                    <Text style={styles.stateItemLink}>{Languages.linkSocialAcc.linked}</Text> :
-                    <Text style={[styles.stateItemLink, styles.redText]}>{Languages.linkSocialAcc.notLinked}</Text>
-                }
-            </>
-        );
-    }, [styles.redText, styles.stateItemLink]);
+    const renderStateLink = useCallback((status?: boolean) => (
+        <>
+            {status ?
+                <Text style={styles.stateItemLink}>{Languages.linkSocialAcc.linked}</Text> :
+                <Text style={[styles.stateItemLink, styles.redText]}>{Languages.linkSocialAcc.notLinked}</Text>
+            }
+        </>
+    ), [styles.redText, styles.stateItemLink]);
 
-    const renderRightIcon = useCallback((status?: boolean) => {
-        return (
-            <>
-                {status ?
-                    <LinkIC width={24} height={24} /> :
-                    <NotLinkIC width={24} height={24} />
-                }
-            </>
-        );
-    }, []);
+    const renderRightIcon = useCallback((status?: boolean) => (
+        <>
+            {status ?
+                <LinkIC width={24} height={24} /> :
+                <NotLinkIC width={24} height={24} />
+            }
+        </>
+    ), []);
 
     const onBank = useCallback(() => {
         Navigator.pushScreen(ScreenName.accountBank);
@@ -78,7 +74,7 @@ const PaymentMethod = observer(({ route }: any) => {
         } else {
             setLoading(false);
         }
-    }, [apiServices.paymentMethod]);
+    }, [apiServices.paymentMethod, fetchUserInfo]);
 
     const renderItemMethod = useCallback((leftIcon?: any, title?: string, activeMethod?: boolean, disabled?: boolean) => {
         const _onPressToChooseMethod = () => {
@@ -118,7 +114,7 @@ const PaymentMethod = observer(({ route }: any) => {
             return;
         }
         Navigator.goBack();
-    }, []);
+    }, [route.params]);
 
     return (
         <View style={styles.container}>

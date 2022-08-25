@@ -7,15 +7,13 @@ import React, {
 import { StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { COLORS, Styles } from '@/theme';
-import Utils from '@/utils/Utils';
-import { PopupActionTypes, PopupPropsTypes } from '../models/typesPopup';
-import { Touchable } from './elements/touchable';
-import Languages from '@/common/Languages';
 import { Configs } from '@/common/Configs';
 import { ENUM_BIOMETRIC_TYPE } from '@/common/constants';
+import Languages from '@/common/Languages';
+import { COLORS, Styles } from '@/theme';
+import { PopupActionTypes, PopupPropsTypes } from '../models/typesPopup';
+import { Touchable } from './elements/touchable';
 
-// import { PopupActions, PopupProps } from './types';
 interface PopupErrorBiometryProps extends PopupPropsTypes {
     typeSupportBiometry?: string;
     btnText?: string;
@@ -24,7 +22,7 @@ interface PopupErrorBiometryProps extends PopupPropsTypes {
 const PopupErrorBiometry = forwardRef<
     PopupActionTypes,
     PopupErrorBiometryProps
-    >(({ onClose, title, typeSupportBiometry }: PopupErrorBiometryProps, ref) => {
+    >(({ onClose, typeSupportBiometry }: PopupErrorBiometryProps, ref) => {
         const [visible, setVisible] = useState<boolean>(false);
         const show = useCallback(() => {
             setVisible(true);
