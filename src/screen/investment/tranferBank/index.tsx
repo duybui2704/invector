@@ -119,23 +119,19 @@ const TransferScreen = observer(({ route }: any) => {
         );
     }, [copyToClipboard]);
 
-    const renderItemInfo = useCallback((label: string, value: string) => {
-        return (
-            <>
-                <Text style={styles.txtLabel}>{label}</Text>
-                <Text style={styles.redText}>{value}</Text>
-            </>
-        );
-    }, []);
+    const renderItemInfo = useCallback((label: string, value: string) => (
+        <>
+            <Text style={styles.txtLabel}>{label}</Text>
+            <Text style={styles.redText}>{value}</Text>
+        </>
+    ), []);
 
-    const renderItemBank = useCallback((label: string, value: string) => {
-        return (
-            <View style={styles.row}>
-                <Text style={styles.label1}>{label}</Text>
-                <Text style={styles.value1}>{value}</Text>
-            </View>
-        );
-    }, []);
+    const renderItemBank = useCallback((label: string, value: string) => (
+        <View style={styles.row}>
+            <Text style={styles.label1}>{label}</Text>
+            <Text style={styles.value1}>{value}</Text>
+        </View>
+    ), []);
 
     const onTransferred = useCallback(() => {
         refPopup?.current?.showAlert?.(Languages.transferScreen.transferredTitle, Languages.transferScreen.transferredContent);

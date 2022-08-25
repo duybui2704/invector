@@ -477,7 +477,7 @@ const Languages = {
         inputAccountNumber: 'Nhập số tài khoản',
         accountProvider: 'Chủ tài khoản',
         accountProviderName: 'Tên chủ tài khoản',
-        noteAccountBank: '<p><r>Chú ý:</r> <s>Đây là tài khoản ngân hàng để nhận lãi, bạn cần đảm bảo chính xác thông tin tài khoản ngân hàng bạn cung cấp là chính xác.</s> <g>TienNgay.vn</g><s> sẽ không chịu trách nghiệm khi bạn nhập sai thông tin.</s></p>',
+        noteAccountBank: '<p><r>Chú ý:</r> <s>Đây là tài khoản ngân hàng để nhận lãi, bạn cần đảm bảo chính xác thông tin tài khoản ngân hàng bạn cung cấp là chính xác.</s> <g>TienNgay.vn</g><s> sẽ không chịu trách nhiệm khi bạn nhập sai thông tin.</s></p>',
         addAccount: 'Thêm tài khoản',
         updateAccBank: 'Cập nhật tài khoản'
     },
