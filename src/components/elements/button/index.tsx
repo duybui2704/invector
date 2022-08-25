@@ -64,7 +64,7 @@ export const Button = ({
             containerStyle,
             style
         ];
-    }, [disabled, buttonStyle, styles.container, styles.grayButton, styles.greenButton, styles.blueButton, styles.darkBlueBtn, styles.grayRedBtn, style]);
+    }, [disabled, buttonStyle, styles.container, styles.grayButton, styles.greenButton, styles.blueButton, styles.darkBlueBtn, styles.grayRedBtn, styles.lightGreen, style]);
 
     const getTextColor = useMemo(() => {
         if (disabled) {

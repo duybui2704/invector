@@ -1,19 +1,19 @@
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import { observer } from 'mobx-react';
-import React, { Children, useCallback, useEffect } from 'react';
 import messaging from '@react-native-firebase/messaging';
+import { observer } from 'mobx-react';
+import React, { useCallback, useEffect } from 'react';
 import PushNotification from 'react-native-push-notification';
 
-import Utils from '@/utils/Utils';
 import { isIOS } from '@/common/Configs';
-import Navigator from '@/routers/Navigator';
+import ScreenName from '@/common/screenNames';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
 import { NotificationTotalModel } from '@/models/notification';
-import ScreenName from '@/common/screenNames';
+import Navigator from '@/routers/Navigator';
+import Utils from '@/utils/Utils';
 
 const NotificationListening = observer(({ children }: any) => {
-    const { apiServices, notificationManager, userManager, appManager } =
+    const { apiServices, notificationManager, userManager } =
         useAppStore();
 
     const onLocalNotificationIOS = (notification: any) => {

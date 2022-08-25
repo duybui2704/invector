@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Animated,
     Dimensions, GestureResponderEvent, PanResponder, PanResponderGestureState,
-    Platform, StyleSheet, TouchableOpacity, View
+    Platform, StyleSheet, TouchableOpacity, View, ViewStyle
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import FastImage from 'react-native-fast-image';
@@ -94,8 +94,8 @@ export default function Draggable(props: IProps) {
         return {
             left,
             top,
-            right: left + childSize.current.x,
-            bottom: top + childSize.current.y
+            right: left + childSize?.current?.x,
+            bottom: top + childSize?.current?.y
         };
     }, [x, y]);
 
@@ -116,7 +116,7 @@ export default function Draggable(props: IProps) {
             isDragging.current = false;
             if (onDragRelease) {
                 onDragRelease(e, gestureState);
-                onRelease(e, true);
+                onRelease?.(e, true);
             }
             if (!shouldReverse) {
                 pan.current.flattenOffset();
@@ -155,7 +155,7 @@ export default function Draggable(props: IProps) {
                 Number.isFinite(maxY) ? maxY - bottom : far
             );
             pan.current.setValue({ x: changeX, y: changeY });
-            onDrag(e, gestureState);
+            onDrag?.(e, gestureState);
         },
         [maxX, maxY, minX, minY, onDrag]
     );
@@ -200,7 +200,7 @@ export default function Draggable(props: IProps) {
             left: 0,
             width: Window.width,
             height: Window.height
-        };
+        } as ViewStyle;
     }, []);
 
     const dragItemCss = React.useMemo(() => {
@@ -224,7 +224,8 @@ export default function Draggable(props: IProps) {
             left: x,
             elevation: Platform.OS === 'ios' ? z : 0,
             zIndex: z
-        };
+        } as ViewStyle;
+
         if (renderColor) {
             style.backgroundColor = renderColor;
         }
@@ -236,26 +237,27 @@ export default function Draggable(props: IProps) {
             return {
                 ...style,
                 alignSelf: 'baseline'
-            };
+            } as ViewStyle;
         }
         return {
             ...style,
             justifyContent: 'center',
             width: renderSize,
             height: renderSize
-        };
-    }, [children, isCircle, renderColor, renderSize, x, y, z]);
+        } as ViewStyle;
 
-    const handleOnLayout = React.useCallback(event => {
+    }, [children, isCircle, renderColor, renderSize, x, z]);
+
+    const handleOnLayout = React.useCallback((event: any) => {
         const { height, width } = event.nativeEvent.layout;
         childSize.current = { x: width, y: height };
     }, []);
 
     const handlePressOut = React.useCallback(
         (event: GestureResponderEvent) => {
-            onPressOut(event);
+            onPressOut?.(event);
             if (!isDragging.current) {
-                onRelease(event, false);
+                onRelease?.(event, false);
             }
         },
         [onPressOut, onRelease]

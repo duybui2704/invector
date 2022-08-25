@@ -12,9 +12,9 @@ import { CheckVimoWalletModel } from '@/models/invest';
 import { PopupActionTypes, PopupPropsTypes } from '@/models/typesPopup';
 import { COLORS } from '@/theme/colors';
 import { Styles } from '@/theme/styles';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
-import { Touchable } from '../elements/touchable';
+import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import Utils from '@/utils/Utils';
+import { Touchable } from '../elements/touchable';
 
 interface PopupOTPProps extends PopupPropsTypes {
     getOTPcode?: () => any,
@@ -163,7 +163,8 @@ export const PopupInvestOTP = forwardRef<
                             numberOfInputs={6}
                             style={styles.wrapOTP}
                             inputStyles={styles.viewOtp}
-                            focusStyles={styles.focusStyle}
+                            focusStyles={styles.focusStyle} 
+                            autofillFromClipboard={false}   
                         />
                     </View>
                     {!!erroMsg && <Text style={styles.errTxt}>{erroMsg}</Text>}

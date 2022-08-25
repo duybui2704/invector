@@ -25,7 +25,7 @@ const TIME_OUT = 60;
 export const PopupOtpDeleteAccount = forwardRef<
     PopupActionTypes,
     PopupOTPProps
->(({ resendOTP, onConfirm }: PopupOTPProps, ref) => {
+>(({ onConfirm }: PopupOTPProps, ref: any) => {
     const { userManager, apiServices } = useAppStore();
     const [visible, setVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -35,10 +35,9 @@ export const PopupOtpDeleteAccount = forwardRef<
     const [errMsg, setErrMsg] = useState<string>('');
     const [animation] = useState(new Animated.Value(0));
     const [isFocusing, setFocus] = useState<boolean>(false);
-    const refOTP = useRef<any>();
+    const refOTP = useRef<any>(null);
     const intervalRef = useRef<any>();
     const checksumRef = useRef<string>();
-    const phone = userManager.phoneNumber;
 
     useEffect(() => {
         intervalRef.current = setInterval(() => {
@@ -131,9 +130,7 @@ export const PopupOtpDeleteAccount = forwardRef<
         setFocus(false);
     }, []);
 
-    const containerStyle = useMemo(() => {
-        return [styles.container, { transform: [{ translateX: animation }] }];
-    }, [animation]);
+    const containerStyle = useMemo(() => [styles.container, { transform: [{ translateX: animation }] }], [animation]);
 
     const styleOTP = useMemo(() => {
         const borderStyle = {
@@ -205,7 +202,8 @@ export const PopupOtpDeleteAccount = forwardRef<
                                     style={styles.wrapOTP}
                                     inputStyles={styleOTP}
                                     onFocus={onFocus}
-                                    onBlur={onBlur}
+                                    onBlur={onBlur} 
+                                    autofillFromClipboard={false}     
                                 />
                             </View>
                             {errorMessage}

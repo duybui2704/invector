@@ -9,14 +9,14 @@ type ToastAction = {
 }
 
 export const ToastBottom = forwardRef<ToastAction>((props, ref) => {
-    const toastRef = useRef(null);
+    const toastRef = useRef<any>(null);
     const styles = MyStylesToast();
 
     useImperativeHandle(ref, () => ({
         showToast
     }));
 
-    const showToast = useCallback((msg) => {
+    const showToast = useCallback((msg: string) => {
         toastRef?.current?.show(msg, 2000);
     }, []);
 

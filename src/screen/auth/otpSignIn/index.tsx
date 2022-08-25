@@ -58,7 +58,9 @@ const OtpSignIn = (props: any) => {
 
     const onPressOtp = async () => {
         if (props?.isChangePass) {
+            setIsLoading(true);
             const res = await apiServices.auth.validateToken(token, phone);
+            setIsLoading(false);
             if (res.success) {
                 setIsNavigate(true);
             }

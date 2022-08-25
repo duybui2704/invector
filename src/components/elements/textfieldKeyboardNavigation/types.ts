@@ -49,9 +49,9 @@ export type TextFieldProps = {
     isPhoneNumber?: boolean;
     autoCapitalized?: any;
     refArr?: Array<any>;
-    orderRef?: number | undefined;
+    orderRef?: number | undefined | any;
     inputAccessoryViewID?: string;
-    textContentType?: string;
+    textContentType?: string| any;
 }
 
 export type TextFieldActions = {

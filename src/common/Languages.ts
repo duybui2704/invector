@@ -240,7 +240,8 @@ const Languages = {
         emptyRatingPoint: 'Bạn cần phải đánh số sao để đánh giá',
         qrCodeDownloaded: 'Đã tải ảnh Qr-Code thành công',
         copied: 'Đã sao chép',
-        topupSuccess: 'TienNgay đã nhận được khoản tiền của bạn.'
+        topupSuccess: 'TienNgay đã nhận được khoản tiền của bạn.',
+        accountNotYetIdentityToInvest: 'Tài khoản của bạn chưa xác thực vui lòng xác thực ngay để đầu tư. Xin cảm ơn'
     },
     quickAuThen: {
         title: 'Mật khẩu và đăng nhập',
@@ -497,7 +498,7 @@ const Languages = {
         popupOtpResendCode: 'Mã OTP đã hết hạn. Vui lòng gửi lại',
         popupOtpErrorTitle: 'Thông báo OTP',
         popupOtpErrorDescription: 'OTP không chính xác',
-        msgCallPhone: 'Mã xác thực đã được gửi đến số điện thoại %s1 thông qua cuộc gọi. Mã hết hiệu lực sau 03:00 phút.'
+        msgCallPhone: 'Mã xác thực đã được gửi đến số điện thoại %s1 thông qua cuộc gọi.'
     },
     msgNotify: {
         successCancelLinkVimo: 'Bạn đã hủy liên kết với Vimo',
@@ -568,6 +569,10 @@ const Languages = {
         deleteAccount: 'Xoá tài khoản',
         deleteAccountConfirm: 'Bạn có chắc chắn muốn xoá tài khoản không?\nSau khi xoá tài khoản, bạn không thể đăng nhập vào ứng dụng được nữa. Vui lòng liên hệ 1900 6907 để được hỗ trợ.',
         completionOtpDelete: 'Hãy xác nhận mã OTP chúng tôi đã gửi cho bạn để hoàn thành việc xoá tài khoản.'
+    },
+    noInternet: {
+        offline: 'Kết nối bị gián đoạn',
+        desNoInternet: 'Kết nối bị gián đoạn, vui lòng thử lại!'
     }
 };
 export default Languages;

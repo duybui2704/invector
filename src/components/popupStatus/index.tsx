@@ -3,15 +3,14 @@ import {Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { PopupActions, PopupProps } from './types';
-import {MyStylePupUpStatus} from "@/components/popupStatus/styles";
+import {MyStylePupUpStatus} from '@/components/popupStatus/styles';
 
 const styles = MyStylePupUpStatus();
 const PopupStatus = forwardRef<PopupActions, PopupProps>(
     ({
-         onClose,
-         title,
-         description
-     }: PopupProps, ref) => {
+        title,
+        description
+    }: PopupProps, ref) => {
         const [visible, setVisible] = useState<boolean>(false);
         const show = useCallback(() => {
             setVisible(true);

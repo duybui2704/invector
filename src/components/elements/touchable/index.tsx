@@ -5,8 +5,8 @@ import {
 } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 
-import { DELAY_CLICK } from '../../../common/constants';
-import DateUtils from '../../../utils/DateUtils';
+import { DELAY_CLICK } from '@/common/constants';
+import DateUtils from '@/utils/DateUtils';
 import { TouchableProps } from './types';
 
 export const Touchable = forwardRef(

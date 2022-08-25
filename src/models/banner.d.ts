@@ -33,6 +33,7 @@ export interface BannerModel extends BaseModel {
     created_by: number;
     updated_by: string;
     type: string;
+    image_mb: string;
 }
 
 export interface BannerHome {

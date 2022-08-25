@@ -16,12 +16,12 @@ import {
     ViewStyle
 } from 'react-native';
 
+import { Configs } from '@/common/Configs';
+import Languages from '@/common/Languages';
 import { COLORS, Styles } from '@/theme';
+import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import PinButton from './PinButton';
 import { DEFAULT, PinCodeT } from './types';
-import Languages from '@/common/Languages';
-import { Configs } from '@/common/Configs';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 const ONE_SECOND_IN_MS = 50;
 
@@ -104,9 +104,7 @@ const PinCode = ({
         disableButtons(false);
     }
 
-    const containerStyle = useMemo(() => {
-        return [{ transform: [{ translateX: animation }] }];
-    }, [animation]);
+    const containerStyle = useMemo(() => [{ transform: [{ translateX: animation }] }], [animation]);
 
     const startShake = useCallback(() => {
         Animated.sequence([
@@ -183,7 +181,7 @@ const PinCode = ({
         [lastPin, onSetSuccess, pin, startShake, status]
     );
     const setTimeForProcess = useCallback(
-        (_pin) => {
+        (_pin: any) => {
             const id = setTimeout(() => processSetPin(_pin));
             return id;
         },

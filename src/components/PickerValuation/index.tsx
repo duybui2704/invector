@@ -3,7 +3,6 @@ import {
     StyleSheet,
     Text,
     TextStyle,
-    TouchableOpacity,
     View,
     ViewStyle
 } from 'react-native';
@@ -13,9 +12,9 @@ import { Configs } from '@/common/Configs';
 import { COLORS, Styles } from '@/theme';
 import Utils from '@/utils/Utils';
 import BottomSheetComponent, { ItemProps } from '@/components/bottomSheet';
-import { Touchable } from '../../components/elements/touchable';
 import Validate from '@/utils/Validate';
 import { PopupActionTypes } from '@/models/typesPopup';
+import { Touchable } from '../elements/touchable';
 
 export type PickerAction = {
     setErrorMsg: (msg?: string) => void;
@@ -28,7 +27,7 @@ type PickerProps = {
     placeholder?: string;
     onPressItem?: (item: any) => void;
     value?: any;
-    data?: Array<ItemProps>;
+    data?: Array<ItemProps> | any;
     labelStyle?: ViewStyle;
     pickerStyle?: ViewStyle;
     rightIcon?: string;
@@ -43,7 +42,6 @@ type PickerProps = {
 export const PickerValuation = forwardRef<PickerAction, PickerProps>(
     (
         {
-            leftIcon,
             label,
             onPressItem,
             value,
@@ -123,7 +121,7 @@ export const PickerValuation = forwardRef<PickerAction, PickerProps>(
             return null;
         }, [data?.length, errMsg]);
 
-        const onLayout = useCallback((event) => {
+        const onLayout = useCallback((event: any) => {
             const layout = event.nativeEvent.layout;
             setCoordinate(layout.y);
         }, []);
@@ -205,7 +203,6 @@ const styles = StyleSheet.create({
         marginRight: 10,
         position: 'absolute',
         right: 0
-        // top: 18
     },
     errorMessage: {
         fontSize: Configs.FontSize.size12,

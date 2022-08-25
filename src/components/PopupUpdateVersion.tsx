@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: SCREEN_WIDTH - 90,
         marginTop: 30
-        // backgroundColor:COLORS.RED
     },
     cancelButton: {
         width: (SCREEN_WIDTH - 90) / 2,

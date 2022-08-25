@@ -35,42 +35,38 @@ export const MyImageView = React.memo(({ imageUrl, style, resizeMode }: MyImageV
         return 'small';
     }, [style?.height]);
 
-    const renderContent = useCallback(() => {
-        return <Image
-            resizeMode={'contain'}
-            source={{ uri: url }}
-            style={styles.lightBoxImage}
-        />;
-    }, [url]);
+    const renderContent = useCallback(() => <Image
+        resizeMode={'contain'}
+        source={{ uri: url }}
+        style={styles.lightBoxImage}
+    />, [url]);
 
-    const renderImage = useMemo(() => {
-        return (
-            url ? <>
-                <Lightbox
-                    renderContent={renderContent}
-                    springConfig={{ tension: 15, friction: 7 }} swipeToDismiss={false}
-                    longPressGapTimer={0}
-                >
-                    <FastImage
-                        style={[styles.img, style]}
-                        resizeMode={resizeMode || 'cover'}
-                        source={{ uri: url }}
-                        onLoadStart={_onLoadStart}
-                        onError={_onLoadFailed}
-                        onLoadEnd={onLoadEnd}
-                    />
-                </Lightbox>
-                <View style={styles.activityIndicatorContainer}>
-                    <ActivityIndicator
-                        style={styles.activityIndicator}
-                        size={indicatorSize}
-                        animating={isLoading}
-                        color={COLORS.BLUE}
-                    />
-                </View>
-            </> : <></>
-        );
-    }, [url, renderContent, style, resizeMode, _onLoadStart, _onLoadFailed, onLoadEnd, indicatorSize, isLoading]);
+    const renderImage = useMemo(() => (
+        url ? <>
+            <Lightbox
+                renderContent={renderContent}
+                springConfig={{ tension: 15, friction: 7 }} swipeToDismiss={false}
+                longPressGapTimer={0}
+            >
+                <FastImage
+                    style={[styles.img, style]}
+                    resizeMode={resizeMode || 'cover'}
+                    source={{ uri: url }}
+                    onLoadStart={_onLoadStart}
+                    onError={_onLoadFailed}
+                    onLoadEnd={onLoadEnd}
+                />
+            </Lightbox>
+            <View style={styles.activityIndicatorContainer}>
+                <ActivityIndicator
+                    style={styles.activityIndicator}
+                    size={indicatorSize}
+                    animating={isLoading}
+                    color={COLORS.BLUE}
+                />
+            </View>
+        </> : <></>
+    ), [url, renderContent, style, resizeMode, _onLoadStart, _onLoadFailed, onLoadEnd, indicatorSize, isLoading]);
 
     return renderImage;
 });

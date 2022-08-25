@@ -2,10 +2,10 @@ import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'r
 import { StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { Configs } from '@/commons/Configs';
-import Languages from '@/commons/Languages';
 import { COLORS, Styles } from '@/theme';
 import { PopupActions, PopupProps } from './types';
+import { Configs } from '@/common/Configs';
+import Languages from '@/common/Languages';
 
 const PopupNoInternet = forwardRef<PopupActions, PopupProps>(
     ({

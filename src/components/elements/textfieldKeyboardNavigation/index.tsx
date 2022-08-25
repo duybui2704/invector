@@ -7,7 +7,7 @@ import React, {
     useRef,
     useState
 } from 'react';
-import { Animated, InputAccessoryView, Keyboard, Text, TextInput, View } from 'react-native';
+import { Animated, InputAccessoryView, Keyboard, Text, TextInput, View, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import IcEmailAuth from '@/assets/image/auth/ic_email_auth.svg';
@@ -50,7 +50,6 @@ export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFi
             rightIcon,
             testID,
             autoFocus,
-            onKeyPress,
             placeHolderColor,
             defaultValue,
             autoCapitalized,
@@ -91,9 +90,7 @@ export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFi
             }
         }, [onChangeText, placeHolder, testID, textfieldVal, value]);
 
-        const getValue = useCallback(() => {
-            return textfieldVal.trim();
-        }, [textfieldVal]);
+        const getValue = useCallback(() => textfieldVal.trim(), [textfieldVal]);
 
         const setValue = useCallback(
             (text: any) => {
@@ -191,7 +188,7 @@ export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFi
         }, [animation]);
 
         const errorMessage = useMemo(() => {
-            const paddingText = { marginTop: - SCREEN_HEIGHT * 0.01, alignItems:'flex-start', width:'100%' };
+            const paddingText = { marginTop: - SCREEN_HEIGHT * 0.01, alignItems:'flex-start', width:'100%' } as ViewStyle;
             if (!Validate.isStringEmpty(errMsg)) {
                 return <View style={paddingText}>
                     <Text
@@ -262,37 +259,31 @@ export const MyTextInputKeyboardNavigation = forwardRef<TextFieldActions, TextFi
             }
         }, [orderRef, refArr]);
 
-        const renderHeaderKeyBroad = useMemo(() => {
-            return (
-                <InputAccessoryView nativeID={inputAccessoryViewID} style={styles.containerKeyBoard}>
-                    <View style={styles.viewKeyBoard}>
-                        <View style={styles.viewIconKeyBoard}>
-                            <TouchableOpacity onPress={handleDown} disabled={orderRef === refArr?.length} style={styles.tobIcon}>
-                                <IcKeyBoardDown width={Configs.FontSize.size28} height={Configs.FontSize.size28} stroke={orderRef === refArr?.length ? COLORS.GRAY_10 : COLORS.GRAY} />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleUp} disabled={orderRef === 1} style={styles.tobIcon}>
-                                <IcKeyBoardUp width={Configs.FontSize.size28} height={Configs.FontSize.size28} stroke={orderRef === 1 ? COLORS.GRAY_10 : COLORS.GRAY} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.viewPlaceHolder}>
-                            <Text style={styles.txtPlaceHolder}>{(!isPassword && value) || placeHolder}</Text>
-                        </View>
-                        <View style={styles.viewDone}>
-                            <TouchableOpacity
-                                style={styles.tobKeyBoard}
-                                onPress={() => Keyboard.dismiss()}
-                            >
-                                <Text style={styles.txtDone}>{Languages.auth.done}</Text>
-                            </TouchableOpacity>
-                        </View>
+        const renderHeaderKeyBroad = useMemo(() => (
+            <InputAccessoryView nativeID={inputAccessoryViewID} style={styles.containerKeyBoard}>
+                <View style={styles.viewKeyBoard}>
+                    <View style={styles.viewIconKeyBoard}>
+                        <TouchableOpacity onPress={handleDown} disabled={orderRef === refArr?.length} style={styles.tobIcon}>
+                            <IcKeyBoardDown width={Configs.FontSize.size28} height={Configs.FontSize.size28} stroke={orderRef === refArr?.length ? COLORS.GRAY_10 : COLORS.GRAY} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleUp} disabled={orderRef === 1} style={styles.tobIcon}>
+                            <IcKeyBoardUp width={Configs.FontSize.size28} height={Configs.FontSize.size28} stroke={orderRef === 1 ? COLORS.GRAY_10 : COLORS.GRAY} />
+                        </TouchableOpacity>
                     </View>
-                </InputAccessoryView>
-            );
-        }, [handleDown, handleUp, inputAccessoryViewID, orderRef,
-            placeHolder, refArr?.length, styles.containerKeyBoard,
-            styles.tobIcon, styles.tobKeyBoard, styles.txtDone,
-            styles.txtPlaceHolder, styles.viewDone, styles.viewIconKeyBoard,
-            styles.viewKeyBoard, styles.viewPlaceHolder, value]);
+                    <View style={styles.viewPlaceHolder}>
+                        <Text style={styles.txtPlaceHolder}>{(!isPassword && value) || placeHolder}</Text>
+                    </View>
+                    <View style={styles.viewDone}>
+                        <TouchableOpacity
+                            style={styles.tobKeyBoard}
+                            onPress={() => Keyboard.dismiss()}
+                        >
+                            <Text style={styles.txtDone}>{Languages.auth.done}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </InputAccessoryView>
+        ), [handleDown, handleUp, inputAccessoryViewID, isPassword, orderRef, placeHolder, refArr?.length, styles.containerKeyBoard, styles.tobIcon, styles.tobKeyBoard, styles.txtDone, styles.txtPlaceHolder, styles.viewDone, styles.viewIconKeyBoard, styles.viewKeyBoard, styles.viewPlaceHolder, value]);
 
         const handleKey = useCallback(({ nativeEvent }:any) => {
             if (nativeEvent.key.toString().slice(0, 3) === '+84') {

@@ -89,9 +89,7 @@ export const MyTextInput = forwardRef<TextFieldActions, TextFieldProps>(
             }
         }, [onChangeText, placeHolder, testID, textfieldVal, value]);
 
-        const getValue = useCallback(() => {
-            return textfieldVal.trim();
-        }, [textfieldVal]);
+        const getValue = useCallback(() => textfieldVal.trim(), [textfieldVal]);
 
         const setValue = useCallback(
             (text: any) => {

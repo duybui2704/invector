@@ -18,12 +18,12 @@ import React, {
 } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import { COLORS } from '@/theme';
-import Languages from '@/common/Languages';
 import IcFindingContract from '@/assets/image/common/ic_search.svg';
 import { Configs, PADDING_BOTTOM } from '@/common/Configs';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
+import Languages from '@/common/Languages';
 import MyStyleBottomSheet from '@/components/bottomSheet/styles';
+import { COLORS } from '@/theme';
+import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { BottomSheetAction, BottomSheetProps } from './types';
 
 const styles = MyStyleBottomSheet();
@@ -35,9 +35,7 @@ export type ItemProps = {
     price?: string;
 };
 
-const CustomBackdrop = (props: BottomSheetBackdropProps) => {
-    return <BottomSheetBackdrop {...props} pressBehavior="close" />;
-};
+const CustomBackdrop = (props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} pressBehavior="close" />;
 
 const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
     ({ data, onPressItem, isCheckboxList }: BottomSheetProps, ref) => {
@@ -106,7 +104,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
         );
 
         const renderItem = useCallback(
-            ({ item }) => {
+            ({ item }: any) => {
                 const onPressCheckbox = () => {
                     onPressItem?.(item);
                 };
@@ -145,9 +143,7 @@ const BottomSheetComponent = forwardRef<BottomSheetAction, BottomSheetProps>(
             [hide, isCheckboxList, onPressItem]
         );
 
-        const keyExtractor = useCallback((item, index) => {
-            return `${index}`;
-        }, []);
+        const keyExtractor = useCallback((item: any, index: number) => `${index}`, []);
         const onFocus = useCallback(() => {
             setFocus(true);
         }, []);

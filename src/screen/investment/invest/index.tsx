@@ -9,7 +9,7 @@ import IcBank from '@/assets/image/ic_bank.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
 import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
 import { Configs } from '@/common/Configs';
-import { ENUM_METHOD_PAYMENT, STATE_LINK } from '@/common/constants';
+import { ENUM_METHOD_PAYMENT, STATE_LINK, STATE_VERIFY_ACC } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import { Button } from '@/components/elements/button';
@@ -27,6 +27,7 @@ import { MyStylesInvest } from '@/screen/investment/invest/styles';
 import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
 import { InfoLinkVimoModal } from '@/models/user-models';
+import ToastUtils from '@/utils/ToastUtils';
 
 const Invest = observer(({ route }: any) => {
     const styles = MyStylesInvest();
@@ -109,6 +110,9 @@ const Invest = observer(({ route }: any) => {
             if (resPayment.success && bankInfo.id) {
                 Navigator.pushScreen(ScreenName.transferScreen, bankInfo);
             }
+            else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
+                ToastUtils.showErrorToast(Languages.errorMsg.accountNotYetIdentityToInvest);
+            }
             return;
         }
         setIsLoading(true);
@@ -139,6 +143,8 @@ const Invest = observer(({ route }: any) => {
                     Navigator.pushScreen(ScreenName.paymentWebview, {
                         url: resPayment?.data
                     });
+                } else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
+                    ToastUtils.showErrorToast(Languages.errorMsg.accountNotYetIdentityToInvest);
                 }
             }
             else if (methodPayment === ENUM_METHOD_PAYMENT.VIMO) {
@@ -146,7 +152,7 @@ const Invest = observer(({ route }: any) => {
             }
         }
         setIsLoading(false);
-    }, [apiServices.invest, dataInvestment?.id, getOtpVimo, goback, methodPayment]);
+    }, [apiServices.invest, dataInvestment?.id, getOtpVimo, goback, methodPayment, userManager?.userInfo?.tinh_trang?.status]);
 
     const openPolicy = useCallback(() => {
         refPopupPolicy.current?.show();
@@ -211,7 +217,7 @@ const Invest = observer(({ route }: any) => {
                 {renderMethod(<IcNganLuong />, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
                 {renderMethod(<IcBank />, Languages.detailInvest.bank, ENUM_METHOD_PAYMENT.BANK)}
                 {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, statusVimo)}
-                
+
                 <View style={styles.viewBottom}>
                     <Touchable onPress={checkBox}>
                         {!isCheckBox ? <IcCheckBoxOff width={25} height={25} /> : <IcCheckBoxOn width={25} height={25} />}

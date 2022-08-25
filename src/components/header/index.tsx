@@ -1,16 +1,14 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo } from 'react';
 import { ImageBackground, StatusBar, Text, View } from 'react-native';
-import { useIsFocused } from '@react-navigation/core';
+import { useIsFocused } from '@react-navigation/native';
 
 import IcBack from '../../assets/image/header/ic_back_header.svg';
 import Images from '../../assets/Images';
-import { isIOS } from '../../common/Configs';
 import Navigator from '../../routers/Navigator';
-import { Touchable } from '../elements/touchable';
-import { HeaderProps } from './types';
 import { COLORS } from '../../theme';
+import { Touchable } from '../elements/touchable';
 import { MyStylesHeader } from './styles';
-import { useAppStore } from '@/hooks';
+import { HeaderProps } from './types';
 
 export const HeaderBar = ({
     onBackPressed,
@@ -55,7 +53,7 @@ export const HeaderBar = ({
         <Touchable style={styles.goBack} onPress={_onBackPressed} size={40}>
             <IcBack width={27} height={27} />
         </Touchable>
-    ), [_onBackPressed]);
+    ), [_onBackPressed, styles.goBack]);
 
     const renderTitle = useMemo(() => (
         <View style={styles.titleContainer}>
@@ -65,7 +63,7 @@ export const HeaderBar = ({
                 {title}
             </Text>
         </View>
-    ), [exitApp, title]);
+    ), [exitApp, styles.titleCenter, styles.titleCenter1, styles.titleContainer, title]);
 
     return (
         <View style={styles.container}>

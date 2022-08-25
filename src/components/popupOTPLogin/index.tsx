@@ -22,6 +22,7 @@ import { TextFieldActions } from '../elements/textfield/types';
 import { MyTextInputKeyboardNavigation } from '../elements/textfieldKeyboardNavigation';
 import { Touchable } from '../elements/touchable';
 import Loading from '../loading';
+
 interface PopupOTPProps extends PopupPropsTypes {
     getOTPcode?: (phone: string, channel: ItemProps, refCode: string) => any,
     onPressConfirm?: (otp: string) => any,
@@ -31,10 +32,10 @@ interface PopupOTPProps extends PopupPropsTypes {
 export const PopupOTPLogin = forwardRef<
     PopupActionTypes,
     PopupOTPProps
->(({ getOTPcode, onPressConfirm, onChannelPress }: PopupOTPProps, ref) => {
+>(({ getOTPcode, onPressConfirm, onChannelPress }: PopupOTPProps, ref: any) => {
     const { common } = useAppStore();
     const [visible, setVisible] = useState<boolean>(false);
-    const refPhone = useRef<TextFieldActions>();
+    const refPhone = useRef<TextFieldActions>(null);
     const [startCount, setStartCount] = useState<boolean>(true);
     const [timer, setTimer] = useState<number>(0);
     const [pin, setPin] = useState<string>('');
@@ -50,7 +51,7 @@ export const PopupOTPLogin = forwardRef<
     const [refCode, setRefCode] = useState<string>('');
     const [errChannel, setErrChannel] = useState<string>('');
     const [isShowReferral, setShowReferral] = useState<boolean>(false);
-    const [channel, setChannel] = useState<ItemProps>();
+    const [channel, setChannel] = useState<ItemProps>({});
     const [isLoading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -91,13 +92,13 @@ export const PopupOTPLogin = forwardRef<
         setChannel(_channel);
         setVisible(true);
         setTimer(60);
-        setErrChannel('')
+        setErrChannel('');
 
         if (_channel?.id === FRIEND_INVITE_ID) {
             setShowReferral(true);
         } else {
             setShowReferral(false);
-            setRefCode('')
+            setRefCode('');
         }
     }, []);
 
@@ -125,7 +126,7 @@ export const PopupOTPLogin = forwardRef<
     }, [pin]);
 
     const setErrorMsg = useCallback((err: string) => {
-        setLoading(false)
+        setLoading(false);
         if (err) {
             if (err.toLowerCase().includes('mã')) { // FIXME: hardcode
                 refRefCode.current?.setErrorMsg(err);
@@ -145,12 +146,12 @@ export const PopupOTPLogin = forwardRef<
 
         const _errChannel = FormValidate.inputEmpty(channel?.id, Languages.errorMsg.channelRequired);
         let errRefCode = '';
-        if (parseInt(channel?.id || '0') === FRIEND_INVITE_ID) {
-            errRefCode = FormValidate.referralValidate(refCode)
+        if (parseInt(channel?.id || '0', 10) === FRIEND_INVITE_ID) {
+            errRefCode = FormValidate.referralValidate(refCode);
         }
         refRefCode.current?.setErrorMsg(errRefCode);
 
-        setErrChannel(_errChannel)
+        setErrChannel(_errChannel);
 
         if (`${errMsgPhone}${_errChannel}${errRefCode}`.length === 0) {
             return true;
@@ -160,9 +161,9 @@ export const PopupOTPLogin = forwardRef<
 
     const onConfirm = useCallback(async () => {
         if (onValidate()) {
-            setLoading(true)
+            setLoading(true);
             await getOTPcode?.(phone, channel, refCode);
-            setLoading(false)
+            setLoading(false);
             setStartCount(true);
             setTimer(60);
         }
@@ -187,21 +188,19 @@ export const PopupOTPLogin = forwardRef<
     }, []);
 
     const onResend = useCallback(async () => {
-        setLoading(true)
+        setLoading(true);
         await getOTPcode?.(phone, channel, refCode);
-        setLoading(false)
+        setLoading(false);
         setStartCount(true);
         setTimer(60);
     }, [getOTPcode, phone, channel, refCode]);
 
-    const renderBtConfirm = useMemo(() => {
-        return (
-            <Touchable onPress={onConfirm} style={styles.btConfirm}>
-                {isLoading && <Loading isWhite/>}
-                <Text style={[styles.txtBt, { color: COLORS.WHITE }]}>{Languages.confirmPhone.update}</Text>
-            </Touchable>
-        );
-    }, [onConfirm, isLoading]);
+    const renderBtConfirm = useMemo(() => (
+        <Touchable onPress={onConfirm} style={styles.btConfirm}>
+            {isLoading && <Loading isWhite/>}
+            <Text style={[styles.txtBt, { color: COLORS.WHITE }]}>{Languages.confirmPhone.update}</Text>
+        </Touchable>
+    ), [onConfirm, isLoading]);
 
     const renderResend = useMemo(() => {
         if (startCount) {
@@ -226,9 +225,7 @@ export const PopupOTPLogin = forwardRef<
         setFocus(false);
     }, []);
 
-    const containerStyle = useMemo(() => {
-        return [styles.container, { transform: [{ translateX: animation }] }];
-    }, [animation]);
+    const containerStyle = useMemo(() => [styles.container, { transform: [{ translateX: animation }] }], [animation]);
 
     const styleOTP = useMemo(() => {
         const borderStyle = {
@@ -274,9 +271,7 @@ export const PopupOTPLogin = forwardRef<
         startShake();
     }, [startShake]);
 
-    const getChannelContainer = useMemo(() => {
-        return [styles.containerOverViewPicker, { borderColor: errChannel ? COLORS.RED : COLORS.GRAY_11 }]
-    }, [errChannel]);
+    const getChannelContainer = useMemo(() => [styles.containerOverViewPicker, { borderColor: errChannel ? COLORS.RED : COLORS.GRAY_11 }], [errChannel]);
 
     return (
         <Modal
@@ -344,7 +339,8 @@ export const PopupOTPLogin = forwardRef<
                                         style={styles.wrapOTP}
                                         inputStyles={styleOTP}
                                         onFocus={onFocus}
-                                        onBlur={onBlur}
+                                        onBlur={onBlur} 
+                                        autofillFromClipboard={false} 
                                     />
                                 </View>
                                 {errorMessage}
@@ -526,5 +522,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15
     },
     containerPlaceholderPicker: {
-    },
+    }
 });
