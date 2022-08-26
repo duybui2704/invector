@@ -212,7 +212,7 @@ const AccountIdentify = observer(({ route }: any) => {
         <>
             <TouchableOpacity
                 onPress={onPress}
-                disabled={SessionManager?.userInfo?.tinh_trang?.status !== STATE_VERIFY_ACC.NO_VERIFIED}
+                // disabled={SessionManager?.userInfo?.tinh_trang?.status !== STATE_VERIFY_ACC.NO_VERIFIED}
                 ref={ref}
                 style={styles.wrapItemPhoto}
             >

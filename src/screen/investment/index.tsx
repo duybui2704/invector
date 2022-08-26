@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Keyboard, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { useIsFocused } from '@react-navigation/core';
+import { useIsFocused } from '@react-navigation/native';
 
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
 import IMGNoData from '@/assets/image/img_no_data_invest.svg';
@@ -32,6 +32,7 @@ import styles from './styles';
 const PAGE_SIZE = 10;
 
 const Investment = observer(({ route }: { route: any }) => {
+    const isFocus = useIsFocused();
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
     const [listStore, setListStore] = useState<PackageInvest[]>();
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -70,11 +71,13 @@ const Investment = observer(({ route }: { route: any }) => {
     const { apiServices } = useAppStore();
 
     useEffect(() => {
-        setBtnInvest(ENUM_INVEST_STATUS.INVEST_NOW);
-        fetchData(ENUM_INVEST_STATUS.INVEST_NOW, false);
-        fetchDataTimeInvestment();
-        fetchDataMoney();
-    }, []);
+        if(isFocus){
+            setBtnInvest(ENUM_INVEST_STATUS.INVEST_NOW);
+            fetchData(ENUM_INVEST_STATUS.INVEST_NOW, false);
+            fetchDataTimeInvestment();
+            fetchDataMoney();
+        }
+    }, [isFocus]);
 
     const fetchDataInvested = useCallback(async (isLoadMore?: boolean) => {
         setCanLoadMoreUI(true);
@@ -522,6 +525,7 @@ const Investment = observer(({ route }: { route: any }) => {
                 title={Languages.invest.monthInvest}
                 onPressItem={onPressItem}
             />
+            {isLoading && <Loading isOverview />}
         </View>
     );
 });

@@ -47,7 +47,6 @@ const Invest = observer(({ route }: any) => {
             refInvestId.current = route?.params?.id;
             refScreen.current = route?.params?.screen;
         }
-
         if (refInvestId.current) {
             fetchDetailInvestNow();
             fetchInfoVimoLink();

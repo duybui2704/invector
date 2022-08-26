@@ -70,10 +70,10 @@ const authenCard = (objects: DetectedRectangleModel) => {
             return false;
         case 'android':
             if (
-                objects?.detectedRectangle?.bottomLeft?.x > 500 &&
-                objects?.detectedRectangle?.bottomLeft?.x <= 1500 &&
-                objects?.detectedRectangle?.bottomLeft?.y > 1100 &&
-                objects?.detectedRectangle?.bottomLeft?.y <= 1800
+                objects?.detectedRectangle?.bottomLeft?.x > 0 
+                // objects?.detectedRectangle?.bottomLeft?.x <= 1500 &&
+                // objects?.detectedRectangle?.bottomLeft?.y > 1100 &&
+                // objects?.detectedRectangle?.bottomLeft?.y <= 1800
             ) {
                 return true;
             }

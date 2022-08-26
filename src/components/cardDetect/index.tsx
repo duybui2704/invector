@@ -155,6 +155,8 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
             onCapture
         }));
 
+        // const previewSize = getPreviewSize();
+
         console.log('scanCard =', position);
 
         return (
@@ -166,25 +168,43 @@ const ScanRetangle = forwardRef<ScanRetangleActionsTypes, ScanRetangleProps>(
                         source={{ uri: `${imgCapture}` }}
                         style={styles.wrapSelfCamera}
                     /> :
-                    <Scanner
-                        filterId={filterId}
-                        onPictureProcessed={onPictureProcessed}
-                        ref={ref}
-                        enableTorch={!!isHasFlash}
-                        capturedQuality={capturedQuality || 1}
-                        style={styles.wrapSelfCamera}
-                        onRectangleDetected={onRectangleDetected}
-                        // onDeviceSetup={
-                        //     {
-                        
-                        //     }
-                        // }
-                    />}
+                    <>
+                        <Scanner
+                            filterId={filterId}
+                            onPictureProcessed={onPictureProcessed}
+                            ref={ref}
+                            enableTorch={!!isHasFlash}
+                            capturedQuality={capturedQuality || 1}
+                            style={styles.wrapSelfCamera}
+                            onRectangleDetected={onRectangleDetected}
+                            onDeviceSetup={
+                                ()=>{
+
+                                }
+                            }
+                        />
+                        {/* <RectangleOverlay
+                            detectedRectangle={position.detectedRectangle}
+                            // previewRatio={previewSize}
+                            // previewRatio={rectPreviewSize}
+                            backgroundColor="rgba(255,181,6, 0.2)"
+                            borderColor="rgb(255,181,6)"
+                            borderWidth={4}
+                            // == These let you auto capture and change the overlay style on detection ==
+                            // detectedBackgroundColor="rgba(255,181,6, 0.3)"
+                            // detectedBorderWidth={6}
+                            // detectedBorderColor="rgb(255,218,124)"
+                            // onDetectedCapture={this.capture}
+                            // allowDetection
+                        /> */}
+                    </>
+                }
                 {isLoading && <Loading isOverview></Loading>}
             </View>
         );
     }
 );
+
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',

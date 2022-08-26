@@ -46,13 +46,13 @@ const Transaction = observer(() => {
     useEffect(() => {
         if (isFocused) {
             setDataHistory([]);
-            common.setIsFocus(true);
+            // common.setIsFocus(true);
             fetchHistory();
             setSelectedFilter(TransactionTypes[0].type);
         } else {
             common.setIsFocus(false);
         }
-    }, [isFocused, common.isFocused, common]);
+    }, [isFocused]);
 
     const fetchHistory = useCallback(async (fDate?: string, tDate?: string, option?: string, isLoadMoreData?: boolean) => {
         setLoadMore(true);
