@@ -22,6 +22,9 @@ export const MyStylesAccountIdentify = () => useMemo(() => StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.GRAY_13
     },
+    pickerContainer: {
+        marginBottom: -40
+    },
     wrapInput: {
         paddingTop: 10
     },
@@ -52,24 +55,5 @@ export const MyStylesAccountIdentify = () => useMemo(() => StyleSheet.create({
         color: COLORS.GRAY_12,
         fontSize: Configs.FontSize.size12,
         paddingVertical: 4
-    },
-    wrapItemPhoto: {
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingBottom: 5
-    },
-    identifyTextStyle: {
-        ...Styles.typography.regular,
-        color: COLORS.GRAY_7,
-        alignSelf: 'flex-start',
-        paddingVertical: 8
-    },
-    image: {
-        backgroundColor: COLORS.WHITE,
-        marginBottom: 5,
-        minHeight: 160,
-        width: '100%',
-        marginTop: 10,
-        resizeMode: 'contain'
     }
 }), []);

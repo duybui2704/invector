@@ -3,15 +3,19 @@ export interface CommissionModel {
     detail: Detail[]
   }
   
-  export interface Total {
+export interface Total {
     total_money: string
     commission: number
     money_commission: string
   }
   
-  export interface Detail {
+export interface Detail {
     name: string
     total_money: string
     money_commission: string
+  }
+
+export interface DateCommissionModel {
+    date_commission: string
   }
   

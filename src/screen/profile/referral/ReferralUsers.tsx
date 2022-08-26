@@ -12,7 +12,7 @@ import { Touchable } from '@/components/elements/touchable';
 import IcBtnFilter from '@/assets/image/ic_button_filter.svg';
 import DateUtils from '@/utils/DateUtils';
 import { useAppStore } from '@/hooks';
-import { CommissionModel, Detail } from '@/models/comission-model';
+import { CommissionModel, DateCommissionModel, Detail } from '@/models/comission-model';
 import Loading from '@/components/loading';
 import { ACTION_DATE_SET, ACTION_DISMISSED } from '@/libs/react-native-month-year-picker/src';
 
@@ -25,6 +25,7 @@ const ReferralUsers = observer(() => {
     const [title, setTitle] = useState<string>(Languages.referralUsers.tableDes);
     const [filterDate, setFilterDate] = useState<string>();
     const [commission, setCommission] = useState<CommissionModel>();
+    const [dateCommission, setDateCommission] = useState<DateCommissionModel>();
     const [isLoading, setLoading] = useState<boolean>(true);
 
     const showPicker = useCallback((value: boolean) => setVisibleFilter(value), []);
@@ -41,6 +42,13 @@ const ReferralUsers = observer(() => {
         }
     }, [apiServices.auth, filterDate]);
 
+    const fetchReferralUser = useCallback(async () => {
+        const res = await apiServices.common.getReferralUser();
+        if (res.success && res.data) {
+            setDateCommission(res.data as DateCommissionModel);
+        }
+
+    }, [apiServices.common]);
 
     useEffect(() => {
         onValueChange('dateSetAction', date);
@@ -48,6 +56,7 @@ const ReferralUsers = observer(() => {
 
     useEffect(() => {
         fetchData();
+        fetchReferralUser();
     }, [filterDate]);
 
     const renderColIndexTotal = useCallback(() => <View style={[styles.colContainer, { backgroundColor: COLORS.LIGHT_GREEN }]}>
@@ -110,7 +119,7 @@ const ReferralUsers = observer(() => {
             showPicker(false);
             setDate(selectedDate);
             setFilterDate(monthYear);
-            setTitle(Languages.referralUsers.tableDes.replace('%s', monthYear));            
+            setTitle(Languages.referralUsers.tableDes.replace('%s', monthYear));
         };
 
         const onCancel = () => {
@@ -158,7 +167,7 @@ const ReferralUsers = observer(() => {
 
             <View style={styles.note}>
                 <HTMLView
-                    value={Languages.referralUsers.des}
+                    value={Languages.referralUsers.des.replace('%str', `${dateCommission?.date_commission}`)}
                     stylesheet={HtmlStyles || undefined}
                 />
             </View>

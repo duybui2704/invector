@@ -1,16 +1,14 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Text, View, ScrollView } from 'react-native';
 import HTMLView from 'react-native-htmlview';
-import Dash from 'react-native-dash';
-import FastImage from 'react-native-fast-image';
 
 import AfterIC from '@/assets/image/ic_identify_after.svg';
 import BeforeIC from '@/assets/image/ic_identify_before.svg';
 import AvatarIC from '@/assets/image/ic_KYC_avatar.svg';
 import WarnIC from '@/assets/image/ic_warn_round_yellow.svg';
-import { ENUM_TYPE_CAMERA, ENUM_TYPE_CARD_CAMERA, noteAvatar, noteKYC, STATE_VERIFY_ACC } from '@/common/constants';
+import { noteAvatar, noteKYC, STATE_VERIFY_ACC } from '@/common/constants';
 import Languages from '@/common/Languages';
 import { Button } from '@/components/elements/button';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
@@ -18,35 +16,35 @@ import { TextFieldActions } from '@/components/elements/textfield/types';
 import { MyTextInput } from '@/components/elements/textfield/index';
 import HeaderBar from '@/components/header';
 import HideKeyboard from '@/components/HideKeyboard';
+import PhotoPickerBottomSheet from '@/components/PhotoPickerBottomSheet';
 import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
+import { typePhoto } from '@/mocks/data';
 import { PopupActionTypes } from '@/models/typesPopup';
-import { COLORS, HtmlStyles } from '@/theme';
+import { HtmlStyles } from '@/theme';
 import FormValidate from '@/utils/FormValidate';
 import ImageUtils from '@/utils/ImageUtils';
 import { MyStylesAccountIdentify } from './styles';
 import SessionManager from '@/manager/SessionManager';
 import { useAppStore } from '@/hooks';
 import ToastUtils from '@/utils/ToastUtils';
+import { UpLoadImage } from '@/models/common-model';
 import { UserInfoModal } from '@/models/user-models';
 import Loading from '@/components/loading';
 import Navigator from '@/routers/Navigator';
-import ScreenName from '@/common/screenNames';
 
-const AccountIdentify = observer(({ route }: any) => {
+const AccountIdentify = observer(() => {
     const { apiServices, userManager } = useAppStore();
-    const isSaveCache = route?.params?.isSaveCache;
-
     const styles = MyStylesAccountIdentify();
     const [identityAcc, setIdentity] = useState<string>(SessionManager.userInfo?.identity || '');
-    const [avatarImg, setAvatar] = useState<string>(userManager.userInfo?.avatar || '');
-    const [frontIdentify, setFrontIdentify] = useState<string>(userManager.userInfo?.front_facing_card || '');
-    const [behindIdentify, setBehindIdentify] = useState<string>(userManager.userInfo?.card_back || '');
+    const [avatar, setAvatar] = useState<UpLoadImage>();
+    const [frontIdentify, setFrontIdentify] = useState<UpLoadImage>();
+    const [afterIdentify, setBehindIdentify] = useState<UpLoadImage>();
     const [isLoading, setLoading] = useState<boolean>(false);
 
     const identifyRef = useRef<TextFieldActions>();
     const avatarRef = useRef<BottomSheetModal>();
     const frontIdentifyRef = useRef<BottomSheetModal>();
-    const behindIdentifyRef = useRef<BottomSheetModal>();
+    const afterIdentifyRef = useRef<BottomSheetModal>();
 
     const popupConfirmRef = useRef<PopupActionTypes>();
 
@@ -54,32 +52,9 @@ const AccountIdentify = observer(({ route }: any) => {
         setIdentity(value || '');
     }, []);
 
-    useEffect(() => {
-        setAvatar(userManager.userInfo?.avatar || '');
-        setFrontIdentify(userManager.userInfo?.front_facing_card || '');
-        setBehindIdentify(userManager.userInfo?.card_back || '');
-    }, [userManager.userInfo?.avatar, userManager.userInfo?.card_back, userManager.userInfo?.front_facing_card]);
-
-    useEffect(() => {
-        if (SessionManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
-            if (!isSaveCache) {
-                userManager.updateUserInfo({
-                    ...userManager.userInfo,
-                    avatar: '',
-                    front_facing_card: '',
-                    card_back: ''
-                });
-            }
-        }
-
-    }, [isSaveCache, userManager]);
-
     const uploadImage = useCallback(async (file: any) => {
         const res = await apiServices?.image.uploadImage(
-            {
-                path: file,
-                uri: file
-            },
+            file,
             Languages.errorMsg.uploading
         );
         if (res.success) {
@@ -113,9 +88,9 @@ const AccountIdentify = observer(({ route }: any) => {
                         ...userManager.userInfo,
                         ...data,
                         identity: identityAcc,
-                        avatar: avatarImg,
-                        front_facing_card: frontIdentify,
-                        card_back: behindIdentify
+                        avatar: avatar?.images?.[0]?.path,
+                        front_facing_card: frontIdentify?.images?.[0]?.path,
+                        card_back: afterIdentify?.images?.[0]?.path
                     });
                 }
             }
@@ -123,7 +98,7 @@ const AccountIdentify = observer(({ route }: any) => {
         else {
             ToastUtils.showErrorToast(Languages.errorMsg.uploadingError);
         }
-    }, [apiServices.auth, avatarImg, behindIdentify, frontIdentify, identityAcc, userManager]);
+    }, [afterIdentify?.images, apiServices.auth, avatar?.images, frontIdentify?.images, identityAcc, userManager]);
 
     const getDataUpload = useCallback(
         async (response: any) => {
@@ -144,15 +119,12 @@ const AccountIdentify = observer(({ route }: any) => {
 
     const uploadKYC = useCallback(() => {
         Promise.all([
-            uploadImage(frontIdentify),
-            uploadImage(behindIdentify),
-            uploadImage(avatarImg)
+            uploadImage(frontIdentify?.images?.[0]),
+            uploadImage(afterIdentify?.images?.[0]),
+            uploadImage(avatar?.images?.[0])
+        ]).then((value) => { getDataUpload(value); });
 
-        ]).then((value) => {
-            getDataUpload(value);
-        });
-
-    }, [avatarImg, behindIdentify, frontIdentify, getDataUpload, uploadImage]);
+    }, [afterIdentify?.images, avatar?.images, frontIdentify?.images, getDataUpload, uploadImage]);
 
     const renderInput = useCallback((ref: any, label: string, value: any, keyboardType?: any, disabled?: boolean, length?: number) => (
         <View style={styles.wrapInput}>
@@ -194,75 +166,49 @@ const AccountIdentify = observer(({ route }: any) => {
     />, [onBackDrop]);
 
     const onVerify = useCallback(async () => {
-        if (onValidate() && avatarImg && frontIdentify && behindIdentify) {
+        if (onValidate() && avatar && frontIdentify && afterIdentify) {
             uploadKYC();
         }
         else {
             ToastUtils.showMsgToast(Languages.errorMsg.errEmptyIdentity);
         }
-    }, [avatarImg, behindIdentify, frontIdentify, onValidate, uploadKYC]);
+    }, [afterIdentify, avatar, frontIdentify, onValidate, uploadKYC]);
 
-    const renderOpenCamera = useCallback((ref: any,
-        onPress: any,
-        label: string,
-        image: any,
-        icon: any,
-        hasDash?: boolean
-    ) => (
-        <>
-            <TouchableOpacity
-                onPress={onPress}
-                // disabled={SessionManager?.userInfo?.tinh_trang?.status !== STATE_VERIFY_ACC.NO_VERIFIED}
-                ref={ref}
-                style={styles.wrapItemPhoto}
-            >
-                <Text style={styles.identifyTextStyle}>{label}</Text>
-                {image ? (
-                    <FastImage style={styles.image}
-                        source={{ uri: `${image}` }}
-                        resizeMode={FastImage.resizeMode.cover}
-                    />
-                ) : (
-                    icon
-                )}
-            </TouchableOpacity>
-            {!hasDash && <Dash
-                dashThickness={1}
-                dashLength={10}
-                dashGap={5}
-                dashColor={COLORS.GRAY_13}
-            />}
-        </>
-    ), [styles.identifyTextStyle, styles.image, styles.wrapItemPhoto]);
+    const renderPhotoPicker = useCallback((ref: any, label: string, image: any, icon: any, onPressItem?: any, imageSource?: string, disable?: boolean) => <PhotoPickerBottomSheet
+        ref={ref}
+        label={label}
+        data={typePhoto}
+        image={image}
+        icon={icon}
+        onPressItem={onPressItem}
+        containerStyle={styles.pickerContainer}
+        hasDash
+        imageSource={imageSource}
+        disable={disable}
+    />, [styles.pickerContainer]);
 
-    const onPressItemFrontPhotos = useCallback(() => {
-        const navigateScreen = () => {
-            Navigator.pushScreen(ScreenName.accountDetect, {
-                typeCamera: ENUM_TYPE_CAMERA.CARD,
-                typeCard: ENUM_TYPE_CARD_CAMERA.FRONT
-            });
-        };
-        ImageUtils.openDetectScreen(navigateScreen);
+    const onPressItemFrontPhoto = useCallback((item: any) => {
+        if (item?.text === 'Camera') {
+            ImageUtils.openCamera(setFrontIdentify);
+        } else {
+            ImageUtils.openLibrary(setFrontIdentify, 1);
+        }
     }, []);
 
-    const onPressItemBehindPhoto = useCallback(() => {
-        const navigateScreen = () => {
-            Navigator.pushScreen(ScreenName.accountDetect,
-                {
-                    typeCamera: ENUM_TYPE_CAMERA.CARD,
-                    typeCard: ENUM_TYPE_CARD_CAMERA.BACK
-                });
-        };
-        ImageUtils.openDetectScreen(navigateScreen);
+    const onPressItemBehindPhoto = useCallback((item: any) => {
+        if (item?.text === 'Camera') {
+            ImageUtils.openCamera(setBehindIdentify);
+        } else {
+            ImageUtils.openLibrary(setBehindIdentify, 1);
+        }
     }, []);
 
-    const onPressItemAvatar = useCallback(() => {
-        const navigateScreen = () => {
-            Navigator.pushScreen(ScreenName.accountDetect, {
-                typeCamera: ENUM_TYPE_CAMERA.FACE
-            });
-        };
-        ImageUtils.openDetectScreen(navigateScreen);
+    const onPressItemAvatar = useCallback((item: any) => {
+        if (item?.text === 'Camera') {
+            ImageUtils.openCamera(setAvatar);
+        } else {
+            ImageUtils.openLibrary(setAvatar, 1);
+        }
     }, []);
 
 
@@ -272,35 +218,36 @@ const AccountIdentify = observer(({ route }: any) => {
                 <Text style={styles.titlePhoto}>{Languages.accountIdentify.imageIdentify}</Text>
                 <Text style={styles.txtNotePhoto}>{noteKYC[0]}</Text>
                 <Text style={styles.txtNotePhoto}>{noteKYC[1]}</Text>
-                {renderOpenCamera(
-                    frontIdentifyRef,
-                    onPressItemFrontPhotos,
+                {renderPhotoPicker(frontIdentifyRef,
                     Languages.accountIdentify.frontKYC,
                     frontIdentify,
-                    <BeforeIC />
+                    <BeforeIC />,
+                    onPressItemFrontPhoto,
+                    SessionManager.userInfo?.front_facing_card,
+                    SessionManager.userInfo?.front_facing_card ? !!SessionManager.userInfo?.front_facing_card : !!frontIdentify?.images?.[0]?.path
                 )}
-                {renderOpenCamera(
-                    behindIdentifyRef,
-                    onPressItemBehindPhoto,
+                {renderPhotoPicker(afterIdentifyRef,
                     Languages.accountIdentify.behindKYC,
-                    behindIdentify,
-                    <AfterIC />
+                    afterIdentify,
+                    <AfterIC />,
+                    onPressItemBehindPhoto,
+                    SessionManager.userInfo?.card_back,
+                    SessionManager.userInfo?.card_back ? !!SessionManager.userInfo?.card_back : !!afterIdentify?.images?.[0]?.path
                 )}
                 <Text style={styles.titlePhoto}>{Languages.accountIdentify.avatarPhoto}</Text>
                 <Text style={styles.txtNotePhoto}>{noteAvatar[0]}</Text>
                 <Text style={styles.txtNotePhoto}>{noteAvatar[1]}</Text>
-                {renderOpenCamera(
-                    avatarRef,
-                    onPressItemAvatar,
-                    Languages.accountIdentify.avatarPhoto,
-                    avatarImg,
+                {renderPhotoPicker(avatarRef,
+                    Languages.accountIdentify.avatar,
+                    avatar,
                     <AvatarIC />,
-                    true
+                    onPressItemAvatar,
+                    SessionManager.userInfo?.avatar,
+                    SessionManager.userInfo?.avatar ? !!SessionManager.userInfo?.avatar : !!avatar?.images?.[0]?.path
                 )}
             </View>
-
         </HideKeyboard>
-    ), [avatarImg, behindIdentify, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhotos, renderOpenCamera, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto]);
+    ), [afterIdentify, avatar, frontIdentify, onPressItemAvatar, onPressItemBehindPhoto, onPressItemFrontPhoto, renderPhotoPicker, styles.contentContainer, styles.titlePhoto, styles.txtNotePhoto]);
 
     const renderTop = useMemo(() => (
         <HTMLView

@@ -40,7 +40,7 @@ const PaymentWebview = ({ route }: any) => {
         Navigator.resetScreen([TabsName.investTabs]);
         Navigator.resetScreen([TabsName.homeTabs]);
         setTimeout(() => {
-            Navigator.navigateScreen(TabsName.paymentTabs);
+            Navigator.navigateScreen(TabsName.homeTabs);
         }, 500);
     }, []);
 

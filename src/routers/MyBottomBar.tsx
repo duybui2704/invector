@@ -33,7 +33,6 @@ import PaymentWebview from '@/screen/investment/paymentWebview';
 import LinkWallet from '@/screen/profile/linkWallet/LinkWallet';
 import TransferScreen from '@/screen/investment/tranferBank';
 import ReferralUsers from '@/screen/profile/referral/ReferralUsers';
-import AccountDetect from '@/screen/profile/accountDetect/AccountDetect';
 
 const TabsData = [
     {
@@ -129,7 +128,6 @@ const AccountStack = () => (
         <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
         <Stack.Screen name={ScreenName.linkWallet} component={LinkWallet} />
         <Stack.Screen name={ScreenName.referralUsers} component={ReferralUsers} />
-        <Stack.Screen name={ScreenName.accountDetect} component={AccountDetect} />
     </Stack.Navigator>
 );
 

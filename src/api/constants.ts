@@ -31,6 +31,7 @@ export enum API_CONFIG {
     GET_BANNERS_HOME = '/banner/home',
     ENCRYPT = '/api/Encrypt',
     CHECK_APP_REVIEW = '/app/review',
+    GET_REFERRAL_USER_POLICY = 'app/config',
 
     // authentication
     LOGIN = 'auth/signin',  // Dang nhap investor

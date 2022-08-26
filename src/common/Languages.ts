@@ -89,7 +89,7 @@ const Languages = {
         updateBankInfo:
             'Bạn chưa cập nhật hình thức nhận tiền lãi đầu tư. Bạn có muốn cập nhật ngay bây giờ không?',
         payFinished:
-            '<a>Giao dịch đã hoàn thành, bạn vui lòng xem chi tiết trong lịch sử thanh toán</a>',
+            '<a>Giao dịch đã hoàn thành, bạn vui lòng chờ vài phút để hệ thống cập nhật!</a>',
         error: 'Không lấy được dữ liệu',
         emptyData1: 'Không có gói đầu tư nào phù hợp.',
         emptyData2: 'Bạn chưa có gói đầu tư nào, cùng đầu tư ngay nào !!!',
@@ -391,7 +391,7 @@ const Languages = {
     },
     referralUsers: {
         title: 'Hoa hồng cho nhà đầu tư',
-        des: '<a><rn>*</rn>Số tiền hoa hồng được hiển thị trong tháng hiện tại là tạm tính và có thể thay đổi theo tổng số tiền đầu tư hàng tháng.\n<rn>*</rn>Chính sách chỉ áp dụng khi người được bạn giới thiệu có đầu tư vào TienNgay. Chính sách có hiệu lực từ ngày <b>15/08/2022</b>.</a>',
+        des: '<a><rn>*</rn>Số tiền hoa hồng được hiển thị trong tháng hiện tại là tạm tính và có thể thay đổi theo tổng số tiền đầu tư hàng tháng.\n<rn>*</rn>Chính sách chỉ áp dụng khi người được bạn giới thiệu có đầu tư vào TienNgay. Chính sách có hiệu lực từ ngày <b>%str</b>.</a>',
         tableDes: 'Chi tiết hoa hồng giới thiệu trong tháng %s',
         colName0: 'Tổng đầu tư',
         colMoney0: 'Tỷ lệ hoa hồng',
