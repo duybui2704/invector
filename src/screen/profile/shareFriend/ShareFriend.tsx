@@ -1,14 +1,14 @@
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import { observer } from 'mobx-react';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Text, View } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import Lightbox from 'react-native-lightbox-v2';
 import QRCode from 'react-native-qrcode-svg';
 
+import { LINKS } from '@/api/constants';
 import ShareIC from '@/assets/image/ic_share_friends.svg';
-import { Configs, isIOS } from '@/common/Configs';
-import { GET_LINK_INVESTOR } from '@/common/constants';
+import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
 import { Touchable } from '@/components/elements/touchable';
 import HeaderBar from '@/components/header';
@@ -21,18 +21,12 @@ const ShareFriend = observer(() => {
     const styles = MyStylesShareFriend();
     const [code, setCode] = useState<string>(SessionManager.userInfo?.phone_number || '');
 
-    const onLinkQR = useMemo(() => {
-        if (isIOS) {
-            return GET_LINK_INVESTOR.LINK_IOS;
-        }
-        return GET_LINK_INVESTOR.LINK_ANDROID;
-    }, []);
-
-    const renderContent = useCallback(() => <QRCode
-        value={onLinkQR}
-        size={SCREEN_WIDTH}
-        quietZone={Configs.FontSize.size12}
-    />, [onLinkQR]);
+    const renderContent = useCallback(() => 
+        <QRCode
+            value={LINKS.ONE_LINK}
+            size={SCREEN_WIDTH}
+            quietZone={Configs.FontSize.size12}
+        />, []);
 
     const share = useCallback(() => {
         Utils.share(code);
@@ -60,7 +54,7 @@ const ShareFriend = observer(() => {
                         springConfig={{ tension: 90000000, friction: 9000000 }}
                         swipeToDismiss={true}>
                         <QRCode
-                            value={onLinkQR}
+                            value={LINKS.ONE_LINK}
                             size={SCREEN_WIDTH * 0.75}
                             quietZone={Configs.FontSize.size16}
                         />

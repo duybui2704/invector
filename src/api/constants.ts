@@ -9,7 +9,8 @@ export enum LINKS {
     STORE_IOS = 'https://apps.apple.com/id/app/tienngay-customer/id1560920806',
     AQ_INVESTOR = 'https://tienngay.vn/template/hoidap',
     POLICY_INVESTOR = 'https://tienngay.vn/template/dieukhoansudung',
-    MANUAL_INVESTOR = 'https://tienngay.vn/template/thongtinapp'
+    MANUAL_INVESTOR = 'https://tienngay.vn/template/thongtinapp',
+    ONE_LINK = 'https://onelink.to/3e87sk'
 }
 
 export enum CONTACT {
