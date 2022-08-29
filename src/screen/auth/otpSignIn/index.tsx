@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import OtpInputs from 'react-native-otp-inputs';
+import { observer } from 'mobx-react-lite';
 
 import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import Languages from '@/common/Languages';
@@ -17,7 +18,7 @@ import { COLORS } from '@/theme';
 import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
 
-const OtpSignIn = (props: any) => {
+const OtpSignIn = observer((props: any) => {
     let timer = 0;
     const [check, setCheck] = useState<boolean>(false);
     const [isActive, setIsActive] = useState<boolean>(false);
@@ -162,6 +163,6 @@ const OtpSignIn = (props: any) => {
             {isNavigate ? <ChangePass phone={phone} token={token} /> : renderOTP()}
         </>
     );
-};
+});
 export default OtpSignIn;
 

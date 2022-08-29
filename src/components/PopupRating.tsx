@@ -22,6 +22,7 @@ import { dataRatingPoint } from '@/mocks/data';
 import { ItemProps } from '@/models/common-model';
 
 interface PopupNoActionProps extends PopupPropsTypes {
+    icon?: any;
     onChangeTextComment?: (_text?: string) => void;
     ratingSwipeComplete?: (_rating?: any) => void;
 }
@@ -29,6 +30,7 @@ interface PopupNoActionProps extends PopupPropsTypes {
 const PopupRating = forwardRef<PopupActionTypes, PopupNoActionProps>(
     (
         {
+            icon,
             onConfirm,
             onChangeTextComment,
             ratingSwipeComplete
@@ -120,6 +122,7 @@ const PopupRating = forwardRef<PopupActionTypes, PopupNoActionProps>(
                             label={Languages.common.send}
                             buttonStyle={BUTTON_STYLES.GREEN}
                             onPress={onConfirm}
+                            rightIcon={icon}
                         />
                     </View>
                 </HideKeyboard>

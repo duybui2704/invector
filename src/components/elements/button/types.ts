@@ -16,6 +16,7 @@ export type ButtonProps = {
     hasRightIcon?: boolean,
     isIconFont?: boolean,
     isLowerCase?: boolean,
-    tag?: any,
-    radius?:any
+    tag?: any;
+    radius?:any;
+    rightIcon?: any;
 };

@@ -54,6 +54,7 @@ import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 import PopupRating from '@/components/PopupRating';
 import { MyStylesPinCodeProfile, MyStylesProfile } from './styles';
 import { PopupOtpDeleteAccount } from '@/components/popupOtpDeleteAccount';
+import Loading from '@/components/loading';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -81,6 +82,8 @@ const Profile = observer(() => {
     const [text, setText] = useState<string>('');
     const [ratingPoint, setRating] = useState<number>(userManager.userInfo?.rate || 0);
     const [ratingPointPopup, setRatingPointPopup] = useState<number>(0);
+    const [isLoading, setLoading] = useState<boolean>(false);
+
     const isFocus = useIsFocused();
 
     const popupOTP = useRef<any>();
@@ -158,8 +161,8 @@ const Profile = observer(() => {
             hasButton
             onConfirm={otpDeleteAccount}
         />
-    ),[otpDeleteAccount, styles.containerAllBtnPopup, styles.containerCancelBtnPopup, styles.containerItemBtnPopup, styles.textCancel]);
-    
+    ), [otpDeleteAccount, styles.containerAllBtnPopup, styles.containerCancelBtnPopup, styles.containerItemBtnPopup, styles.textCancel]);
+
     const openPopupRating = useCallback(() => {
         popupRating.current?.show();
     }, []);
@@ -176,7 +179,9 @@ const Profile = observer(() => {
 
     const onAgreeRating = useCallback(async () => {
         if (onValidateRating()) {
+            setLoading(true);
             const res = await apiServices.common.ratingApp(ratingPoint, text);
+            setLoading(false);
             setRatingPointPopup(0);
             if (res.success) {
                 popupRating.current?.hide();
@@ -211,9 +216,10 @@ const Profile = observer(() => {
                 onConfirm={onAgreeRating}
                 onChangeTextComment={onChangeTextComment}
                 ratingSwipeComplete={onRating}
+                icon={isLoading && <Loading isWhite />}
             />
         );
-    }, [onAgreeRating]);
+    }, [isLoading, onAgreeRating]);
 
     const renderKeyValue = useCallback((title: string, leftIcon: any, hasDashBottom?: boolean) => {
         const onNavigateScreen = () => {

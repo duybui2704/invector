@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useCallback, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 
+import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import arrayIcon from '@/common/arrayIcon';
 import Languages from '@/common/Languages';
 import { MyTextInput } from '@/components/elements/textfield';
@@ -11,18 +12,17 @@ import HideKeyboard from '@/components/HideKeyboard';
 import Loading from '@/components/loading';
 import { useAppStore } from '@/hooks';
 import { COLORS } from '@/theme';
-import IcLine from '@/assets/image/auth/ic_line_auth.svg';
 import FormValidate from '@/utils/FormValidate';
-import OtpSignIn from '../otpSignIn';
-import { MyStylesForgotPass } from './styles';
 import ToastUtils from '@/utils/ToastUtils';
 import Utils from '@/utils/Utils';
+import OtpSignIn from '../otpSignIn';
+import { MyStylesForgotPass } from './styles';
 
 const ForgotPass = observer(() => {
     const {
         apiServices
     } = useAppStore();
-    const [phone, setPhone] = useState<any>('');
+    const [phone, setPhone] = useState<string>('');
     const [isNavigate, setNavigate] = useState<boolean>(true);
     const styles = MyStylesForgotPass();
     const refPhone = useRef<TextFieldActions>(null);;
@@ -45,7 +45,7 @@ const ForgotPass = observer(() => {
         if (onValidate()) {
             setLoading(true);
             const resForgotOTP = await apiServices.auth.otpResetPwd(phone);
-            
+
             setLoading(false);
             if (resForgotOTP.success) {
                 ToastUtils.showSuccessToast(Languages.confirmPhone.msgCallPhone.replace('%s1', Utils.encodePhone(phone)));
@@ -57,7 +57,10 @@ const ForgotPass = observer(() => {
     return (
         <HideKeyboard>
             <View style={styles.container}>
-                {!isNavigate ? <OtpSignIn phone={phone} isChangePass /> :
+                {!isNavigate ?
+
+                    <OtpSignIn phone={phone} isChangePass /> :
+
                     <View style={styles.content}>
                         <View style={styles.viewTitle}>
                             <Text style={styles.txtTitle}>{Languages.auth.titleForgotPass}</Text>

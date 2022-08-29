@@ -20,6 +20,7 @@ export const Button = ({
     textColor,
     isLowerCase,
     leftIcon,
+    rightIcon,
     tag,
     radius
 }: ButtonProps) => {
@@ -121,6 +122,7 @@ export const Button = ({
             <Text style={getTextStyle}>
                 {!isLowerCase?`${label}`.toUpperCase(): `${label}`}
             </Text>
+            {rightIcon}
         </Touchable>
     );
 };

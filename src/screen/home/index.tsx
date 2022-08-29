@@ -75,10 +75,12 @@ const Home = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
-        condition.current.offset = 0;
-        fetchDataInvest();
-        fetchDataBanner();
-        auth();
+        if(isFocused){
+            condition.current.offset = 0;
+            fetchDataInvest();
+            fetchDataBanner();
+            auth();
+        }
     }, []);
 
     useEffect(() => {
