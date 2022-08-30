@@ -54,7 +54,7 @@ const Languages = {
         reasonInvest: 'Vì sao bạn nên đầu tư vào TienNgay.vn?',
         reasonOne: '1. Đầu tư dễ dàng chỉ từ 3 triệu đồng.',
         reasonTwo: '2. Lợi nhuận cạnh tranh: lãi suất tiền gửi lên đến 18%/năm.',
-        reasonThree: '3. Linh hoạt thời hạn, vòng đầu tư ngắn 3 tháng - 24 tháng.',
+        reasonThree: '3. Linh hoạt thời hạn, vòng đầu tư ngắn 1 tháng - 24 tháng.',
         reasonFour: '4. Tài sản của bạn được quản lý minh bạch và bảo vệ bởi công ty thuộc tập đoàn công nghệ hàng đầu NextTech.',
         reasonFive: '5. Quản lý dòng tiền thông minh với ứng dụng công nghệ.'
 
