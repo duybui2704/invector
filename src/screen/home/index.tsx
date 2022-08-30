@@ -2,7 +2,7 @@
 import PasscodeAuth from '@el173/react-native-passcode-auth';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, ImageBackground, StatusBar, Text, View } from 'react-native';
+import { FlatList, ImageBackground, RefreshControl, StatusBar, Text, View } from 'react-native';
 import Dash from 'react-native-dash';
 import FastImage from 'react-native-fast-image';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
@@ -75,7 +75,7 @@ const Home = observer(() => {
     }, [isFocused]);
 
     useEffect(() => {
-        if(isFocused){
+        if (isFocused) {
             condition.current.offset = 0;
             fetchDataInvest();
             fetchDataBanner();
@@ -363,11 +363,11 @@ const Home = observer(() => {
                     </View>
                 </>
             }
-            {(!userManager?.userInfo || fastAuthInfoManager.isEnableFastAuth)  &&
-                    <View style={isIOS ? styles.viewSmallMenuLoginIOS : styles.viewSmallMenuLoginAndroid}>
-                        {renderNavigateScreen(Languages.auth.txtLogin)}
-                        {renderNavigateScreen(Languages.auth.txtSignUp)}
-                    </View>
+            {(!userManager?.userInfo || fastAuthInfoManager.isEnableFastAuth) &&
+                <View style={isIOS ? styles.viewSmallMenuLoginIOS : styles.viewSmallMenuLoginAndroid}>
+                    {renderNavigateScreen(Languages.auth.txtLogin)}
+                    {renderNavigateScreen(Languages.auth.txtSignUp)}
+                </View>
             }
         </View>
     ), [styles.viewForeground, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValueCenter, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.viewSumInvestValue, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopLogo, styles.circleWrap, styles.fastImage, styles.viewRightTop, styles.imgNotify, styles.logo, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLoginIOS, styles.viewSmallMenuLoginAndroid, userManager.userInfo, fastAuthInfoManager.isEnableFastAuth, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, gotoProfile, onNotifyInvest, renderNavigateScreen]);
@@ -475,6 +475,20 @@ const Home = observer(() => {
         refPopupFirst.current?.show();
     };
 
+    const onRefreshControlParallaw =useCallback(()=>{
+        condition.current.offset = 0;
+        fetchDataInvest();
+        fetchDataBanner();
+        auth();
+
+        if (userManager.userInfo) {
+            fetchContractsDash();
+        }
+        if (SessionManager.accessToken) {
+            getInfo();
+        }
+    },[auth, fetchContractsDash, fetchDataBanner, fetchDataInvest, getInfo, userManager.userInfo]);
+
     return (
         <NotificationListening>
             <View style={styles.container}>
@@ -486,6 +500,14 @@ const Home = observer(() => {
                     stickyHeaderHeight={SCREEN_HEIGHT * 0.12}
                     renderBackground={() => renderBackground}
                     renderForeground={renderForeground}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isLoading}
+                            onRefresh={onRefreshControlParallaw} 
+                            tintColor={COLORS.WHITE}
+                            colors={[COLORS.RED, COLORS.GREEN, COLORS.GRAY_1]}
+                        />
+                    }
                 >
                     {renderContent}
                 </ParallaxScrollView>
