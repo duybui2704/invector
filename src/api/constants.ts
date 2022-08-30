@@ -20,8 +20,8 @@ export enum CONTACT {
 export const STORE_APP_LINK = isIOS ? LINKS.STORE_IOS : LINKS.STORE_ANDROID;
 
 export enum API_CONFIG {
-    BASE_URL_ERROR = 'https://sandboxapindt.tienngay.vn/',
-    // BASE_URL_ERROR = 'https://apindt.tienngay.vn/',
+    // BASE_URL_ERROR = 'https://sandboxapindt.tienngay.vn/',
+    BASE_URL_ERROR = 'https://apindt.tienngay.vn/',
 
     // BASE_URL = 'https://sandboxappndt.tienngay.vn/V2/',
     BASE_URL = 'https://appndt.tienngay.vn/V2/',
