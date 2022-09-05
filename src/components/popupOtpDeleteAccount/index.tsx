@@ -60,12 +60,28 @@ export const PopupOtpDeleteAccount = forwardRef<
         setPin('');
     }, []);
 
+    const onChangeCode = useCallback((code: string) => {
+        setPin(code);
+        setErrMsg('');
+    }, []);
+
+    const onResend = useCallback(async () => {
+        refOTP.current?.reset?.();
+        setPin('');
+        const res = await apiServices.auth.deleteAccount();
+        if (res.success) {
+            checksumRef.current = res.data?.checksum;
+        }
+        setStartCount(true);
+        setTimer(TIME_OUT);
+    }, [apiServices.auth]);
+
     const show = useCallback(() => {
         onResend();
         setPin('');
         setVisible(true);
         setTimer(TIME_OUT);
-    }, []);
+    }, [onResend]);
 
     const hide = useCallback(() => {
         setVisible(false);
@@ -92,20 +108,6 @@ export const PopupOtpDeleteAccount = forwardRef<
             onDeleteAccount(pin.toString());
         }
     }, [pin]);
-
-    const onChangeCode = useCallback((code: string) => {
-        setPin(code);
-        setErrMsg('');
-    }, []);
-
-    const onResend = useCallback(async () => {
-        const res = await apiServices.auth.deleteAccount();
-        if (res.success) {
-            checksumRef.current = res.data?.checksum;
-        }
-        setStartCount(true);
-        setTimer(TIME_OUT);
-    }, [apiServices.auth]);
 
     const renderResend = useMemo(() => {
         if (startCount) {
@@ -202,8 +204,8 @@ export const PopupOtpDeleteAccount = forwardRef<
                                     style={styles.wrapOTP}
                                     inputStyles={styleOTP}
                                     onFocus={onFocus}
-                                    onBlur={onBlur} 
-                                    autofillFromClipboard={false}     
+                                    onBlur={onBlur}
+                                    autofillFromClipboard={false}
                                 />
                             </View>
                             {errorMessage}
