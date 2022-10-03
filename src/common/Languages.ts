@@ -36,6 +36,8 @@ const Languages = {
         more: 'Xem thêm',
         stockVfs: 'Chứng khoán VPS',
         question: 'Câu hỏi thường gặp',
+        titleLuckyLott: 'Vé số Vietllot trực tuyến',
+        describeLuckyLott: 'Thuận tiện, nhanh chóng, an toàn',
         signFree: 'Đăng ký mở tài khoản miễn phí',
         todoInvest: 'Làm thế nào để đầu tư vào TienNgay.vn?',
         todoWithDrawMoney: 'Làm thế nào để rút tiền từ TienNgay.vn?',
@@ -332,10 +334,10 @@ const Languages = {
         waitVerify: 'Chờ xác minh chứng từ',
         waitVerifyContent: 'Chứng từ của bạn đang được xác minh, bạn có thể tiến hành đầu tư sau khi chứng từ đã được xác thực',
         capturePerson: 'Chụp ảnh chân dung',
-        noteCapturePerson:'Chụp cận mặt, rõ, thẳng góc, không bị che, không chụp quá xa. Không chụp chân dung từ ảnh,  màn hình thiết bị điện tử.',
+        noteCapturePerson: 'Chụp cận mặt, rõ, thẳng góc, không bị che, không chụp quá xa. Không chụp chân dung từ ảnh,  màn hình thiết bị điện tử.',
         confirmCapturePerson: 'Sử dụng chân dung của bạn để nhận dạng chứng từ ?',
         captureCard: 'Chụp ảnh chứng từ',
-        noteCaptureCard:'Mặt trước rõ, đủ 4 góc. Không chụp giấy tờ tuỳ thân photo, chụp thông qua màn hình thiết bị điện tử.',
+        noteCaptureCard: 'Mặt trước rõ, đủ 4 góc. Không chụp giấy tờ tuỳ thân photo, chụp thông qua màn hình thiết bị điện tử.',
         confirmCaptureCard: 'Sử dụng Chứng từ của bạn để nhận dạng chứng từ ?'
     },
     otp: {

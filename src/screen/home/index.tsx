@@ -8,8 +8,9 @@ import FastImage from 'react-native-fast-image';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { useIsFocused } from '@react-navigation/native';
 
-import { LINKS } from '@/api/constants';
+import { LINKS, STORE_LUCKY_LOTT } from '@/api/constants';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
+import LogoLuckyLott from '@/assets/image/logo_lucky_lott.svg';
 import AvatarIC from '@/assets/image/ic_avatar.svg';
 import Images from '@/assets/Images';
 import { isIOS } from '@/common/Configs';
@@ -123,6 +124,10 @@ const Home = observer(() => {
 
     const onOpenVPS = useCallback(() => {
         Utils.openURL(LINKS.VPS);
+    }, []);
+
+    const onOpenLuckyLott = useCallback(() => {
+        Utils.openURL(STORE_LUCKY_LOTT);
     }, []);
 
     const fetchDataInvest = useCallback(async (isLoadMore?: boolean) => {
@@ -372,26 +377,29 @@ const Home = observer(() => {
         </View>
     ), [styles.viewForeground, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValueCenter, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.viewSumInvestValue, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopLogo, styles.circleWrap, styles.fastImage, styles.viewRightTop, styles.imgNotify, styles.logo, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLoginIOS, styles.viewSmallMenuLoginAndroid, userManager.userInfo, fastAuthInfoManager.isEnableFastAuth, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, gotoProfile, onNotifyInvest, renderNavigateScreen]);
 
+    const renderUtility = useCallback((_onPress: () => any, _logo: any, _title: string, _describe: string) => (
+        <Touchable style={styles.utilityWrap} onPress={_onPress}>
+            {_logo}
+            <View style={styles.txtUtility}>
+                <Text style={styles.txtTitleUtility}>{_title}</Text>
+                <Text style={styles.txtForEachTitleQuestion}>{_describe}</Text>
+            </View>
+        </Touchable>
+    ), [styles.txtForEachTitleQuestion, styles.txtTitleUtility, styles.txtUtility, styles.utilityWrap]);
+
     const renderFooter = useMemo(() => (
         <>
             <View style={styles.marginHorizontal}>
                 {dataArr && unMore && <Touchable style={styles.more} onPress={onMore}>
                     <Text style={[styles.txtForEachTitleQuestion, { color: COLORS.GREEN }]}>{Languages.home.more}</Text>
-                </Touchable>
-                }
-                <Touchable style={styles.viewVfs} onPress={onOpenVPS}>
-                    <LogoVfs />
-                    <View style={styles.txtVfs}>
-                        <Text style={styles.txtVPS}>{Languages.home.stockVfs}</Text>
-                        <Text style={styles.txtForEachTitleQuestion}>{Languages.home.signFree}</Text>
-                    </View>
-                </Touchable>
+                </Touchable>}
+                {renderUtility(onOpenLuckyLott, <LogoLuckyLott />, Languages.home.titleLuckyLott, Languages.home.describeLuckyLott)}
+                {renderUtility(onOpenVPS, <LogoVfs />, Languages.home.stockVfs, Languages.home.signFree)}
                 <Text style={styles.txtNews}>{Languages.home.newMedia}</Text>
             </View>
             {renderNews}
         </>
-    ), [styles.marginHorizontal, styles.more, styles.txtForEachTitleQuestion, styles.viewVfs, styles.txtVfs, styles.txtVPS, styles.txtNews, dataArr, unMore, onMore, onOpenVPS, renderNews]);
-
+    ), [styles.marginHorizontal, styles.more, styles.txtForEachTitleQuestion, styles.txtNews, dataArr, unMore, onMore, renderUtility, onOpenLuckyLott, onOpenVPS, renderNews]);
 
     const renderItem = useCallback((item: any) => {
         const onPressToInvestNow = () => navigateToInvestNow(item);
@@ -409,7 +417,6 @@ const Home = observer(() => {
     }, [navigateToDetail, navigateToInvestNow, styles.marginHorizontal]);
 
     const renderItemInvestPackage = useCallback((item: any) => renderItem(item?.item), [renderItem]);
-
 
     const focusContracts = useCallback(() => {
         if (userManager?.userInfo && !fastAuthInfoManager.isEnableFastAuth) {
@@ -452,7 +459,6 @@ const Home = observer(() => {
         </View>
     ), [dataArr, fastAuthInfoManager.isEnableFastAuth, keyExtractor, renderBottom, renderFooter, renderItemInvestPackage, styles.txtCenter, userManager?.userInfo]);
 
-
     const renderStatusBar = useMemo(() => (
         <StatusBar
             animated
@@ -475,7 +481,7 @@ const Home = observer(() => {
         refPopupFirst.current?.show();
     };
 
-    const onRefreshControlParallaw =useCallback(()=>{
+    const onRefreshControlParallaw = useCallback(() => {
         condition.current.offset = 0;
         fetchDataInvest();
         fetchDataBanner();
@@ -487,7 +493,7 @@ const Home = observer(() => {
         if (SessionManager.accessToken) {
             getInfo();
         }
-    },[auth, fetchContractsDash, fetchDataBanner, fetchDataInvest, getInfo, userManager.userInfo]);
+    }, [auth, fetchContractsDash, fetchDataBanner, fetchDataInvest, getInfo, userManager.userInfo]);
 
     return (
         <NotificationListening>
@@ -503,7 +509,7 @@ const Home = observer(() => {
                     refreshControl={
                         <RefreshControl
                             refreshing={isLoading}
-                            onRefresh={onRefreshControlParallaw} 
+                            onRefresh={onRefreshControlParallaw}
                             tintColor={COLORS.WHITE}
                             colors={[COLORS.RED, COLORS.GREEN, COLORS.GRAY_1]}
                         />

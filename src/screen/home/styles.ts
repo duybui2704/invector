@@ -32,7 +32,6 @@ export const MyStylesHome = () => useMemo(() =>
             ...Styles.typography.medium,
             fontSize: Configs.FontSize.size16,
             color: COLORS.GRAY_7,
-            marginTop: 20,
             marginBottom: 8
         },
         marginHorizontal: {
@@ -109,7 +108,7 @@ export const MyStylesHome = () => useMemo(() =>
             position: 'relative',
             bottom: 3
         },
-        txtVPS: {
+        txtTitleUtility: {
             ...Styles.typography.medium,
             fontSize: Configs.FontSize.size16,
             color: COLORS.RED_2
@@ -254,7 +253,7 @@ export const MyStylesHome = () => useMemo(() =>
             marginBottom: 10,
             alignItems: 'center'
         },
-        viewVfs: {
+        utilityWrap: {
             ...Styles.shadow,
             flexDirection: 'row',
             backgroundColor: COLORS.WHITE,
@@ -262,9 +261,10 @@ export const MyStylesHome = () => useMemo(() =>
             paddingHorizontal: 10,
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingVertical: 8
+            paddingVertical: 8,
+            marginBottom: 24
         },
-        txtVfs: {
+        txtUtility: {
             flex: 1,
             flexDirection: 'column',
             paddingLeft: 20

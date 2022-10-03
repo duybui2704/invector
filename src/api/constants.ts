@@ -10,6 +10,8 @@ export enum LINKS {
     AQ_INVESTOR = 'https://tienngay.vn/template/hoidap',
     POLICY_INVESTOR = 'https://tienngay.vn/template/dieukhoansudung',
     MANUAL_INVESTOR = 'https://tienngay.vn/template/thongtinapp',
+    LUCKY_LOTT_ANDROID = 'https://play.google.com/store/apps/details?id=com.luckylott.store',
+    LUCKY_LOTT_IOS = 'https://apps.apple.com/vn/app/luckylott/id1518746631',
     ONE_LINK = 'https://onelink.to/3e87sk'
 }
 
@@ -18,6 +20,7 @@ export enum CONTACT {
 }
 
 export const STORE_APP_LINK = isIOS ? LINKS.STORE_IOS : LINKS.STORE_ANDROID;
+export const STORE_LUCKY_LOTT = isIOS ? LINKS.LUCKY_LOTT_IOS : LINKS.LUCKY_LOTT_ANDROID;
 
 export enum API_CONFIG {
     // BASE_URL_ERROR = 'https://sandboxapindt.tienngay.vn/',
