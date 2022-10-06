@@ -36,7 +36,7 @@ const Languages = {
         more: 'Xem thêm',
         stockVfs: 'Chứng khoán VPS',
         question: 'Câu hỏi thường gặp',
-        titleLuckyLott: 'Vé số Vietllot trực tuyến',
+        titleLuckyLott: 'Vé số Vietlott trực tuyến',
         describeLuckyLott: 'Thuận tiện, nhanh chóng, an toàn',
         signFree: 'Đăng ký mở tài khoản miễn phí',
         todoInvest: 'Làm thế nào để đầu tư vào TienNgay.vn?',

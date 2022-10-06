@@ -40,7 +40,7 @@ import LogoHome from '../../assets/image/header/logo_home.svg';
 import NotificationListening from './NotificationListening';
 import { MyStylesHome } from './styles';
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 4;
 
 const Home = observer(() => {
     const {
@@ -382,10 +382,10 @@ const Home = observer(() => {
             {_logo}
             <View style={styles.txtUtility}>
                 <Text style={styles.txtTitleUtility}>{_title}</Text>
-                <Text style={styles.txtForEachTitleQuestion}>{_describe}</Text>
+                <Text style={styles.txtDescribeUtility}>{_describe}</Text>
             </View>
         </Touchable>
-    ), [styles.txtForEachTitleQuestion, styles.txtTitleUtility, styles.txtUtility, styles.utilityWrap]);
+    ), [styles.txtDescribeUtility, styles.txtTitleUtility, styles.txtUtility, styles.utilityWrap]);
 
     const renderFooter = useMemo(() => (
         <>
@@ -444,7 +444,7 @@ const Home = observer(() => {
     ), [styles.txtCenter, styles.txtReason, styles.viewBottom, styles.viewReason]);
 
     const renderContent = useMemo(() => (
-        <View style={!userManager?.userInfo || fastAuthInfoManager.isEnableFastAuth ? {} : [{ marginTop: - SCREEN_HEIGHT * 0.04 }]}>
+        <View style={!userManager?.userInfo || fastAuthInfoManager.isEnableFastAuth ? [{ marginTop: -10 }] : [{ marginTop: - SCREEN_HEIGHT * 0.02 }]}>
             <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
             <FlatList
                 showsVerticalScrollIndicator={false}
@@ -502,7 +502,7 @@ const Home = observer(() => {
                 <ParallaxScrollView
                     contentBackgroundColor={COLORS.TRANSPARENT}
                     backgroundColor={COLORS.TRANSPARENT}
-                    parallaxHeaderHeight={SCREEN_HEIGHT * 0.4}
+                    parallaxHeaderHeight={SCREEN_HEIGHT * 0.3}
                     stickyHeaderHeight={SCREEN_HEIGHT * 0.12}
                     renderBackground={() => renderBackground}
                     renderForeground={renderForeground}

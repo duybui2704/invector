@@ -1,9 +1,9 @@
-import {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
-import {COLORS, Styles } from '@/theme';
-import {Configs } from '@/common/Configs';
+import { COLORS, Styles } from '@/theme';
+import { Configs } from '@/common/Configs';
 
 
 export const MyStylesHome = () => useMemo(() =>
@@ -18,7 +18,7 @@ export const MyStylesHome = () => useMemo(() =>
             right: 0,
             left: 0,
             width: SCREEN_WIDTH,
-            height: SCREEN_HEIGHT / 2.9
+            height: SCREEN_HEIGHT / 3.7
         },
         txtCenter: {
             ...Styles.typography.medium,
@@ -39,7 +39,7 @@ export const MyStylesHome = () => useMemo(() =>
         },
         viewTop: {
             position: 'absolute',
-            top: SCREEN_HEIGHT * 0.08,
+            top: SCREEN_HEIGHT * 0.046,
             width: '100%',
             alignItems: 'center'
         },
@@ -69,7 +69,7 @@ export const MyStylesHome = () => useMemo(() =>
         viewTopCenter: {
             position: 'absolute',
             left: '-2%',
-            top: SCREEN_HEIGHT * 0.12,
+            top: SCREEN_HEIGHT * 0.095,
             width: '100%',
             alignItems: 'center',
             justifyContent: 'center',
@@ -111,7 +111,12 @@ export const MyStylesHome = () => useMemo(() =>
         txtTitleUtility: {
             ...Styles.typography.medium,
             fontSize: Configs.FontSize.size16,
-            color: COLORS.RED_2
+            color: COLORS.RED_2,
+            paddingBottom: 8
+        },
+        txtDescribeUtility: {
+            ...Styles.typography.regular,
+            color: COLORS.GRAY_7
         },
         txtForEachTitleQuestion: {
             ...Styles.typography.regular,
@@ -182,7 +187,6 @@ export const MyStylesHome = () => useMemo(() =>
             width: '60%'
         },
         viewSmallMenuLoginAndroid: {
-            // ...Styles.shadow,
             flexDirection: 'row',
             width: '92%',
             backgroundColor: COLORS.WHITE,
@@ -190,7 +194,7 @@ export const MyStylesHome = () => useMemo(() =>
             justifyContent: 'space-around',
             alignItems: 'center',
             position: 'absolute',
-            top: SCREEN_HEIGHT / 3.55
+            top: SCREEN_HEIGHT / 4.3
         },
         viewSmallMenuLoginIOS: {
             ...Styles.shadow,
@@ -201,7 +205,7 @@ export const MyStylesHome = () => useMemo(() =>
             justifyContent: 'space-around',
             alignItems: 'center',
             position: 'absolute',
-            top: SCREEN_HEIGHT / 3.45
+            top: SCREEN_HEIGHT / 4.2
         },
         tab: {
             flex: 1,
@@ -261,13 +265,13 @@ export const MyStylesHome = () => useMemo(() =>
             paddingHorizontal: 10,
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingVertical: 8,
             marginBottom: 24
         },
         txtUtility: {
             flex: 1,
             flexDirection: 'column',
-            paddingLeft: 20
+            paddingLeft: 20,
+            paddingVertical: 16
         },
         viewBanner: {
             marginTop: SCREEN_WIDTH * 0.02
@@ -286,7 +290,7 @@ export const MyStylesHome = () => useMemo(() =>
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            paddingVertical: SCREEN_HEIGHT * 0.035
+            paddingVertical: 12
         },
         txtHello: {
             fontFamily: Configs.FontFamily.medium,

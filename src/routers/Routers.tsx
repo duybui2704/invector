@@ -20,8 +20,8 @@ const MyTheme = {
         background: COLORS.GRAY_5
     }
 };
-const styles={
-    flex:1
+const styles = {
+    flex: 1
 } as ViewStyle;
 
 const App = () => {
@@ -35,7 +35,7 @@ const App = () => {
                 // alert(`2 = ${  JSON.stringify(res?.data)}`);
             }
         });
-    
+
         const AFUDLListener = appsFlyer.onDeepLink((res) => {
             if (res?.deepLinkStatus !== 'NOT_FOUND') {
                 try {
@@ -50,7 +50,7 @@ const App = () => {
                         }
                         // setLocale(LOCALE_KEY.deep_linking_source, source);
                     }
-    
+
                     // setLocale(LOCALE_KEY.deep_linking_data, JSON.stringify(data));
                     // console.log('onDeepLink found = ' + JSON.stringify(res));
                     // alert('onDeepLink found = ' + JSON.stringify(res?.data));
@@ -60,7 +60,7 @@ const App = () => {
         });
 
         AFInit();
-    
+
         return () => {
             AFGCDListener();
             AFUDLListener();
