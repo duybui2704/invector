@@ -82,7 +82,7 @@ const Home = observer(() => {
             fetchDataBanner();
             auth();
         }
-    }, []);
+    }, [isFocused]);
 
     useEffect(() => {
         if (isFocused) {
