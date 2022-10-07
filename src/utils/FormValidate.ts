@@ -102,7 +102,7 @@ function passConFirmValidate(conFirmPwd: string, pwd?: string) {
     let errMsg = '';
     if (Validate.isStringEmpty(conFirmPwd)) {
         errMsg = Languages.errorMsg.pwdNull;
-    } else if (conFirmPwd !== pwd  ) {
+    } else if (conFirmPwd !== pwd) {
         errMsg = Languages.errorMsg.conFirmPwd;
     }
     return errMsg;
@@ -169,20 +169,20 @@ function inputValidate(
     errSyntax?: any,
     numOperator?: number,
     isBankAccount?: boolean,
-    isATM?:boolean
+    isATM?: boolean
 ) {
     let errMsg = '';
     const number = numOperator || 16;
 
     if (Validate.isStringEmpty(value)) {
         errMsg = errEmpty;
-    } else if (isBankAccount && (value.length < 8 || value.length > 16)){
-        errMsg = Languages.errorMsg.errSyntaxBank;
-    } else if (isBankAccount && validateNumber(`${value}`)){
+        // } else if (isBankAccount && (value.length < 8 || value.length > 16)){
+        //     errMsg = Languages.errorMsg.errSyntaxBank;
+    } else if (isBankAccount && validateNumber(`${value}`)) {
         errMsg = Languages.errorMsg.errNotNumberBank;
-    } else if (isATM && (value.length !== 16 && value.length !== 19 )) {
+    } else if (isATM && (value.length !== 16 && value.length !== 19)) {
         errMsg = Languages.errorMsg.errSyntaxATM;
-    } else if (isATM && validateNumber(`${value}`)){
+    } else if (isATM && validateNumber(`${value}`)) {
         errMsg = Languages.errorMsg.errNotNumberATM;
     } else if (value.length > number) {
         errMsg = errSyntax;
@@ -194,7 +194,7 @@ function inputEmpty(value: any, errEmpty: string) {
     let errMsg = '';
     if (Validate.isStringEmpty(value)) {
         errMsg = errEmpty;
-    } 
+    }
     return errMsg;
 }
 

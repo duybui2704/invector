@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 import { COLORS, Styles } from '@/theme';
-import { Configs } from '@/common/Configs';
+import { Configs, HEADER_PADDING } from '@/common/Configs';
 
 
 export const MyStylesHome = () => useMemo(() =>
@@ -13,12 +13,11 @@ export const MyStylesHome = () => useMemo(() =>
             backgroundColor: COLORS.WHITE_GRAY1
         },
         imageBg: {
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            left: 0,
-            width: SCREEN_WIDTH,
             height: SCREEN_HEIGHT / 3.7
+        },
+        headerContainer:{
+            flex: 1,
+            width: '100%'
         },
         txtCenter: {
             ...Styles.typography.medium,
@@ -38,19 +37,16 @@ export const MyStylesHome = () => useMemo(() =>
             marginHorizontal: 15
         },
         viewTop: {
-            position: 'absolute',
-            top: SCREEN_HEIGHT * 0.046,
             width: '100%',
-            alignItems: 'center'
+            paddingHorizontal: 16,
+            paddingTop: 2
         },
-        viewTopLogo: {
-            flexDirection: 'row',
+        topInvestorContainer: {
             width: '100%',
-            alignItems: 'center',
-            marginHorizontal: 10,
-            marginTop: SCREEN_HEIGHT * 0.045,
-            position: 'absolute',
-            top: 0
+            paddingHorizontal: 16,
+            marginTop: HEADER_PADDING + 3,
+            justifyContent: 'space-between',
+            flexDirection: 'row'
         },
         circleWrap: {
             width: SCREEN_WIDTH * 0.09,
@@ -58,7 +54,6 @@ export const MyStylesHome = () => useMemo(() =>
             borderRadius: SCREEN_WIDTH * 0.15 / 2,
             alignItems: 'center',
             justifyContent: 'center',
-            marginLeft: SCREEN_WIDTH * 0.05,
             backgroundColor: COLORS.WHITE
         },
         fastImage: {
@@ -67,13 +62,15 @@ export const MyStylesHome = () => useMemo(() =>
             borderRadius: SCREEN_WIDTH * 0.15 / 2
         },
         viewTopCenter: {
-            position: 'absolute',
-            left: '-2%',
-            top: SCREEN_HEIGHT * 0.095,
             width: '100%',
+            alignItems: 'center'
+        },
+        topScreenUnAuthn: {
+            flex: 1,
+            paddingTop: HEADER_PADDING + 3,
             alignItems: 'center',
-            justifyContent: 'center',
-            marginHorizontal: 10
+            width: '100%'
+
         },
         txtSumInvest: {
             ...Styles.typography.medium,
@@ -81,32 +78,31 @@ export const MyStylesHome = () => useMemo(() =>
             fontSize: Configs.FontSize.size16
         },
         txtSumInvestValue: {
-            ...Styles.typography.regular,
-            fontSize: Configs.FontSize.size32,
-            color: COLORS.WHITE,
-            marginLeft: SCREEN_WIDTH * 0.08,
-            textAlign: 'center'
+            ...Styles.typography.medium,
+            fontSize: Configs.FontSize.size24,
+            color: COLORS.WHITE
         },
         txtSumProfit: {
             ...Styles.typography.regular,
-            color: COLORS.WHITE,
-            paddingBottom: SCREEN_HEIGHT * 0.005
+            color: COLORS.WHITE
         },
         txtVND: {
             ...Styles.typography.regular,
-            fontSize: Configs.FontSize.size20,
+            fontSize: Configs.FontSize.size16,
             color: COLORS.WHITE,
-            marginHorizontal: 2,
-            position: 'relative',
-            bottom: 4
+            marginBottom: 2
         },
         txtVNDSmall: {
             ...Styles.typography.regular,
-            fontSize: Configs.FontSize.size10,
+            fontSize: Configs.FontSize.size12,
             color: COLORS.WHITE,
-            marginHorizontal: 2,
-            position: 'relative',
-            bottom: 3
+            marginBottom: 3
+        },
+        txtVNDRemainingOrigin: {
+            ...Styles.typography.regular,
+            fontSize: Configs.FontSize.size12,
+            color: COLORS.WHITE,
+            marginBottom: 1
         },
         txtTitleUtility: {
             ...Styles.typography.medium,
@@ -141,16 +137,17 @@ export const MyStylesHome = () => useMemo(() =>
         txtTotalInterestReceived: {
             ...Styles.typography.regular,
             fontSize: Configs.FontSize.size20,
-            color: COLORS.WHITE,
-            marginHorizontal: 2,
-            marginRight: 5
+            color: COLORS.WHITE
+        },
+        txtTotalRemainingOrigin: {
+            ...Styles.typography.medium,
+            fontSize: Configs.FontSize.size16,
+            color: COLORS.WHITE
         },
         txtTotalInterestExtant: {
-            ...Styles.typography.regular,
+            ...Styles.typography.medium,
             fontSize: Configs.FontSize.size20,
-            color: COLORS.WHITE,
-            marginHorizontal: 2,
-            marginLeft: 5
+            color: COLORS.WHITE
         },
         txtLeft: {
             marginLeft: '25%',
@@ -164,27 +161,27 @@ export const MyStylesHome = () => useMemo(() =>
             paddingLeft: '5%'
         },
         wrapRow: {
-            flexDirection: 'row'
+            flexDirection: 'row',
+            marginTop: 8
         },
         viewSumInvestValue: {
             flexDirection: 'row',
             alignItems: 'flex-end',
-            paddingRight: 5,
-            paddingVertical: SCREEN_HEIGHT * 0.002,
-            width: '100%'
+            width: '100%',
+            justifyContent: 'center',
+            paddingHorizontal: 16
         },
         viewSumInvestValueCenter: {
             flexDirection: 'row',
             alignItems: 'flex-end',
-            paddingRight: 5,
-            paddingVertical: SCREEN_HEIGHT * 0.002,
-            width: '100%',
             justifyContent: 'center'
+        },
+        allInvestContainer: {
+            alignItems: 'center'
         },
         wrapTotalInterest: {
             alignItems: 'center',
-            marginVertical: SCREEN_HEIGHT * 0.005,
-            width: '60%'
+            width: '50%'
         },
         viewSmallMenuLoginAndroid: {
             flexDirection: 'row',
@@ -193,8 +190,7 @@ export const MyStylesHome = () => useMemo(() =>
             borderRadius: 25,
             justifyContent: 'space-around',
             alignItems: 'center',
-            position: 'absolute',
-            top: SCREEN_HEIGHT / 4.3
+            marginBottom: 5
         },
         viewSmallMenuLoginIOS: {
             ...Styles.shadow,
@@ -204,8 +200,7 @@ export const MyStylesHome = () => useMemo(() =>
             borderRadius: 25,
             justifyContent: 'space-around',
             alignItems: 'center',
-            position: 'absolute',
-            top: SCREEN_HEIGHT / 4.2
+            marginBottom: 5
         },
         tab: {
             flex: 1,
@@ -294,7 +289,6 @@ export const MyStylesHome = () => useMemo(() =>
         },
         txtHello: {
             fontFamily: Configs.FontFamily.medium,
-            fontSize: Configs.FontSize.size20,
             color: COLORS.WHITE
         },
         txtName: {
@@ -312,12 +306,9 @@ export const MyStylesHome = () => useMemo(() =>
             alignItems: 'center',
             justifyContent: 'center'
         },
-        viewRightTop: {
-            position: 'absolute',
-            right: SCREEN_WIDTH * 0.05
-        },
-        logo: {
-            marginLeft: SCREEN_WIDTH * 0.05
+        logoTienNgay: {
+            alignSelf: 'flex-start',
+            marginHorizontal: 16
         },
         imgNotify: {
             width: SCREEN_WIDTH * 0.08

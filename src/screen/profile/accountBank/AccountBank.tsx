@@ -160,7 +160,7 @@ const AccountBank = observer(() => {
         accountNumberRef.current?.setErrorMsg(errMsgAccNumber);
         ATMNumberRef.current?.setErrorMsg(errMsgATMNumber);
         accountProviderRef.current?.setErrorMsg(errMsgName);
-        bankRef.current?.setErrorMsg(errMsgBank);
+        bankRef.current?.setErrorMsg?.(errMsgBank);
 
         if (
             `${errMsgName}${errMsgBank}`.length === 0 && (`${errMsgAccNumber}`.length === 0 || `${errMsgATMNumber}`.length === 0)

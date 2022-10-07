@@ -251,13 +251,8 @@ const Home = observer(() => {
                     resizeMode={'cover'}
                     style={styles.communicationImage}
                 />
-
-                <Text style={styles.txtCommunityTitle} numberOfLines={2}>
-                    {item.title_vi}
-                </Text>
-                <Text style={styles.txtCommunityDes}>
-                    {DateUtils.getLongFromDate(item.created_at)}
-                </Text>
+                <Text style={styles.txtCommunityTitle} numberOfLines={2}>{item.title_vi}</Text>
+                <Text style={styles.txtCommunityDes}>{DateUtils.getLongFromDate(item.created_at)}</Text>
             </Touchable>
         );
     }, [styles.communicationImage, styles.newsItem, styles.txtCommunityDes, styles.txtCommunityTitle]);
@@ -275,69 +270,21 @@ const Home = observer(() => {
         />
     ), [banners, keyExtractorBanner, renderNewsItem, styles.newsContainer]);
 
+    const renderInvestHeaderItem = useCallback((title: string, money: number, styleMoney?: any, styleVnd?: any) => (
+        <View style={styles.wrapTotalInterest}>
+            <Text style={styles.txtSumProfit}>{title}</Text>
+            <View style={styles.viewSumInvestValue}>
+                <Text style={[styles.txtTotalInterestExtant, styleMoney]} numberOfLines={1}>{Utils.formatMoney(money)}</Text>
+                <Text style={[styles.txtVNDSmall, styleVnd]} >{Languages.home.vnd}</Text>
+            </View>
+        </View>
+    ), [styles.txtSumProfit, styles.txtTotalInterestExtant, styles.txtVNDSmall, styles.viewSumInvestValue, styles.wrapTotalInterest]);
+
     const renderTop = useMemo(() => (
         <View style={styles.viewForeground}>
             {(userManager?.userInfo && !fastAuthInfoManager.isEnableFastAuth) ?
-                <>
-                    <View style={styles.viewTop}>
-                        <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
-                        <View style={styles.viewSumInvestValueCenter}>
-                            <Text style={styles.txtSumInvestValue}>
-                                {Utils.formatMoney(dataDash?.tong_tien_dau_tu)}
-                            </Text>
-                            <Text style={styles.txtVND}> {Languages.home.vnd}</Text>
-                        </View>
-                        <View style={styles.wrapRow}>
-                            <View style={styles.wrapTotalInterest}>
-                                <View style={styles.txtLeft}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.balanceVimo}</Text>
-                                    <View style={styles.viewSumInvestValue}>
-                                        <Text style={styles.txtTotalInterestReceived}>
-                                            {Utils.formatMoney(dataDash?.so_du)}
-                                        </Text>
-                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </View>
-
-                                </View>
-                            </View>
-                            <View style={styles.wrapTotalInterest}>
-                                <View style={styles.txtRight}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.sumpProfit}</Text>
-                                    <View style={styles.viewSumInvestValue}>
-                                        <Text style={styles.txtTotalInterestExtant} numberOfLines={1}>
-                                            {Utils.formatMoney(dataDash?.tong_tien_lai)}
-                                        </Text>
-                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={styles.wrapRow}>
-                            <View style={styles.wrapTotalInterest}>
-                                <View style={styles.txtLeft}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.totalCaption}</Text>
-                                    <View style={styles.viewSumInvestValue}>
-                                        <Text style={styles.txtTotalInterestReceived} >
-                                            {Utils.formatMoney(dataDash?.tong_goc_con_lai)}
-                                        </Text>
-                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={styles.wrapTotalInterest}>
-                                <View style={styles.txtRight}>
-                                    <Text style={styles.txtSumProfit}>{Languages.home.sumResidualProfit}</Text>
-                                    <View style={styles.viewSumInvestValue}>
-                                        <Text style={styles.txtTotalInterestExtant} >
-                                            {Utils.formatMoney(dataDash?.tong_lai_con_lai)}
-                                        </Text>
-                                        <Text style={styles.txtVNDSmall} >{Languages.home.vnd}</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.viewTopLogo}>
+                <View style={styles.headerContainer}>
+                    <View style={styles.topInvestorContainer}>
                         <Touchable onPress={gotoProfile} style={styles.circleWrap}>
                             {!userManager.userInfo?.avatar_user ?
                                 <AvatarIC width={SCREEN_WIDTH * 0.08} height={SCREEN_WIDTH * 0.08} />
@@ -351,22 +298,35 @@ const Home = observer(() => {
                                 />
                             }
                         </Touchable>
-                        <Touchable style={styles.viewRightTop} onPress={onNotifyInvest}>
+                        <View style={styles.allInvestContainer}>
+                            <Text style={styles.txtSumInvest}>{Languages.home.sumInvest}</Text>
+                            <View style={styles.viewSumInvestValueCenter}>
+                                <Text style={styles.txtSumInvestValue}>{Utils.formatMoney(dataDash?.tong_tien_dau_tu)}</Text>
+                                <Text style={styles.txtVND}>{Languages.home.vnd}</Text>
+                            </View>
+                        </View>
+                        <Touchable onPress={onNotifyInvest}>
                             <IcNotify style={styles.imgNotify} width={SCREEN_WIDTH * 0.08} />
                         </Touchable>
                     </View>
-                </>
+                    <View style={styles.viewTop}>
+                        <View style={styles.wrapRow}>
+                            {renderInvestHeaderItem(Languages.home.balanceVimo, dataDash?.so_du || 0)}
+                            {renderInvestHeaderItem(Languages.home.sumpProfit, dataDash?.tong_tien_lai || 0)}
+                        </View>
+                        <View style={styles.wrapRow}>
+                            {renderInvestHeaderItem(Languages.home.totalCaption, dataDash?.tong_goc_con_lai || 0, styles.txtTotalRemainingOrigin, styles.txtVNDRemainingOrigin)}
+                            {renderInvestHeaderItem(Languages.home.sumResidualProfit, dataDash?.tong_lai_con_lai || 0)}
+                        </View>
+                    </View>
+                </View>
                 :
-                <>
-                    <View style={styles.viewTopLogo}>
-                        <LogoHome style={styles.logo} />
-                    </View>
-                    <View style={styles.viewTopCenter}>
-                        <Text style={styles.txtHello}>{Languages.home.hello}</Text>
-                        <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
-                        <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
-                    </View>
-                </>
+                <View style={styles.topScreenUnAuthn}>
+                    <LogoHome style={styles.logoTienNgay} />
+                    <Text style={styles.txtHello}>{Languages.home.hello}</Text>
+                    <Text style={styles.txtName}>{Languages.home.nameApp}</Text>
+                    <Text style={styles.txtInvest}>{Languages.home.investAndAccumulate}</Text>
+                </View>
             }
             {(!userManager?.userInfo || fastAuthInfoManager.isEnableFastAuth) &&
                 <View style={isIOS ? styles.viewSmallMenuLoginIOS : styles.viewSmallMenuLoginAndroid}>
@@ -375,7 +335,7 @@ const Home = observer(() => {
                 </View>
             }
         </View>
-    ), [styles.viewForeground, styles.viewTop, styles.txtSumInvest, styles.viewSumInvestValueCenter, styles.txtSumInvestValue, styles.txtVND, styles.wrapRow, styles.wrapTotalInterest, styles.txtLeft, styles.txtSumProfit, styles.viewSumInvestValue, styles.txtTotalInterestReceived, styles.txtVNDSmall, styles.txtRight, styles.txtTotalInterestExtant, styles.viewTopLogo, styles.circleWrap, styles.fastImage, styles.viewRightTop, styles.imgNotify, styles.logo, styles.viewTopCenter, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLoginIOS, styles.viewSmallMenuLoginAndroid, userManager.userInfo, fastAuthInfoManager.isEnableFastAuth, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, gotoProfile, onNotifyInvest, renderNavigateScreen]);
+    ), [styles.viewForeground, styles.headerContainer, styles.topInvestorContainer, styles.circleWrap, styles.fastImage, styles.allInvestContainer, styles.txtSumInvest, styles.viewSumInvestValueCenter, styles.txtSumInvestValue, styles.txtVND, styles.imgNotify, styles.viewTop, styles.wrapRow, styles.txtTotalRemainingOrigin, styles.txtVNDRemainingOrigin, styles.topScreenUnAuthn, styles.logoTienNgay, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLoginIOS, styles.viewSmallMenuLoginAndroid, userManager.userInfo, fastAuthInfoManager.isEnableFastAuth, gotoProfile, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, onNotifyInvest, renderInvestHeaderItem, renderNavigateScreen]);
 
     const renderUtility = useCallback((_onPress: () => any, _logo: any, _title: string, _describe: string) => (
         <Touchable style={styles.utilityWrap} onPress={_onPress}>
@@ -426,25 +386,28 @@ const Home = observer(() => {
         }
     }, [fastAuthInfoManager.isEnableFastAuth, userManager?.userInfo]);
 
+    const renderReasonItems = useCallback((describe: string, hasDash?: boolean) => (
+        <>
+            <Text style={styles.txtReason}>{describe}</Text>
+            {!hasDash && <Dash dashThickness={1} dashLength={10} dashGap={5} dashColor={COLORS.GRAY_13} />}
+        </>
+    ), [styles.txtReason]);
+
     const renderBottom = useMemo(() => (
         <View style={styles.viewBottom}>
             <Text style={styles.txtCenter}>{Languages.home.reasonInvest}</Text>
             <View style={styles.viewReason}>
-                <Text style={styles.txtReason}>{Languages.home.reasonOne}</Text>
-                <Dash dashThickness={1} dashLength={10} dashGap={5} dashColor={COLORS.GRAY_13} />
-                <Text style={styles.txtReason}>{Languages.home.reasonTwo}</Text>
-                <Dash dashThickness={1} dashLength={10} dashGap={5} dashColor={COLORS.GRAY_13} />
-                <Text style={styles.txtReason}>{Languages.home.reasonThree}</Text>
-                <Dash dashThickness={1} dashLength={10} dashGap={5} dashColor={COLORS.GRAY_13} />
-                <Text style={styles.txtReason}>{Languages.home.reasonFour}</Text>
-                <Dash dashThickness={1} dashLength={10} dashGap={5} dashColor={COLORS.GRAY_13} />
-                <Text style={styles.txtReason}>{Languages.home.reasonFive}</Text>
+                {renderReasonItems(Languages.home.reasonOne)}
+                {renderReasonItems(Languages.home.reasonTwo)}
+                {renderReasonItems(Languages.home.reasonThree)}
+                {renderReasonItems(Languages.home.reasonFour)}
+                {renderReasonItems(Languages.home.reasonFive, true)}
             </View>
         </View>
-    ), [styles.txtCenter, styles.txtReason, styles.viewBottom, styles.viewReason]);
+    ), [renderReasonItems, styles.txtCenter, styles.viewBottom, styles.viewReason]);
 
     const renderContent = useMemo(() => (
-        <View style={!userManager?.userInfo || fastAuthInfoManager.isEnableFastAuth ? [{ marginTop: -10 }] : [{ marginTop: - SCREEN_HEIGHT * 0.02 }]}>
+        <View style={!userManager?.userInfo || fastAuthInfoManager.isEnableFastAuth ? [{ marginTop: -3 }] : [{ marginTop: - SCREEN_HEIGHT * 0.02 }]}>
             <Text style={styles.txtCenter}>{Languages.home.investPackages}</Text>
             <FlatList
                 showsVerticalScrollIndicator={false}
@@ -481,7 +444,7 @@ const Home = observer(() => {
         refPopupFirst.current?.show();
     };
 
-    const onRefreshControlParallaw = useCallback(() => {
+    const onRefreshControlParallax = useCallback(() => {
         condition.current.offset = 0;
         fetchDataInvest();
         fetchDataBanner();
@@ -509,7 +472,7 @@ const Home = observer(() => {
                     refreshControl={
                         <RefreshControl
                             refreshing={isLoading}
-                            onRefresh={onRefreshControlParallaw}
+                            onRefresh={onRefreshControlParallax}
                             tintColor={COLORS.WHITE}
                             colors={[COLORS.RED, COLORS.GREEN, COLORS.GRAY_1]}
                         />
