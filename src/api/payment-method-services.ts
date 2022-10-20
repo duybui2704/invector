@@ -22,6 +22,8 @@ export class PaymentMethodServices extends BaseService {
 
     getBank = async () => this.api().post(API_CONFIG.GET_BANK, this.buildFormData({}));
 
+    getPaymentMethod = async () => this.api().get(API_CONFIG.PAYMENT_METHOD, this.buildFormData({}));
+
     requestChoosePaymentReceiveInterest = async (
         type_payment: string,
         bank_name?: string,

@@ -22,10 +22,11 @@ const Languages = {
     home: {
         title: 'Trang chủ',
         sumInvest: 'Tổng vốn đầu tư',
-        sumpProfit: 'Tổng lãi đã nhận',
-        sumResidualProfit: 'Tổng lãi còn lại',
-        totalCaption: 'Tổng vốn còn lại',
+        sumpProfit: 'Tiền lãi đã nhận',
+        sumResidualProfit: 'Tiền lãi còn lại',
+        totalCaption: 'Tiền vốn còn lại',
         balanceVimo: 'Số dư ví Vimo',
+        rootReceived: 'Tiền vốn đã nhận',
         have: 'Đang có',
         vnd: ' VNĐ',
         invest: 'Đầu tư',
@@ -157,7 +158,8 @@ const Languages = {
         contract: 'Hợp đồng ',
         skip: 'Bỏ qua',
         or: 'Hoặc',
-        fileDir: 'file://'
+        fileDir: 'file://',
+        version: 'Phiên bản 2.1.20221020'
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng TienNgay.vn',

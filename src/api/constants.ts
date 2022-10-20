@@ -35,7 +35,7 @@ export enum API_CONFIG {
     GET_BANNERS_HOME = '/banner/home',
     ENCRYPT = '/api/Encrypt',
     CHECK_APP_REVIEW = '/app/review',
-    GET_REFERRAL_USER_POLICY = 'app/config',
+    GET_APP_CONFIG = 'app/config',
 
     // authentication
     LOGIN = 'auth/signin',  // Dang nhap investor
@@ -89,6 +89,7 @@ export enum API_CONFIG {
     CHECK_BILL = 'contract/check_bill',  // check_bill
 
     // link account with payment method
+    PAYMENT_METHOD = 'app/payment_method',    // danh sách các phương thức
     REQUEST_SEND_VIMO_LINK = 'vimo_link/send_link_vimo',    // gui lien ket vimo
     REQUEST_ACTIVE_VIMO_LINK = 'vimo_link/active_link_vimo',  // active lien ket vimo
     REQUEST_CANCEL_VIMO_LINK = 'vimo_link/unLink_vimo',       // huy lien ket vimo

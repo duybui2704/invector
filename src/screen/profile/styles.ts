@@ -102,6 +102,14 @@ export const MyStylesProfile = () => useMemo(() => StyleSheet.create({
         borderWidth: 2,
         borderColor: COLORS.GREEN
     },
+    version: {
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_9,
+        textAlign: 'right',
+        fontSize: Configs.FontSize.size10,
+        marginTop: 10,
+        marginBottom: 5 
+    },
     headerAccName: {
         ...Styles.typography.medium,
         color: COLORS.GREEN,

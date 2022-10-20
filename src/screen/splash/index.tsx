@@ -16,12 +16,13 @@ import { PopupActionTypes } from '@/models/typesPopup';
 import Navigator from '@/routers/Navigator';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import Utils from '@/utils/Utils';
+import { useAppStore } from '@/hooks';
 
 const Splash = observer(() => {
+    const {apiServices, common} = useAppStore();
     const storeUrlRef = useRef<string>();
     const popupAlert = useRef<PopupActionTypes>(null);
     const popupMaintainRef = useRef<PopupActionTypes>(null);
-
 
     const nextScreen = useCallback(async () => {
         setTimeout(async () => {
@@ -50,6 +51,13 @@ const Splash = observer(() => {
         }
     }, [nextScreen]);
 
+    const fetchAppConfig = useCallback(async () => {
+        const config = await apiServices.common.getAppConfig();
+
+        common.setAppConfig(config.data);
+        fetchRemoteConfig();
+    }, [nextScreen]);
+
     const checkUpdateApp = useCallback(async () => {
         VersionCheck.needUpdate({
             provider: isIOS ? 'appStore' : 'playStore',
@@ -61,15 +69,14 @@ const Splash = observer(() => {
                 storeUrlRef.current = res.storeUrl;
                 popupAlert.current?.show();
             } else {
-                fetchRemoteConfig();
+                fetchAppConfig();
             }
         });
-    }, [fetchRemoteConfig]);
+    }, []);
 
     useEffect(() => {
         checkUpdateApp();
     }, []);
-
 
     const onSkip = useCallback(() => {
         nextScreen();

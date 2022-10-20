@@ -30,15 +30,18 @@ const PaymentMethod = observer(({ route }: any) => {
         setSelectingVimo(userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.VIMO);
     }, [userManager.userInfo?.tra_lai?.type_interest_receiving_account]);
 
-    const fetchUserInfo = useCallback(async () => {
+    const fetchData = useCallback(async () => {
         const resUser = await apiServices.auth.getUserInfo();
-        setLoading(false);
         if (resUser.success) {
             const user = resUser.data as UserInfoModal;
             userManager.updateUserInfo({
                 ...userManager.userInfo,
                 ...user
             });
+        }
+        const resPaymentMethod = await apiServices.paymentMethod.getPaymentMethod();
+        setLoading(false);
+        if (resPaymentMethod.success) {
         }
     }, [apiServices.auth, userManager]);
 
@@ -69,12 +72,12 @@ const PaymentMethod = observer(({ route }: any) => {
         const res = await apiServices.paymentMethod.requestChoosePaymentReceiveInterest(TYPE_INTEREST_RECEIVE_ACC.VIMO);
 
         if (res.success) {
-            fetchUserInfo();
+            fetchData();
             ToastUtils.showSuccessToast(Languages.msgNotify.successChangeMethod);
         } else {
             setLoading(false);
         }
-    }, [apiServices.paymentMethod, fetchUserInfo]);
+    }, [apiServices.paymentMethod, fetchData]);
 
     const renderItemMethod = useCallback((leftIcon?: any, title?: string, activeMethod?: boolean, disabled?: boolean) => {
         const _onPressToChooseMethod = () => {

@@ -23,7 +23,6 @@ class AppStore {
 
     @observable common = new Common();
 
-
     constructor() {
         makeObservable(this);
     }

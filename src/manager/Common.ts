@@ -1,3 +1,4 @@
+import { AppConfigModel } from '@/models/app-config';
 import { action, makeObservable, observable } from 'mobx';
 
 export class Common {
@@ -8,6 +9,8 @@ export class Common {
     @observable successChangePass = false;
 
     @observable successGetOTP = false;
+
+    @observable appConfig: AppConfigModel | undefined;
 
     constructor() {
         makeObservable(this);
@@ -27,5 +30,9 @@ export class Common {
 
     @action setSuccessChangePass(successChangePass: boolean) {
         this.successChangePass = successChangePass;
+    }
+
+    @action setAppConfig(appConfig: any) {
+        this.appConfig = appConfig;
     }
 }

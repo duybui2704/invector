@@ -66,7 +66,7 @@ const configTouchId = {
 const Profile = observer(() => {
     const styles = MyStylesProfile();
     const customStyles = MyStylesPinCodeProfile();
-    const { userManager, fastAuthInfoManager, apiServices } = useAppStore();
+    const { userManager, fastAuthInfoManager, apiServices, common } = useAppStore();
     const { supportedBiometry } = fastAuthInfoManager;
     const popupError = useRef<PopupActionTypes>(null);
     const [isEnabledSwitch, setIsEnabledSwitch] = useState(SessionManager?.isEnableFastAuthentication || false);
@@ -507,7 +507,7 @@ const Profile = observer(() => {
                     </View>
                 </Touchable>
                 <View style={styles.containerPayMethodFeature}>
-                    {renderKeyValue(Languages.account.linkWallet, <IcWallet />)}
+                    {common.appConfig?.vimo_link && renderKeyValue(Languages.account.linkWallet, <IcWallet />)}
                     {renderKeyValue(Languages.account.payMethod, <PayMethodIC />, true)}
                 </View>
                 <View style={styles.containerFeature}>
@@ -538,6 +538,8 @@ const Profile = observer(() => {
                     onPress={onOpenPopupDeleteAccount}
                     isLowerCase
                 />}
+
+                <Text style={styles.version}>{Languages.common.version}</Text>
             </ScrollView>
             {popupUpdatePassCode}
             {renderPopupError}

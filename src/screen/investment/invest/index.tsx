@@ -28,16 +28,19 @@ import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
 import { InfoLinkVimoModal } from '@/models/user-models';
 import ToastUtils from '@/utils/ToastUtils';
+import { PaymentMethodModel } from '@/models/payment-method-model';
 
 const Invest = observer(({ route }: any) => {
     const styles = MyStylesInvest();
+    const { apiServices, userManager } = useAppStore();
+
     const [dataInvestment, setDataInvestment] = useState<PackageInvest>();
     const [methodPayment, setMethodPayment] = useState<string>();
     const [isCheckBox, setIsCheckBox] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [paymentMethodConfig, setPaymentMethodConfig] = useState<PaymentMethodModel>();
     const refModal = useRef<PopupActionTypes>(null);
     const refPopupPolicy = useRef<PopupActionTypes>(null);
-    const { apiServices, userManager } = useAppStore();
     const [statusVimo, setStatusVimo] = useState<boolean>(false);
     const refInvestId = useRef<any>(null);
     const refScreen = useRef<any>(null);
@@ -49,9 +52,20 @@ const Invest = observer(({ route }: any) => {
         }
         if (refInvestId.current) {
             fetchDetailInvestNow();
-            fetchInfoVimoLink();
+            fetchData();
         }
     }, []);
+
+    const fetchData = useCallback(async () => {
+        setIsLoading(true)
+        const resPaymentMethod = await apiServices.paymentMethod.getPaymentMethod();
+        setIsLoading(false);
+        const paymentMethodConfig = resPaymentMethod.data as PaymentMethodModel;
+        setPaymentMethodConfig(paymentMethodConfig)
+        if (resPaymentMethod.success && paymentMethodConfig.vimo) {
+            fetchInfoVimoLink();
+        }
+    }, [apiServices.auth, userManager]);
 
     const fetchInfoVimoLink = useCallback(async () => {
         const res = await apiServices.paymentMethod.requestInfoLinkVimo();
@@ -213,9 +227,10 @@ const Invest = observer(({ route }: any) => {
                 <Text style={styles.labelMoney}>{Languages.detailInvest.money}</Text>
                 <Text style={styles.money}>{Utils.formatMoney(dataInvestment?.so_tien_dau_tu)}</Text>
                 <Text style={styles.headerText}>{Languages.detailInvest.method}</Text>
-                {renderMethod(<IcNganLuong />, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
-                {renderMethod(<IcBank />, Languages.detailInvest.bank, ENUM_METHOD_PAYMENT.BANK)}
-                {renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, statusVimo)}
+
+                {paymentMethodConfig?.nganluong && renderMethod(<IcNganLuong />, Languages.detailInvest.nganLuong, ENUM_METHOD_PAYMENT.NGAN_LUONG)}
+                {paymentMethodConfig?.bank && renderMethod(<IcBank />, Languages.detailInvest.bank, ENUM_METHOD_PAYMENT.BANK)}
+                {paymentMethodConfig?.vimo && renderMethod(<IcVimo />, Languages.detailInvest.vimo, ENUM_METHOD_PAYMENT.VIMO, statusVimo)}
 
                 <View style={styles.viewBottom}>
                     <Touchable onPress={checkBox}>

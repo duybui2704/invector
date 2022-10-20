@@ -20,7 +20,7 @@ export class CommonServices extends BaseService {
 
     getAppInReview = async () => this.api().post(API_CONFIG.CHECK_APP_REVIEW);
 
-    getReferralUser = async () => this.api().get(API_CONFIG.GET_REFERRAL_USER_POLICY);
+    getAppConfig = async () => this.api().get(API_CONFIG.GET_APP_CONFIG);
 
     ratingApp = async (point: number, note: string) =>
         this.api().post(

@@ -46,7 +46,8 @@ const Home = observer(() => {
     const {
         apiServices,
         userManager,
-        fastAuthInfoManager
+        fastAuthInfoManager,
+        common
     } = useAppStore();
     const [btnInvest, setBtnInvest] = useState<string>(ENUM_INVEST_STATUS.INVEST_NOW);
     const isFocused = useIsFocused();
@@ -311,7 +312,9 @@ const Home = observer(() => {
                     </View>
                     <View style={styles.viewTop}>
                         <View style={styles.wrapRow}>
-                            {renderInvestHeaderItem(Languages.home.balanceVimo, dataDash?.so_du || 0)}
+                            {common.appConfig?.vimo_link
+                                ? renderInvestHeaderItem(Languages.home.balanceVimo, dataDash?.so_du || 0)
+                                : renderInvestHeaderItem(Languages.home.rootReceived, dataDash?.tong_goc_da_tra || 0)}
                             {renderInvestHeaderItem(Languages.home.sumpProfit, dataDash?.tong_tien_lai || 0)}
                         </View>
                         <View style={styles.wrapRow}>
