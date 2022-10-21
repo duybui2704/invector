@@ -38,7 +38,7 @@ const NotificationListening = observer(({ children }: any) => {
         if (fcmToken && SessionManager.accessToken) {
             apiServices?.notification?.createFcmToken(fcmToken);
         }
-    }, [apiServices?.notification]);
+    }, []);
 
     const getUnreadNotify = useCallback(async () => {
         if (userManager.userInfo) {
@@ -81,7 +81,6 @@ const NotificationListening = observer(({ children }: any) => {
     );
 
     useEffect(() => {
-        createToken();
         Utils.configNotification(navigateNotify);
         PushNotificationIOS.addEventListener(
             'localNotification',
@@ -106,6 +105,11 @@ const NotificationListening = observer(({ children }: any) => {
             });
         return unsubscribe;
     }, []);
+
+    useEffect(() => {
+        createToken();
+    }, [userManager?.userInfo?.phone_number]);
+
     return <>{children}</>;
 });
 
