@@ -101,7 +101,7 @@ const Languages = {
     },
     account: {
         title: 'Tài khoản',
-        payMethod: 'Hình thức nhận tiền',
+        payMethod: 'Tài khoản nhận tiền',
         linkWallet: 'Liên kết ví điện tử',
         changePwd: 'Đổi mật khẩu',
         loginWithFinger: 'Xác thực nhanh vân tay',
@@ -572,7 +572,10 @@ const Languages = {
         update: 'Đồng ý',
         deleteAccount: 'Xoá tài khoản',
         deleteAccountConfirm: 'Bạn có chắc chắn muốn xoá tài khoản không?\nSau khi xoá tài khoản, bạn không thể đăng nhập vào ứng dụng được nữa. Vui lòng liên hệ 1900 6907 để được hỗ trợ.',
-        completionOtpDelete: 'Hãy xác nhận mã OTP chúng tôi đã gửi cho bạn để hoàn thành việc xoá tài khoản.'
+        completionOtpDelete: 'Hãy xác nhận mã OTP chúng tôi đã gửi cho bạn để hoàn thành việc xoá tài khoản.',
+        vimo: 'Thông báo dừng cổng thanh toán qua VIMO',
+        vimoDes: '<vimo>Từ ngày <b>22/10/2022</b>, TienNgay.vn sẽ dừng các kênh thanh toán, phương thức trả lãi qua ví VIMO. Đề nghị quý nhà đầu tư cập nhật hình thức trả lãi qua tài khoản ngân hàng.\n\nTienNgay.vn xin lỗi vì bất tiện này.\n</vimo>',
+        vimoBtn: 'Cập nhật tài khoản ngân hàng'
     },
     noInternet: {
         offline: 'Kết nối bị gián đoạn',

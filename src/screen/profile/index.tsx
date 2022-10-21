@@ -251,7 +251,11 @@ const Profile = observer(() => {
                         });
                     break;
                 case Languages.account.payMethod:
-                    Navigator.pushScreen(ScreenName.paymentMethod);
+                    if(common.appConfig?.vimo_link){
+                        Navigator.pushScreen(ScreenName.paymentMethod);
+                    }else{
+                        Navigator.pushScreen(ScreenName.accountBank);
+                    }
                     break;
                 case Languages.account.hotline:
                     callPhone();
@@ -287,7 +291,7 @@ const Profile = observer(() => {
                 containerContent={styles.featureContainer}
             />
         );
-    }, [callPhone, styles.featureContainer, styles.txtTitleKeyValue]);
+    }, [callPhone, styles.featureContainer, styles.txtTitleKeyValue, common.appConfig]);
 
     const onToggleBiometry = useCallback(
         (value: any) => {

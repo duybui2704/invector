@@ -131,7 +131,13 @@ export const HtmlStyles = {
         ...Styles.typography.regular,
         color: COLORS.GREEN,
         fontSize: Configs.FontSize.size12
-    }
+    },
+    vimo: {
+        ...Styles.typography.regular,
+        fontSize: Configs.FontSize.size14,
+        color: COLORS.GRAY_7,
+        textAlign: 'left'
+    },
 };
 
 export const HtmlStylesSeen = {

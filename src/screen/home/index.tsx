@@ -14,7 +14,7 @@ import LogoLuckyLott from '@/assets/image/logo_lucky_lott.svg';
 import AvatarIC from '@/assets/image/ic_avatar.svg';
 import Images from '@/assets/Images';
 import { isIOS } from '@/common/Configs';
-import { ENUM_BIOMETRIC_TYPE, ENUM_INVEST_STATUS } from '@/common/constants';
+import { ENUM_BIOMETRIC_TYPE, ENUM_INVEST_STATUS, TYPE_INTEREST_RECEIVE_ACC } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import DraggableComponent from '@/components/Draggable';
@@ -39,6 +39,7 @@ import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import LogoHome from '../../assets/image/header/logo_home.svg';
 import NotificationListening from './NotificationListening';
 import { MyStylesHome } from './styles';
+import PopupVimo from '@/components/PopupVimo';
 
 const PAGE_SIZE = 4;
 
@@ -61,6 +62,8 @@ const Home = observer(() => {
     const [iconBanner, setIconBanner] = useState<BannerHome>();
     const [unMore, setUnMore] = useState<boolean>(false);
     const ref = useRef(null);
+    const refPopup = useRef<PopupActions>(null);
+
     const condition = useRef({
         isLoading: true,
         offset: 0,
@@ -88,11 +91,14 @@ const Home = observer(() => {
     useEffect(() => {
         if (isFocused) {
             if (SessionManager.accessToken) {
-                getInfo();
+                getUserInfo();
             }
         }
     }, [isFocused]);
 
+    const showPopupVimo = useCallback(()=>{
+        refPopup?.current?.showAlert?.(Languages.maintain.vimo, Languages.maintain.vimoDes);
+    }, [])
 
     const auth = useCallback(() => {
         if (fastAuthInfoManager.isEnableFastAuth && fastAuthInfoManager?.supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
@@ -113,13 +119,16 @@ const Home = observer(() => {
         }
     }, [isFocused]);
 
-    const getInfo = useCallback(async () => {
+    const getUserInfo = useCallback(async () => {
         const resInfoAcc = await apiServices.auth.getUserInfo();
         if (resInfoAcc.success) {
             const data = resInfoAcc?.data as UserInfoModal;
             userManager.updateUserInfo({
                 ...data
             });
+            if(userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.VIMO){
+                showPopupVimo();
+            }
         }
     }, [apiServices.auth, userManager]);
 
@@ -235,6 +244,10 @@ const Home = observer(() => {
         Navigator.navigateToDeepScreen([ScreenName.tabs], TabsName.accountTabs);
     }, []);
 
+    const gotoReceivedBank = useCallback(() => {
+        Navigator.navigateToDeepScreen([ScreenName.tabs, TabsName.accountTabs], ScreenName.accountBank);
+    }, []);
+
     const keyExtractor = useCallback((item: any, index: number) => `${index}${item.id}`, []);
 
     const renderNewsItem = useCallback(({ item }: { item: BannerModel }) => {
@@ -338,7 +351,7 @@ const Home = observer(() => {
                 </View>
             }
         </View>
-    ), [styles.viewForeground, styles.headerContainer, styles.topInvestorContainer, styles.circleWrap, styles.fastImage, styles.allInvestContainer, styles.txtSumInvest, styles.viewSumInvestValueCenter, styles.txtSumInvestValue, styles.txtVND, styles.imgNotify, styles.viewTop, styles.wrapRow, styles.txtTotalRemainingOrigin, styles.txtVNDRemainingOrigin, styles.topScreenUnAuthn, styles.logoTienNgay, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLoginIOS, styles.viewSmallMenuLoginAndroid, userManager.userInfo, fastAuthInfoManager.isEnableFastAuth, gotoProfile, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, onNotifyInvest, renderInvestHeaderItem, renderNavigateScreen]);
+    ), [styles.viewForeground, styles.headerContainer, styles.topInvestorContainer, styles.circleWrap, styles.fastImage, styles.allInvestContainer, styles.txtSumInvest, styles.viewSumInvestValueCenter, styles.txtSumInvestValue, styles.txtVND, styles.imgNotify, styles.viewTop, styles.wrapRow, styles.txtTotalRemainingOrigin, styles.txtVNDRemainingOrigin, styles.topScreenUnAuthn, styles.logoTienNgay, styles.txtHello, styles.txtName, styles.txtInvest, styles.viewSmallMenuLoginIOS, styles.viewSmallMenuLoginAndroid, userManager.userInfo, fastAuthInfoManager.isEnableFastAuth, gotoProfile, dataDash?.tong_tien_dau_tu, dataDash?.so_du, dataDash?.tong_tien_lai, dataDash?.tong_goc_con_lai, dataDash?.tong_lai_con_lai, onNotifyInvest, renderInvestHeaderItem, renderNavigateScreen, common.appConfig]);
 
     const renderUtility = useCallback((_onPress: () => any, _logo: any, _title: string, _describe: string) => (
         <Touchable style={styles.utilityWrap} onPress={_onPress}>
@@ -457,9 +470,9 @@ const Home = observer(() => {
             fetchContractsDash();
         }
         if (SessionManager.accessToken) {
-            getInfo();
+            getUserInfo();
         }
-    }, [auth, fetchContractsDash, fetchDataBanner, fetchDataInvest, getInfo, userManager.userInfo]);
+    }, [auth, fetchContractsDash, fetchDataBanner, fetchDataInvest, getUserInfo, userManager.userInfo]);
 
     return (
         <NotificationListening>
@@ -498,6 +511,10 @@ const Home = observer(() => {
                     ref={refPopupFirst}
                     image={iconBanner?.image}
                     onConfirm={focusContracts}
+                />
+                <PopupVimo
+                    ref={refPopup}
+                    onConfirm={gotoReceivedBank}
                 />
                 {isLoading && <Loading isOverview />}
             </View >
