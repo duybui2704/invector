@@ -69,6 +69,7 @@ const PopupInvestFirst = forwardRef<PopupActions, PopupInvestFirstProps>(
                     height: IMG_HEIGHT
                 }}
                 source={{ uri: image }}
+                resizeMode={'cover'}
             />
         ), [image]);
 
@@ -81,17 +82,19 @@ const PopupInvestFirst = forwardRef<PopupActions, PopupInvestFirstProps>(
                 hideModalContentWhileAnimating
                 onBackdropPress={onClose}
                 coverScreen={true}>
-                <View style={styles.mainContainer}>
+                <TouchableOpacity
+                    onPress={onPress}
+                    style={styles.mainContainer}>
                     {renderInfo}
-                    {renderBtnSubmit}
-                </View>
+                    {/* {renderBtnSubmit} */}
+                </TouchableOpacity>
             </Modal>
         );
     });
 export default PopupInvestFirst;
 
 const IMG_WIDTH = Dimensions.get('screen').width / 1.3;
-const IMG_HEIGHT = IMG_WIDTH;
+const IMG_HEIGHT = IMG_WIDTH/0.75;
 
 const styles = StyleSheet.create({
     mainContainer: {

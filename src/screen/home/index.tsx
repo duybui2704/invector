@@ -83,20 +83,14 @@ const Home = observer(() => {
         if (isFocused) {
             condition.current.offset = 0;
             fetchDataInvest();
-            fetchDataBanner();
+            if (SessionManager.accessToken) {
+                getUserInfo();
+            }
             auth();
         }
     }, [isFocused]);
 
-    useEffect(() => {
-        if (isFocused) {
-            if (SessionManager.accessToken) {
-                getUserInfo();
-            }
-        }
-    }, [isFocused]);
-
-    const showPopupVimo = useCallback(()=>{
+    const showPopupVimo = useCallback(() => {
         refPopup?.current?.showAlert?.(Languages.maintain.vimo, Languages.maintain.vimoDes);
     }, [])
 
@@ -112,12 +106,13 @@ const Home = observer(() => {
     }, [fastAuthInfoManager]);
 
     useEffect(() => {
-        if (isFocused) {
-            if (userManager.userInfo) {
-                fetchContractsDash();
+        if (isFocused && userManager.userInfo) {
+            fetchContractsDash();
+            if(!iconBanner){
+                fetchDataBanner();
             }
         }
-    }, [isFocused]);
+    }, [isFocused, userManager.userInfo]);
 
     const getUserInfo = useCallback(async () => {
         const resInfoAcc = await apiServices.auth.getUserInfo();
@@ -126,7 +121,7 @@ const Home = observer(() => {
             userManager.updateUserInfo({
                 ...data
             });
-            if(userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.VIMO){
+            if (userManager.userInfo?.tra_lai?.type_interest_receiving_account === TYPE_INTEREST_RECEIVE_ACC.VIMO) {
                 showPopupVimo();
             }
         }
@@ -188,7 +183,7 @@ const Home = observer(() => {
         if (resBannerHome.success) {
             const bannerHome = resBannerHome?.data as BannerHome;
             setIconBanner(bannerHome);
-            if (bannerHome && bannerHome.icon && bannerHome.image) {
+            if (bannerHome && bannerHome.image) {
                 setTimeout(() => {
                     setShowFloating(true);
                     showFirstPopup();
@@ -463,7 +458,6 @@ const Home = observer(() => {
     const onRefreshControlParallax = useCallback(() => {
         condition.current.offset = 0;
         fetchDataInvest();
-        fetchDataBanner();
         auth();
 
         if (userManager.userInfo) {
@@ -472,7 +466,7 @@ const Home = observer(() => {
         if (SessionManager.accessToken) {
             getUserInfo();
         }
-    }, [auth, fetchContractsDash, fetchDataBanner, fetchDataInvest, getUserInfo, userManager.userInfo]);
+    }, [auth, fetchContractsDash, fetchDataInvest, getUserInfo, userManager.userInfo]);
 
     return (
         <NotificationListening>
