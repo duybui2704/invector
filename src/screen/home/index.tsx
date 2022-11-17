@@ -106,8 +106,10 @@ const Home = observer(() => {
     }, [fastAuthInfoManager]);
 
     useEffect(() => {
-        if (isFocused && userManager.userInfo) {
-            fetchContractsDash();
+        if (isFocused) {
+            if(userManager.userInfo){
+                fetchContractsDash();
+            }
             if(!iconBanner){
                 fetchDataBanner();
             }
