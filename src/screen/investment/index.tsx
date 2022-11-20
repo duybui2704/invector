@@ -71,13 +71,16 @@ const Investment = observer(({ route }: { route: any }) => {
     const { apiServices } = useAppStore();
 
     useEffect(() => {
-        if(isFocus){
-            setBtnInvest(ENUM_INVEST_STATUS.INVEST_NOW);
-            fetchData(ENUM_INVEST_STATUS.INVEST_NOW, false);
+        if (isFocus) {
+            fetchData(btnInvest, false);
             fetchDataTimeInvestment();
             fetchDataMoney();
         }
     }, [isFocus]);
+
+    useEffect(() => {
+        setBtnInvest(ENUM_INVEST_STATUS.INVEST_NOW);
+    }, []);
 
     const fetchDataInvested = useCallback(async (isLoadMore?: boolean) => {
         setCanLoadMoreUI(true);
@@ -86,7 +89,7 @@ const Investment = observer(({ route }: { route: any }) => {
             setIsLoading(true);
         }
         condition.current.isLoading = true;
-        console.log('test',condition.current.option);
+        console.log('test', condition.current.option);
         const resInvest = await apiServices.invest.getListContractInvesting(
             condition.current.option,
             condition.current.textSearch,
@@ -264,8 +267,8 @@ const Investment = observer(({ route }: { route: any }) => {
             setShowSuggestion(true);
             setDataSuggestion(Utils.updateSuggestions(trimValue));
             if (Number(Utils.formatTextToNumber(trimValue)) >= 10e5) {
-                condition.current.fromDate='';
-                condition.current.toDate='';
+                condition.current.fromDate = '';
+                condition.current.toDate = '';
                 condition.current.textSearch = Number(Utils.formatTextToNumber(trimValue)).toString();
                 switch (btnInvest) {
                     case ENUM_INVEST_STATUS.INVEST_NOW:
@@ -331,9 +334,9 @@ const Investment = observer(({ route }: { route: any }) => {
             condition.current.moneyInvest = '';
             condition.current.moneyInvested = '';
             condition.current.textSearch = '';
-            condition.current.timeInvestment='';
-            if(type===ENUM_INVEST_STATUS.HISTORY) condition.current.option=ENUM_INVESTED_TYPE.INVESTED;
-            if(type===ENUM_INVEST_STATUS.INVESTING) condition.current.option=ENUM_INVESTED_TYPE.INVESTING;
+            condition.current.timeInvestment = '';
+            if (type === ENUM_INVEST_STATUS.HISTORY) condition.current.option = ENUM_INVESTED_TYPE.INVESTED;
+            if (type === ENUM_INVEST_STATUS.INVESTING) condition.current.option = ENUM_INVESTED_TYPE.INVESTING;
             popupInvestedRef.current.clear();
             setMoneyValueInvested({});
             setMoneyValueInvest({});
