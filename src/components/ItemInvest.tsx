@@ -28,8 +28,8 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
                 <View style={styles.rowTop}>
                     <Text style={[styles.txtMoney, styleText]}>{Utils.formatMoney(data?.so_tien_dau_tu)}</Text>
                     <View style={styles.wrapText}>
-                        <Text style={styles.txtInterest}>{Languages.invest.interest}</Text>
-                        <Text style={styles.txtPercent}>{data?.ti_le_lai_suat_hang_thang}</Text>
+                        <Text style={styles.txtInterest}>{Languages.invest.interestYear}</Text>
+                        <Text style={styles.txtPercent}>{data?.ti_le_lai_suat_hang_nam}</Text>
                     </View>
                 </View>
                 <Dash

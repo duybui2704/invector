@@ -149,7 +149,7 @@ export const DetailInvestment = observer(({ route }: any) => {
                         <Text style={styles.title}>{Languages.detailInvest.information}</Text>
                         {renderInfoItem(Languages.detailInvest.idContract, `${data?.ma_hop_dong}`, COLORS.GREEN)}
                         {renderInfoItem(Languages.detailInvest.moneyInvest, Utils.formatMoney(data?.so_tien_dau_tu), COLORS.GREEN)}
-                        {renderInfoItem(Languages.detailInvest.interest, `${data?.ti_le_lai_suat_hang_thang}`)}
+                        {renderInfoItem(Languages.detailInvest.interestYear, `${data?.ti_le_lai_suat_hang_nam}`)}
                         {renderInfoItem(Languages.detailInvest.interestMonth, Utils.formatMoney(data?.lai_hang_thang))}
                         {status !== ENUM_INVEST_STATUS.INVEST_NOW && renderInfoItem(Languages.detailInvest.day, `${data?.ngay_dau_tu}`, '')}
                         {renderInfoItem(Languages.detailInvest.amountInterest, Utils.formatMoney(data?.tong_lai_du_kien))}

@@ -10,6 +10,7 @@ export interface PackageInvest {
     ngay_dao_han: string;
     hinh_thuc_tra_lai: string;
     ti_le_lai_suat_hang_thang: string;
+    ti_le_lai_suat_hang_nam: string;
     trang_thai_hop_dong: string;
     ngay_dao_han_du_kien: string;
     tong_lai_nhan_duoc: string;

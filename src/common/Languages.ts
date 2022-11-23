@@ -71,6 +71,7 @@ const Languages = {
         formalPayment: 'Hình thức trả lãi',
         investNow: 'Đầu tư ngay',
         interest: 'Lãi suất tháng',
+        interestYear: 'Lãi suất năm',
         attractInvest: 'Đầu tư hấp dẫn',
         intent: 'Tổng lãi dự kiến',
         getMoney: 'Lãi đã nhận',
@@ -159,7 +160,7 @@ const Languages = {
         skip: 'Bỏ qua',
         or: 'Hoặc',
         fileDir: 'file://',
-        version: 'Phiên bản 2.1.20221120'
+        version: 'Phiên bản 2.1.20221123'
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng TienNgay.vn',
@@ -409,6 +410,7 @@ const Languages = {
         title: 'Chi tiết khoản đầu tư',
         information: 'Thông tin hợp đồng',
         idContract: 'Mã số hợp đồng',
+        interestYear: 'Lãi suất hàng năm',
         interest: 'Lãi suất hàng tháng',
         amountInterest: 'Tổng lãi dự kiến',
         period: 'Kỳ hạn đầu tư',
