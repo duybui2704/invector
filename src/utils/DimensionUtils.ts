@@ -18,6 +18,7 @@ function deviceHasNotch() {
             case 2778: // iPhone 12 ProMax,
             case 2340:// iPhone 12 mini
             case 2532: // iPhone 12, 12 pro
+            case 2556: // iPhone 14 pro
                 return true;
             default: break;
         }
