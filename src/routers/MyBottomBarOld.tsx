@@ -1,38 +1,38 @@
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react';
 import React, { useCallback } from 'react';
+import { AnimatedTabBarNavigator } from 'react-native-animated-nav-tab-bar';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import { ICONS } from '@/assets/icons/constant';
 import { IconTienngay } from '@/assets/icons/icon-tienngay';
-import { useAppStore } from '@/hooks';
-import SessionManager from '@/manager/SessionManager';
+import ScreenName, { TabsName } from '../common/screenNames';
+import { COLORS, Styles } from '@/theme';
 import Home from '@/screen/home';
-import { NotifyInvest } from '@/screen/home/notifyInvest';
 import Investment from '@/screen/investment';
-import { DetailInvestment } from '@/screen/investment/detailInvestment';
-import Invest from '@/screen/investment/invest';
-import PaymentWebview from '@/screen/investment/paymentWebview';
-import TransferScreen from '@/screen/investment/tranferBank';
 import Transaction from '@/screen/payment/Transaction';
 import Profile from '@/screen/profile';
+import Report from '@/screen/report';
+import { useAppStore } from '@/hooks';
+import SessionManager from '@/manager/SessionManager';
+import {DetailInvestment} from '@/screen/investment/detailInvestment';
+import Invest from '@/screen/investment/invest';
+import VerifyOTP from '@/screen/profile/verifyOTP/VerifyOTP';
+import ConfirmPhone from '@/screen/profile/confirmPhone/ConfirmPhone';
 import AccountBank from '@/screen/profile/accountBank/AccountBank';
+import ChangePwd from '@/screen/profile/changePwd/ChangePwd';
+import ShareFriend from '@/screen/profile/shareFriend/ShareFriend';
+import AccountLink from '@/screen/profile/accountLink/AcountLink';
 import AccountIdentify from '@/screen/profile/accountIdentify/AccountIdentify';
 import AccountInfo from '@/screen/profile/accountInfo/AccountInfo';
-import AccountLink from '@/screen/profile/accountLink/AcountLink';
-import ChangePwd from '@/screen/profile/changePwd/ChangePwd';
-import ConfirmPhone from '@/screen/profile/confirmPhone/ConfirmPhone';
 import EditAccountInfo from '@/screen/profile/editAccountInfo/EditAccountInfo';
-import LinkWallet from '@/screen/profile/linkWallet/LinkWallet';
-import MyWebView from '@/screen/profile/myWedView/MyWebView';
 import PaymentMethod from '@/screen/profile/paymentMethod/PaymentMethod';
+import MyWebView from '@/screen/profile/myWedView/MyWebView';
+import { NotifyInvest } from '@/screen/home/notifyInvest';
+import PaymentWebview from '@/screen/investment/paymentWebview';
+import LinkWallet from '@/screen/profile/linkWallet/LinkWallet';
+import TransferScreen from '@/screen/investment/tranferBank';
 import ReferralUsers from '@/screen/profile/referral/ReferralUsers';
-import ShareFriend from '@/screen/profile/shareFriend/ShareFriend';
-import VerifyOTP from '@/screen/profile/verifyOTP/VerifyOTP';
-import Report from '@/screen/report';
-import { COLORS } from '@/theme';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ScreenName, { TabsName } from '../common/screenNames';
 
 const TabsData = [
     {
@@ -69,7 +69,7 @@ const TabsData = [
 ];
 
 const screenOptions = { headerShown: false };
-const Tab = createBottomTabNavigator();
+const Tab = AnimatedTabBarNavigator();
 const Stack = createNativeStackNavigator();
 
 const HomeStack = () => (
@@ -91,7 +91,7 @@ const InvestStack = () => (
     </Stack.Navigator>
 );
 
-const PackageInvestStack = () => (
+const PackageInvestStack= ()=>(
     <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
         <Stack.Screen name={ScreenName.invest} component={Invest} />
@@ -137,7 +137,7 @@ const TabBar = ({ props }: any) => {
     const tab = TabsData.filter((item) => item.name === tabName)[0];
 
     const getColor = useCallback(() => {
-        if (focused) return COLORS.GREEN;
+        if (focused) return COLORS.WHITE;
         return COLORS.GRAY_6;
     }, [focused]);
 
@@ -149,6 +149,7 @@ const TabBar = ({ props }: any) => {
         />
     );
 };
+
 
 const MyBottomTabs = observer(() => {
     const { userManager, fastAuthInfoManager } = useAppStore();
@@ -188,14 +189,19 @@ const MyBottomTabs = observer(() => {
 
     return (
         <Tab.Navigator
-            screenOptions={{
-                headerShown: false,
-                tabBarActiveTintColor: COLORS.GREEN,
-                tabBarInactiveTintColor: COLORS.GRAY,
-                tabBarStyle: { 
-                    padding: 5
-                 },
+            tabBarOptions={{
+                activeTintColor: COLORS.WHITE,
+                inactiveTintColor: COLORS.BLACK,
+                activeBackgroundColor: COLORS.GREEN,
+                labelStyle: {
+                    ...Styles.typography.medium,
+                    color: COLORS.WHITE
+                }
             }}
+            appearance={{
+                horizontalPadding: 10
+            }}
+
         >
             <Tab.Screen
                 name={TabsName.homeTabs}
