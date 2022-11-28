@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: 15,
+        paddingTop: 5,
+        paddingBottom: 15,
         paddingHorizontal: 20
     },
     txtTitle: {
@@ -104,12 +105,12 @@ const styles = StyleSheet.create({
     wrapButton: {
         flexDirection: 'row',
         width: SCREEN_WIDTH - 90,
-        marginTop: 30
+        marginTop: 20
     },
     cancelButton: {
         width: (SCREEN_WIDTH - 90) / 2,
         backgroundColor: COLORS.GRAY,
-        paddingVertical: 15,
+        paddingVertical: 10,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 50
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     confirmButton: {
         width: (SCREEN_WIDTH - 110) / 2,
         backgroundColor: COLORS.GREEN,
-        paddingVertical: 15,
+        paddingVertical: 10,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 50,
@@ -125,10 +126,10 @@ const styles = StyleSheet.create({
     },
     txtVerify: {
         color: COLORS.WHITE,
-        fontSize: Configs.FontSize.size14
+        fontSize: Configs.FontSize.size15
     },
     txtCancel: {
         color: COLORS.BLACK,
-        fontSize: Configs.FontSize.size14
+        fontSize: Configs.FontSize.size15
     }
 });

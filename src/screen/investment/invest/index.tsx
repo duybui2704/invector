@@ -114,6 +114,23 @@ const Invest = observer(({ route }: any) => {
     }, []);
 
     const onInvest = useCallback(async () => {
+        Alert.alert(
+            Languages.invest.notify, Languages.invest.updateBankInfo,
+            [
+                {
+                    text: Languages.common.cancel,
+                    style: 'cancel'
+                },
+                {
+                    text: Languages.common.agree,
+                    style: 'default',
+                    onPress: () => {
+                        Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.paymentMethod, { goback, screen: refScreen.current });
+                    }
+                }
+            ]
+        );
+        return;
         if (methodPayment === ENUM_METHOD_PAYMENT.BANK) {
             setIsLoading(true);
             const resPayment = await apiServices.invest.getInvestBankInfo(dataInvestment?.id?.toString() || '', Platform.OS);
@@ -217,6 +234,7 @@ const Invest = observer(({ route }: any) => {
                     <Text style={styles.title}>{Languages.detailInvest.information}</Text>
                     {renderInfoItem(Languages.detailInvest.idContract, `${dataInvestment?.ma_hop_dong}`, COLORS.GREEN)}
                     {renderInfoItem(Languages.detailInvest.moneyInvest, Utils.formatMoney(dataInvestment?.so_tien_dau_tu), COLORS.RED)}
+                    {renderInfoItem(Languages.detailInvest.interestYear, `${dataInvestment?.ti_le_lai_suat_hang_nam}`)}
                     {renderInfoItem(Languages.detailInvest.interest, `${dataInvestment?.ti_le_lai_suat_hang_thang}`)}
                     {renderInfoItem(Languages.detailInvest.interestMonth, Utils.formatMoney(dataInvestment?.lai_hang_thang))}
                     {renderInfoItem(Languages.detailInvest.amountInterest, Utils.formatMoney(dataInvestment?.tong_lai_nhan_duoc))}
