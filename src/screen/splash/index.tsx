@@ -17,9 +17,11 @@ import Navigator from '@/routers/Navigator';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import Utils from '@/utils/Utils';
 import { useAppStore } from '@/hooks';
+import ImgLogo from '@/assets/image/img_logo.svg';
+import { COLORS } from '@/theme';
 
 const Splash = observer(() => {
-    const {apiServices, common} = useAppStore();
+    const { apiServices, common } = useAppStore();
     const storeUrlRef = useRef<string>();
     const popupAlert = useRef<PopupActionTypes>(null);
     const popupMaintainRef = useRef<PopupActionTypes>(null);
@@ -108,6 +110,10 @@ const Splash = observer(() => {
             <HeaderBar
                 noHeader
                 barStyle />
+
+            <ImgLogo
+                style={styles.imgLogo}
+            />
             {popupVerifyRequest}
             <PopupMaintain
                 onConfirm={onQuit}
