@@ -114,23 +114,6 @@ const Invest = observer(({ route }: any) => {
     }, []);
 
     const onInvest = useCallback(async () => {
-        Alert.alert(
-            Languages.invest.notify, Languages.invest.updateBankInfo,
-            [
-                {
-                    text: Languages.common.cancel,
-                    style: 'cancel'
-                },
-                {
-                    text: Languages.common.agree,
-                    style: 'default',
-                    onPress: () => {
-                        Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.paymentMethod, { goback, screen: refScreen.current });
-                    }
-                }
-            ]
-        );
-        return;
         if (methodPayment === ENUM_METHOD_PAYMENT.BANK) {
             setIsLoading(true);
             const resPayment = await apiServices.invest.getInvestBankInfo(dataInvestment?.id?.toString() || '', Platform.OS);
