@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
+import PagerView from 'react-native-pager-view';
 
 import Languages from '@/common/Languages';
 import Filter from '@/components/Filter';
 import HeaderBar from '@/components/header';
 import { useAppStore } from '@/hooks';
 import { KeyValueModel } from '@/models/keyValue-model';
-import PagerView from 'react-native-pager-view';
 import { ItemCategory } from './item-category';
 import { MyStylesNotifyInvest } from './styles';
 
@@ -31,21 +31,21 @@ export const NotifyInvest = () => {
                     id: key,
                     label: resCate.data[key],
                     value: index
-                }
+                };
                 if(index === 0){
-                    setSelectedFilter(cate)
+                    setSelectedFilter(cate);
                 }
-                return cate
-            }))
+                return cate;
+            }));
         }
-    }, [])
+    }, []);
 
     const renderCategories = useCallback(
         (item: KeyValueModel) => {
             const _onPress = () => {
-                setSelectedFilter(item)
-                pageViewRef?.current?.setPage?.(item.value)
-            }
+                setSelectedFilter(item);
+                pageViewRef?.current?.setPage?.(item.value);
+            };
 
             return (
                 <Filter
@@ -81,4 +81,3 @@ export const NotifyInvest = () => {
         </View>
     );
 };
-

@@ -32,14 +32,14 @@ export class InvestServices extends BaseService {
 
     getNotifyUpdateRead = async (noti_id: number) => this.api().post(API_CONFIG.NOTIFY_UPDATE_READ, this.buildFormData({ noti_id }));
 
-    getInfoInvest = async () => this.api().post(API_CONFIG.GET_INFOR_INVESTOR, this.buildFormData({
+    getInfoInvest = async () => this.api(true).post(API_CONFIG.GET_INFOR_INVESTOR, this.buildFormData({
 
     }));
 
     getOTP = async (id: string) => this.api().post(API_CONFIG.CONTRACT_OTP, this.buildFormData({ contract_id: id }));
 
 
-    requestNganLuong = async (id: string, platform: string) => this.api().post(API_CONFIG.REQUEST_NGAN_LUONG, this.buildFormData({
+    requestNganLuong = async (id: string, platform: string) => this.api(true).post(API_CONFIG.REQUEST_NGAN_LUONG, this.buildFormData({
         contract_id: id,
         client_code: platform
     }));
@@ -53,7 +53,7 @@ export class InvestServices extends BaseService {
 
     getListMoneyInvestment = async () => this.api().post(API_CONFIG.LIST_MONEY_INVESTMENT, this.buildFormData({}));
 
-    getInvestBankInfo = async (id: string, platform: string) => this.api().post(API_CONFIG.INVEST_BANK, this.buildFormData({
+    getInvestBankInfo = async (id: string, platform: string) => this.api(true).post(API_CONFIG.INVEST_BANK, this.buildFormData({
         contract_id: id,
         client_code: platform
     }));
