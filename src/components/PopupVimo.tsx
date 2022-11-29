@@ -6,9 +6,9 @@ import React, {
 } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
+import HTMLView from 'react-native-htmlview';
 
 import { COLORS, HtmlStyles, Styles } from '@/theme';
-import HTMLView from 'react-native-htmlview';
 import { PopupActions, PopupProps } from './popup/types';
 import IcAlert from '@/assets/image/ic_warning.svg';
 import { Touchable } from './elements/touchable';

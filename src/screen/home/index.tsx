@@ -92,7 +92,7 @@ const Home = observer(() => {
 
     const showPopupVimo = useCallback(() => {
         refPopup?.current?.showAlert?.(Languages.maintain.vimo, Languages.maintain.vimoDes);
-    }, [])
+    }, []);
 
     const auth = useCallback(() => {
         if (fastAuthInfoManager.isEnableFastAuth && fastAuthInfoManager?.supportedBiometry === ENUM_BIOMETRIC_TYPE.FACE_ID) {
@@ -107,10 +107,10 @@ const Home = observer(() => {
 
     useEffect(() => {
         if (isFocused) {
-            if(userManager.userInfo){
+            if (userManager.userInfo) {
                 fetchContractsDash();
             }
-            if(!iconBanner){
+            if (!iconBanner) {
                 fetchDataBanner();
             }
         }

@@ -43,11 +43,12 @@ const NotificationListening = observer(({ children }: any) => {
     const getUnreadNotify = useCallback(async () => {
         if (userManager.userInfo) {
             const res = await apiServices.notification?.getUnreadNotify();
-            console.log('res',res);
             if (res.success) {
                 const data = res.data as NotificationTotalModel;
+                console.log('count unread notification', data?.total_unRead);
                 notificationManager.setUnReadNotifyCount(data?.total_unRead);
                 PushNotificationIOS.setApplicationIconBadgeNumber(data?.total_unRead);
+                PushNotification.setApplicationIconBadgeNumber(data?.total_unRead);
             }
         }
     }, [apiServices.notification, notificationManager, userManager.userInfo]);
@@ -64,10 +65,12 @@ const NotificationListening = observer(({ children }: any) => {
                 });
             } else {
                 PushNotification.localNotification({
+                    id: 'notificationWithSound',
                     autoCancel: true,
                     data: 'test',
                     channelId: 'TienNgay.vn-chanel',
                     showWhen: true,
+                    title: remoteMessage?.notification?.title,
                     message: remoteMessage?.notification?.body,
                     vibrate: true,
                     vibration: 300,
@@ -108,6 +111,7 @@ const NotificationListening = observer(({ children }: any) => {
 
     useEffect(() => {
         createToken();
+        getUnreadNotify();
     }, [userManager?.userInfo?.phone_number]);
 
     return <>{children}</>;
