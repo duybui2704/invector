@@ -565,7 +565,9 @@ const Languages = {
         title: 'Cập nhật phiên bản mới',
         description:
             'Đã có phiên bản cập nhật mới cho ứng dụng. Bạn vui lòng cập nhật để có trải nghiệm tốt hơn.\n\nXin cám ơn.',
-        update: 'Cập nhật'
+        update: 'Cập nhật',
+        updating: "Đang cập nhật phiên bản mới",
+        installing: "Đang cài đặt phiên bản mới",
     },
     maintain: {
         title: 'Thông báo nâng cấp hệ thống',

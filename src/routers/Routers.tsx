@@ -12,6 +12,8 @@ import { navigationRef } from './Navigator';
 import RootStack from './RootStack';
 import { PopupsProvider } from '@/provider/popups-provider';
 import { AFInit, AFLogEvent } from '@/utils/AppsFlyer';
+import ToastUtils from '@/utils/ToastUtils';
+import Languages from '@/common/Languages';
 
 const MyTheme = {
     ...DefaultTheme,
@@ -25,6 +27,25 @@ const styles = {
 } as ViewStyle;
 
 const App = () => {
+    CodePush.sync(codePushOptions,
+        (status) => {
+            switch (status) {
+                case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
+                    ToastUtils.showMsgToast(Languages.update.updating);
+                    break;
+                case CodePush.SyncStatus.INSTALLING_UPDATE:
+                    ToastUtils.showMsgToast(Languages.update.installing);
+                    break;
+                case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
+                    break;
+                case CodePush.SyncStatus.UP_TO_DATE:
+                    break;
+                default:
+                    break;
+            }
+        }, () => {}
+    );
+
     useEffect(() => {
         const AFGCDListener = appsFlyer.onInstallConversionData((res) => {
             const isFirstLaunch = res?.data?.is_first_launch;
