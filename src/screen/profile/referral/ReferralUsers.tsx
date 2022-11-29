@@ -151,8 +151,10 @@ const ReferralUsers = observer(() => {
                         {renderTotalRow()}
                         {renderColIndex()}
                         {commission?.detail.map((item, index) => renderRow(item, index))}
-                    </> : (!isLoading && filterDate && <NoData img={<IMGNoData />}
-                            description={Languages.referralUsers.noCommission.replace('%s', filterDate)} />)}
+                    </> : (!isLoading && filterDate && <View style={styles.wrapNoData}>
+                        <NoData img={<IMGNoData />}
+                            description={Languages.referralUsers.noCommission.replace('%s', filterDate)} />
+                    </View>)}
                 </ScrollView>
             </View>
 

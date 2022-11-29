@@ -403,7 +403,7 @@ const Languages = {
         colName: 'Họ và tên',
         colMoney: 'Tổng đầu tư',
         colCommission: 'Hoa hồng',
-        noCommission: 'Bạn không có hoa hồng từ nhà đầu tư trong tháng %s'
+        noCommission: 'Bạn chưa có hoa hồng từ nhà đầu tư trong tháng %s'
     },
     detailInvest: {
         title: 'Chi tiết khoản đầu tư',

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { COLORS, Styles } from '@/theme';
+import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
 
 export const MyStylesReferral = () => useMemo(() => StyleSheet.create({
     container: {
@@ -148,5 +149,10 @@ export const MyStylesReferral = () => useMemo(() => StyleSheet.create({
     },
     note: {
         marginHorizontal: 8,
+    },
+    wrapNoData: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: SCREEN_HEIGHT / 2
     }
 }), []);
