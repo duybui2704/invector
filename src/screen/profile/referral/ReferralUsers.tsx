@@ -15,6 +15,8 @@ import { useAppStore } from '@/hooks';
 import { CommissionModel, Detail } from '@/models/comission-model';
 import Loading from '@/components/loading';
 import { ACTION_DATE_SET, ACTION_DISMISSED } from '@/libs/react-native-month-year-picker/src';
+import NoData from '@/components/NoData';
+import IMGNoData from '@/assets/image/img_no_data_invest.svg';
 
 const ReferralUsers = observer(() => {
     const styles = MyStylesReferral();
@@ -149,9 +151,8 @@ const ReferralUsers = observer(() => {
                         {renderTotalRow()}
                         {renderColIndex()}
                         {commission?.detail.map((item, index) => renderRow(item, index))}
-                    </> : <Text style={styles.textNoCommission}>
-                        {!isLoading && filterDate && Languages.referralUsers.noCommission.replace('%s', filterDate)}
-                    </Text>}
+                    </> : (!isLoading && filterDate && <NoData img={<IMGNoData />}
+                            description={Languages.referralUsers.noCommission.replace('%s', filterDate)} />)}
                 </ScrollView>
             </View>
 

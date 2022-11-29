@@ -2,6 +2,12 @@ import { BaseService } from './base-service';
 import { API_CONFIG } from './constants';
 
 export class NotificationServices extends BaseService {
+    getNotificationCategories = async () =>
+        this.api().get(
+            API_CONFIG.NOTIFICATION_CATEGORY,
+            this.buildFormData({})
+        );
+
     getNotifications = async (lastIndex: number, pageSize: number) =>
         this.api().post(
             API_CONFIG.NOTIFICATION,
@@ -10,6 +16,7 @@ export class NotificationServices extends BaseService {
                 per_page: pageSize
             })
         );
+
 
     createFcmToken = async (fcmToken: string) =>
         this.api().post(

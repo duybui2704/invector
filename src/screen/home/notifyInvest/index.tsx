@@ -17,18 +17,25 @@ import Navigator from '@/routers/Navigator';
 import { COLORS } from '@/theme';
 import DateUtils from '@/utils/DateUtils';
 import { MyStylesNotifyInvest } from './styles';
+import { TransactionTypes } from '@/mocks/data';
+import Filter from '@/components/Filter';
+import { KeyValueModel } from '@/models/keyValue-model';
 
-const PAGE_SIZE = 7;
+const PAGE_SIZE = 20;
+
 export const NotifyInvest = () => {
     const styles = MyStylesNotifyInvest();
     const [data, setData] = useState<Notify[]>([]);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(true);
+    const [selectedFilter, setSelectedFilter] = useState<string>('');
+
     const { apiServices } = useAppStore();
+    
     const condition = useRef({
         isLoading: false,
         offset: 0,
-        canLoadMore: true
+        canLoadMore: true,
     });
 
     useEffect(() => {
@@ -40,6 +47,10 @@ export const NotifyInvest = () => {
             return;
         }
         condition.current.isLoading = true;
+
+        const resCate = await apiServices.notification.getNotificationCategories();
+        if (resCate.success) {
+        }
 
         const res = await apiServices.invest.getNotify(PAGE_SIZE, condition.current.offset);
         let totalSize = 0;
@@ -68,6 +79,8 @@ export const NotifyInvest = () => {
 
     const renderItem = useCallback(({ item }: any) => {
         const onRead = async (id: number, status: number) => {
+            console.log('item = ', item);
+            
             if (status === 1) {
                 const res = await apiServices.invest.getNotifyUpdateRead(id);
                 if (res.success) {
@@ -144,9 +157,43 @@ export const NotifyInvest = () => {
         );
     }, [data, styles.flatList, renderItem, keyExtractor, renderEmptyData, renderFooter, isRefreshing, onRefreshing, handleLoadMore]);
 
+    const renderFilterTemplate = useCallback(
+        (item: KeyValueModel) => {
+            let selected = false;
+            // if (item.type === selectedFilter) {
+            //     selected = true;
+            // }
+
+            const _onPress = () => {
+                setData([]);
+                setSelectedFilter(item.type)
+                // condition.current.option = item.type;
+                onRefreshing()
+            }
+
+            return (
+                <Filter
+                    key={item.value}
+                    style={styles.filterItem}
+                    item={item}
+                    onPress={_onPress}
+                    selected={selected}
+                    disabled={item.type === selectedFilter}
+                />
+            );
+        }, [selectedFilter, fetchData]
+    );
+
+    const renderFilter = useMemo(() => (
+        <View style={styles.topBarContainer}>
+            {TransactionTypes.map(renderFilterTemplate)}
+        </View>
+    ), [renderFilterTemplate]);
+
     return (
         <View style={styles.container}>
             <HeaderBar title={Languages.invest.notify} hasBack />
+            {renderFilter}
             <View style={styles.wrapContent}>
                 {data && renderNotify}
             </View>

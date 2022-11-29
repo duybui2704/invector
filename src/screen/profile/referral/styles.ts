@@ -6,7 +6,7 @@ import { COLORS, Styles } from '@/theme';
 export const MyStylesReferral = () => useMemo(() => StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: 20,
+        paddingBottom: 10,
         backgroundColor: COLORS.GRAY_5
     },
     wrapAllContent: {
@@ -148,6 +148,5 @@ export const MyStylesReferral = () => useMemo(() => StyleSheet.create({
     },
     note: {
         marginHorizontal: 8,
-        marginBottom: 5
     }
 }), []);

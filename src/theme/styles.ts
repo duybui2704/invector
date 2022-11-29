@@ -138,6 +138,11 @@ export const HtmlStyles = {
         color: COLORS.GRAY_7,
         textAlign: 'left'
     },
+    cm: {
+        ...Styles.typography.regular,
+        color: COLORS.BLACK,
+        fontSize: Configs.FontSize.size13,
+    },
 };
 
 export const HtmlStylesSeen = {

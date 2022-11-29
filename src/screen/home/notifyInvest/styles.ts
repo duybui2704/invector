@@ -98,7 +98,17 @@ export const MyStylesNotifyInvest = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 minHeight: SCREEN_HEIGHT / 2
-            }
-
+            },
+            topBarContainer: {
+                backgroundColor: COLORS.GRAY_13,
+                borderRadius: 26,
+                marginHorizontal: 16,
+                flexDirection: 'row',
+                marginBottom: 10,
+                justifyContent: 'space-between'
+            },
+            filterItem: {
+                paddingHorizontal: 2
+            },
         }), []);
 };

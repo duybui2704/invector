@@ -60,7 +60,6 @@ const Languages = {
         reasonThree: '3. Linh hoạt thời hạn, vòng đầu tư ngắn 1 tháng - 24 tháng.',
         reasonFour: '4. Tài sản của bạn được quản lý minh bạch và bảo vệ bởi công ty thuộc tập đoàn công nghệ hàng đầu NextTech.',
         reasonFive: '5. Quản lý dòng tiền thông minh với ứng dụng công nghệ.'
-
     },
     invest: {
         title: 'Đầu tư',
@@ -396,7 +395,7 @@ const Languages = {
     },
     referralUsers: {
         title: 'Hoa hồng cho nhà đầu tư',
-        des: '<a><rn>*</rn>Số tiền hoa hồng được hiển thị trong tháng hiện tại là tạm tính và có thể thay đổi theo tổng số tiền đầu tư hàng tháng.\n<rn>*</rn>Chính sách chỉ áp dụng khi người được bạn giới thiệu có đầu tư vào TienNgay. Chính sách có hiệu lực từ ngày <b>%str</b>.</a>',
+        des: '<cm><rn>* </rn>Số tiền hoa hồng được hiển thị trong tháng hiện tại là tạm tính và có thể thay đổi theo tổng số tiền đầu tư hàng tháng.\n<rn>*</rn> Chính sách chỉ áp dụng khi người được bạn giới thiệu có đầu tư vào TienNgay. Chính sách có hiệu lực từ ngày <b>%str</b>.</cm>',
         tableDes: 'Chi tiết hoa hồng giới thiệu trong tháng %s',
         colName0: 'Tổng đầu tư',
         colMoney0: 'Tỷ lệ hoa hồng',
