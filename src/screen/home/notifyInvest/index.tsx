@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 import Dash from 'react-native-dash';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import PushNotification from 'react-native-push-notification';
 
 import IcNoDataNotify from '@/assets/image/home/ic_no_data_notify.svg';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
@@ -22,6 +24,8 @@ import Filter from '@/components/Filter';
 import { KeyValueModel } from '@/models/keyValue-model';
 
 const PAGE_SIZE = 20;
+import { NotificationTotalModel } from '@/models/notification';
+
 
 export const NotifyInvest = () => {
     const styles = MyStylesNotifyInvest();
@@ -73,9 +77,7 @@ export const NotifyInvest = () => {
         setCanLoadMoreUI(condition.current.canLoadMore);
     }, [apiServices.invest]);
 
-    const keyExtractor = useCallback((item: any, index: number) => {
-        return `${index}${item.id}`;
-    }, []);
+    const keyExtractor = useCallback((item: any, index: number) => `${index}${item.id}`, []);
 
     const renderItem = useCallback(({ item }: any) => {
         const onRead = async (id: number, status: number) => {
@@ -84,6 +86,12 @@ export const NotifyInvest = () => {
             if (status === 1) {
                 const res = await apiServices.invest.getNotifyUpdateRead(id);
                 if (res.success) {
+                    const resCountNotify = await apiServices.notification?.getUnreadNotify();
+                    if (resCountNotify.success) {
+                        const dataNotify = resCountNotify.data as NotificationTotalModel;
+                        PushNotificationIOS.setApplicationIconBadgeNumber(dataNotify?.total_unRead);
+                        PushNotification.setApplicationIconBadgeNumber(dataNotify?.total_unRead);
+                    }
                     Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: ENUM_INVEST_STATUS.INVESTING, id: `${item?.action_id}` });
                 }
             }
@@ -112,19 +120,15 @@ export const NotifyInvest = () => {
         );
     }, [apiServices.invest, styles.item, styles.itemBlur, styles.rowTop, styles.title, styles.txtNote, styles.txtRight, styles.txtTimeDate, styles.viewLeft]);
 
-    const renderFooter = useMemo(() => {
-        return <>
-            {canLoadMoreUI && <Loading />}
-        </>;
-    }, [canLoadMoreUI]);
+    const renderFooter = useMemo(() => <>
+        {canLoadMoreUI && <Loading />}
+    </>, [canLoadMoreUI]);
 
-    const renderEmptyData = useMemo(() => {
-        return (
-            <View style={styles.wrapNoData}>
-                {!canLoadMoreUI && <NoData img={<IcNoDataNotify />} description={Languages.home.noNotify} />}
-            </View>
-        );
-    }, [canLoadMoreUI, styles.wrapNoData]);
+    const renderEmptyData = useMemo(() => (
+        <View style={styles.wrapNoData}>
+            {!canLoadMoreUI && <NoData img={<IcNoDataNotify />} description={Languages.home.noNotify} />}
+        </View>
+    ), [canLoadMoreUI, styles.wrapNoData]);
 
     const onRefreshing = useCallback(() => {
         condition.current.offset = 0;
@@ -140,22 +144,20 @@ export const NotifyInvest = () => {
         }
     }, [fetchData]);
 
-    const renderNotify = useMemo(() => {
-        return (
-            <MyFlatList
-                contentContainerStyle={styles.flatList}
-                showsVerticalScrollIndicator={false}
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={keyExtractor}
-                ListEmptyComponent={renderEmptyData}
-                ListFooterComponent={renderFooter}
-                refreshing={isRefreshing}
-                onRefresh={onRefreshing}
-                onEndReached={handleLoadMore}
-            />
-        );
-    }, [data, styles.flatList, renderItem, keyExtractor, renderEmptyData, renderFooter, isRefreshing, onRefreshing, handleLoadMore]);
+    const renderNotify = useMemo(() => (
+        <MyFlatList
+            contentContainerStyle={styles.flatList}
+            showsVerticalScrollIndicator={false}
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            ListEmptyComponent={renderEmptyData}
+            ListFooterComponent={renderFooter}
+            refreshing={isRefreshing}
+            onRefresh={onRefreshing}
+            onEndReached={handleLoadMore}
+        />
+    ), [data, styles.flatList, renderItem, keyExtractor, renderEmptyData, renderFooter, isRefreshing, onRefreshing, handleLoadMore]);
 
     const renderFilterTemplate = useCallback(
         (item: KeyValueModel) => {

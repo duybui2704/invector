@@ -2,6 +2,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react';
 import React, { useCallback } from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { ICONS } from '@/assets/icons/constant';
 import { IconTienngay } from '@/assets/icons/icon-tienngay';
@@ -31,7 +32,6 @@ import ShareFriend from '@/screen/profile/shareFriend/ShareFriend';
 import VerifyOTP from '@/screen/profile/verifyOTP/VerifyOTP';
 import Report from '@/screen/report';
 import { COLORS } from '@/theme';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ScreenName, { TabsName } from '../common/screenNames';
 
 const TabsData = [
@@ -191,7 +191,7 @@ const MyBottomTabs = observer(() => {
                 tabBarInactiveTintColor: COLORS.GRAY,
                 tabBarStyle: { 
                     padding: 5
-                 },
+                }
             }}
         >
             <Tab.Screen
