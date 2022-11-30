@@ -41,8 +41,8 @@ const PaymentMethod = observer(({ route }: any) => {
         }
         const resPaymentMethod = await apiServices.paymentMethod.getPaymentMethod();
         setLoading(false);
-        if (resPaymentMethod.success) {
-        }
+        // if (resPaymentMethod.success) {
+        // }
     }, [apiServices.auth, userManager]);
 
     const renderStateLink = useCallback((status?: boolean) => (
@@ -109,8 +109,8 @@ const PaymentMethod = observer(({ route }: any) => {
     }, [onBank, onChangeMethodVimo, renderRightIcon, renderStateLink, styles.titleItemLink, styles.wrapItemPayment, styles.wrapItemPaymentChooser, styles.wrapRightItemPayment]);
 
     const onGoBack = useCallback(() => {
-        if (route?.params?.goback) {
-            route.params.goback();
+        if (route?.params?.goBack) {
+            route.params.goBack();
         }
         if (route?.params?.screen) {
             Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.invest);
