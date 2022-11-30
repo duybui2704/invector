@@ -67,11 +67,11 @@ const Invest = observer(({ route }: any) => {
         const resPaymentMethod = await apiServices.paymentMethod.getPaymentMethod();
         setIsLoading(false);
         const fetchPaymentMethod = resPaymentMethod.data as PaymentMethodModel;
-        setPaymentMethodConfig(paymentMethodConfig);
+        setPaymentMethodConfig(fetchPaymentMethod);
         if (resPaymentMethod.success && fetchPaymentMethod.vimo) {
             fetchInfoVimoLink();
         }
-    }, [apiServices.paymentMethod, paymentMethodConfig]);
+    }, [apiServices.paymentMethod]);
 
     const fetchInfoVimoLink = useCallback(async () => {
         const res = await apiServices.paymentMethod.requestInfoLinkVimo();
@@ -173,11 +173,7 @@ const Invest = observer(({ route }: any) => {
 
             if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
                 const resPayment = await apiServices.invest.requestNganLuong(dataInvestment?.id?.toString() || '', Platform.OS);
-                if (resPayment.success && resPayment.data) {
-                    Navigator.pushScreen(ScreenName.paymentWebview, {
-                        url: resPayment?.data
-                    });
-                } else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
+                if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
                     refPopupUpdateInvest.current?.show(
                         Languages.invest.unconfirmed,
                         Languages.invest.contentUnconfirmed,
@@ -201,7 +197,11 @@ const Invest = observer(({ route }: any) => {
                         onNavigateUpdate,
                         <IcNoAccount />
                     );
-                }
+                } else if (resPayment.success && resPayment.data) {
+                    Navigator.pushScreen(ScreenName.paymentWebview, {
+                        url: resPayment?.data
+                    });
+                } 
             } 
             else if (methodPayment === ENUM_METHOD_PAYMENT.VIMO) {
                 getOtpVimo();
@@ -224,6 +224,7 @@ const Invest = observer(({ route }: any) => {
     ), []);
 
     const renderMethod = useCallback((icon: any, label: string, method: string, linked?: boolean) => {
+        console.log('aaaaaa');
         const onPress = () => {
             setMethodPayment(method);
         };
