@@ -6,18 +6,19 @@ import {
 
 import { COLORS } from '@/theme';
 import MyStyleLoading from './styles';
+import IcLoading from '@/assets/image/ic_loading.gif';
+import FastImage from 'react-native-fast-image';
 
 const Loading = ({ isOverview, isWhite }: { isOverview?: boolean, isWhite?: boolean }) => {
 
     const styles = MyStyleLoading();
     return (
         <>
-            { isOverview ?
+            {isOverview ?
                 <View style={styles.overlay}>
-                    <ActivityIndicator
-                        size="large"
-                        color={COLORS.WHITE}
-                        style={styles.activityIndicator} />
+                    <FastImage
+                        style={styles.activityIndicator}
+                        source={IcLoading} />
                 </View> :
                 <View style={styles.inline} >
                     <ActivityIndicator size="small" color={isWhite ? COLORS.WHITE : COLORS.GREEN} />

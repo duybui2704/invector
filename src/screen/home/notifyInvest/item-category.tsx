@@ -80,7 +80,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
                 if (res.success) {
                     setData(last => {
                         return last.map(it => {
-                            if(item.id == it.id){
+                            if (item.id == it.id) {
                                 it.status = 2
                             }
                             return it

@@ -18,6 +18,7 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import Utils from '@/utils/Utils';
 import { useAppStore } from '@/hooks';
 import ImgLogo from '@/assets/image/img_logo.svg';
+import Loading from '@/components/loading';
 
 const Splash = observer(() => {
     const { apiServices, common } = useAppStore();
@@ -119,6 +120,9 @@ const Splash = observer(() => {
                 onClose={onQuit}
                 ref={popupMaintainRef}
             />
+            <View style={styles.loadingWrap}>
+                <Loading isOverview />
+            </View>
         </View>
     );
 });
@@ -133,5 +137,8 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH - 100,
         alignSelf: 'center',
         marginBottom: SCREEN_HEIGHT / 5
+    },
+    loadingWrap: {
+        marginBottom: -20
     }
 });

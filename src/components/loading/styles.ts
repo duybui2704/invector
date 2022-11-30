@@ -19,10 +19,10 @@ const MyStyleLoading = () => useMemo(() =>
             alignItems: 'center'
         },
         activityIndicator: {
-            width: 80,
-            height: 80,
+            width: 120,
+            height: 120,
             borderRadius: 10,
-            backgroundColor: COLORS.BACKDROP_2
+            // backgroundColor: COLORS.BACKDROP_2
         }
     })
 

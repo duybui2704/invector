@@ -2,13 +2,13 @@
  * @format
  */
 import Bugsnag from '@bugsnag/react-native';
-import {AppRegistry} from 'react-native';
+import { AppRegistry } from 'react-native';
 
-import { name as appName } from './app.json';
 import App from '@/routers/Routers';
+import { name as appName } from './app.json';
 
 if (!__DEV__) {
-    console.log = () => {};
+    console.log = () => { };
 }
 
 Bugsnag.start();

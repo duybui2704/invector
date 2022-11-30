@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 10,
         top: 10,
-        width: 80,
+        width: 90,
         zIndex: 10
     },
     txtButton: {

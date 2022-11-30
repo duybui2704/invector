@@ -2,7 +2,7 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { ViewStyle } from 'react-native';
+import { Platform, ViewStyle } from 'react-native';
 import appsFlyer from 'react-native-appsflyer';
 import CodePush from 'react-native-code-push';
 
@@ -14,6 +14,7 @@ import { PopupsProvider } from '@/provider/popups-provider';
 import { AFInit, AFLogEvent } from '@/utils/AppsFlyer';
 import ToastUtils from '@/utils/ToastUtils';
 import Languages from '@/common/Languages';
+import { enableScreens } from 'react-native-screens';
 
 const MyTheme = {
     ...DefaultTheme,
@@ -27,6 +28,12 @@ const styles = {
 } as ViewStyle;
 
 const App = () => {
+    useEffect(() => {
+        if (Platform.OS === "ios") {
+            enableScreens(false);
+        }
+    }, []);
+    
     CodePush.sync(codePushOptions,
         (status) => {
             switch (status) {
