@@ -171,7 +171,11 @@ export const DetailInvestment = observer(({ route }: any) => {
     return (
         <View style={styles.container}>
             <HeaderBar title={Languages.detailInvest.title} hasBack />
-            <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false} style={styles.wrapContent}>
+            <ScrollView
+                contentContainerStyle={styles.scroll}
+                showsVerticalScrollIndicator={false}
+                style={styles.wrapContent}
+            >
                 <View style={styles.wrapIcon}>
                     <IcBag />
                 </View>

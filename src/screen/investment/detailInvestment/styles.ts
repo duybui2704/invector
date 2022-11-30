@@ -3,19 +3,18 @@ import { StyleSheet } from 'react-native';
 import { Configs } from '@/common/Configs';
 import { Styles } from '@/theme';
 import { COLORS } from '@/theme/colors';
-
-
-
+import DimensionUtils from '@/utils/DimensionUtils';
 
 const styles = StyleSheet.create({
     container:{
-        flex:1
+        backgroundColor: COLORS.WHITE,
+        minHeight: DimensionUtils.SCREEN_HEIGHT
     },
     wrapContent: {
         marginHorizontal: 16
     },
     scroll: {
-        paddingBottom: 100
+        paddingBottom: 10
     },
     title: {
         ...Styles.typography.regular,
