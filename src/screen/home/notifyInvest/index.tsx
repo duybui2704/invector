@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import Dash from 'react-native-dash';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
+import { useIsFocused } from '@react-navigation/native';
 
 import IcNoDataNotify from '@/assets/image/home/ic_no_data_notify.svg';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
@@ -22,10 +23,9 @@ import { MyStylesNotifyInvest } from './styles';
 import { TransactionTypes } from '@/mocks/data';
 import Filter from '@/components/Filter';
 import { KeyValueModel } from '@/models/keyValue-model';
-
-const PAGE_SIZE = 20;
 import { NotificationTotalModel } from '@/models/notification';
 
+const PAGE_SIZE = 20;
 
 export const NotifyInvest = () => {
     const styles = MyStylesNotifyInvest();
@@ -35,16 +35,20 @@ export const NotifyInvest = () => {
     const [selectedFilter, setSelectedFilter] = useState<string>('');
 
     const { apiServices } = useAppStore();
+    const isFocus = useIsFocused();
     
     const condition = useRef({
         isLoading: false,
         offset: 0,
-        canLoadMore: true,
+        canLoadMore: true
     });
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        if(isFocus){
+            // fetchData();
+            onRefreshing();
+        }
+    }, [isFocus]);
 
     const fetchData = useCallback(async (isLoadMore?: boolean) => {
         if (condition.current.isLoading) {
@@ -54,6 +58,7 @@ export const NotifyInvest = () => {
 
         const resCate = await apiServices.notification.getNotificationCategories();
         if (resCate.success) {
+            //
         }
 
         const res = await apiServices.invest.getNotify(PAGE_SIZE, condition.current.offset);
@@ -161,17 +166,17 @@ export const NotifyInvest = () => {
 
     const renderFilterTemplate = useCallback(
         (item: KeyValueModel) => {
-            let selected = false;
+            const selected = false;
             // if (item.type === selectedFilter) {
             //     selected = true;
             // }
 
             const _onPress = () => {
                 setData([]);
-                setSelectedFilter(item.type)
+                setSelectedFilter(item.type);
                 // condition.current.option = item.type;
-                onRefreshing()
-            }
+                onRefreshing();
+            };
 
             return (
                 <Filter

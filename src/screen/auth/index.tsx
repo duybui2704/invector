@@ -7,7 +7,7 @@ import IcCloseAuth from '@/assets/image/auth/ic_close_auth.svg';
 import LogoAuth from '@/assets/image/auth/logo_auth.svg';
 import IcGoogleAuth from '@/assets/image/ic_login_gg.svg';
 import Images from '@/assets/Images';
-import { ENUM_PROVIDER } from '@/common/constants';
+import { ENUM_PROVIDER, TYPE_FORMAT_HEADER_BAR, TYPE_RESIZE } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabNamesArray } from '@/common/screenNames';
 import BottomSheetBasic from '@/components/BottomSheetBasic';
@@ -56,9 +56,9 @@ const Auth = observer(({ route }: any) => {
     const fetchData = async () => {
         const res = await apiServices.auth.getChanelSource();
         if (res.success) {
-            const data = res.data as ChannelModal[];
+            const dataChanel = res.data as ChannelModal[];
             const temp = [] as ItemProps[];
-            data?.forEach((item: any) => {
+            dataChanel?.forEach((item: any) => {
                 temp.push({
                     value: item?.name,
                     id: item.type
@@ -80,7 +80,7 @@ const Auth = observer(({ route }: any) => {
 
     useEffect(() => {
         setTimeout(() => {
-            StatusBar.setBarStyle(isFocused ? 'light-content' : 'dark-content', true);
+            StatusBar.setBarStyle(isFocused ? TYPE_FORMAT_HEADER_BAR.LIGHT_CONTENT : TYPE_FORMAT_HEADER_BAR.DARK_CONTENT, true);
         }, 100);
     }, [isFocused]);
 
@@ -227,15 +227,15 @@ const Auth = observer(({ route }: any) => {
     }, []);
 
     const onChangeChannelForSocialSignUp = useCallback((item?: any) => {
-        if(item){
+        if (item) {
             refModal.current?.updateChannel?.(item);
-        }else{
+        } else {
             refModal.current?.wakeUp?.();
         }
     }, []);
 
     return (
-        <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={'stretch'}>
+        <ImageBackground style={styles.main} source={Images.bg_login} resizeMode={TYPE_RESIZE.STRETCH}>
             <StatusBar
                 animated
                 translucent

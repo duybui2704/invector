@@ -194,12 +194,24 @@ export enum ENUM_INVESTED_TYPE {
 }
 
 export enum ENUM_TYPE_CAMERA {
-    FACE= 'face', 
-    CARD= 'card', 
+    FACE = 'face',
+    CARD = 'card',
 }
 
-export enum ENUM_TYPE_CARD_CAMERA{
-    FRONT= 'front', 
-    BACK= 'back', 
+export enum ENUM_TYPE_CARD_CAMERA {
+    FRONT = 'front',
+    BACK = 'back',
 }
 
+export enum TYPE_RESIZE {
+    COVER = 'cover',
+    CONTAINER = 'container',
+    STRETCH = 'stretch',
+    CENTER = 'center',
+    REPEAT = 'repeat'
+};
+
+export enum TYPE_FORMAT_HEADER_BAR {
+    LIGHT_CONTENT = 'light-content',
+    DARK_CONTENT = 'dark-content'
+};

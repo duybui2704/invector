@@ -26,6 +26,8 @@ import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import PopupAlert from '@/components/PopupAlert';
 import Loading from '@/components/loading';
 import { BankInformationModel } from '@/models/invest';
+import { BUTTON_STYLES } from '@/components/elements/button/constants';
+import { TYPE_RESIZE } from '@/common/constants';
 
 const vietQR = new VietQR({
     clientID: 'de8a0804-a76d-41e5-8ad6-31503ce7d5f4',
@@ -190,7 +192,7 @@ const TransferScreen = observer(({ route }: any) => {
                             label={Languages.transferScreen.downloadQrCode}
                             style={styles.buttonDownloadQrCode}
                             fontSize={Configs.FontSize.size10}
-                            buttonStyle={'LIGHT_GREEN'}
+                            buttonStyle={BUTTON_STYLES.LIGHT_GREEN}
                             isLowerCase
                         />
                         <ViewShot ref={ref} options={QrCodeOption}>
@@ -198,7 +200,7 @@ const TransferScreen = observer(({ route }: any) => {
                                 <MyImageView
                                     style={styles.qr}
                                     imageUrl={link}
-                                    resizeMode={'cover'}
+                                    resizeMode={TYPE_RESIZE.COVER}
                                 />
                                 <View style={styles.wrapInfo}>
                                     <Text style={styles.txtCompany}>{data?.name_account}</Text>
@@ -225,14 +227,14 @@ const TransferScreen = observer(({ route }: any) => {
                         label={Languages.transferScreen.transferred}
                         style={styles.button}
                         fontSize={Configs.FontSize.size13}
-                        buttonStyle={'LIGHT_GREEN'}
+                        buttonStyle={BUTTON_STYLES.LIGHT_GREEN}
                     />
                     <Button
                         onPress={onTransferLater}
                         label={Languages.transferScreen.transferLater}
                         style={styles.button}
                         fontSize={Configs.FontSize.size13}
-                        buttonStyle={'GRAY'}
+                        buttonStyle={BUTTON_STYLES.GRAY}
                     />
                 </View>
             </View>

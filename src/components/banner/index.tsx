@@ -9,6 +9,7 @@ import { BannerModel } from '@/models/banner';
 import { IconSize } from '@/theme/iconsize';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import Utils from '@/utils/Utils';
+import { TYPE_RESIZE } from '@/common/constants';
 
 const Banner = ({ banners }: any) => {
     const styles = MyStylesBanner();
@@ -23,7 +24,7 @@ const Banner = ({ banners }: any) => {
                 disabled={!item.link}>
                 <FastImage
                     source={{ uri: item.image_mobile || item.image_mb }}
-                    resizeMode={'cover'}
+                    resizeMode={TYPE_RESIZE.COVER}
                     style={styles.bannerImage} />
             </Touchable>
         );

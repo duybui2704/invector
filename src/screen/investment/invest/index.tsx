@@ -29,6 +29,7 @@ import Utils from '@/utils/Utils';
 import { InfoLinkVimoModal } from '@/models/user-models';
 import ToastUtils from '@/utils/ToastUtils';
 import { PaymentMethodModel } from '@/models/payment-method-model';
+import { BUTTON_STYLES } from '@/components/elements/button/constants';
 
 const Invest = observer(({ route }: any) => {
     const styles = MyStylesInvest();
@@ -57,15 +58,15 @@ const Invest = observer(({ route }: any) => {
     }, []);
 
     const fetchData = useCallback(async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         const resPaymentMethod = await apiServices.paymentMethod.getPaymentMethod();
         setIsLoading(false);
-        const paymentMethodConfig = resPaymentMethod.data as PaymentMethodModel;
-        setPaymentMethodConfig(paymentMethodConfig)
-        if (resPaymentMethod.success && paymentMethodConfig.vimo) {
+        const fetchPaymentMethod = resPaymentMethod.data as PaymentMethodModel;
+        setPaymentMethodConfig(paymentMethodConfig);
+        if (resPaymentMethod.success && fetchPaymentMethod.vimo) {
             fetchInfoVimoLink();
         }
-    }, [apiServices.auth, userManager]);
+    }, [apiServices.paymentMethod, paymentMethodConfig]);
 
     const fetchInfoVimoLink = useCallback(async () => {
         const res = await apiServices.paymentMethod.requestInfoLinkVimo();
@@ -249,7 +250,7 @@ const Invest = observer(({ route }: any) => {
                     </Touchable>
                 </View>
                 <Button
-                    buttonStyle={(isCheckBox && methodPayment) ? 'GREEN' : 'GRAY'}
+                    buttonStyle={(isCheckBox && methodPayment) ? BUTTON_STYLES.GREEN : BUTTON_STYLES.GRAY}
                     label={Languages.invest.investNow}
                     disabled={!(isCheckBox && methodPayment)}
                     onPress={onInvest}

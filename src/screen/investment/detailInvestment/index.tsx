@@ -83,13 +83,13 @@ export const DetailInvestment = observer(({ route }: any) => {
         <ItemInfoContract label={label} value={value} colorText={colorText} />
     ), []);
 
-    const renderItem = useCallback((item?: HistoryModel) => {
+    const renderItem = useCallback((item?: HistoryModel, index?: number) => {
         const txtDue = {
             color: item?.trang_thai === ENUM_STATUS_CONTRACT.PAID ? COLORS.GREEN : COLORS.GRAY_7
         } as TextStyle;
 
         return (
-            <>
+            <View key={index}>
                 <Dash
                     dashThickness={1}
                     dashLength={10}
@@ -102,9 +102,10 @@ export const DetailInvestment = observer(({ route }: any) => {
                         <Text style={[styles.txtDue, txtDue]}>{item?.trang_thai}</Text>
                     </View>
                 </View>
-            </>
+            </View>
         );
     }, []);
+
     const navigateToInvest = useCallback(() => {
         if (data) {
             Navigator.pushScreen(ScreenName.invest, { id: data?.id, screen: route?.params?.screen });
@@ -124,7 +125,7 @@ export const DetailInvestment = observer(({ route }: any) => {
                     return (
                         <View style={styles.wrapInfo}>
                             <Text style={styles.title}>{Languages.detailInvest.infoPayment}</Text>
-                            {dataHistory?.map((item) => renderItem(item))}
+                            {dataHistory?.map((item: HistoryModel, index: number) => renderItem(item, index))}
                         </View>
                     );
                 }
@@ -133,7 +134,7 @@ export const DetailInvestment = observer(({ route }: any) => {
                 return (
                     <View style={styles.wrapInfo}>
                         <Text style={styles.title}>{Languages.detailInvest.infoPayment}</Text>
-                        {dataHistory?.map((item) => renderItem(item))}
+                        {dataHistory?.map((item: HistoryModel, index: number) => renderItem(item, index))}
                     </View>
                 );
             default:

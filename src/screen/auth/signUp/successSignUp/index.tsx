@@ -14,6 +14,7 @@ import { Touchable } from '@/components/elements/touchable';
 import Navigator from '@/routers/Navigator';
 import ScreenName, { TabNamesArray } from '@/common/screenNames';
 import { MyStylesSignSuccess } from './styles';
+import { TYPE_RESIZE } from '@/common/constants';
 
 export const SuccessSignUp = (props: any) => {
     const styles = MyStylesSignSuccess();
@@ -25,7 +26,7 @@ export const SuccessSignUp = (props: any) => {
     };
 
     return (
-        <ImageBackground style={isIOS ? styles.imageIOS : styles.imageANDROID} source={Images.bg_board} resizeMode={'stretch'}>
+        <ImageBackground style={isIOS ? styles.imageIOS : styles.imageANDROID} source={Images.bg_board} resizeMode={TYPE_RESIZE.STRETCH}>
 
             <Svg height="100%" width="100%"  >
                 <G id="circle">
