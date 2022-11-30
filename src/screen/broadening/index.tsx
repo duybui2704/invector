@@ -17,6 +17,7 @@ import { COLORS } from '@/theme';
 import { CARD, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import Card from './card';
 import { MyStylesBoar } from './styles';
+import { TYPE_RESIZE } from '@/common/constants';
 
 export default function Broadening() {
     const styles = MyStylesBoar();
@@ -109,7 +110,7 @@ export default function Broadening() {
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
             />
-            <ImageBackground style={styles.main} source={Images.bg_board} resizeMode={'stretch'} >
+            <ImageBackground style={styles.main} source={Images.bg_board} resizeMode={TYPE_RESIZE.STRETCH} >
                 <FlatList
                     data={data}
                     horizontal

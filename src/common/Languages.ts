@@ -154,6 +154,7 @@ const Languages = {
         yourRate: 'Đánh giá của bạn',
         comment: 'Nội dung đánh giá',
         descriptionRating: 'Chúng tôi rất hi vọng nhận được đánh giá từ bạn nhằm nâng cao chất lượng phục vụ.',
+        descriptionRated: 'Cảm ơn bạn đã đánh giá. Chúng tôi sẽ tiếp nhận ý kiến của bạn để nâng cao chất lượng phục vụ.',
         thanksRating: 'Cám ơn bạn đã đóng góp ý kiến!',
         send: 'Gửi',
         ratedNote: 'Bạn không thể đánh giá lại vì đã đánh giá trước đó!',
@@ -569,8 +570,8 @@ const Languages = {
         description:
             'Đã có phiên bản cập nhật mới cho ứng dụng. Bạn vui lòng cập nhật để có trải nghiệm tốt hơn.\n\nXin cám ơn.',
         update: 'Cập nhật',
-        updating: "Đang cập nhật phiên bản mới",
-        installing: "Đang cài đặt phiên bản mới",
+        updating: 'Đang cập nhật phiên bản mới',
+        installing: 'Đang cài đặt phiên bản mới'
     },
     maintain: {
         title: 'Thông báo nâng cấp hệ thống',

@@ -12,6 +12,7 @@ import FastImage from 'react-native-fast-image';
 import { COLORS } from '@/theme';
 import { Configs } from '@/common/Configs';
 import Languages from '@/common/Languages';
+import { TYPE_RESIZE } from '@/common/constants';
 
 export type PopupInvestFirstProps = {
     onConfirm?: () => any;
@@ -69,7 +70,7 @@ const PopupInvestFirst = forwardRef<PopupActions, PopupInvestFirstProps>(
                     height: IMG_HEIGHT
                 }}
                 source={{ uri: image }}
-                resizeMode={'cover'}
+                resizeMode={TYPE_RESIZE.COVER}
             />
         ), [image]);
 
@@ -94,7 +95,7 @@ const PopupInvestFirst = forwardRef<PopupActions, PopupInvestFirstProps>(
 export default PopupInvestFirst;
 
 const IMG_WIDTH = Dimensions.get('screen').width / 1.3;
-const IMG_HEIGHT = IMG_WIDTH/0.75;
+const IMG_HEIGHT = IMG_WIDTH / 0.75;
 
 const styles = StyleSheet.create({
     mainContainer: {

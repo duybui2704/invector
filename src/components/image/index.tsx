@@ -6,6 +6,7 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 
 import { COLORS } from '@/theme';
 import { MyImageViewProps } from './type';
+import { TYPE_RESIZE } from '@/common/constants';
 
 export const MyImageView = React.memo(({ imageUrl, style, resizeMode }: MyImageViewProps) => {
     const [isLoading, setLoading] = useState<boolean>(true);
@@ -50,7 +51,7 @@ export const MyImageView = React.memo(({ imageUrl, style, resizeMode }: MyImageV
             >
                 <FastImage
                     style={[styles.img, style]}
-                    resizeMode={resizeMode || 'cover'}
+                    resizeMode={resizeMode || TYPE_RESIZE.COVER}
                     source={{ uri: url }}
                     onLoadStart={_onLoadStart}
                     onError={_onLoadFailed}

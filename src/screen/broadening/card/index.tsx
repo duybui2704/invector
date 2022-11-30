@@ -10,6 +10,7 @@ import { Touchable } from '@/components/elements/touchable';
 import { COLORS } from '@/theme';
 import { ACTION_OFFSET, SCREEN_HEIGHT, SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import { MyStylesCard } from './styles';
+import { TYPE_RESIZE } from '@/common/constants';
 
 type ItemProps = {
     name: string
@@ -50,7 +51,7 @@ export default function Card({
         <Animated.View
             style={isFirst && [animatedCardStyle, styles.gradient]}
         >
-            <ImageBackground style={isIOS? styles.imageIOS : styles.imageANDROID} source={Images.bg_board} resizeMode={'stretch'} >
+            <ImageBackground style={isIOS? styles.imageIOS : styles.imageANDROID} source={Images.bg_board} resizeMode={TYPE_RESIZE.STRETCH} >
                 <Svg height="100%" width="100%"  >
                     <G id="circle">
                         <Circle

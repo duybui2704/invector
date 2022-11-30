@@ -9,6 +9,7 @@ import { COLORS } from '../../theme';
 import { Touchable } from '../elements/touchable';
 import { MyStylesHeader } from './styles';
 import { HeaderProps } from './types';
+import { TYPE_FORMAT_HEADER_BAR, TYPE_RESIZE } from '@/common/constants';
 
 export const HeaderBar = ({
     onBackPressed,
@@ -30,7 +31,7 @@ export const HeaderBar = ({
             setTimeout(() => {
 
             }, 50);
-            StatusBar.setBarStyle(isFocused ? 'dark-content' : 'light-content', true);
+            StatusBar.setBarStyle(isFocused ? TYPE_FORMAT_HEADER_BAR.DARK_CONTENT : TYPE_FORMAT_HEADER_BAR.LIGHT_CONTENT, true);
         }
 
     }, [isFocused]);
@@ -71,14 +72,14 @@ export const HeaderBar = ({
                 <ImageBackground
                     source={Images.bg_header_home}
                     style={styles.imageBg}
-                    resizeMode='stretch'
+                    resizeMode={TYPE_RESIZE.STRETCH}
                 />
             )}
             {noStatusBar ? null : <StatusBar
                 animated
                 translucent
                 backgroundColor={COLORS.TRANSPARENT}
-                barStyle={isLight ? 'light-content' : 'dark-content'}
+                barStyle={isLight ? TYPE_FORMAT_HEADER_BAR.LIGHT_CONTENT : TYPE_FORMAT_HEADER_BAR.DARK_CONTENT}
             />}
             {!noHeader && !exitApp && <View style={styles.headerContainer}>
                 {renderTitle}

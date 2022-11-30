@@ -15,6 +15,7 @@ import { Touchable } from './elements/touchable';
 import Languages from '@/common/Languages';
 import { Button } from './elements/button';
 import { Configs } from '@/common/Configs';
+import { BUTTON_STYLES } from './elements/button/constants';
 
 export interface PopupAlertProps extends PopupProps {
 
@@ -85,7 +86,7 @@ const PopupAlert = forwardRef<PopupActions, PopupAlertProps>(
                             style={styles.button}
                             label={Languages.transferScreen.goHome}
                             fontSize={Configs.FontSize.size13}
-                            buttonStyle={'GREEN'}
+                            buttonStyle={BUTTON_STYLES.GREEN}
                         />
                     </View>}
                 </View>

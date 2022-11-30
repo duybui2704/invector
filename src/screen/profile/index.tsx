@@ -251,9 +251,9 @@ const Profile = observer(() => {
                         });
                     break;
                 case Languages.account.payMethod:
-                    if(common.appConfig?.vimo_link){
+                    if (common.appConfig?.vimo_link) {
                         Navigator.pushScreen(ScreenName.paymentMethod);
-                    }else{
+                    } else {
                         Navigator.pushScreen(ScreenName.accountBank);
                     }
                     break;
@@ -472,7 +472,7 @@ const Profile = observer(() => {
         >
             <View style={styles.starLeft}>
                 <Text style={styles.textTitleFeed}>{Languages.common.yourRate}</Text>
-                <Text style={styles.textTitleDescriptionFeed}>{Languages.common.descriptionRating}</Text>
+                <Text style={styles.textTitleDescriptionFeed}>{userManager.userInfo?.rate ? Languages.common.descriptionRated : Languages.common.descriptionRating}</Text>
                 <AirbnbRating
                     count={5}
                     defaultRating={userManager.userInfo?.rate}

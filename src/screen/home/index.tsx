@@ -14,7 +14,7 @@ import LogoLuckyLott from '@/assets/image/logo_lucky_lott.svg';
 import AvatarIC from '@/assets/image/ic_avatar.svg';
 import Images from '@/assets/Images';
 import { isIOS } from '@/common/Configs';
-import { ENUM_BIOMETRIC_TYPE, ENUM_INVEST_STATUS, TYPE_INTEREST_RECEIVE_ACC } from '@/common/constants';
+import { ENUM_BIOMETRIC_TYPE, ENUM_INVEST_STATUS, LINK_TIENNGAY, TYPE_FORMAT_HEADER_BAR, TYPE_INTEREST_RECEIVE_ACC, TYPE_RESIZE } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import DraggableComponent from '@/components/Draggable';
@@ -39,7 +39,7 @@ import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import LogoHome from '../../assets/image/header/logo_home.svg';
 import NotificationListening from './NotificationListening';
 import { MyStylesHome } from './styles';
-import PopupVimo from '@/components/PopupVimo';
+import PopupVimo, { PopupAlertActions } from '@/components/PopupVimo';
 
 const PAGE_SIZE = 4;
 
@@ -62,7 +62,7 @@ const Home = observer(() => {
     const [iconBanner, setIconBanner] = useState<BannerHome>();
     const [unMore, setUnMore] = useState<boolean>(false);
     const ref = useRef(null);
-    const refPopup = useRef<PopupActions>(null);
+    const refPopup = useRef<PopupAlertActions>(null);
 
     const condition = useRef({
         isLoading: true,
@@ -73,7 +73,7 @@ const Home = observer(() => {
     useLayoutEffect(() => {
         if (isFocused) {
             setTimeout(() => {
-                StatusBar.setBarStyle(isFocused ? 'light-content' : 'dark-content', true);
+                StatusBar.setBarStyle(isFocused ? TYPE_FORMAT_HEADER_BAR.LIGHT_CONTENT : TYPE_FORMAT_HEADER_BAR.DARK_CONTENT, true);
             }, 500);
         }
 
@@ -251,7 +251,7 @@ const Home = observer(() => {
         const navigate = () => {
             Navigator.pushScreen(ScreenName.myWedView, {
                 title: item.title_vi,
-                url: `https://tienngay.vn/${item.link.toString()}`
+                url: `${LINK_TIENNGAY.LINK_TIENNGAY_WEB}${item.link.toString()}`
             });
         };
 
@@ -259,7 +259,7 @@ const Home = observer(() => {
             <Touchable style={styles.newsItem} onPress={navigate}>
                 <MyImageView
                     imageUrl={item.image}
-                    resizeMode={'cover'}
+                    resizeMode={TYPE_RESIZE.COVER}
                     style={styles.communicationImage}
                 />
                 <Text style={styles.txtCommunityTitle} numberOfLines={2}>{item.title_vi}</Text>
@@ -440,14 +440,14 @@ const Home = observer(() => {
             animated
             translucent
             backgroundColor={COLORS.TRANSPARENT}
-            barStyle={'light-content'}
+            barStyle={TYPE_FORMAT_HEADER_BAR.LIGHT_CONTENT }
         />
     ), []);
 
     const renderBackground = useMemo(() => (
         <>
             {renderStatusBar}
-            < ImageBackground source={Images.bg_header_home} style={styles.imageBg} resizeMode='stretch' />
+            < ImageBackground source={Images.bg_header_home} style={styles.imageBg} resizeMode={TYPE_RESIZE.STRETCH} />
         </>
     ), [renderStatusBar, styles.imageBg]);
 

@@ -15,6 +15,7 @@ import { Touchable } from './elements/touchable';
 import Languages from '@/common/Languages';
 import { Button } from './elements/button';
 import { Configs } from '@/common/Configs';
+import { BUTTON_STYLES } from './elements/button/constants';
 
 export interface PopupAlertProps extends PopupProps {
 
@@ -24,7 +25,9 @@ export interface PopupAlertProps extends PopupProps {
     isTransfer?: boolean;
     icon?: any
 };
-const PopupVimo = forwardRef<PopupActions, PopupAlertProps>(
+export interface PopupAlertActions extends PopupActions { };
+
+const PopupVimo = forwardRef<PopupAlertActions, PopupAlertProps>(
     ({ onClose, onConfirm, showBtn = true, isTransfer = false }: PopupAlertProps, ref: any) => {
         const [visible, setVisible] = useState<boolean>(false);
         const [title, setTitle] = useState<string>('');
@@ -84,7 +87,7 @@ const PopupVimo = forwardRef<PopupActions, PopupAlertProps>(
                             style={styles.button}
                             label={Languages.transferScreen.goHome}
                             fontSize={Configs.FontSize.size13}
-                            buttonStyle={'GREEN'}
+                            buttonStyle={BUTTON_STYLES.GREEN}
                         />
                     </View>}
                 </View>
