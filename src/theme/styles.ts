@@ -143,6 +143,17 @@ export const HtmlStyles = {
         color: COLORS.BLACK,
         fontSize: Configs.FontSize.size13,
     },
+    bn: {
+        ...Styles.typography.medium,
+        color: COLORS.BLACK,
+        fontSize: Configs.FontSize.size13,
+    },
+    notify: {
+        ...Styles.typography.regular,
+        color: COLORS.GRAY_12,
+        fontSize: Configs.FontSize.size13,
+        marginVertical: 5
+    },
 };
 
 export const HtmlStylesSeen = {

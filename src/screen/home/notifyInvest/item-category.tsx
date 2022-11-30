@@ -17,10 +17,11 @@ import { Notify } from '@/models/invest';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { NotificationTotalModel } from '@/models/notification';
 import Navigator from '@/routers/Navigator';
-import { COLORS, IconSize } from '@/theme';
+import { COLORS, HtmlStyles, IconSize } from '@/theme';
 import DateUtils from '@/utils/DateUtils';
 import { MyStylesNotifyInvest } from './styles';
 import { MyImageView } from '@/components/image';
+import HTMLView from 'react-native-htmlview';
 
 const PAGE_SIZE = 8;
 
@@ -121,7 +122,9 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
                     style={IconSize.sizeNotify}
                     resizeMode={'cover'}
                 />}
-                <Text style={styles.txtNote}>{item?.message}</Text>
+                <HTMLView
+                    value={`<notify>${item?.message}</notify>`}
+                    stylesheet={HtmlStyles || undefined} />
             </Touchable >
         );
     }, [apiServices.invest, styles.item, styles.itemBlur, styles.rowTop, styles.title, styles.txtNote, styles.txtRight, styles.txtTimeDate, styles.viewLeft]);
