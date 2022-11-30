@@ -30,6 +30,7 @@ export interface Notify {
     image?: string;
     message: string;
     note: string;
+    title: string;
     created_by: string;
     user_id: number;
     created_at: number;

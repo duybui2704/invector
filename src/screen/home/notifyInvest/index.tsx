@@ -68,6 +68,7 @@ export const NotifyInvest = () => {
 
     const renderContent = useMemo(() => (
         <PagerView style={styles.pagerView} initialPage={0}
+            scrollEnabled={false}
             ref={pageViewRef}>
             {categories.map(item => <ItemCategory key={item.id} category={item} />)}
         </PagerView>

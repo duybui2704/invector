@@ -27,7 +27,7 @@ export const MyStylesNotifyInvest = () => {
             },
             wrapContent: {
                 flex: 1,
-                marginHorizontal: 5
+                marginHorizontal: 10
             },
             btInvest: {
                 alignItems: 'center',

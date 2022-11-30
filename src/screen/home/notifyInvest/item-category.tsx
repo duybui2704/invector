@@ -107,7 +107,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
                 disabled={category.id == 1}
                 onPress={() => onRead(item?.id, item?.status)} >
                 <View style={styles.rowTop}>
-                    <Text style={[styles.title, styles.viewLeft]} numberOfLines={1}>{item?.note}</Text>
+                    <Text style={[styles.title, styles.viewLeft]} numberOfLines={1}>{item?.title}</Text>
                     <Text style={styles.txtTimeDate}>{DateUtils.formatDatePicker(item.created_at)}</Text>
                 </View>
                 <Dash

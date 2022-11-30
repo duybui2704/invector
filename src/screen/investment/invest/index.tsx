@@ -128,6 +128,42 @@ const Invest = observer(({ route }: any) => {
     }, [goBack]);
 
     const onInvest = useCallback(async () => {
+        //check verify and update bank info before invest
+        setIsLoading(true);
+        const res = await apiServices.invest.getInfoInvest();
+        setIsLoading(false);
+        if (res?.success) {
+            const data = res.data as InvestorInfoModel;
+            if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
+                refPopupUpdateInvest.current?.show(
+                    Languages.invest.unconfirmed,
+                    Languages.invest.contentUnconfirmed,
+                    Languages.account.accuracyNow,
+                    onNavigateConfirmed,
+                    <IcUnConfirmed />
+                );
+                return
+            } else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.WAIT) {
+                refPopupUpdateInvest.current?.show(
+                    Languages.invest.waitingConfirm,
+                    Languages.invest.contentWaitingConfirm,
+                    undefined,
+                    undefined,
+                    <IcWaitingConfirm />
+                );
+                return
+            } else if (data?.tra_lai && !data?.tra_lai?.name_bank_account) {
+                refPopupUpdateInvest.current?.show(
+                    Languages.invest.noAccount,
+                    Languages.invest.contentNoAccount,
+                    Languages.invest.updateNow,
+                    onNavigateUpdate,
+                    <IcNoAccount />
+                );
+                return
+            }
+        }
+
         if (methodPayment === ENUM_METHOD_PAYMENT.BANK) {
             setIsLoading(true);
             const resPayment = await apiServices.invest.getInvestBankInfo(dataInvestment?.id?.toString() || '', Platform.OS);
@@ -137,76 +173,17 @@ const Invest = observer(({ route }: any) => {
             if (resPayment.success && bankInfo.id) {
                 Navigator.pushScreen(ScreenName.transferScreen, bankInfo);
             }
-            else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
-                refPopupUpdateInvest.current?.show(
-                    Languages.invest.unconfirmed,
-                    Languages.invest.contentUnconfirmed,
-                    Languages.account.accuracyNow,
-                    onNavigateConfirmed,
-                    <IcUnConfirmed />
-                );
+        } else if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
+            const resPayment = await apiServices.invest.requestNganLuong(dataInvestment?.id?.toString() || '', Platform.OS);
+            if (resPayment.success && resPayment.data) {
+                Navigator.pushScreen(ScreenName.paymentWebview, {
+                    url: resPayment?.data
+                });
             }
-            else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.WAIT) {
-                refPopupUpdateInvest.current?.show(
-                    Languages.invest.waitingConfirm,    
-                    Languages.invest.contentWaitingConfirm,
-                    undefined,
-                    undefined,
-                    <IcWaitingConfirm />
-                );
-            } 
-            else if (!bankInfo?.id) {
-                refPopupUpdateInvest.current?.show(
-                    Languages.invest.noAccount,
-                    Languages.invest.contentNoAccount,
-                    Languages.invest.updateNow,
-                    onNavigateUpdate,
-                    <IcNoAccount />
-                );
-            }
-            return;
+        } else if (methodPayment === ENUM_METHOD_PAYMENT.VIMO) {
+            getOtpVimo();
         }
-        setIsLoading(true);
-        const res = await apiServices.invest.getInfoInvest();
-        if (res?.success) {
-            const data = res.data as InvestorInfoModel;
 
-            if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
-                const resPayment = await apiServices.invest.requestNganLuong(dataInvestment?.id?.toString() || '', Platform.OS);
-                if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
-                    refPopupUpdateInvest.current?.show(
-                        Languages.invest.unconfirmed,
-                        Languages.invest.contentUnconfirmed,
-                        Languages.account.accuracyNow,
-                        onNavigateConfirmed,
-                        <IcUnConfirmed />
-                    );
-                } else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.WAIT) {
-                    refPopupUpdateInvest.current?.show(
-                        Languages.invest.waitingConfirm,
-                        Languages.invest.contentWaitingConfirm,
-                        undefined,
-                        undefined,
-                        <IcWaitingConfirm />
-                    );
-                } else if (data?.tra_lai && !data?.tra_lai?.type_interest_receiving_account) {
-                    refPopupUpdateInvest.current?.show(
-                        Languages.invest.noAccount,
-                        Languages.invest.contentNoAccount,
-                        Languages.invest.updateNow,
-                        onNavigateUpdate,
-                        <IcNoAccount />
-                    );
-                } else if (resPayment.success && resPayment.data) {
-                    Navigator.pushScreen(ScreenName.paymentWebview, {
-                        url: resPayment?.data
-                    });
-                } 
-            } 
-            else if (methodPayment === ENUM_METHOD_PAYMENT.VIMO) {
-                getOtpVimo();
-            }
-        }
         setIsLoading(false);
     }, [apiServices.invest, dataInvestment?.id, getOtpVimo, methodPayment, onNavigateConfirmed, onNavigateUpdate, userManager?.userInfo?.tinh_trang?.status]);
 
