@@ -89,7 +89,6 @@ const Investment = observer(({ route }: { route: any }) => {
             setIsLoading(true);
         }
         condition.current.isLoading = true;
-        console.log('test', condition.current.option);
         const resInvest = await apiServices.invest.getListContractInvesting(
             condition.current.option,
             condition.current.textSearch,

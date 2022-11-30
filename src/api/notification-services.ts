@@ -3,7 +3,7 @@ import { API_CONFIG } from './constants';
 
 export class NotificationServices extends BaseService {
     getNotificationCategories = async () =>
-        this.api().get(
+        this.api().post(
             API_CONFIG.NOTIFICATION_CATEGORY,
             this.buildFormData({})
         );

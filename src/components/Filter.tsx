@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         borderRadius: 35,
         marginHorizontal: 5,
         backgroundColor: COLORS.GRAY_13,
-        paddingHorizontal: 16,
+        // paddingHorizontal: 16,
         marginVertical: 4
     },
     filterSelected: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         borderRadius: 35,
         backgroundColor: COLORS.WHITE,
         marginHorizontal: 5,
-        paddingHorizontal: 16,
+        // paddingHorizontal: 16,
         marginVertical: 4
     },
     filterTxtSelected: {

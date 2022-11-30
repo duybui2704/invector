@@ -13,6 +13,9 @@ export const MyStylesNotifyInvest = () => {
                 flex: 1,
                 backgroundColor: COLORS.WHITE_GRAY1
             },
+            pagerView: {
+                flex: 1,
+            },
             investTab: {
                 flexDirection: 'row',
                 width: '100%',
@@ -23,7 +26,8 @@ export const MyStylesNotifyInvest = () => {
                 padding: 5
             },
             wrapContent: {
-                marginHorizontal: 16
+                flex: 1,
+                marginHorizontal: 5
             },
             btInvest: {
                 alignItems: 'center',
@@ -37,7 +41,7 @@ export const MyStylesNotifyInvest = () => {
                 fontSize: Configs.FontSize.size13
             },
             flatList: {
-                paddingBottom: 150
+                paddingBottom: 10
             },
             item: {
                 paddingTop: 8,
@@ -75,13 +79,14 @@ export const MyStylesNotifyInvest = () => {
                 textAlign: 'center'
             },
             viewLeft: {
-                width: '50%',
-                alignItems: 'flex-start'
+                flex: 1,
+                textAlign: 'left',
             },
             txtTimeDate: {
                 fontSize: Configs.FontSize.size11,
                 fontFamily: Configs.FontFamily.medium,
-                color: COLORS.GRAY_12
+                color: COLORS.GRAY_12,
+                textAlign:'right'
             },
             txtRight: {
                 position: 'absolute',

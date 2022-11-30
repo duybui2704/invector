@@ -7,6 +7,7 @@ export interface PackageInvest {
     ki_han_dau_tu: string;
     tong_lai_du_kien: string;
     tong_lai_da_nhan: string;
+    tong_lai_da_tra: string;
     ngay_dao_han: string;
     hinh_thuc_tra_lai: string;
     ti_le_lai_suat_hang_thang: string;
@@ -15,14 +16,18 @@ export interface PackageInvest {
     ngay_dao_han_du_kien: string;
     tong_lai_nhan_duoc: string;
     thoi_gian_dau_tu: string;
+    tong_goc_con_lai: string;
+    tong_goc_da_tra: string;
 }
 
 export interface Notify {
     id: number;
     action: string;
+    action_id: string;
     status: number;
     code_contract?: any;
     link?: any;
+    image?: string;
     message: string;
     note: string;
     created_by: string;

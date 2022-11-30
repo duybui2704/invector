@@ -9,9 +9,10 @@ import IcBtnInvest from '@/assets/image/ic_button_invest.svg';
 import { Configs } from '@/common/Configs';
 import Utils from '@/utils/Utils';
 import { ENUM_INVEST_STATUS } from '@/common/constants';
+import { PackageInvest } from '@/models/invest';
 
 type ItemProps = {
-    data?: any;
+    data?: PackageInvest;
     onPress?: () => void
     onPressInvestNow?: () => void
     hasButton?: boolean | true
@@ -42,6 +43,7 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
                         <Text style={styles.txtInterest}>{Languages.invest.time}</Text>
                         <Text style={styles.txtFormality}>{data?.thoi_gian_dau_tu}</Text>
                     </View>
+
                     {title === ENUM_INVEST_STATUS.HISTORY ?
                         <View style={styles.wrapText}>
                             <Text style={styles.txtInterest}>{Languages.invest.sumMoney}</Text>
@@ -53,6 +55,21 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
                         </View>
                     }
                 </View>
+                <Dash
+                    dashThickness={1}
+                    dashLength={10}
+                    dashGap={5}
+                    dashColor={COLORS.GRAY_13} />
+                {title === ENUM_INVEST_STATUS.INVESTING && <View style={styles.rowCenter}>
+                    <View >
+                        <Text style={styles.txtInterest}>{Languages.invest.payed}</Text>
+                        <Text style={styles.txtFormality}>{Utils.formatMoney(data?.tong_goc_da_tra)}</Text>
+                    </View>
+                    <View style={styles.wrapText}>
+                        <Text style={styles.txtInterest}>{Languages.invest.remaining}</Text>
+                        <Text style={styles.greenText}>{Utils.formatMoney(data?.tong_goc_con_lai)}</Text>
+                    </View>
+                </View>}
                 <Dash
                     dashThickness={1}
                     dashLength={10}
@@ -90,7 +107,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.GRAY_11,
         marginBottom: 8,
-        flex:1
+        flex: 1
     },
     rowTop: {
         flexDirection: 'row',

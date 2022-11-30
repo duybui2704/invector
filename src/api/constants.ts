@@ -26,9 +26,8 @@ export enum API_CONFIG {
     // BASE_URL_ERROR = 'https://sandboxapindt.tienngay.vn/',
     BASE_URL_ERROR = 'https://apindt.tienngay.vn/',
 
-    // BASE_URL = 'https://sandboxappndt.tienngay.vn/V2/',
-    BASE_URL = 'https://appndt.tienngay.vn/V2/',
-    // BASE_URL = 'https://appndt.tienvui.vn/V2/',
+    // BASE_URL = 'https://appndt.tienngay.vn/V2/',
+    BASE_URL = 'https://appndt.tienvui.vn/V2/',
 
     // common
     GET_BANNERS = '/banner/news', // banner app
@@ -64,7 +63,8 @@ export enum API_CONFIG {
     HISTORY = '/investor/history_transaction_investor',
 
     // notification
-    NOTIFICATION = '/user/get_notification_user',
+    NOTIFICATION_CATEGORY = '/user/type_notification',
+    NOTIFICATION = '/user/get_notification_user_v2',
     CREATE_FCM_TOKEN = 'user/save_device_token_user',
     GET_UNREAD_COUNT_NOTIFICATION = 'user/get_count_notification_user',
     NOTIFY_UPDATE_READ = '/user/update_read_notification',
