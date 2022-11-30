@@ -55,7 +55,7 @@ export const IconSize = {
     },
     sizeNotify: {
         width: SCREEN_WIDTH - 40,
-        height: 200
+        height: 250
     },
     vps: {
         width: SCREEN_WIDTH - 40,

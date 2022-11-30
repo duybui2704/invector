@@ -14,7 +14,7 @@ export const HEADER_PADDING = STATUSBAR_HEIGHT + PADDING_TOP;
 export const TAB_BAR_HEIGHT = 50;
 
 // based on design scale
-const scale = SCREEN_WIDTH / 414;
+const scale = SCREEN_WIDTH / 408;
 
 export function actuatedNormalize(size: number) {
     const newSize = size * scale;

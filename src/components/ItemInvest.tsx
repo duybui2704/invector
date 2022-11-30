@@ -18,6 +18,7 @@ type ItemProps = {
     hasButton?: boolean | true
     title?: string
 };
+
 const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemProps
 ) => {
     const styleText = {
@@ -47,7 +48,7 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
                     {title === ENUM_INVEST_STATUS.HISTORY ?
                         <View style={styles.wrapText}>
                             <Text style={styles.txtInterest}>{Languages.invest.sumMoney}</Text>
-                            <Text style={styles.greenText}>{Utils.formatMoney(data?.tong_lai_nhan_duoc)}</Text>
+                            <Text style={styles.greenText}>{Utils.formatMoney(data?.so_tien_dau_tu)}</Text>
                         </View> :
                         <View style={styles.wrapText}>
                             <Text style={styles.txtInterest}>{Languages.invest.intent}</Text>
