@@ -224,7 +224,6 @@ const Invest = observer(({ route }: any) => {
     ), []);
 
     const renderMethod = useCallback((icon: any, label: string, method: string, linked?: boolean) => {
-        console.log('aaaaaa');
         const onPress = () => {
             setMethodPayment(method);
         };

@@ -34,6 +34,7 @@ import VerifyOTP from '@/screen/profile/verifyOTP/VerifyOTP';
 import Report from '@/screen/report';
 import { COLORS } from '@/theme';
 import ScreenName, { TabsName } from '../common/screenNames';
+import Navigator from './Navigator';
 
 const TabsData = [
     {
@@ -110,24 +111,32 @@ const PaymentStack = () => (
     </Stack.Navigator>
 );
 
-const AccountStack = () => (
-    <Stack.Navigator screenOptions={screenOptions}>
-        <Stack.Screen name={ScreenName.account} component={Profile} />
-        <Stack.Screen name={ScreenName.accountInfo} component={AccountInfo} />
-        <Stack.Screen name={ScreenName.editAccountInfo} component={EditAccountInfo} />
-        <Stack.Screen name={ScreenName.accountIdentify} component={AccountIdentify} />
-        <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} />
-        <Stack.Screen name={ScreenName.changePwd} component={ChangePwd} />
-        <Stack.Screen name={ScreenName.accountLink} component={AccountLink} />
-        <Stack.Screen name={ScreenName.paymentMethod} component={PaymentMethod} />
-        <Stack.Screen name={ScreenName.accountBank} component={AccountBank} />
-        <Stack.Screen name={ScreenName.confirmPhone} component={ConfirmPhone} />
-        <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} />
-        <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
-        <Stack.Screen name={ScreenName.linkWallet} component={LinkWallet} />
-        <Stack.Screen name={ScreenName.referralUsers} component={ReferralUsers} />
-    </Stack.Navigator>
-);
+const AccountStack = ({ navigation }: any) => {
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.account);
+        });
+        return unsubscribe;
+    }, [navigation]);
+    return (
+        <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen name={ScreenName.account} component={Profile} />
+            <Stack.Screen name={ScreenName.accountInfo} component={AccountInfo} />
+            <Stack.Screen name={ScreenName.editAccountInfo} component={EditAccountInfo} />
+            <Stack.Screen name={ScreenName.accountIdentify} component={AccountIdentify} />
+            <Stack.Screen name={ScreenName.shareFriend} component={ShareFriend} />
+            <Stack.Screen name={ScreenName.changePwd} component={ChangePwd} />
+            <Stack.Screen name={ScreenName.accountLink} component={AccountLink} />
+            <Stack.Screen name={ScreenName.paymentMethod} component={PaymentMethod} />
+            <Stack.Screen name={ScreenName.accountBank} component={AccountBank} />
+            <Stack.Screen name={ScreenName.confirmPhone} component={ConfirmPhone} />
+            <Stack.Screen name={ScreenName.verifyOTP} component={VerifyOTP} />
+            <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
+            <Stack.Screen name={ScreenName.linkWallet} component={LinkWallet} />
+            <Stack.Screen name={ScreenName.referralUsers} component={ReferralUsers} />
+        </Stack.Navigator>
+    );
+};
 
 const TabBar = ({ props }: any) => {
     const { focused, size, tabName } = props;
