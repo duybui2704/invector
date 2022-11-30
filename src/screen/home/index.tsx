@@ -1,17 +1,17 @@
 
 import PasscodeAuth from '@el173/react-native-passcode-auth';
+import { useIsFocused } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, ImageBackground, RefreshControl, StatusBar, Text, View } from 'react-native';
 import Dash from 'react-native-dash';
 import FastImage from 'react-native-fast-image';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import { useIsFocused } from '@react-navigation/native';
 
 import { LINKS, STORE_LUCKY_LOTT } from '@/api/constants';
 import LogoVfs from '@/assets/image/home/logo_vfs.svg';
-import LogoLuckyLott from '@/assets/image/logo_lucky_lott.svg';
 import AvatarIC from '@/assets/image/ic_avatar.svg';
+import LogoLuckyLott from '@/assets/image/logo_lucky_lott.svg';
 import Images from '@/assets/Images';
 import { isIOS } from '@/common/Configs';
 import { ENUM_BIOMETRIC_TYPE, ENUM_INVEST_STATUS, LINK_TIENNGAY, TYPE_FORMAT_HEADER_BAR, TYPE_INTEREST_RECEIVE_ACC, TYPE_RESIZE } from '@/common/constants';
@@ -22,10 +22,11 @@ import { Touchable } from '@/components/elements/touchable';
 import { MyImageView } from '@/components/image';
 import ItemInvest from '@/components/ItemInvest';
 import Loading from '@/components/loading';
-import PopupInvestFirst, { PopupActions } from '@/components/popupInvestFirst';
+import PopupPromotion, { PopupActions } from '@/components/PopupPromotion';
+import PopupVimo, { PopupAlertActions } from '@/components/PopupVimo';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import { BannerHome, BannerModel } from '@/models/banner';
+import { PromotionModel, BannerModel } from '@/models/banner';
 import { BaseModel } from '@/models/base-model';
 import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
@@ -39,7 +40,6 @@ import IcNotify from '../../assets/image/header/ic_notify_header_home.svg';
 import LogoHome from '../../assets/image/header/logo_home.svg';
 import NotificationListening from './NotificationListening';
 import { MyStylesHome } from './styles';
-import PopupVimo, { PopupAlertActions } from '@/components/PopupVimo';
 
 const PAGE_SIZE = 4;
 
@@ -58,8 +58,8 @@ const Home = observer(() => {
     const [dataArr, setDataArr] = useState<PackageInvest[]>();
     const [dataDash, setDataDash] = useState<DashBroad>();
     const [showFloating, setShowFloating] = useState<boolean>(true);
-    const refPopupFirst = useRef<PopupActions>(null);
-    const [iconBanner, setIconBanner] = useState<BannerHome>();
+    const refPromotionPopup = useRef<PopupActions>(null);
+    const [promotions, setPromotion] = useState<PromotionModel>();
     const [unMore, setUnMore] = useState<boolean>(false);
     const ref = useRef(null);
     const refPopup = useRef<PopupAlertActions>(null);
@@ -110,7 +110,7 @@ const Home = observer(() => {
             if (userManager.userInfo) {
                 fetchContractsDash();
             }
-            if (!iconBanner) {
+            if (!promotions) {
                 fetchDataBanner();
             }
         }
@@ -183,12 +183,12 @@ const Home = observer(() => {
         }
         const resBannerHome = await apiServices.common.getBannerHome();
         if (resBannerHome.success) {
-            const bannerHome = resBannerHome?.data as BannerHome;
-            setIconBanner(bannerHome);
+            const bannerHome = resBannerHome?.data as PromotionModel;
+            setPromotion(bannerHome);
             if (bannerHome && bannerHome.image) {
                 setTimeout(() => {
                     setShowFloating(true);
-                    showFirstPopup();
+                    showPromotionPopup();
                 }, 500);
             }
         }
@@ -392,11 +392,11 @@ const Home = observer(() => {
     const renderItemInvestPackage = useCallback((item: any) => renderItem(item?.item), [renderItem]);
 
     const focusContracts = useCallback(() => {
-        if (userManager?.userInfo && !fastAuthInfoManager.isEnableFastAuth) {
-            Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVEST_NOW });
-        } else {
-            Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
-        }
+        // if (userManager?.userInfo && !fastAuthInfoManager.isEnableFastAuth) {
+        //     Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.investment, { types: ENUM_INVEST_STATUS.INVEST_NOW });
+        // } else {
+        //     Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
+        // }
     }, [fastAuthInfoManager.isEnableFastAuth, userManager?.userInfo]);
 
     const renderReasonItems = useCallback((describe: string, hasDash?: boolean) => (
@@ -440,7 +440,7 @@ const Home = observer(() => {
             animated
             translucent
             backgroundColor={COLORS.TRANSPARENT}
-            barStyle={TYPE_FORMAT_HEADER_BAR.LIGHT_CONTENT }
+            barStyle={TYPE_FORMAT_HEADER_BAR.LIGHT_CONTENT}
         />
     ), []);
 
@@ -453,8 +453,8 @@ const Home = observer(() => {
 
     const renderForeground = () => (renderTop);
 
-    const showFirstPopup = () => {
-        refPopupFirst.current?.show();
+    const showPromotionPopup = () => {
+        refPromotionPopup.current?.show();
     };
 
     const onRefreshControlParallax = useCallback(() => {
@@ -492,22 +492,22 @@ const Home = observer(() => {
                 >
                     {renderContent}
                 </ParallaxScrollView>
-                {(showFloating && iconBanner?.icon && iconBanner?.image) ?
+                {(showFloating && promotions?.icon && promotions?.image) ?
                     <DraggableComponent
-                        image={iconBanner?.icon}
+                        image={promotions?.icon}
                         x={SCREEN_WIDTH - 110}
                         renderSize={100}
                         isCircle
                         shouldReverse
-                        onShortPressRelease={showFirstPopup}
+                        onShortPressRelease={showPromotionPopup}
                         onClose={() => setShowFloating(false)}
                     />
                     : <View></View>}
-                <PopupInvestFirst
-                    ref={refPopupFirst}
-                    image={iconBanner?.image}
+                {promotions?.image && <PopupPromotion
+                    ref={refPromotionPopup}
+                    images={promotions?.image}
                     onConfirm={focusContracts}
-                />
+                />}
                 <PopupVimo
                     ref={refPopup}
                     onConfirm={gotoReceivedBank}

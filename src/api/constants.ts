@@ -31,7 +31,7 @@ export enum API_CONFIG {
 
     // common
     GET_BANNERS = '/banner/news', // banner app
-    GET_BANNERS_HOME = '/banner/home',
+    GET_BANNERS_HOME = '/banner/home_V2',
     ENCRYPT = '/api/Encrypt',
     CHECK_APP_REVIEW = '/app/review',
     GET_APP_CONFIG = 'app/config',

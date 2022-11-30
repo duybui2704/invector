@@ -36,8 +36,8 @@ export interface BannerModel extends BaseModel {
     image_mb: string;
 }
 
-export interface BannerHome {
+export interface PromotionModel {
     icon: string;
-    image: string;
+    image: string[];
 }
 
