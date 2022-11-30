@@ -108,7 +108,7 @@ const Invest = observer(({ route }: any) => {
         // }
     }, [apiServices.invest, dataInvestment?.id]);
 
-    const goback = useCallback(() => {
+    const goBack = useCallback(() => {
         if (refInvestId.current) {
             Navigator.resetScreen([ScreenName.account]);
             if (refScreen.current) {
@@ -120,12 +120,12 @@ const Invest = observer(({ route }: any) => {
     }, []);
 
     const onNavigateUpdate = useCallback(() => {
-        Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.paymentMethod, { goback, screen: refScreen.current });
-    }, [goback]);
+        Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.paymentMethod, { goBack, screen: refScreen.current });
+    }, [goBack]);
 
     const onNavigateConfirmed = useCallback(() => {
-        Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.accountIdentify, { goback, screen: refScreen.current });
-    }, [goback]);
+        Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.accountIdentify, { goBack, screen: refScreen.current });
+    }, [goBack]);
 
     const onInvest = useCallback(async () => {
         if (methodPayment === ENUM_METHOD_PAYMENT.BANK) {
@@ -145,22 +145,17 @@ const Invest = observer(({ route }: any) => {
                     onNavigateConfirmed,
                     <IcUnConfirmed />
                 );
-            } else {
+            }
+            else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.WAIT) {
                 refPopupUpdateInvest.current?.show(
-                    Languages.invest.waitingConfirm,
+                    Languages.invest.waitingConfirm,    
                     Languages.invest.contentWaitingConfirm,
                     undefined,
                     undefined,
                     <IcWaitingConfirm />
                 );
-            }
-            return;
-        }
-        setIsLoading(true);
-        const res = await apiServices.invest.getInfoInvest();
-        if (res?.success) {
-            const data = res.data as InvestorInfoModel;
-            if (data?.tra_lai && !data?.tra_lai?.type_interest_receiving_account) {
+            } 
+            else if (!bankInfo?.id) {
                 refPopupUpdateInvest.current?.show(
                     Languages.invest.noAccount,
                     Languages.invest.contentNoAccount,
@@ -169,7 +164,14 @@ const Invest = observer(({ route }: any) => {
                     <IcNoAccount />
                 );
             }
-            else if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
+            return;
+        }
+        setIsLoading(true);
+        const res = await apiServices.invest.getInfoInvest();
+        if (res?.success) {
+            const data = res.data as InvestorInfoModel;
+
+            if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
                 const resPayment = await apiServices.invest.requestNganLuong(dataInvestment?.id?.toString() || '', Platform.OS);
                 if (resPayment.success && resPayment.data) {
                     Navigator.pushScreen(ScreenName.paymentWebview, {
@@ -183,7 +185,7 @@ const Invest = observer(({ route }: any) => {
                         onNavigateConfirmed,
                         <IcUnConfirmed />
                     );
-                } else {
+                } else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.WAIT) {
                     refPopupUpdateInvest.current?.show(
                         Languages.invest.waitingConfirm,
                         Languages.invest.contentWaitingConfirm,
@@ -191,8 +193,16 @@ const Invest = observer(({ route }: any) => {
                         undefined,
                         <IcWaitingConfirm />
                     );
+                } else if (data?.tra_lai && !data?.tra_lai?.type_interest_receiving_account) {
+                    refPopupUpdateInvest.current?.show(
+                        Languages.invest.noAccount,
+                        Languages.invest.contentNoAccount,
+                        Languages.invest.updateNow,
+                        onNavigateUpdate,
+                        <IcNoAccount />
+                    );
                 }
-            }
+            } 
             else if (methodPayment === ENUM_METHOD_PAYMENT.VIMO) {
                 getOtpVimo();
             }

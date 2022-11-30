@@ -1,8 +1,9 @@
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { observer } from 'mobx-react';
 import React, { useCallback } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { ViewProps } from 'react-native';
 
 import { ICONS } from '@/assets/icons/constant';
 import { IconTienngay } from '@/assets/icons/icon-tienngay';
@@ -77,6 +78,7 @@ const PackageInvestStack =  () => (
         <Stack.Screen name={ScreenName.detailInvestment} component={DetailInvestment} />
         <Stack.Screen name={ScreenName.paymentWebview} component={PaymentWebview} />
         <Stack.Screen name={ScreenName.transferScreen} component={TransferScreen} />
+        <Stack.Screen name={ScreenName.invest} component={Invest} />
     </>
 );
 
@@ -92,7 +94,6 @@ const HomeStack = () => (
 const InvestStack = () => (
     <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen name={ScreenName.investment} component={Investment} />
-        <Stack.Screen name={ScreenName.invest} component={Invest} />
         {PackageInvestStack()}
     </Stack.Navigator>
 );
@@ -173,14 +174,14 @@ const MyBottomTabs = observer(() => {
             routeName === ScreenName.transaction ||
             routeName === ScreenName.account
         ) {
-            return true;
+            return { display: 'flex' };
         }
-        return false;
+        return { display: 'none' };
     }, []);
 
     const getOptions = useCallback((props: any) => ({
         tabBarIcon: (data: any) => <TabBar props={{ ...data, tabName: props.route.name }} />,
-        tabBarVisible: getTabBarVisibility(props?.route)
+        tabBarStyle: getTabBarVisibility(props?.route) as ViewProps
     }), [getTabBarVisibility]);
 
     return (

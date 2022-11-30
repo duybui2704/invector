@@ -204,7 +204,7 @@ const Home = observer(() => {
 
     const navigateToDetail = useCallback((item: PackageInvest) => {
         if (userManager?.userInfo && !fastAuthInfoManager?.isEnableFastAuth) {
-            Navigator.navigateToDeepScreen([ScreenName.packageInvestStack], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
+            Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: btnInvest, id: item?.id });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
@@ -212,7 +212,7 @@ const Home = observer(() => {
 
     const navigateToInvestNow = useCallback((item: PackageInvest) => {
         if (userManager?.userInfo && !fastAuthInfoManager?.isEnableFastAuth) {
-            Navigator.navigateToDeepScreen([ScreenName.packageInvestStack], ScreenName.invest, { status: btnInvest, id: item?.id });
+            Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.invest, { status: btnInvest, id: item?.id });
         } else {
             Navigator.navigateToDeepScreen([ScreenName.authStack], ScreenName.auth, { titleAuth: Languages.auth.txtLogin });
         }
