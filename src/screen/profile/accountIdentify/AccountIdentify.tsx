@@ -273,8 +273,8 @@ const AccountIdentify = observer(({ route }: any) => {
     ), [onVerify, styles.accuracyWrap]);
 
     const onGoBack = useCallback(() => {
-        if (route?.params?.goback) {
-            route.params.goback();
+        if (route?.params?.goBack) {
+            route.params.goBack();
         }
         if (route?.params?.screen) {
             Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.invest);
