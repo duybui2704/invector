@@ -1,13 +1,16 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Alert, Platform, ScrollView, Text, View, ViewStyle } from 'react-native';
+import { Platform, ScrollView, Text, View, ViewStyle } from 'react-native';
 
 import IcBag from '@/assets/image/ic_bag.svg';
+import IcBank from '@/assets/image/ic_bank.svg';
 import IcNganLuong from '@/assets/image/ic_ngan_luong.svg';
 import IcVimo from '@/assets/image/ic_vimo.svg';
-import IcBank from '@/assets/image/ic_bank.svg';
 import IcCheckBoxOff from '@/assets/image/invest/check_box_off.svg';
 import IcCheckBoxOn from '@/assets/image/invest/check_box_on.svg';
+import IcNoAccount from '@/assets/image/invest/no_account.svg';
+import IcUnConfirmed from '@/assets/image/invest/unconfirmed.svg';
+import IcWaitingConfirm from '@/assets/image/invest/waiting_confirm.svg';
 import { Configs } from '@/common/Configs';
 import { ENUM_METHOD_PAYMENT, STATE_LINK, STATE_VERIFY_ACC } from '@/common/constants';
 import Languages from '@/common/Languages';
@@ -19,16 +22,17 @@ import ItemInfoContract from '@/components/ItemInfoContract';
 import Loading from '@/components/loading';
 import PopupConfirmPolicy from '@/components/PopupConfirmPolicy';
 import { PopupInvestOTP } from '@/components/popupOTP';
+import PopupUpdateInvest, { PopupUpdateInvestActions } from '@/components/popupUpdateInvest';
 import { useAppStore } from '@/hooks';
 import { BankInformationModel, InvestorInfoModel, PackageInvest } from '@/models/invest';
+import { PaymentMethodModel } from '@/models/payment-method-model';
 import { PopupActionTypes } from '@/models/typesPopup';
+import { InfoLinkVimoModal } from '@/models/user-models';
 import Navigator from '@/routers/Navigator';
 import { MyStylesInvest } from '@/screen/investment/invest/styles';
 import { COLORS } from '@/theme';
 import Utils from '@/utils/Utils';
-import { InfoLinkVimoModal } from '@/models/user-models';
 import ToastUtils from '@/utils/ToastUtils';
-import { PaymentMethodModel } from '@/models/payment-method-model';
 import { BUTTON_STYLES } from '@/components/elements/button/constants';
 
 const Invest = observer(({ route }: any) => {
@@ -45,6 +49,7 @@ const Invest = observer(({ route }: any) => {
     const [statusVimo, setStatusVimo] = useState<boolean>(false);
     const refInvestId = useRef<any>(null);
     const refScreen = useRef<any>(null);
+    const refPopupUpdateInvest = useRef<PopupUpdateInvestActions>(null);
 
     useEffect(() => {
         if (route?.params?.id) {
@@ -62,11 +67,11 @@ const Invest = observer(({ route }: any) => {
         const resPaymentMethod = await apiServices.paymentMethod.getPaymentMethod();
         setIsLoading(false);
         const fetchPaymentMethod = resPaymentMethod.data as PaymentMethodModel;
-        setPaymentMethodConfig(paymentMethodConfig);
+        setPaymentMethodConfig(fetchPaymentMethod);
         if (resPaymentMethod.success && fetchPaymentMethod.vimo) {
             fetchInfoVimoLink();
         }
-    }, [apiServices.paymentMethod, paymentMethodConfig]);
+    }, [apiServices.paymentMethod]);
 
     const fetchInfoVimoLink = useCallback(async () => {
         const res = await apiServices.paymentMethod.requestInfoLinkVimo();
@@ -103,7 +108,7 @@ const Invest = observer(({ route }: any) => {
         // }
     }, [apiServices.invest, dataInvestment?.id]);
 
-    const goback = useCallback(() => {
+    const goBack = useCallback(() => {
         if (refInvestId.current) {
             Navigator.resetScreen([ScreenName.account]);
             if (refScreen.current) {
@@ -113,6 +118,14 @@ const Invest = observer(({ route }: any) => {
             }
         }
     }, []);
+
+    const onNavigateUpdate = useCallback(() => {
+        Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.paymentMethod, { goBack, screen: refScreen.current });
+    }, [goBack]);
+
+    const onNavigateConfirmed = useCallback(() => {
+        Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.accountIdentify, { goBack, screen: refScreen.current });
+    }, [goBack]);
 
     const onInvest = useCallback(async () => {
         if (methodPayment === ENUM_METHOD_PAYMENT.BANK) {
@@ -125,7 +138,31 @@ const Invest = observer(({ route }: any) => {
                 Navigator.pushScreen(ScreenName.transferScreen, bankInfo);
             }
             else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
-                ToastUtils.showErrorToast(Languages.errorMsg.accountNotYetIdentityToInvest);
+                refPopupUpdateInvest.current?.show(
+                    Languages.invest.unconfirmed,
+                    Languages.invest.contentUnconfirmed,
+                    Languages.account.accuracyNow,
+                    onNavigateConfirmed,
+                    <IcUnConfirmed />
+                );
+            }
+            else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.WAIT) {
+                refPopupUpdateInvest.current?.show(
+                    Languages.invest.waitingConfirm,    
+                    Languages.invest.contentWaitingConfirm,
+                    undefined,
+                    undefined,
+                    <IcWaitingConfirm />
+                );
+            } 
+            else if (!bankInfo?.id) {
+                refPopupUpdateInvest.current?.show(
+                    Languages.invest.noAccount,
+                    Languages.invest.contentNoAccount,
+                    Languages.invest.updateNow,
+                    onNavigateUpdate,
+                    <IcNoAccount />
+                );
             }
             return;
         }
@@ -133,40 +170,45 @@ const Invest = observer(({ route }: any) => {
         const res = await apiServices.invest.getInfoInvest();
         if (res?.success) {
             const data = res.data as InvestorInfoModel;
-            if (data?.tra_lai && !data?.tra_lai?.type_interest_receiving_account) {
-                Alert.alert(
-                    Languages.invest.notify, Languages.invest.updateBankInfo,
-                    [
-                        {
-                            text: Languages.common.cancel,
-                            style: 'cancel'
-                        },
-                        {
-                            text: Languages.common.agree,
-                            style: 'default',
-                            onPress: () => {
-                                Navigator.navigateToDeepScreen([TabsName.accountTabs], ScreenName.paymentMethod, { goback, screen: refScreen.current });
-                            }
-                        }
-                    ]
-                );
-            }
-            else if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
+
+            if (methodPayment === ENUM_METHOD_PAYMENT.NGAN_LUONG) {
                 const resPayment = await apiServices.invest.requestNganLuong(dataInvestment?.id?.toString() || '', Platform.OS);
-                if (resPayment.success && resPayment.data) {
+                if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
+                    refPopupUpdateInvest.current?.show(
+                        Languages.invest.unconfirmed,
+                        Languages.invest.contentUnconfirmed,
+                        Languages.account.accuracyNow,
+                        onNavigateConfirmed,
+                        <IcUnConfirmed />
+                    );
+                } else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.WAIT) {
+                    refPopupUpdateInvest.current?.show(
+                        Languages.invest.waitingConfirm,
+                        Languages.invest.contentWaitingConfirm,
+                        undefined,
+                        undefined,
+                        <IcWaitingConfirm />
+                    );
+                } else if (data?.tra_lai && !data?.tra_lai?.type_interest_receiving_account) {
+                    refPopupUpdateInvest.current?.show(
+                        Languages.invest.noAccount,
+                        Languages.invest.contentNoAccount,
+                        Languages.invest.updateNow,
+                        onNavigateUpdate,
+                        <IcNoAccount />
+                    );
+                } else if (resPayment.success && resPayment.data) {
                     Navigator.pushScreen(ScreenName.paymentWebview, {
                         url: resPayment?.data
                     });
-                } else if (userManager?.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.NO_VERIFIED) {
-                    ToastUtils.showErrorToast(Languages.errorMsg.accountNotYetIdentityToInvest);
-                }
-            }
+                } 
+            } 
             else if (methodPayment === ENUM_METHOD_PAYMENT.VIMO) {
                 getOtpVimo();
             }
         }
         setIsLoading(false);
-    }, [apiServices.invest, dataInvestment?.id, getOtpVimo, goback, methodPayment, userManager?.userInfo?.tinh_trang?.status]);
+    }, [apiServices.invest, dataInvestment?.id, getOtpVimo, methodPayment, onNavigateConfirmed, onNavigateUpdate, userManager?.userInfo?.tinh_trang?.status]);
 
     const openPolicy = useCallback(() => {
         refPopupPolicy.current?.show();
@@ -182,6 +224,7 @@ const Invest = observer(({ route }: any) => {
     ), []);
 
     const renderMethod = useCallback((icon: any, label: string, method: string, linked?: boolean) => {
+        console.log('aaaaaa');
         const onPress = () => {
             setMethodPayment(method);
         };
@@ -266,6 +309,9 @@ const Invest = observer(({ route }: any) => {
             <PopupConfirmPolicy
                 onConfirm={onConfirmPopup}
                 ref={refPopupPolicy}
+            />
+            <PopupUpdateInvest
+                ref={refPopupUpdateInvest}
             />
             {isLoading && <Loading isOverview />}
         </View>

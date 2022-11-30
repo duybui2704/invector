@@ -31,8 +31,9 @@ import { UpLoadImage } from '@/models/common-model';
 import { UserInfoModal } from '@/models/user-models';
 import Loading from '@/components/loading';
 import Navigator from '@/routers/Navigator';
+import ScreenName, { TabsName } from '@/common/screenNames';
 
-const AccountIdentify = observer(() => {
+const AccountIdentify = observer(({ route }: any) => {
     const { apiServices, userManager } = useAppStore();
     const styles = MyStylesAccountIdentify();
     const [identityAcc, setIdentity] = useState<string>(SessionManager.userInfo?.identity || '');
@@ -271,9 +272,20 @@ const AccountIdentify = observer(() => {
         </>
     ), [onVerify, styles.accuracyWrap]);
 
+    const onGoBack = useCallback(() => {
+        if (route?.params?.goback) {
+            route.params.goback();
+        }
+        if (route?.params?.screen) {
+            Navigator.navigateToDeepScreen([TabsName.investTabs], ScreenName.invest);
+            return;
+        }
+        Navigator.goBack();
+    }, [route.params]);
+
     return (
         <View style={styles.container}>
-            <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack />
+            <HeaderBar isLight={false} title={Languages.accountIdentify.accountIdentify} hasBack onBackPressed={onGoBack} />
             <ScrollView style={styles.wrapAll}>
 
                 {SessionManager.userInfo?.tinh_trang?.status === STATE_VERIFY_ACC.VERIFIED && renderTop}

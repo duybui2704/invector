@@ -99,7 +99,14 @@ const Languages = {
         emptyData1: 'Không có gói đầu tư nào phù hợp.',
         emptyData2: 'Bạn chưa có gói đầu tư nào, cùng đầu tư ngay nào !!!',
         fromDate: 'Từ ngày',
-        toDate: 'Đến ngày'
+        toDate: 'Đến ngày',
+        updateNow: 'Cập nhật ngay',
+        unconfirmed: 'Bạn chưa xác thực tài khoản!',
+        contentUnconfirmed: 'Xác thực tài khoản để tăng độ an toàn khi đầu tư và sử dụng ứng dụng',
+        noAccount: 'Bạn chưa có tài khoản nhận lãi!',
+        contentNoAccount: 'Bạn chưa cập nhật hình thức nhận tiền lãi đầu tư. Cập nhật và trải nghiệm đầu tư ngay',
+        contentWaitingConfirm: 'Chứng từ của bạn đang được xác minh, bạn có thể tiến hành đầu tư sau khi chứng từ đã được xác thực',
+        waitingConfirm: 'Chờ xác minh chứng từ !'
     },
     account: {
         title: 'Tài khoản',
