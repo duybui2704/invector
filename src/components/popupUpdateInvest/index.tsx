@@ -7,8 +7,6 @@ import { Touchable } from '@/components/elements/touchable';
 import { COLORS, Styles } from '@/theme';
 import { PopupActions } from '../popup/types';
 
-
-
 export type PopupUpdateInvestProps = {
     onClose?: () => any;
     onConfirm?: () => void;
@@ -48,7 +46,7 @@ const PopupUpdateInvest = forwardRef<PopupActions, PopupUpdateInvestProps>(
 
         const [visible, setVisible] = useState<boolean>(false);
         const [data, setData] = useState<DataPopup>();
-        const show = useCallback((_title?: string, _content?: string, _labelButton?: string, _onConfirm?: any, _icon?: any) => {
+        const show = useCallback((_title?: string, _content?: string, _labelButton?: string, _onConfirm?: () => void, _icon?: any) => {
             setData({
                 title: _title,
                 content: _content,
@@ -87,7 +85,7 @@ const PopupUpdateInvest = forwardRef<PopupActions, PopupUpdateInvestProps>(
                 hideModalContentWhileAnimating
             >
                 <View style={styles.viewFL}>
-                    {(data?.icon || icon) && <View style={styles.viewIcon}>{icon || data.icon}</View>}
+                    {(data?.icon || icon) && <View style={styles.viewIcon}>{icon || data?.icon}</View>}
                     <Text style={styles.textModel}>{title || data?.title}</Text>
                     <Text style={styles.content}>{content || data?.content}</Text>
                     {(labelButton || data?.labelButton) &&
