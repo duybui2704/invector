@@ -3,11 +3,11 @@ import {
     View,
     ActivityIndicator
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import { COLORS } from '@/theme';
 import MyStyleLoading from './styles';
 import IcLoading from '@/assets/image/ic_loading.gif';
-import FastImage from 'react-native-fast-image';
 
 const Loading = ({ isOverview, isWhite }: { isOverview?: boolean, isWhite?: boolean }) => {
 

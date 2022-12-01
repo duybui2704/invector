@@ -21,6 +21,7 @@ import { COLORS, IconSize } from '@/theme';
 import DateUtils from '@/utils/DateUtils';
 import { MyStylesNotifyInvest } from './styles';
 import { MyImageView } from '@/components/image';
+import { isIOS } from '@/common/Configs';
 
 const PAGE_SIZE = 8;
 
@@ -35,7 +36,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
     const condition = useRef({
         isLoading: false,
         offset: 0,
-        canLoadMore: true,
+        canLoadMore: true
     });
 
     useEffect(() => {
@@ -61,7 +62,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
                 }
                 condition.current.offset += totalSize;
             } else if (!isLoadMore) {
-                setData([])
+                setData([]);
             }
         }
 
@@ -78,19 +79,17 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
             if (status == 1) {
                 const res = await apiServices.invest.getNotifyUpdateRead(id);
                 if (res.success) {
-                    setData(last => {
-                        return last.map(it => {
-                            if (item.id == it.id) {
-                                it.status = 2
-                            }
-                            return it
-                        })
-                    })
+                    setData(last => last.map(it => {
+                        if (item.id == it.id) {
+                            it.status = 2;
+                        }
+                        return it;
+                    }));
                     const resCountNotify = await apiServices.notification?.getUnreadNotify();
                     if (resCountNotify.success) {
                         const dataNotify = resCountNotify.data as NotificationTotalModel;
-                        PushNotificationIOS.setApplicationIconBadgeNumber(dataNotify?.total_unRead);
-                        PushNotification.setApplicationIconBadgeNumber(dataNotify?.total_unRead);
+                        if (isIOS) { PushNotificationIOS.setApplicationIconBadgeNumber(dataNotify?.total_unRead); }
+                        else PushNotification.setApplicationIconBadgeNumber(dataNotify?.total_unRead);
                     }
                     if (item.link) {
                         Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: ENUM_INVEST_STATUS.INVESTING, id: `${item?.action_id}` });
