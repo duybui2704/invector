@@ -104,7 +104,7 @@ export const MyStylesNotifyInvest = () => {
                 fontSize: Configs.FontSize.size11,
                 fontFamily: Configs.FontFamily.medium,
                 color: COLORS.GRAY_12,
-                textAlign:'right'
+                textAlign: 'right'
             },
             txtTimeDatePromotion: {
                 fontSize: Configs.FontSize.size11,

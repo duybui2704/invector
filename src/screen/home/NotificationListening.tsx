@@ -38,7 +38,7 @@ const NotificationListening = observer(({ children }: any) => {
         if (fcmToken && SessionManager.accessToken) {
             apiServices?.notification?.createFcmToken(fcmToken);
         }
-    }, []);
+    }, [apiServices?.notification]);
 
     const getUnreadNotify = useCallback(async () => {
         if (userManager.userInfo) {
@@ -47,8 +47,8 @@ const NotificationListening = observer(({ children }: any) => {
                 const data = res.data as NotificationTotalModel;
                 console.log('count unread notification', data?.total_unRead);
                 notificationManager.setUnReadNotifyCount(data?.total_unRead);
-                PushNotificationIOS.setApplicationIconBadgeNumber(data?.total_unRead);
-                PushNotification.setApplicationIconBadgeNumber(data?.total_unRead);
+                if (isIOS) { PushNotificationIOS.setApplicationIconBadgeNumber(data?.total_unRead); }
+                else PushNotification.setApplicationIconBadgeNumber(data?.total_unRead);
             }
         }
     }, [apiServices.notification, notificationManager, userManager.userInfo]);
@@ -59,7 +59,6 @@ const NotificationListening = observer(({ children }: any) => {
                 PushNotificationIOS.addNotificationRequest({
                     id: 'notificationWithSound',
                     title: remoteMessage?.notification?.title,
-                    // subtitle: 'Sample Subtitle',
                     body: remoteMessage?.notification?.body,
                     sound: 'customSound.wav'
                 });
@@ -67,7 +66,6 @@ const NotificationListening = observer(({ children }: any) => {
                 PushNotification.localNotification({
                     id: 'notificationWithSound',
                     autoCancel: true,
-                    data: 'test',
                     channelId: 'TienNgay.vn-chanel',
                     showWhen: true,
                     title: remoteMessage?.notification?.title,
@@ -78,17 +76,16 @@ const NotificationListening = observer(({ children }: any) => {
                     soundName: 'default'
                 });
             }
-            getUnreadNotify();
-        },
-        [getUnreadNotify]
-    );
+        }, []);
 
     useEffect(() => {
         Utils.configNotification(navigateNotify);
-        PushNotificationIOS.addEventListener(
-            'localNotification',
-            onLocalNotificationIOS
-        );
+        if (isIOS) {
+            PushNotificationIOS.addEventListener(
+                'localNotification',
+                onLocalNotificationIOS
+            );
+        }
         const unsubscribe = messaging().onMessage(async (remoteMessage) => {
             pushNotificationLocal(remoteMessage);
         });

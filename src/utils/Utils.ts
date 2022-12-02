@@ -172,7 +172,8 @@ const createChannel = () => {
 
 async function requestUserPermissionNotify() {
     const authStatus = await messaging().requestPermission({
-        alert: false
+        alert: false,
+        badge: true
     });
     const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||

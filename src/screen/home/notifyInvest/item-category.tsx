@@ -5,7 +5,7 @@ import Dash from 'react-native-dash';
 import PushNotification from 'react-native-push-notification';
 
 import IcNoDataNotify from '@/assets/image/home/ic_no_data_notify.svg';
-import { ENUM_INVEST_STATUS } from '@/common/constants';
+import { ENUM_INVEST_STATUS, TYPE_RESIZE } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
@@ -21,6 +21,7 @@ import { COLORS, HtmlStyles, IconSize, RenderHtmlStyle, Styles } from '@/theme';
 import DateUtils from '@/utils/DateUtils';
 import { MyStylesNotifyInvest } from './styles';
 import { MyImageView } from '@/components/image';
+import { isIOS } from '@/common/Configs';
 import { useWindowDimensions } from 'react-native';
 import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
@@ -39,7 +40,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
     const condition = useRef({
         isLoading: false,
         offset: 0,
-        canLoadMore: true,
+        canLoadMore: true
     });
 
     useEffect(() => {
@@ -65,7 +66,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
                 }
                 condition.current.offset += totalSize;
             } else if (!isLoadMore) {
-                setData([])
+                setData([]);
             }
         }
 
@@ -73,7 +74,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
         condition.current.isLoading = false;
         condition.current.canLoadMore = totalSize >= PAGE_SIZE;
         setCanLoadMoreUI(condition.current.canLoadMore);
-    }, [apiServices.invest]);
+    }, [apiServices.invest, category.id]);
 
     const keyExtractor = useCallback((item: any, index: number) => `${index}${item.id}`, []);
 
@@ -82,19 +83,17 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
             if (status == 1) {
                 const res = await apiServices.invest.getNotifyUpdateRead(id);
                 if (res.success) {
-                    setData(last => {
-                        return last.map(it => {
-                            if (item.id == it.id) {
-                                it.status = 2
-                            }
-                            return it
-                        })
-                    })
+                    setData(last => last.map(it => {
+                        if (item.id == it.id) {
+                            it.status = 2;
+                        }
+                        return it;
+                    }));
                     const resCountNotify = await apiServices.notification?.getUnreadNotify();
                     if (resCountNotify.success) {
                         const dataNotify = resCountNotify.data as NotificationTotalModel;
-                        PushNotificationIOS.setApplicationIconBadgeNumber(dataNotify?.total_unRead);
-                        PushNotification.setApplicationIconBadgeNumber(dataNotify?.total_unRead);
+                        if (isIOS) { PushNotificationIOS.setApplicationIconBadgeNumber(dataNotify?.total_unRead); }
+                        else PushNotification.setApplicationIconBadgeNumber(dataNotify?.total_unRead);
                     }
                     if (item.link) {
                         Navigator.navigateToDeepScreen([TabsName.homeTabs], ScreenName.detailInvestment, { status: ENUM_INVEST_STATUS.INVESTING, id: `${item?.action_id}` });
@@ -127,7 +126,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
                 {item.image && <MyImageView
                     imageUrl={item.image}
                     style={IconSize.sizeNotify}
-                    resizeMode={'cover'}
+                    resizeMode={TYPE_RESIZE.COVER}
                 />}
 
                 {isPromotion && <>
