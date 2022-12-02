@@ -76,10 +76,7 @@ const NotificationListening = observer(({ children }: any) => {
                     soundName: 'default'
                 });
             }
-            getUnreadNotify();
-        },
-        [getUnreadNotify]
-    );
+        }, []);
 
     useEffect(() => {
         Utils.configNotification(navigateNotify);

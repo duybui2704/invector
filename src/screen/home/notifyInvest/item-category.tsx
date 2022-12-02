@@ -5,7 +5,7 @@ import Dash from 'react-native-dash';
 import PushNotification from 'react-native-push-notification';
 
 import IcNoDataNotify from '@/assets/image/home/ic_no_data_notify.svg';
-import { ENUM_INVEST_STATUS } from '@/common/constants';
+import { ENUM_INVEST_STATUS, TYPE_RESIZE } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
@@ -70,7 +70,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
         condition.current.isLoading = false;
         condition.current.canLoadMore = totalSize >= PAGE_SIZE;
         setCanLoadMoreUI(condition.current.canLoadMore);
-    }, [apiServices.invest]);
+    }, [apiServices.invest, category.id]);
 
     const keyExtractor = useCallback((item: any, index: number) => `${index}${item.id}`, []);
 
@@ -118,12 +118,12 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
                 {item.image && <MyImageView
                     imageUrl={item.image}
                     style={IconSize.sizeNotify}
-                    resizeMode={'cover'}
+                    resizeMode={TYPE_RESIZE.COVER}
                 />}
                 <Text style={styles.txtNote}>{item?.message}</Text>
             </Touchable >
         );
-    }, [apiServices.invest, styles.item, styles.itemBlur, styles.rowTop, styles.title, styles.txtNote, styles.txtRight, styles.txtTimeDate, styles.viewLeft]);
+    }, [apiServices.invest, apiServices.notification, category.id, styles.item, styles.itemBlur, styles.rowTop, styles.title, styles.txtNote, styles.txtTimeDate, styles.viewLeft]);
 
     const renderFooter = useMemo(() => <>
         {canLoadMoreUI && <Loading />}
