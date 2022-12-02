@@ -14,10 +14,14 @@ import { COLORS } from '@/theme';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import { ExpandingDot } from "react-native-animated-pagination-dots";
 import Carousel from "react-native-snap-carousel";
+import { Touchable } from './elements/touchable';
+import Navigator from '@/routers/Navigator';
+import ScreenName from '@/common/screenNames';
+import { PromotionModel } from '@/models/banner';
 
 export type PopupPromotionProps = {
     onConfirm?: () => any;
-    images?: string[];
+    data?: PromotionModel[];
 };
 
 export type PopupActions = {
@@ -29,7 +33,7 @@ export type PopupActions = {
 const PopupPromotion = forwardRef<PopupActions, PopupPromotionProps>(
     ({
         onConfirm,
-        images
+        data
     }: PopupPromotionProps, ref) => {
 
         const [visible, setVisible] = useState<boolean>(false);
@@ -64,16 +68,22 @@ const PopupPromotion = forwardRef<PopupActions, PopupPromotionProps>(
             [scrollX]
         );
 
-        const renderInfo = useCallback(({ item }: { item: string }) => (
+        const renderItem = useCallback(({ item }: { item: PromotionModel }) => {
+            const onPress = () => {
+                onClose();
+                Navigator.pushScreen(ScreenName.promotionDetail, {data: item})
+            }
+            return <Touchable onPress={onPress}>
             <FastImage
                 style={{
                     width: IMG_WIDTH,
                     height: IMG_HEIGHT,
                 }}
-                source={{ uri: item }}
+                source={{ uri: item.image_popup }}
                 resizeMode={TYPE_RESIZE.COVER}
             />
-        ), []);
+        </Touchable>
+        }, []);
 
         return (
             <Modal
@@ -88,8 +98,8 @@ const PopupPromotion = forwardRef<PopupActions, PopupPromotionProps>(
                 <View>
                     <View style={styles.bannerContainer}>
                         <Carousel
-                            data={images}
-                            renderItem={renderInfo}
+                            data={data}
+                            renderItem={renderItem}
                             sliderWidth={SCREEN_WIDTH}
                             itemWidth={IMG_WIDTH}
                             autoplay
@@ -100,7 +110,7 @@ const PopupPromotion = forwardRef<PopupActions, PopupPromotionProps>(
                     </View>
 
                     <ExpandingDot
-                        data={images}
+                        data={data}
                         expandingDotWidth={40}
                         inActiveDotOpacity={0.6}
                         scrollX={scrollX}

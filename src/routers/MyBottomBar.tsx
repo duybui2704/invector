@@ -35,6 +35,7 @@ import Report from '@/screen/report';
 import { COLORS } from '@/theme';
 import ScreenName, { TabsName } from '../common/screenNames';
 import Navigator from './Navigator';
+import { PromotionDetail } from '@/screen/home/notifyInvest/promotionDetail';
 
 const TabsData = [
     {
@@ -88,6 +89,7 @@ const HomeStack = () => (
         <Stack.Screen name={ScreenName.home} component={Home} />
         <Stack.Screen name={ScreenName.notifyInvest} component={NotifyInvest} />
         <Stack.Screen name={ScreenName.myWedView} component={MyWebView} />
+        <Stack.Screen name={ScreenName.promotionDetail} component={PromotionDetail} />
         {PackageInvestStack()}
     </Stack.Navigator>
 );

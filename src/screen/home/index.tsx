@@ -26,7 +26,7 @@ import PopupPromotion, { PopupActions } from '@/components/PopupPromotion';
 import PopupVimo, { PopupAlertActions } from '@/components/PopupVimo';
 import { useAppStore } from '@/hooks';
 import SessionManager from '@/manager/SessionManager';
-import { PromotionModel, BannerModel } from '@/models/banner';
+import { PromotionModel, BannerModel, PromotionsModel } from '@/models/banner';
 import { BaseModel } from '@/models/base-model';
 import { DashBroad } from '@/models/dash';
 import { PackageInvest } from '@/models/invest';
@@ -59,7 +59,7 @@ const Home = observer(() => {
     const [dataDash, setDataDash] = useState<DashBroad>();
     const [showFloating, setShowFloating] = useState<boolean>(true);
     const refPromotionPopup = useRef<PopupActions>(null);
-    const [promotions, setPromotion] = useState<PromotionModel>();
+    const [promotions, setPromotion] = useState<PromotionsModel>();
     const [unMore, setUnMore] = useState<boolean>(false);
     const ref = useRef(null);
     const refPopup = useRef<PopupAlertActions>(null);
@@ -183,9 +183,9 @@ const Home = observer(() => {
         }
         const resBannerHome = await apiServices.common.getBannerHome();
         if (resBannerHome.success) {
-            const bannerHome = resBannerHome?.data as PromotionModel;
+            const bannerHome = resBannerHome?.data as PromotionsModel;
             setPromotion(bannerHome);
-            if (bannerHome && bannerHome.image) {
+            if (bannerHome && bannerHome.promotion) {
                 setTimeout(() => {
                     setShowFloating(true);
                     showPromotionPopup();
@@ -492,7 +492,7 @@ const Home = observer(() => {
                 >
                     {renderContent}
                 </ParallaxScrollView>
-                {(showFloating && promotions?.icon && promotions?.image) ?
+                {(showFloating && promotions?.icon && promotions?.promotion) ?
                     <DraggableComponent
                         image={promotions?.icon}
                         x={SCREEN_WIDTH - 110}
@@ -503,9 +503,9 @@ const Home = observer(() => {
                         onClose={() => setShowFloating(false)}
                     />
                     : <View></View>}
-                {promotions?.image && <PopupPromotion
+                {promotions?.promotion && <PopupPromotion
                     ref={refPromotionPopup}
-                    images={promotions?.image}
+                    data={promotions?.promotion}
                     onConfirm={focusContracts}
                 />}
                 <PopupVimo

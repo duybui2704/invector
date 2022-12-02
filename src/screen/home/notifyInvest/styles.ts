@@ -46,21 +46,26 @@ export const MyStylesNotifyInvest = () => {
             item: {
                 paddingTop: 8,
                 backgroundColor: COLORS.WHITE,
-                paddingHorizontal: 16,
-                borderRadius: 16,
-                borderWidth: 1,
-                borderColor: COLORS.GRAY_11,
+                paddingHorizontal: 10,
+                paddingBottom: 5,
+                borderRadius: 10,
                 marginBottom: 8,
                 opacity: 1
+            },
+            itemPromotion: {
+                paddingTop: 8,
+                backgroundColor: COLORS.WHITE,
+                paddingHorizontal: 10,
+                paddingBottom: 5,
+                marginBottom: 8,
             },
             itemBlur: {
                 paddingTop: 8,
                 backgroundColor: COLORS.WHITE,
-                paddingHorizontal: 16,
-                borderRadius: 16,
-                borderWidth: 1,
-                borderColor: COLORS.GRAY_11,
+                paddingHorizontal: 10,
+                borderRadius: 10,
                 marginBottom: 8,
+                paddingBottom: 5,
                 opacity: 0.7
             },
             rowTop: {
@@ -82,11 +87,31 @@ export const MyStylesNotifyInvest = () => {
                 flex: 1,
                 textAlign: 'left',
             },
+            titlePromotion: {
+                fontSize: Configs.FontSize.size15,
+                fontFamily: Configs.FontFamily.bold,
+                color: COLORS.GREEN,
+                marginTop: 5
+            },
+            titlePromotionDetail: {
+                fontSize: Configs.FontSize.size15,
+                fontFamily: Configs.FontFamily.bold,
+                color: COLORS.GREEN,
+                marginTop: 5,
+                marginHorizontal: 5
+            },
             txtTimeDate: {
                 fontSize: Configs.FontSize.size11,
                 fontFamily: Configs.FontFamily.medium,
                 color: COLORS.GRAY_12,
                 textAlign:'right'
+            },
+            txtTimeDatePromotion: {
+                fontSize: Configs.FontSize.size11,
+                fontFamily: Configs.FontFamily.medium,
+                color: COLORS.GRAY_12,
+                marginTop: 2,
+                marginBottom: 7
             },
             txtRight: {
                 position: 'absolute',

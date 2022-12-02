@@ -83,6 +83,7 @@ const Languages = {
         search: 'Tìm kiếm',
         cancel: 'Hủy',
         notify: 'Thông báo',
+        notifyPromotion: 'Thông tin khuyến mại',
         notifyAll: 'Tất cả',
         notifyUnRead: 'Chưa đọc',
         customerGratitude: 'Tri ân khách hàng cùng tienngay.vn',
@@ -169,7 +170,7 @@ const Languages = {
         skip: 'Bỏ qua',
         or: 'Hoặc',
         fileDir: 'file://',
-        version: 'Phiên bản 2.2.20221124'
+        version: 'Phiên bản 2.2.20221202' 
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng TienNgay.vn',

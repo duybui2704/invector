@@ -17,11 +17,14 @@ import { Notify } from '@/models/invest';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { NotificationTotalModel } from '@/models/notification';
 import Navigator from '@/routers/Navigator';
-import { COLORS, HtmlStyles, IconSize } from '@/theme';
+import { COLORS, HtmlStyles, IconSize, RenderHtmlStyle, Styles } from '@/theme';
 import DateUtils from '@/utils/DateUtils';
 import { MyStylesNotifyInvest } from './styles';
 import { MyImageView } from '@/components/image';
-import HTMLView from 'react-native-htmlview';
+import { useWindowDimensions } from 'react-native';
+import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
+import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
+import { Configs } from '@/common/Configs';
 
 const PAGE_SIZE = 8;
 
@@ -103,30 +106,60 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
             }
         };
 
-        return (
-            <Touchable style={item?.status === 1 ? styles.item : styles.itemBlur}
-                disabled={category.id == 1}
-                onPress={() => onRead(item?.id, item?.status)} >
-                <View style={styles.rowTop}>
-                    <Text style={[styles.title, styles.viewLeft]} numberOfLines={1}>{item?.title}</Text>
-                    <Text style={styles.txtTimeDate}>{DateUtils.formatDatePicker(item.created_at)}</Text>
-                </View>
-                <Dash
-                    dashThickness={1}
-                    dashLength={10}
-                    dashGap={5}
-                    dashColor={COLORS.GRAY_13}
-                />
+        const source = `<div style="font-family: '${Configs.FontFamily.regular}'; font-size: ${Configs.FontSize.size13}px; color: ${COLORS.BLACK}">
+            ${item.message}
+          </div>`
+
+        const mainView = (isPromotion?: boolean) => {
+            return <>
+                {!isPromotion && <>
+                    <View style={styles.rowTop}>
+                        <Text style={[styles.title, styles.viewLeft]} numberOfLines={1}>{item?.title}</Text>
+                        <Text style={styles.txtTimeDate}>{DateUtils.formatDatePicker(item.created_at)}</Text>
+                    </View>
+                    <Dash
+                        dashThickness={1}
+                        dashLength={10}
+                        dashGap={5}
+                        dashColor={COLORS.GRAY_13}
+                    />
+                </>}
                 {item.image && <MyImageView
                     imageUrl={item.image}
                     style={IconSize.sizeNotify}
                     resizeMode={'cover'}
                 />}
-                <HTMLView
-                    value={`<notify>${item?.message}</notify>`}
-                    stylesheet={HtmlStyles || undefined} />
-            </Touchable >
-        );
+
+                {isPromotion && <>
+                    <Text style={styles.titlePromotion} numberOfLines={1}>{item?.title}</Text>
+                    <Text style={styles.txtTimeDatePromotion}>{DateUtils.formatDatePicker(item.created_at)}</Text>
+                </>}
+
+                <RenderHtml
+                    contentWidth={SCREEN_WIDTH}
+                    source={{ html: source }}
+                    systemFonts={[Configs.FontFamily.regular]}
+                    tagsStyles={RenderHtmlStyle}
+                />
+            </>
+        }
+
+        if (category.id != 1) {
+            return (
+                <Touchable style={item?.status === 1 ? styles.item : styles.itemBlur}
+                    onPress={() => onRead(item?.id, item?.status)}>
+                    {mainView()}
+                </Touchable >
+            );
+        } else {
+            return (
+                <View style={styles.itemPromotion}>
+                    {mainView(true)}
+                </View >
+            );
+        }
+
+
     }, [apiServices.invest, styles.item, styles.itemBlur, styles.rowTop, styles.title, styles.txtNote, styles.txtRight, styles.txtTimeDate, styles.viewLeft]);
 
     const renderFooter = useMemo(() => <>

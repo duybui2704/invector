@@ -182,3 +182,10 @@ export const HtmlStylesSeen = {
         marginTop: 5
     }
 };
+
+export const RenderHtmlStyle = {
+    p: {
+        paddingTop: 0,
+        paddingBottom: 0,
+    },
+};

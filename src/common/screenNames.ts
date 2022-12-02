@@ -33,7 +33,8 @@ export const ScreenName = {
     linkWallet: 'LinkWallet',
     transferScreen:'TransferScreen',
     packageInvestStack:'PackageInvestStack',
-    accountDetect:'AccountDetect'
+    accountDetect:'AccountDetect',
+    promotionDetail:'PromotionDetail'
 };
 
 export default ScreenName;
