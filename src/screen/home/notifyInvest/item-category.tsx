@@ -5,10 +5,12 @@ import Dash from 'react-native-dash';
 import PushNotification from 'react-native-push-notification';
 
 import IcNoDataNotify from '@/assets/image/home/ic_no_data_notify.svg';
+import { Configs, isIOS } from '@/common/Configs';
 import { ENUM_INVEST_STATUS, TYPE_RESIZE } from '@/common/constants';
 import Languages from '@/common/Languages';
 import ScreenName, { TabsName } from '@/common/screenNames';
 import { Touchable } from '@/components/elements/touchable';
+import { MyImageView } from '@/components/image';
 import Loading from '@/components/loading';
 import MyFlatList from '@/components/MyFlatList';
 import NoData from '@/components/NoData';
@@ -17,17 +19,13 @@ import { Notify } from '@/models/invest';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { NotificationTotalModel } from '@/models/notification';
 import Navigator from '@/routers/Navigator';
-import { COLORS, HtmlStyles, IconSize, RenderHtmlStyle, Styles } from '@/theme';
+import { COLORS, IconSize, RenderHtmlStyle } from '@/theme';
 import DateUtils from '@/utils/DateUtils';
-import { MyStylesNotifyInvest } from './styles';
-import { MyImageView } from '@/components/image';
-import { isIOS } from '@/common/Configs';
-import { useWindowDimensions } from 'react-native';
-import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
-import { Configs } from '@/common/Configs';
+import RenderHtml from 'react-native-render-html';
+import { MyStylesNotifyInvest } from './styles';
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 20;
 
 export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
     const styles = MyStylesNotifyInvest();

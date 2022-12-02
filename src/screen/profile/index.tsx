@@ -8,6 +8,7 @@ import FastImage from 'react-native-fast-image';
 import TouchID from 'react-native-touch-id';
 import PasscodeAuth from '@el173/react-native-passcode-auth';
 import { useIsFocused } from '@react-navigation/native';
+import PushNotification from 'react-native-push-notification';
 
 import WomanIC from '@/assets/image/ic_large_woman.svg';
 import IcReferral from '@/assets/image/ic_referral.svg';
@@ -56,6 +57,7 @@ import { MyStylesPinCodeProfile, MyStylesProfile } from './styles';
 import { PopupOtpDeleteAccount } from '@/components/popupOtpDeleteAccount';
 import Loading from '@/components/loading';
 import { UserInfoModal } from '@/models/user-models';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 const customTexts = {
     set: Languages.setPassCode
@@ -132,6 +134,8 @@ const Profile = observer(() => {
         fastAuthInfoManager.setEnableFastAuthentication(false);
         userManager.updateUserInfo(undefined);
         setIsEnabledSwitch(false);
+        if (isIOS) { PushNotificationIOS.setApplicationIconBadgeNumber(0); }
+        else PushNotification.setApplicationIconBadgeNumber(0);
         popupLogout.current?.hide();
         Navigator.navigateToDeepScreen(
             [ScreenName.tabs], TabsName.homeTabs
