@@ -22,7 +22,7 @@ export const PromotionDetail = ({ route }: any) => {
           </div>`
 
     return (
-        <View style={styles.container}>
+        <View style={styles.containerDetail}>
             <HeaderBar title={Languages.invest.notifyPromotion} hasBack />
 
             {data.image && <MyImageView

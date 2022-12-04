@@ -124,7 +124,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
                 {item.image && <MyImageView
                     imageUrl={item.image}
                     style={IconSize.sizeNotify}
-                    resizeMode={TYPE_RESIZE.COVER}
+                    resizeMode={TYPE_RESIZE.STRETCH}
                 />}
 
                 {isPromotion && <>
@@ -132,12 +132,14 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
                     <Text style={styles.txtTimeDatePromotion}>{DateUtils.formatDatePicker(item.created_at)}</Text>
                 </>}
 
-                <RenderHtml
-                    contentWidth={SCREEN_WIDTH}
-                    source={{ html: source }}
-                    systemFonts={[Configs.FontFamily.regular]}
-                    tagsStyles={RenderHtmlStyle}
-                />
+                <View style={{paddingHorizontal : isPromotion ? 10: 0}}>
+                    <RenderHtml
+                        contentWidth={SCREEN_WIDTH}
+                        source={{ html: source }}
+                        systemFonts={[Configs.FontFamily.regular]}
+                        tagsStyles={RenderHtmlStyle}
+                    />
+                </View>
             </>
         }
 

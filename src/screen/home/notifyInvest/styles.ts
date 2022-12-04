@@ -11,6 +11,10 @@ export const MyStylesNotifyInvest = () => {
         StyleSheet.create({
             container: {
                 flex: 1,
+                backgroundColor: COLORS.GRAY_8
+            },
+            containerDetail: {
+                flex: 1,
                 backgroundColor: COLORS.WHITE_GRAY1
             },
             pagerView: {
@@ -53,11 +57,9 @@ export const MyStylesNotifyInvest = () => {
                 opacity: 1
             },
             itemPromotion: {
-                paddingTop: 8,
                 backgroundColor: COLORS.WHITE,
-                paddingHorizontal: 10,
                 paddingBottom: 5,
-                marginBottom: 8,
+                marginBottom: 10,
             },
             itemBlur: {
                 paddingTop: 8,
@@ -91,6 +93,7 @@ export const MyStylesNotifyInvest = () => {
                 fontSize: Configs.FontSize.size15,
                 fontFamily: Configs.FontFamily.bold,
                 color: COLORS.GREEN,
+                paddingHorizontal: 10,
                 marginTop: 5
             },
             titlePromotionDetail: {
@@ -111,7 +114,8 @@ export const MyStylesNotifyInvest = () => {
                 fontFamily: Configs.FontFamily.medium,
                 color: COLORS.GRAY_12,
                 marginTop: 2,
-                marginBottom: 7
+                marginBottom: 7,
+                paddingHorizontal: 10,
             },
             txtRight: {
                 position: 'absolute',
@@ -130,7 +134,7 @@ export const MyStylesNotifyInvest = () => {
                 minHeight: SCREEN_HEIGHT / 2
             },
             topBarContainer: {
-                backgroundColor: COLORS.GRAY_13,
+                backgroundColor: COLORS.GRAY_11,
                 borderRadius: 26,
                 marginHorizontal: 16,
                 flexDirection: 'row',
