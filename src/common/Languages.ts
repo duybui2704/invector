@@ -170,7 +170,7 @@ const Languages = {
         skip: 'Bỏ qua',
         or: 'Hoặc',
         fileDir: 'file://',
-        version: 'Phiên bản 2.2.20221205' 
+        version: 'Phiên bản 2.3.20221206' 
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng TienNgay.vn',

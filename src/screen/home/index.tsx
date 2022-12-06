@@ -179,7 +179,7 @@ const Home = observer(() => {
         const resBanner = await apiServices.common.getBanners();
         if (resBanner.success) {
             const data = resBanner?.data as BannerModel[];
-            setBanners(data);
+            setBanners(data.filter(item => !item.title_vi.includes('CƠ HỘI')));
         }
         const resBannerHome = await apiServices.common.getBannerHome();
         if (resBannerHome.success) {

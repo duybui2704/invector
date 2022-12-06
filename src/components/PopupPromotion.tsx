@@ -109,7 +109,7 @@ const PopupPromotion = forwardRef<PopupActions, PopupPromotionProps>(
                         />
                     </View>
 
-                    <ExpandingDot
+                    {data?.length > 1 && <ExpandingDot
                         data={data}
                         expandingDotWidth={40}
                         inActiveDotOpacity={0.6}
@@ -118,7 +118,7 @@ const PopupPromotion = forwardRef<PopupActions, PopupPromotionProps>(
                         containerStyle={styles.containerStyle}
                         activeDotColor={COLORS.GREEN}
                         inActiveDotColor={COLORS.GRAY_3}
-                    />
+                    />}
                 </View>
             </Modal>
         );

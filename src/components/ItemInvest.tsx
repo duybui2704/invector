@@ -39,6 +39,7 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
                     dashLength={10}
                     dashGap={5}
                     dashColor={COLORS.GRAY_13} />
+
                 <View style={styles.rowCenter}>
                     <View>
                         <Text style={styles.txtInterest}>{Languages.invest.time}</Text>
@@ -56,21 +57,24 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
                         </View>
                     }
                 </View>
-                <Dash
-                    dashThickness={1}
-                    dashLength={10}
-                    dashGap={5}
-                    dashColor={COLORS.GRAY_13} />
-                {title === ENUM_INVEST_STATUS.INVESTING && <View style={styles.rowCenter}>
-                    <View >
-                        <Text style={styles.txtInterest}>{Languages.invest.payed}</Text>
-                        <Text style={styles.txtFormality}>{Utils.formatMoney(data?.tong_goc_da_tra)}</Text>
+
+                {title === ENUM_INVEST_STATUS.INVESTING && <>
+                    <Dash
+                        dashThickness={1}
+                        dashLength={10}
+                        dashGap={5}
+                        dashColor={COLORS.GRAY_13} />
+                    <View style={styles.rowCenter}>
+                        <View >
+                            <Text style={styles.txtInterest}>{Languages.invest.payed}</Text>
+                            <Text style={styles.txtFormality}>{Utils.formatMoney(data?.tong_goc_da_tra)}</Text>
+                        </View>
+                        <View style={styles.wrapText}>
+                            <Text style={styles.txtInterest}>{Languages.invest.remaining}</Text>
+                            <Text style={styles.greenText}>{Utils.formatMoney(data?.tong_goc_con_lai)}</Text>
+                        </View>
                     </View>
-                    <View style={styles.wrapText}>
-                        <Text style={styles.txtInterest}>{Languages.invest.remaining}</Text>
-                        <Text style={styles.greenText}>{Utils.formatMoney(data?.tong_goc_con_lai)}</Text>
-                    </View>
-                </View>}
+                </>}
                 <Dash
                     dashThickness={1}
                     dashLength={10}
