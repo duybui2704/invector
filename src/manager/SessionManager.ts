@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import DeviceInfo from 'react-native-device-info';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import PushNotification from 'react-native-push-notification';
 
 import { StorageKeys } from '@/common/constants';
-import RsaUtils from '@/utils/RsaUtils';
 import StorageUtils from '@/utils/StorageUtils';
 import { UserInfoModal } from '@/models/user-models';
+import { isIOS } from '@/common/Configs';
 
 
 export const DeviceInfos = {
@@ -112,8 +114,7 @@ class SessionManager {
         }
     }
 
-    setSavePhoneLogin(phone?:string)
-    {
+    setSavePhoneLogin(phone?: string) {
         this.savePhone = phone;
         if (phone) {
             StorageUtils.saveDataToKey(StorageKeys.KEY_SAVE_LOGIN_PHONE, JSON.stringify(this.savePhone));
@@ -179,6 +180,11 @@ class SessionManager {
         this.setRatingPoint(0);
         this.setEnableFastAuthentication();
         this.lastTabIndexBeforeOpenAuthTab = 0;
+        if (isIOS) {
+            PushNotificationIOS.setApplicationIconBadgeNumber(0);
+        } else {
+            PushNotification.setApplicationIconBadgeNumber(0);
+        }
     }
 }
 
