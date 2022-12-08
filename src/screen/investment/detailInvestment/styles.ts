@@ -7,6 +7,7 @@ import DimensionUtils from '@/utils/DimensionUtils';
 
 const styles = StyleSheet.create({
     container:{
+        flex: 1,
         backgroundColor: COLORS.WHITE,
         minHeight: DimensionUtils.SCREEN_HEIGHT
     },

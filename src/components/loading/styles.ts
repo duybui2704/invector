@@ -22,6 +22,11 @@ const MyStyleLoading = () => useMemo(() =>
             width: 100,
             height: 100,
             borderRadius: 10,
+        },
+        activityIndicatorSmall: {
+            width: 50,
+            height: 50,
+            borderRadius: 10,
         }
     })
 

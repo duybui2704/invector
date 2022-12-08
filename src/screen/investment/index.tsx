@@ -257,8 +257,6 @@ const Investment = observer(({ route }: { route: any }) => {
         }
     }, [btnInvest]);
 
-
-
     const handleInputOnChange = useCallback(
         (value: string) => {
             const trimValue = value.trim();
@@ -527,7 +525,6 @@ const Investment = observer(({ route }: { route: any }) => {
                 title={Languages.invest.monthInvest}
                 onPressItem={onPressItem}
             />
-            {isLoading && <Loading isOverview />}
         </View>
     );
 });
