@@ -29,7 +29,7 @@ const ShareFriend = observer(() => {
         />, []);
 
     const share = useCallback(() => {
-        Utils.share(code);
+        Utils.share(LINKS.ONE_LINK);
     }, [code]);
 
     return (
