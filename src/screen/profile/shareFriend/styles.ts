@@ -17,7 +17,7 @@ export const MyStylesShareFriend = () => useMemo(() => StyleSheet.create({
     },
     txtMyQrCode: {
         ...Styles.typography.medium,
-        color: COLORS.GRAY_12,
+        color: COLORS.GRAY_7,
         fontSize: Configs.FontSize.size16,
         marginTop: 24,
         paddingBottom: 8
@@ -33,7 +33,7 @@ export const MyStylesShareFriend = () => useMemo(() => StyleSheet.create({
     },
     txtQR: {
         ...Styles.typography.medium,
-        color: COLORS.GRAY_12,
+        color: COLORS.GRAY_7,
         fontSize: Configs.FontSize.size16,
         paddingVertical: 16
     },

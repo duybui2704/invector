@@ -189,7 +189,7 @@ const Languages = {
         txtSignUp: 'Đăng ký',
         txtName: 'Họ và tên',
         txtEmail: 'Email',
-        txtRefCode: 'Mã giới thiệu',
+        txtRefCode: 'Số điện thoại giới thiệu',
         txtConfirmPass: 'Xác nhận mật khẩu',
         knowChannel: 'Bạn biết chúng tôi qua kênh nào ?',
         txtTitleOtp: 'Xác nhận OTP',
@@ -402,6 +402,7 @@ const Languages = {
         introduce: 'Giới thiệu',
         introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà lên tới 40 triệu đồng tới từ</c> <g>TienNgay.vn</g><c> Đầu tư Tiện ngay</c></t>',
         introduceCode: 'Mã giới thiệu của bạn',
+        linkDownload: 'Đường dẫn tải app',
         qrCode: 'QR code tải app'
     },
     referralUsers: {

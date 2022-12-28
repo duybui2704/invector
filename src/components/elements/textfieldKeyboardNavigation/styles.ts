@@ -106,9 +106,9 @@ export const myTextFieldStyle = () => useMemo(
                 alignItems: 'center'
             },
             viewPlaceHolder: {
-                flex: 1,
+                flex: 2,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
             },
             txtPlaceHolder: {
                 ...Styles.typography.mediumSmall,

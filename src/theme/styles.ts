@@ -107,7 +107,8 @@ export const HtmlStyles = {
     t: {
         ...Styles.typography.regular,
         fontSize: Configs.FontSize.size12,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: COLORS.GRAY_7
     },
     m: {
         ...Styles.typography.medium,
