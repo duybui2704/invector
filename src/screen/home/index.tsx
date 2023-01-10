@@ -185,7 +185,7 @@ const Home = observer(() => {
         if (resBannerHome.success) {
             const bannerHome = resBannerHome?.data as PromotionsModel;
             setPromotion(bannerHome);
-            if (bannerHome && bannerHome.promotion) {
+            if (bannerHome && bannerHome.promotion && bannerHome.promotion?.length > 0) {
                 setTimeout(() => {
                     setShowFloating(true);
                     showPromotionPopup();
