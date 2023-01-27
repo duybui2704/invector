@@ -54,6 +54,10 @@ target 'investorV2' do
         end
       end
   end
+end
 
- 
+target 'ImageNotification' do
+#   pod 'Firebase/Messaging', '~> 10.0.0'
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'Firebase/Messaging', :modular_headers => true
 end
