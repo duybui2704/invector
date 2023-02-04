@@ -31,4 +31,10 @@ export class NotificationServices extends BaseService {
             API_CONFIG.GET_UNREAD_COUNT_NOTIFICATION,
             this.buildFormData({})
         );
+
+    markReadAll = async () =>
+        this.api().post(
+            API_CONFIG.MARK_READ_ALL,
+            this.buildFormData({})
+        );
 }

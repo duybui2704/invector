@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 16,
-        paddingTop: 30
+        paddingTop: 16
     },
     txtTitle: {
         ...Styles.typography.medium,

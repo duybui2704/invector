@@ -5,6 +5,7 @@ import Dash from 'react-native-dash';
 import PushNotification from 'react-native-push-notification';
 
 import IcNoDataNotify from '@/assets/image/home/ic_no_data_notify.svg';
+import WarnIC from '@/assets/image/ic_warn_vimo_red_round.svg';
 import { Configs, isIOS } from '@/common/Configs';
 import { ENUM_INVEST_STATUS, TYPE_RESIZE } from '@/common/constants';
 import Languages from '@/common/Languages';
@@ -14,16 +15,19 @@ import { MyImageView } from '@/components/image';
 import Loading from '@/components/loading';
 import MyFlatList from '@/components/MyFlatList';
 import NoData from '@/components/NoData';
+import PopupNotifyNoAction from '@/components/PopupNotifyNoAction';
 import { useAppStore } from '@/hooks';
 import { Notify } from '@/models/invest';
 import { KeyValueModel } from '@/models/keyValue-model';
 import { NotificationTotalModel } from '@/models/notification';
+import { PopupActionTypes } from '@/models/typesPopup';
 import Navigator from '@/routers/Navigator';
 import { COLORS, IconSize, RenderHtmlStyle } from '@/theme';
 import DateUtils from '@/utils/DateUtils';
 import { SCREEN_WIDTH } from '@/utils/DimensionUtils';
 import RenderHtml from 'react-native-render-html';
 import { MyStylesNotifyInvest } from './styles';
+import CheckPermission from '@/utils/CheckPermission';
 
 const PAGE_SIZE = 20;
 
@@ -34,6 +38,7 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
     const [canLoadMoreUI, setCanLoadMoreUI] = useState<boolean>(true);
 
     const { apiServices } = useAppStore();
+    const popupConfirm = useRef<PopupActionTypes>(null);
 
     const condition = useRef({
         isLoading: false,
@@ -107,18 +112,27 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
             ${item.message}
           </div>`
 
-        const mainView = (isPromotion?: boolean) => {
+        const mainView = (isUnRead: boolean, isPromotion?: boolean) => {
             return <>
                 {!isPromotion && <>
-                    <View style={styles.rowTop}>
-                        <Text style={[styles.title, styles.viewLeft]} numberOfLines={1}>{item?.title}</Text>
-                        <Text style={styles.txtTimeDate}>{DateUtils.formatDatePicker(item.created_at)}</Text>
+                    <View style={styles.columnTop}>
+                        <View style={styles.rowTop}>
+                            <Text style={[styles.title, styles.viewLeft,
+                            { color: isUnRead ? COLORS.GREEN : COLORS.GRAY_18 }]}>
+                                {item?.title}
+                            </Text>
+                            {isUnRead && <View style={styles.unReadTag} />}
+                        </View>
+                        <Text style={[styles.txtTimeDate]}>
+                            {DateUtils.formatDatePicker(item.created_at)}
+                        </Text>
                     </View>
                     <Dash
                         dashThickness={1}
                         dashLength={10}
                         dashGap={5}
                         dashColor={COLORS.GRAY_13}
+                        style={{ marginBottom: 5 }}
                     />
                 </>}
                 {item.image && <MyImageView
@@ -128,11 +142,11 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
                 />}
 
                 {isPromotion && <>
-                    <Text style={styles.titlePromotion} numberOfLines={1}>{item?.title}</Text>
+                    <Text style={styles.titlePromotion}>{item?.title}</Text>
                     <Text style={styles.txtTimeDatePromotion}>{DateUtils.formatDatePicker(item.created_at)}</Text>
                 </>}
 
-                <View style={{paddingHorizontal : isPromotion ? 10: 0}}>
+                <View style={{ paddingHorizontal: isPromotion ? 10 : 0, opacity: isUnRead ? 1 : 0.5 }}>
                     <RenderHtml
                         contentWidth={SCREEN_WIDTH}
                         source={{ html: source }}
@@ -143,22 +157,20 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
             </>
         }
 
-        if (category.id != 1) {
+        if (category.value === 1) {
             return (
-                <Touchable style={item?.status === 1 ? styles.item : styles.itemBlur}
+                <Touchable style={styles.item}
                     onPress={() => onRead(item?.id, item?.status)}>
-                    {mainView()}
+                    {mainView(item?.status === 1)}
                 </Touchable >
             );
         } else {
             return (
                 <View style={styles.itemPromotion}>
-                    {mainView(true)}
+                    {mainView(false, true)}
                 </View >
             );
         }
-
-
     }, [apiServices.invest, styles.item, styles.itemBlur, styles.rowTop, styles.title, styles.txtNote, styles.txtRight, styles.txtTimeDate, styles.viewLeft]);
 
     const renderFooter = useMemo(() => <>
@@ -184,6 +196,18 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
         }
     }, [fetchData]);
 
+    const showMarkReadPopup = useCallback(async () => {
+        popupConfirm.current?.show();
+    }, []);
+
+    const onMarkReadAll = useCallback(async () => {
+        popupConfirm.current?.hide();
+        const res = await apiServices.notification.markReadAll();
+        if (res.success) {
+            onRefreshing();
+        }
+    }, []);
+
     const renderNotify = useMemo(() => (
         <MyFlatList
             contentContainerStyle={styles.flatList}
@@ -202,6 +226,22 @@ export const ItemCategory = ({ category }: { category: KeyValueModel }) => {
     return (
         <View style={styles.wrapContent}>
             {data && renderNotify}
+            {category.value === 1 && <Touchable style={styles.readAll} onPress={showMarkReadPopup}>
+                <Text style={styles.readAllText}>{Languages.notify.readAll}</Text>
+            </Touchable>}
+
+            <PopupNotifyNoAction
+                ref={popupConfirm}
+                renderIcon={<WarnIC />}
+                containerAllBtn={styles.containerAllBtnPopup}
+                containerAgreeBtn={styles.containerItemBtnPopup}
+                containerCancelBtn={styles.containerCancelBtnPopup}
+                renderContent={Languages.notify.readAllNotice}
+                renderTitle={Languages.notify.readAll}
+                textCancel={styles.textCancel}
+                hasButton
+                onConfirm={onMarkReadAll}
+            />
         </View>
     );
 };

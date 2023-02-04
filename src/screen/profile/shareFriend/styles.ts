@@ -11,7 +11,7 @@ export const MyStylesShareFriend = () => useMemo(() => StyleSheet.create({
     },
     wrapAllContent: {
         paddingHorizontal: 16,
-        paddingTop: 10,
+        paddingTop: 5,
         paddingBottom: 16,
         alignSelf: 'center'
     },

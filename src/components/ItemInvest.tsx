@@ -75,6 +75,23 @@ const ItemInvest = ({ data, onPress, onPressInvestNow, hasButton, title }: ItemP
                         </View>
                     </View>
                 </>}
+                {title !== ENUM_INVEST_STATUS.INVEST_NOW && <>
+                    <Dash
+                        dashThickness={1}
+                        dashLength={10}
+                        dashGap={5}
+                        dashColor={COLORS.GRAY_13} />
+                    <View style={styles.rowCenter}>
+                        <View >
+                            <Text style={styles.txtInterest}>{Languages.invest.dateInvest}</Text>
+                            <Text style={styles.txtFormality}>{data?.ngay_dau_tu}</Text>
+                        </View>
+                        <View style={styles.wrapText}>
+                            <Text style={styles.txtInterest}>{title == ENUM_INVEST_STATUS.INVESTING ? Languages.invest.dueDateETA : Languages.invest.dueDate}</Text>
+                            <Text style={styles.greenText}>{data?.ngay_dao_han}</Text>
+                        </View>
+                    </View>
+                </>}
                 <Dash
                     dashThickness={1}
                     dashLength={10}

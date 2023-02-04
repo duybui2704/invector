@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { COLORS } from '../../../theme/colors';
 import { SCREEN_HEIGHT } from '@/utils/DimensionUtils';
-import { Configs } from '@/common/Configs';
+import { Configs, PADDING_BOTTOM } from '@/common/Configs';
 import { Styles } from '@/theme';
 
 export const MyStylesNotifyInvest = () => {
@@ -31,7 +31,6 @@ export const MyStylesNotifyInvest = () => {
             },
             wrapContent: {
                 flex: 1,
-                marginHorizontal: 10
             },
             btInvest: {
                 alignItems: 'center',
@@ -45,10 +44,11 @@ export const MyStylesNotifyInvest = () => {
                 fontSize: Configs.FontSize.size13
             },
             flatList: {
-                paddingBottom: 10
+                paddingBottom: 10,
+                marginHorizontal: 10
             },
             item: {
-                paddingTop: 8,
+                paddingTop: 5,
                 backgroundColor: COLORS.WHITE,
                 paddingHorizontal: 10,
                 paddingBottom: 5,
@@ -70,11 +70,14 @@ export const MyStylesNotifyInvest = () => {
                 paddingBottom: 5,
                 opacity: 0.7
             },
+            columnTop: {
+                paddingBottom: 5,
+                alignItems:'flex-start'
+            },
             rowTop: {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingBottom: 8
+                paddingBottom: 5
             },
             wrapText: {
                 alignItems: 'flex-end'
@@ -114,8 +117,15 @@ export const MyStylesNotifyInvest = () => {
                 fontFamily: Configs.FontFamily.medium,
                 color: COLORS.GRAY_12,
                 marginTop: 2,
-                marginBottom: 7,
+                marginBottom: 5,
                 paddingHorizontal: 10,
+            },
+            unReadTag: {
+                width: Configs.FontSize.size8,
+                height: Configs.FontSize.size8,
+                borderRadius: Configs.FontSize.size8 / 2,
+                backgroundColor: COLORS.GREEN,
+                marginTop: 3
             },
             txtRight: {
                 position: 'absolute',
@@ -143,6 +153,33 @@ export const MyStylesNotifyInvest = () => {
             },
             filterItem: {
                 paddingHorizontal: 2
+            },
+            readAll: {
+                marginTop: 10,
+                backgroundColor: COLORS.WHITE,
+                padding: 20,
+                paddingBottom: PADDING_BOTTOM
+            },
+            readAllText: {
+                fontSize: Configs.FontSize.size15,
+                fontFamily: Configs.FontFamily.bold,
+                color: COLORS.GREEN,
+                marginBottom: 10
+            },
+            containerAllBtnPopup: {
+                flexDirection: 'row-reverse'
+            },
+            containerItemBtnPopup: {
+                backgroundColor: COLORS.RED_2,
+                borderColor: COLORS.RED_2,
+                borderRadius: 20
+            },
+            containerCancelBtnPopup: {
+                borderColor: COLORS.GRAY_13,
+                borderRadius: 20
+            },
+            textCancel: {
+                color: COLORS.GRAY_12
             },
         }), []);
 };

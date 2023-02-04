@@ -290,6 +290,7 @@ dependencies {
     }
     // implementation project(':visioncamerafacedetector')
     implementation 'com.android.support:multidex:2.0.1'
+    implementation 'androidx.work:work-runtime:2.7.1'
 }
 
 if (isNewArchitectureEnabled()) {

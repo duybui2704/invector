@@ -2,7 +2,9 @@ import { Platform, Alert, Linking } from 'react-native';
 import {
     PERMISSIONS,
     request,
-    openSettings
+    openSettings,
+    requestNotifications,
+    checkNotifications
 } from 'react-native-permissions';
 
 import Languages from '@/common/Languages';
@@ -97,6 +99,13 @@ function requestLocationPermission(onSuccessCallback: any, onDenyCallback: any) 
     }
 };
 
+function requestNotificationPermission(onSuccessCallback: any, onDenyCallback: any) {
+    checkNotifications().then((response) => {
+        console.log('checkNotifications = ', response);
+    });
+};
+
+
 // open setting
 function displayPermissionLocationAlert(openSettingCallback: any, denyCallback: any) {
     const alertTitle = Languages.location.PermissionAlert;
@@ -133,5 +142,6 @@ export default {
     requestPhotoLibraryPermission,
     hasCameraCaptureAndSave,
     requestLocationPermission,
+    requestNotificationPermission,
     displayPermissionLocationAlert
 };

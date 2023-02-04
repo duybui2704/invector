@@ -4,7 +4,7 @@ import { isIOS } from '@/common/Configs';
 
 export enum LINKS {
     VPS = 'https://openaccount.vps.com.vn/?MKTID=H787',
-    FB_FAN_PAGE = 'https://www.facebook.com/groups/425567338856999',
+    FB_FAN_PAGE = 'https://www.facebook.com/DautuTienNgay',
     STORE_ANDROID = 'https://play.google.com/store/apps/details?id=vn.tienngay.customer',
     STORE_IOS = 'https://apps.apple.com/id/app/tienngay-customer/id1560920806',
     AQ_INVESTOR = 'https://tienngay.vn/template/hoidap',
@@ -69,6 +69,7 @@ export enum API_CONFIG {
     GET_UNREAD_COUNT_NOTIFICATION = 'user/get_count_notification_user',
     NOTIFY_UPDATE_READ = '/user/update_read_notification',
     GET_ONREAD_COUNT_NOTIFICATION = '/user/get_count_notification_user',
+    MARK_READ_ALL = '/user/update_read_all_notification',
 
     // contracts
     CONTRACTS = 'contract/contract_tempo_by_user', // List danh sách hợp đồng

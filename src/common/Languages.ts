@@ -69,6 +69,9 @@ const Languages = {
         time: 'Thời gian đầu tư',
         remaining: 'Tổng gốc còn lại',
         payed: 'Tổng gốc đã nhận',
+        dateInvest: 'Ngày đầu tư',
+        dueDate: 'Ngày đáo hạn',
+        dueDateETA: 'Ngày đáo hạn dự kiến',
         formalPayment: 'Hình thức trả lãi',
         investNow: 'Đầu tư ngay',
         interest: 'Lãi suất tháng',
@@ -107,7 +110,7 @@ const Languages = {
         noAccount: 'Bạn chưa có tài khoản nhận lãi!',
         contentNoAccount: 'Bạn chưa cập nhật hình thức nhận tiền lãi đầu tư. Cập nhật và trải nghiệm đầu tư ngay',
         contentWaitingConfirm: 'Chứng từ của bạn đang được xác minh, bạn có thể tiến hành đầu tư sau khi chứng từ đã được xác thực',
-        waitingConfirm: 'Chờ xác minh chứng từ !'
+        waitingConfirm: 'Chờ xác minh chứng từ !',
     },
     account: {
         title: 'Tài khoản',
@@ -170,7 +173,7 @@ const Languages = {
         skip: 'Bỏ qua',
         or: 'Hoặc',
         fileDir: 'file://',
-        version: 'Phiên bản 2.3.1.20230110' 
+        version: 'Phiên bản 2.3.1.20230204' 
     },
     introduce: {
         txtIntroduce1: 'Đầu tư an toàn cùng TienNgay.vn',
@@ -400,7 +403,7 @@ const Languages = {
     },
     shareFriend: {
         introduce: 'Giới thiệu',
-        introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà lên tới 40 triệu đồng tới từ</c> <g>TienNgay.vn</g><c> Đầu tư Tiện ngay</c></t>',
+        introduceContent: '<t><c>Giới thiệu thêm nhà đầu tư để có cơ hội nhận những phần quà hấp dẫn tới từ</c> <g>TienNgay.vn</g><c> Đầu tư Tiện ngay</c></t>',
         introduceCode: 'Mã giới thiệu của bạn',
         linkDownload: 'Đường dẫn tải app',
         qrCode: 'QR code tải app'
@@ -597,6 +600,12 @@ const Languages = {
     noInternet: {
         offline: 'Kết nối bị gián đoạn',
         desNoInternet: 'Kết nối bị gián đoạn, vui lòng thử lại!'
+    },
+    notify: {
+        readAll: 'Đánh dấu đã đọc toàn bộ',
+        readAllNotice: 'Bạn có chắc chắn muốn đánh dấu đã đọc tất cả các thông báo không?',
+        turnOnNotify: 'Bật thông báo để không bỏ lỡ bất cứ thông tin nào',
+        turnOnNow: 'Bật ngay',
     }
 };
 export default Languages;

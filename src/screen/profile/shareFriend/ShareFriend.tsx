@@ -17,10 +17,14 @@ import { COLORS, HtmlStyles, Styles } from '@/theme';
 import Utils from '@/utils/Utils';
 import { MyStylesShareFriend } from './styles';
 import ToastUtils from '@/utils/ToastUtils';
+import { useAppStore } from '@/hooks';
 
 const ShareFriend = observer(() => {
+    const {userManager} = useAppStore();
     const styles = MyStylesShareFriend();
     const [code, setCode] = useState<string>(SessionManager.userInfo?.phone_number || '');
+
+    const refLink = userManager?.userInfo?.link_refferral || LINKS.ONE_LINK;
 
     const renderContent = useCallback(() => 
         <QRCode
@@ -66,7 +70,7 @@ const ShareFriend = observer(() => {
                     stylesheet={HtmlStyles || undefined}
                 />
                 {renderItem(Languages.shareFriend.introduceCode, code)}
-                {renderItem(Languages.shareFriend.linkDownload, LINKS.ONE_LINK)}
+                {renderItem(Languages.shareFriend.linkDownload, refLink)}
                 <View style={styles.wrapQR}>
                     <Text style={styles.txtQR}>{Languages.shareFriend.qrCode}</Text>
                     <Lightbox
@@ -74,7 +78,7 @@ const ShareFriend = observer(() => {
                         springConfig={{ tension: 90000000, friction: 9000000 }}
                         swipeToDismiss={true}>
                         <QRCode
-                            value={LINKS.ONE_LINK}
+                            value={refLink}
                             size={SCREEN_WIDTH * 0.75}
                             quietZone={Configs.FontSize.size16}
                         />
@@ -91,7 +95,7 @@ const iStyles = StyleSheet.create({
     txtLabel: {
         ...Styles.typography.regular,
         fontSize: Configs.FontSize.size12,
-        marginVertical: 8,
+        marginTop: 10,
         color: COLORS.GRAY_12
     },
     btCopy: {
@@ -120,7 +124,8 @@ const iStyles = StyleSheet.create({
         borderColor: COLORS.GRAY_4,
         borderRadius: 25,
         alignItems: 'center',
-        marginBottom: 8
+        marginBottom: 8,
+        marginTop: 5
     },
 });
 

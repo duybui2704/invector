@@ -5,7 +5,7 @@
     "scripts": {
         "postinstall": "patch-package",
         "android": "react-native run-android",
-        "ios": "react-native run-ios",
+        "ios": "react-native run-ios --simulator=\"iPhone 14 Pro\"",
         "ios-u": "yarn && cd ios && pod install && cd .. && react-native run-ios",
         "start": "react-native start --reset-cache",
         "test": "jest",
