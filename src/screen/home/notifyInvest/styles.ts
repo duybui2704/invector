@@ -164,7 +164,7 @@ export const MyStylesNotifyInvest = () => {
                 fontSize: Configs.FontSize.size15,
                 fontFamily: Configs.FontFamily.bold,
                 color: COLORS.GREEN,
-                marginBottom: 10
+                paddingBottom: 10
             },
             containerAllBtnPopup: {
                 flexDirection: 'row-reverse'
