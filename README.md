@@ -27,19 +27,19 @@ Android
 ┌────────────┬───────────────────────────────────────┐
 │ Name       │ Key                                   │
 ├────────────┼───────────────────────────────────────┤
-│ Production │ yelGoEAVNUSJXSsot8MI9BzEqxPEZkGlD6v_E │
+│ Production │ │
 ├────────────┼───────────────────────────────────────┤
-│ Staging    │ ml53m1UrrttX9gTTs8Yc_yon48cPWNncYxxss │
+│ Staging    │  │
 └────────────┴───────────────────────────────────────┘
 
 iOS
 ┌────────────┬───────────────────────────────────────┐
 │ Name       │ Key                                   │
 ├────────────┼───────────────────────────────────────┤
-│ Staging    │ 4Xv2LJXGaQ-16gL2PqcA3CkgExtY921q8x2Q3 │
+│ Staging    │  │
 ├────────────┼───────────────────────────────────────┤
-│ Production │ ffUwfYMCCOwZlj-5UTZjvW_tZrnrcwqB_Ctez │
+│ Production │  │
 └────────────┴───────────────────────────────────────┘
 
 # bugsnag
-key: aedc2cb6b0f00f100a45fc1efd934053
+key: aedcu2cb6b0f00f100a45fc1efd934053
